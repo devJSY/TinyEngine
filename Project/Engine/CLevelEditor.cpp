@@ -221,9 +221,9 @@ void CLevelEditor::render()
     // static bool b = true;
     // ImGui::ShowDemoWindow(&b);
 
-    if (CAssetMgr::GetInst()->IsModelLoading())
+    if (CAssetMgr::GetInst()->IsAssetLoading())
     {
-        ImGui::Begin("Model Loading", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoDocking);
+        ImGui::Begin("Asset Loading", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoDocking);
 
         const ImU32 col = ImGui::GetColorU32(ImVec4{0.2f, 0.45f, 0.811f, 1.0f});
         const ImU32 bg = ImGui::GetColorU32(ImVec4{0.258f, 0.258f, 0.258f, 1.0f});

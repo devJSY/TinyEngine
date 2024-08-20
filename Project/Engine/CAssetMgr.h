@@ -38,7 +38,7 @@ public:
     void tick();
 
     float GetModelLoadingProgress() { return m_CompletedThread / (float)m_listLoadThread.size(); }
-    bool IsModelLoading() const { return m_listLoadThread.size() != m_CompletedThread; }
+    bool IsAssetLoading() const { return m_listLoadThread.size() != m_CompletedThread; }
     void ThreadRelease();
 
 private:

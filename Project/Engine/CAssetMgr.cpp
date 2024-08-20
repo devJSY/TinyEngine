@@ -57,7 +57,7 @@ void CAssetMgr::initSound()
 void CAssetMgr::tick()
 {
     // 모델 로딩이 종료된 후 쓰레드 해제
-    if (!IsModelLoading())
+    if (!IsAssetLoading())
     {
         ThreadRelease();
     }
