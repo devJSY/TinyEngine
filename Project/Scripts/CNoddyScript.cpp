@@ -211,6 +211,10 @@ void CNoddyScript::EnterState()
     break;
     case NODDY_STATE::Eaten: {
         Animator()->Play(ANIMPREFIX("Damage"));
+
+        Ptr<CMaterial> pMtrl = MeshRender()->GetMaterial(0);
+        pMtrl->SetTexParam(TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\Noddy\\ChNoddy.01.png",
+                                                                       L"fbx\\Characters\\Monster\\Noddy\\ChNoddy.01.png"));
     }
     break;
     }

@@ -70,6 +70,8 @@ void CAssetMgr::AsyncReloadContent()
 
 void CAssetMgr::AsyncReloadContentFunc()
 {
+    std::scoped_lock lock(m_Mutex); // 상호배제
+
     LoadAssetsFromFile(CPathMgr::GetContentPath());
 
     // 원본 파일이 삭제된 에셋은 메모리에서 제거
@@ -89,6 +91,8 @@ void CAssetMgr::AsyncReloadContentFunc()
             }
         }
     }
+
+    ++m_CompletedThread;
 }
 
 void CAssetMgr::ThreadRelease()
