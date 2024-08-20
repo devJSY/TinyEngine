@@ -14,7 +14,7 @@ CElfilisFSM::CElfilisFSM()
     , m_bAttackRepeat(false)
     , m_GroundAttackCount(0)
     , m_NearDist(5.f)
-    , m_AirPosition(Vec3(0.f, 600.f, 1000.f))
+    , m_AirPosition(Vec3(0.f, 600.f, 700.f))
     , m_bGroundCollision(false)
     , m_BigElfilis(nullptr)
     , m_BigElfilisFSM(nullptr)
@@ -423,7 +423,7 @@ void CElfilisFSM::tick()
     {
         Rigidbody()->SetVelocity(Vec3());
         Rigidbody()->SetAngularVelocity(Vec3());
-        ChangeState(L"AIR_ATKL_DRAWLASER");
+        ChangeState(L"GROUND_ATK_SWORDWAVE_RL");
     }
 }
 

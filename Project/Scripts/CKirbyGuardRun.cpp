@@ -1,9 +1,11 @@
 #include "pch.h"
 #include "CKirbyGuardRun.h"
+#include "CMomentaryObjScript.h"
 
 CKirbyGuardRun::CKirbyGuardRun()
     : m_PlayTime(1.f)
 {
+    m_SwordDodgeAttackPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordDodgeAttack.pref");
 }
 
 CKirbyGuardRun::~CKirbyGuardRun()
@@ -25,7 +27,7 @@ void CKirbyGuardRun::tick()
     case AbilityCopyType::CUTTER:
         break;
     case AbilityCopyType::SWORD:{
-        if (m_PlayTime < 0.f || PLAYERCTRL->GetInput().Length() == 0.f)
+        if (m_PlayTime < 0.f || PLAYERCTRL->GetInput().Length() == 0.f || KEY_RELEASED(KEY_GUARD) || KEY_NONE(KEY_GUARD))
         {
             ChangeState(L"GUARD");
         }
@@ -36,14 +38,27 @@ void CKirbyGuardRun::tick()
 
 void CKirbyGuardRun::Enter()
 {
-    CKirbyFSM* KirbyFSM = CPlayerMgr::GetPlayerFSM();
-    KirbyFSM->GetCurAbility()->GuardRunEnter();
+    PLAYERFSM->GetCurAbility()->GuardRunEnter();
+    PLAYERFSM->OffCollider();
+    PLAYERFSM->SetInvincible(true);
 
     m_PlayTime = 1.f;
 }
 
 void CKirbyGuardRun::Exit()
 {
-    CKirbyFSM* KirbyFSM = CPlayerMgr::GetPlayerFSM();
-    KirbyFSM->GetCurAbility()->GuardRunExit();
+    PLAYERFSM->GetCurAbility()->GuardRunExit();
+    PLAYERFSM->OnCollider();
+    PLAYERFSM->SetInvincible(false);
+
+    if (m_SwordDodgeAttackPref != nullptr)
+    {
+        CGameObject* Attack = m_SwordDodgeAttackPref->Instantiate();
+        Attack->Transform()->SetWorldPos(PLAYER->Transform()->GetWorldPos());
+
+        CMomentaryObjScript* Script = Attack->GetScript<CMomentaryObjScript>();
+        Script->SetPlayTime(0.2f);
+
+        GamePlayStatic::SpawnGameObject(Attack, LAYER_PLAYERATK_TRIGGER);
+    }
 }

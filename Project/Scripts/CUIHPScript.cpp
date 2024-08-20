@@ -153,6 +153,9 @@ void CUIHPScript::Scaling()
 
 void CUIHPScript::SwitchKirbyName()
 {
+    if (nullptr == m_pFSMScript)
+        return;
+
     AbilityCopyType eAbility = m_pFSMScript->GetCurAbilityIdx();
     ObjectCopyType eObject = m_pFSMScript->GetCurObjectIdx();
 
@@ -215,29 +218,43 @@ void CUIHPScript::SwitchKirbyName()
         for (int i = 3; i < 8; i++)
         {
             if (i == AbilityIdx)
-                GetOwner()->GetChildObject(L"UI_PlayerName" + std::to_wstring(i))->SetActive(true);
+            {
+                if (GetOwner()->GetChildObject(L"UI_PlayerName" + std::to_wstring(i)))
+                    GetOwner()->GetChildObject(L"UI_PlayerName" + std::to_wstring(i))->SetActive(true);
+            }
             else
-                GetOwner()->GetChildObject(L"UI_PlayerName" + std::to_wstring(i))->SetActive(false);
+            {
+                if (GetOwner()->GetChildObject(L"UI_PlayerName" + std::to_wstring(i)))
+                    GetOwner()->GetChildObject(L"UI_PlayerName" + std::to_wstring(i))->SetActive(false);
+            }
         }
 
         for (int i = 0; i < 3; i++)
         {
-            GetOwner()->GetChildObject(L"UI_PlayerName" + std::to_wstring(i))->SetActive(false);
+            if (GetOwner()->GetChildObject(L"UI_PlayerName" + std::to_wstring(i)))
+                GetOwner()->GetChildObject(L"UI_PlayerName" + std::to_wstring(i))->SetActive(false);
         }
     }
     else
     {
         for (int i = 3; i < 8; i++)
         {
-            GetOwner()->GetChildObject(L"UI_PlayerName" + std::to_wstring(i))->SetActive(false);
+            if (GetOwner()->GetChildObject(L"UI_PlayerName" + std::to_wstring(i)))
+                GetOwner()->GetChildObject(L"UI_PlayerName" + std::to_wstring(i))->SetActive(false);
         }
 
         for (int i = 0; i < 3; i++)
         {
             if (i == ObjectIdx)
-                GetOwner()->GetChildObject(L"UI_PlayerName" + std::to_wstring(i))->SetActive(true);
+            {
+                if (GetOwner()->GetChildObject(L"UI_PlayerName" + std::to_wstring(i)))
+                    GetOwner()->GetChildObject(L"UI_PlayerName" + std::to_wstring(i))->SetActive(true);
+            }
             else
-                GetOwner()->GetChildObject(L"UI_PlayerName" + std::to_wstring(i))->SetActive(false);
+            {
+                if (GetOwner()->GetChildObject(L"UI_PlayerName" + std::to_wstring(i)))
+                    GetOwner()->GetChildObject(L"UI_PlayerName" + std::to_wstring(i))->SetActive(false);
+            }
         }
     }
 }

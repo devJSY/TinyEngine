@@ -55,7 +55,6 @@ void CElfilisUnit::tick()
 
     if (KEY_TAP(KEY::SPACE))
     {
-        // ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundAtkFar, L"GROUND_ATK_RAYARROW");
         m_CurInfo.HP = 100.f;
     }
 }

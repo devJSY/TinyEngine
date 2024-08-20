@@ -21,6 +21,7 @@ void CKirbyChangeAbilityWait::tick()
 void CKirbyChangeAbilityWait::Enter()
 {
     PLAYERFSM->SetGlobalState(true);
+    PLAYERFSM->SetInvincible(true);
 
     // 애니메이션 재생
     PLAYER->Animator()->Play(ANIMPREFIX("EvolutionCopyWait"), true, false, 1.5f);
@@ -29,4 +30,5 @@ void CKirbyChangeAbilityWait::Enter()
 
 void CKirbyChangeAbilityWait::Exit()
 {
+    PLAYERFSM->SetInvincible(false);
 }

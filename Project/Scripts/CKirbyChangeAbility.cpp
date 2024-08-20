@@ -61,6 +61,7 @@ void CKirbyChangeAbility::Enter()
     m_bFrameEnter = false;
 
     PLAYERFSM->SetGlobalState(true);
+    PLAYERFSM->SetInvincible(true);
 
     // 소켓 꽂아주기
     PLAYERFSM->GetNextAbility()->ChangeAbilityEnter();
@@ -159,4 +160,5 @@ void CKirbyChangeAbility::Exit()
 
     // Emissive를 다시 받도록 수정
     PLAYERFSM->SetSkrr(false);
+    PLAYERFSM->SetInvincible(false);
 }
