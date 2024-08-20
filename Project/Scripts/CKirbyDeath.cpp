@@ -3,6 +3,8 @@
 
 #include "CCameraController.h"
 
+#include "CLevelFlowMgr.h"
+
 CKirbyDeath::CKirbyDeath()
 {
 }
@@ -13,7 +15,7 @@ CKirbyDeath::~CKirbyDeath()
 
 void CKirbyDeath::tick()
 {
-    m_Acc += DT;
+    m_Acc += DT_ENGINE;
 
     if (m_Acc != 0.f)
     {
@@ -25,11 +27,6 @@ void CKirbyDeath::tick()
     {
         // 애니메이션 재생
         PLAYER->Animator()->SetPlay(true);
-
-        // @TODO 커비와 UI를 제외한 배경은 검은색으로 Fade Out (마스킹된 커비의 위치를 제외한 모든곳을 점점 검은색으로 바꿔주는 Post Process 쉐이더 적용하면 될 듯)
-
-
-        
     }
 
     if (m_Acc > m_FaceDuraion)
@@ -44,20 +41,41 @@ void CKirbyDeath::tick()
         CamCtrl->SetZoomMinSpeed(50.f);
         CamCtrl->SetZoomMaxSpeed(100.f);
         CamCtrl->SetZoomThreshold(500.f);
+
+        // 커비와 UI를 제외한 배경은 검은색으로 Fade Out 
+        if (m_bFadeEffect == false)
+        {
+            CLevelFlowMgr* FlowMgr = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager")->GetScript<CLevelFlowMgr>();
+            FlowMgr->OnDimensionFade(1.f, 0.f, 2.5f);
+
+            m_bFadeEffect = true;
+        }
+
     }
 
     if (m_Acc > m_DeathDuraion)
     {
-        // @TODO 애니메이션이 끝나면 UI가 화면을 가림
-
-        // @TODO UI애니메이션 모두 끝났다면 커비가 되살아 남
-
+        // Level Restart
+        CLevelFlowMgr* FlowMgr = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager")->GetScript<CLevelFlowMgr>();
+        FlowMgr->LevelRestart();
     }
 }
 
 void CKirbyDeath::Enter()
 {
-    // @TODO m_Duration 만큼 시간을 멈추기
+    m_Acc = 0.f;
+    m_Duration = 1.f;
+    m_FaceDuraion = 3.f;
+    m_DeathDuraion = 6.f;
+    m_bFadeEffect = false;
+
+    // FlowMgr보다 틱이 늦기 때문에 첫틱에는 효과를 받을수 없어 기존에 저장되어있던 coef값을 기준으로 Fade가 된다. 그래서 coef를 미리 1로 초기화
+    CLevelFlowMgr* FlowMgr = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager")->GetScript<CLevelFlowMgr>();
+    FlowMgr->OnDimensionFade(1.f);
+    FlowMgr->OffDimensionFade();
+
+    // m_Duration 만큼 시간을 멈추기
+    CTimeMgr::GetInst()->SetTimeScale(0.f, m_Duration);
 
     // 커비 표정
     CPlayerMgr::SetPlayerFace(FaceType::Frown);
@@ -66,7 +84,7 @@ void CKirbyDeath::Enter()
     CCameraController* CamCtrl = CAMERACTRL;
 
     // Camera Shake
-    CamCtrl->Shake(0.5f, 30.f, 30.f);
+    CamCtrl->Shake(0.5f, 50.f, 50.f);
      
     Vec3 CamPos = CamCtrl->GetOwner()->Transform()->GetWorldPos();
 
@@ -85,10 +103,6 @@ void CKirbyDeath::Enter()
     PLAYERCTRL->LockMove();
     PLAYERCTRL->LockJump();
 
-    m_Acc = 0.f;
-    m_Duration = 1.f;
-    m_FaceDuraion = 3.f;
-    m_DeathDuraion = 6.f;
 }
 
 void CKirbyDeath::Exit()

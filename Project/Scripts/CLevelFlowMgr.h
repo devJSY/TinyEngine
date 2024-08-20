@@ -16,10 +16,16 @@ private:
     float m_FadeEffectAcc;
     float m_FadeEffectDuration;
 
-
     bool m_bRadialBlurEffect;
     float m_RadialBlurAcc;
     float m_RadialBlurDuration;
+
+    bool m_bDimensionalFade;
+    float m_StartDimensionalCoef;
+    float m_EndDimensionalCoef;
+    float m_CurDimensionalCoef;
+    float m_DimensionalAcc;
+    float m_DimensionalDuration;
 
     wstring m_CurLevelPath;
     string m_NextLevelPath;
@@ -63,7 +69,8 @@ public:
     void SetLoadingUIColor(Vec3 _Color);
 
 public:
-    void OnDimensionFade();
+    void OnDimensionFade(float _Coef);
+    void OnDimensionFade(float _StartCoef, float _EndCoef, float _Duration);
     void OffDimensionFade();
     void OnRadialBlurEffect(float _Duration, float _Radius = 1.f, float _BlurPower = 1.1f);
     void OffRadialBlurEffect();

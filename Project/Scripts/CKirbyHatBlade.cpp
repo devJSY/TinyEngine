@@ -29,7 +29,7 @@ void CKirbyHatBlade::tick()
     // 공격을 할수 없는 상태일 경우
     if (!m_bCanAttack)
     {
-        m_Acc += DT;
+        m_Acc += DT_ENGINE;
 
         // 쿨타임이 지났을 경우
         if (m_Acc > m_AttackCoolTime)
@@ -47,7 +47,7 @@ void CKirbyHatBlade::tick()
     // 공격이 가능한 상태일 경우 Blade의 크기를 키워준다.
     if (m_bCanAttack && (m_VariationAcc <= m_VariationDuration))
     {
-        m_VariationAcc += DT;
+        m_VariationAcc += DT_ENGINE;
 
         Vec3 CurScale = Transform()->GetLocalScale();
 

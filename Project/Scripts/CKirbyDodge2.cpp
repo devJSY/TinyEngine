@@ -41,7 +41,15 @@ void CKirbyDodge2::tick()
 
     if (PLAYER->Animator()->IsFinish())
     {
-        ChangeState(L"IDLE");
+        if (PLAYERCTRL->IsGround())
+        {
+            ChangeState(L"IDLE");
+        }
+        else
+        {
+            ChangeState(L"JUMP_FALL");
+        }
+
     }
 }
 

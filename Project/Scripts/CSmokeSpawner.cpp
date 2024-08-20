@@ -92,8 +92,8 @@ void CSmokeSpawner::tick()
     else
     {
         Spawn();
-        // 다시 Active 될때 까지 Deactive
-        GetOwner()->SetActive(false);
+        // Spawn한뒤 Destroy
+        GamePlayStatic::DestroyGameObject(GetOwner());
     }
 }
 

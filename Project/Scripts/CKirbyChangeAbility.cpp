@@ -121,7 +121,7 @@ void CKirbyChangeAbility::Enter()
 
     if (FLowMgrScript != nullptr)
     {
-        FLowMgrScript->OnDimensionFade();
+        FLowMgrScript->OnDimensionFade(0.3f);
     }
 
 }

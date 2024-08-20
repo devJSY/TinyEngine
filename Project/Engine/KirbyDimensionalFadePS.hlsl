@@ -4,6 +4,7 @@
 
 
 #define FarZ 50000
+#define FadeCoef g_float_0
 
 float4 main(PS_IN _in) : SV_Target
 {
@@ -17,7 +18,7 @@ float4 main(PS_IN _in) : SV_Target
     // 마스킹 되어있지않은 부분은 원본 색상으로 렌더링
     if (1.f - DepthMaskingViewZ < bias)
     {
-        color = color * 0.3f;
+        color = color * FadeCoef;
     }
    
     return float4(color, 1.f);
