@@ -104,12 +104,13 @@ void CKirbyDropOutUIScript::Wait()
 // Radian 6.28319 = 360 Degree Oh my god
 void CKirbyDropOutUIScript::Appear()
 {
-    FadeFunc(true);
-
     if (PLAYERFSM->GetCurState()->GetName() == L"DROP_OBJECT")
     {
         ChangeState(DropOutUIState::Wait);
+        return;
     }
+
+    FadeFunc(true);
 
     float fRatio = PLAYERFSM->GetYPressedTime() / PLAYERFSM->GetDropCopyTime();
     if (PLAYERFSM->GetYPressedTime() <= 0.f)
@@ -129,6 +130,7 @@ void CKirbyDropOutUIScript::Disappear()
     if (PLAYERFSM->GetCurState()->GetName() == L"DROP_OBJECT")
     {
         ChangeState(DropOutUIState::Wait);
+        return;
     }
 
     FadeFunc(false);
