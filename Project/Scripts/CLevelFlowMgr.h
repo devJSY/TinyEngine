@@ -96,6 +96,7 @@ protected:
 public:
     void TurnOnBossHP();
     void TurnOffBossHP();
+    void TurnOnPlayerHP();
     void TurnOffPlayerHP();
 
     void TrunOffStageClearUI();

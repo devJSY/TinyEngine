@@ -29,6 +29,8 @@ private:
     CGameObject* m_pLevelIcon;
     CGameObject* m_pLevelNameBase;
     CGameObject* m_pStartBtn;
+    CGameObject* m_pLevelFont;
+    CGameObject* m_pLevelLine;
 
     CGameObject* m_pUICam;
 
@@ -36,6 +38,8 @@ private:
     string m_StageName[5];
     wstring m_StageIconName[5];
     wstring m_StageNameBaseName[5];
+
+    bool m_bIsMouseEvent;
 
     Vec2 m_vPrevMousePos;
     Vec2 m_vCurMousePos;

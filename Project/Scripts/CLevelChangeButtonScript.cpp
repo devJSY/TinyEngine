@@ -32,6 +32,7 @@ void CLevelChangeButtonScript::Func()
 {
     if (nullptr != m_pManager)
     {
+        CButtonScript::Func();
         m_pManager->GetScript<CLevelFlowMgr>()->LevelEnd();
     }
 }
