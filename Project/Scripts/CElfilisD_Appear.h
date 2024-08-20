@@ -13,7 +13,8 @@ private:
     bool m_bFrmEnter;
 
 public:
-    virtual void tick();
+    virtual void tick() override;
+    virtual void Exit() override;
 
 private:
     void Enter_Step();

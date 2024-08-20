@@ -39,12 +39,14 @@ void CKirbyDropObject::tick()
 void CKirbyDropObject::Enter()
 {
     PLAYERFSM->SetGlobalState(true);
+    PLAYERFSM->SetInvincible(true);
     PLAYERFSM->GetCurObject()->DropObjectEnter();
 }
 
 void CKirbyDropObject::Exit()
 {
     PLAYERFSM->GetCurObject()->DropObjectExit();
+    PLAYERFSM->SetInvincible(false);
 
     PLAYERFSM->ClearYPressedTime();
     PLAYERFSM->ChangeObjectCopy(ObjectCopyType::NONE);

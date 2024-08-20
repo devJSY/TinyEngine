@@ -71,7 +71,7 @@ void CMorphoMoveA_Teleport::Exit_Step()
     {
     case StateStep::Start: {
         MRPFSM->DisableRender();
-        MRPFSM->ClearEmissive();
+        MRPFSM->ResetEmissive();
     }
     break;
     case StateStep::End: {
@@ -94,7 +94,7 @@ void CMorphoMoveA_Teleport::Start()
     Vec3 Color = Vec3(t1);
     Color.x = t2;
 
-    MRPFSM->SetEmissive(Color);
+    MRPFSM->AddEmissive(Color);
 
     if (m_AccTime > MRPFSM->GetEmissiveTime())
     {

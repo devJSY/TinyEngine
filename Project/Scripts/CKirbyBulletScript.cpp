@@ -7,7 +7,7 @@
 
 CKirbyBulletScript::CKirbyBulletScript()
     : CScript(KIRBYBULLETSCRIPT)
-    , m_ScaleFactor(2.f/3.f)
+    , m_ScaleFactor(2.f / 3.f)
     , m_Speed(1.f)
     , m_PlayTime(5.f)
     , m_bHasTickCol(false)
@@ -39,7 +39,7 @@ void CKirbyBulletScript::begin()
 
     // set SclaeFactor
     CKirbyBulletSize* pSizeScript = PLAYERFSM->GetStuffedObj()->GetScript<CKirbyBulletSize>();
-    
+
     if (pSizeScript)
     {
         int Size = pSizeScript->GetSizeType(); // SizeType : 1~3
@@ -183,7 +183,8 @@ void CKirbyBulletScript::OnTriggerEnter(CCollider* _OtherCollider)
 
     if (LayerIdx == LAYER_MONSTER_TRIGGER)
     {
-        if (_OtherCollider->GetOwner()->GetName() == L"AttackArea" || _OtherCollider->GetName() == L"Attack Area")
+        if (_OtherCollider->GetOwner()->GetName() == L"AttackArea" || _OtherCollider->GetName() == L"Attack Area" ||
+            _OtherCollider->GetName() == L"BodyCollider")
         {
             CUnitScript* pMonster = _OtherCollider->GetOwner()->GetParent()->GetScript<CUnitScript>();
             if (!pMonster)

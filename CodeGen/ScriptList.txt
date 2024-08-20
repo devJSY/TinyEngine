@@ -113,3 +113,5 @@ CSmokeSpawner
 CUIBossHPScript
 CEnterUIScript
 CKirbyDropOutUIScript
+CPlayerHitbox
+CKirbyCantEat

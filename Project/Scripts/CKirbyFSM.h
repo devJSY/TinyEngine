@@ -34,6 +34,8 @@ private:
     CGameObject*            m_CurHatBlade;
     CGameObject*            m_CurWeapon;
     CGameObject*            m_StuffedObj;
+
+    CCapsuleCollider*       m_BodyCollider;
     CKirbyVacuumCollider*   m_VacuumCollider;
 
     // 상태 관리를 위한 값들
@@ -129,6 +131,8 @@ public:
     void ClearYPressedTime() { m_YPressedTime = 0.f; }
     void SubCanCount();
     void ResetCanCount() { m_LeftCanCount = 100; }
+    void OffCollider();
+    void OnCollider();
 
     CKirbyAbility* GetCurAbility() const { return m_arrAbility[(UINT)m_CurAbility]; }
     CKirbyAbility* GetNextAbility() const { return m_arrAbility[(UINT)m_NextAbility]; } 

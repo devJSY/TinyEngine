@@ -4,6 +4,7 @@
 class CKirbyGuardRun : public CState
 {
 private:
+    Ptr<CPrefab> m_SwordDodgeAttackPref;
     float m_PlayTime;
 
 public:

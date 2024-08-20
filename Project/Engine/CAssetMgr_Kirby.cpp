@@ -587,8 +587,9 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
         pShader->SetRSType(RS_TYPE::CULL_BACK);
         pShader->SetDSType(DS_TYPE::LESS);
         pShader->SetBSType(BS_TYPE::DEFAULT);
-
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEFERRED);
+
+        pShader->AddScalarParam(SCALAR_PARAM::INT_0, "Invert Normal Y");
 
         pShader->AddTexParam(TEX_0, "Base Texture");
         pShader->AddTexParam(TEX_1, "MRA Texture");

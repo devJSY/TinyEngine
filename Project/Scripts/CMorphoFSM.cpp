@@ -117,6 +117,7 @@ void CMorphoFSM::begin()
     for (int i = 0; i < (int)MeshRender()->GetMtrlCount(); ++i)
     {
         m_listBodyMtrl.push_back(MeshRender()->GetMaterial(i));
+        m_listBodyEmissive.push_back(MeshRender()->GetMaterial(i)->GetEmission());
     }
 
     if (m_WeaponL)
@@ -124,6 +125,7 @@ void CMorphoFSM::begin()
         for (int i = 0; i < (int)m_WeaponL->MeshRender()->GetMtrlCount(); ++i)
         {
             m_listWeaponMtrl.push_back(m_WeaponL->MeshRender()->GetMaterial(i));
+            m_listWeaponEmissive.push_back(m_WeaponL->MeshRender()->GetMaterial(i)->GetEmission());
         }
 
         if (m_WeaponL->BoxCollider())
@@ -137,6 +139,7 @@ void CMorphoFSM::begin()
         for (int i = 0; i < (int)m_WeaponR->MeshRender()->GetMtrlCount(); ++i)
         {
             m_listWeaponMtrl.push_back(m_WeaponR->MeshRender()->GetMaterial(i));
+            m_listWeaponEmissive.push_back(m_WeaponR->MeshRender()->GetMaterial(i)->GetEmission());
         }
 
         if (m_WeaponR->BoxCollider())
@@ -149,6 +152,11 @@ void CMorphoFSM::begin()
 void CMorphoFSM::tick()
 {
     CFSMScript::tick();
+
+    if (KEY_TAP(KEY::ENTER))
+    {
+        ChangeState(L"ATKG_WAIT_LEFTSIDEMOVE");
+    }
 
     // Emissive
     if (m_TeleportAppearTime > 0.f)
@@ -163,12 +171,12 @@ void CMorphoFSM::tick()
             Vec3 Color = Vec3(t1);
             Color.x = t2;
 
-            SetEmissive(Color);
+            AddEmissive(Color);
         }
         else
         {
             m_TeleportAppearTime = 0.f;
-            ClearEmissive();
+            ResetEmissive();
         }
     }
 }
@@ -565,27 +573,31 @@ void CMorphoFSM::OffWeaponRTrigger()
     m_WeaponR->BoxCollider()->SetEnabled(false);
 }
 
-void CMorphoFSM::ClearEmissive()
+void CMorphoFSM::ResetEmissive()
 {
-    for (Ptr<CMaterial> iter : m_listBodyMtrl)
+    for(int i = 0; i < m_listBodyMtrl.size(); ++i)
     {
-        iter->SetEmission(Vec4());
+        m_listBodyMtrl[i]->SetEmission(Vec4(m_listBodyEmissive[i], 0.f));
     }
-    for (Ptr<CMaterial> iter : m_listWeaponMtrl)
+    
+    for (int i = 0; i < m_listWeaponMtrl.size(); ++i)
     {
-        iter->SetEmission(Vec4());
+        m_listWeaponMtrl[i]->SetEmission(Vec4(m_listWeaponEmissive[i], 0.f));
     }
 }
 
-void CMorphoFSM::SetEmissive(Vec3 _Color)
+void CMorphoFSM::AddEmissive(Vec3 _Color)
 {
-    for (Ptr<CMaterial> iter : m_listBodyMtrl)
+    for (int i = 0; i < m_listBodyMtrl.size(); ++i)
     {
-        iter->SetEmission(Vec4(_Color.x, _Color.y, _Color.z, 0.f));
+        Vec4 Color = Vec4(m_listBodyEmissive[i] + _Color, 0.f);
+        m_listBodyMtrl[i]->SetEmission(Color);
     }
-    for (Ptr<CMaterial> iter : m_listWeaponMtrl)
+
+    for (int i = 0; i < m_listWeaponMtrl.size(); ++i)
     {
-        iter->SetEmission(Vec4(_Color.x, _Color.y, _Color.z, 0.f));
+        Vec4 Color = Vec4(m_listWeaponEmissive[i] + _Color, 0.f);
+        m_listWeaponMtrl[i]->SetEmission(Color);
     }
 }
 
