@@ -56,6 +56,12 @@ void CLadderScript::OnTriggerStay(CCollider* _OtherCollider)
     // PLAYER랑 충돌한 경우
     if (_OtherCollider->GetOwner()->GetLayerIdx() == LAYER_PLAYER)
     {
+        // Object Copy 시에는 사다리를 타지 못하도록 한다.
+        if (PLAYERFSM->GetCurObjectIdx() != ObjectCopyType::NONE)
+        {
+            return;
+        }
+
         // 제외 상태
         if (PLAYERFSM->GetCurState()->GetName() == L"DODGE_START" || PLAYERFSM->GetCurState()->GetName() == L"DODGE1" ||
             PLAYERFSM->GetCurState()->GetName() == L"DODGE2" || PLAYERFSM->GetCurState()->GetName() == L"JUMP_START" ||
