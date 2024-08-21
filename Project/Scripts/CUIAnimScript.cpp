@@ -60,7 +60,7 @@ void CUIAnimScript::CommonUIEnter()
 
 void CUIAnimScript::CommonUIExit()
 {
-    SetFinish(true);
+    //SetFinish(true);
 }
 
 UINT CUIAnimScript::SaveToLevelFile(FILE* _File)
