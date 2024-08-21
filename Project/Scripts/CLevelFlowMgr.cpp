@@ -293,6 +293,8 @@ void CLevelFlowMgr::LevelStart()
     }
 
     // Player Spawn
+
+    MainPlayer->SetName(L"Main Player");
     MainPlayer->Transform()->SetWorldPos(StartingPos);
     MainPlayer->Transform()->SetWorldRotation(StartingRot);
 

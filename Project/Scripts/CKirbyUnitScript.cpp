@@ -117,14 +117,14 @@ void CKirbyUnitScript::tick()
         }
         else
         {
+            m_CurInfo.HP -= NewDamage;
+            SetHitDirHorizen();
+            PLAYERFSM->ChangeState(L"DAMAGE");
+
             if (PLAYERFSM->GetCurObjectIdx() == ObjectCopyType::NONE && PLAYERFSM->GetCurAbilityIdx() != AbilityCopyType::NORMAL)
             {
                 DropAbility();
             }
-            
-            m_CurInfo.HP -= NewDamage;
-            SetHitDirHorizen();
-            PLAYERFSM->ChangeState(L"DAMAGE");
 
         }
     }

@@ -45,6 +45,15 @@ void CFlowMgr_LvStart::LevelStart()
     {
         SetFadeEffect(Vec3(255.f, 0.f, 255.f), true, 1.f, 1.25f, true);
     }
+
+    Ptr<CPrefab> KirbyPref =  CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Kirby.pref");
+
+    if (KirbyPref.Get())
+    {
+        KirbyPref->Save(L"prefab\\Main Player.pref");
+    }
+
+
 }
 
 void CFlowMgr_LvStart::LevelEnd()
