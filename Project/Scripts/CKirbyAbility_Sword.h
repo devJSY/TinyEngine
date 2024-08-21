@@ -4,113 +4,113 @@
 class CKirbyAbility_Sword : public CKirbyAbility
 {
 private:
-    Vec3    m_PrevWeaponScale;
-    Vec3    m_BigWeaponScale;
-    float   m_PrevSpeed;
-    float   m_PrevRotSpeed;
-    float   m_PrevGravity;
-    float   m_AccTime;
-    bool    m_bFrmEnter;
+    Vec3 m_PrevWeaponScale;
+    Vec3 m_BigWeaponScale;
+    float m_PrevSpeed;
+    float m_PrevRotSpeed;
+    float m_PrevGravity;
+    float m_AccTime;
+    bool m_bFrmEnter;
 
 public:
     // Idle
-    virtual void IdleEnter();
+    virtual void IdleEnter() override;
 
     // 칼휘두르기 (Lv0)
-    virtual void Attack();
-    virtual void AttackEnter();
-    virtual void AttackExit();
+    virtual void Attack() override;
+    virtual void AttackEnter() override;
+    virtual void AttackExit() override;
 
     // 칼휘두르기 (Lv1)
-    virtual void AttackCombo1();
-    virtual void AttackCombo1Enter();
-    virtual void AttackCombo1Exit();
+    virtual void AttackCombo1() override;
+    virtual void AttackCombo1Enter() override;
+    virtual void AttackCombo1Exit() override;
 
     // 칼휘두르기 (Lv2)
-    virtual void AttackCombo2();
-    virtual void AttackCombo2Enter();
-    virtual void AttackCombo2Exit();
+    virtual void AttackCombo2() override;
+    virtual void AttackCombo2Enter() override;
+    virtual void AttackCombo2Exit() override;
 
     // 스핀공격 (Lv1)
-    virtual void AttackCharge1();
-    virtual void AttackCharge1Enter();
-    virtual void AttackCharge1Exit();
+    virtual void AttackCharge1() override;
+    virtual void AttackCharge1Enter() override;
+    virtual void AttackCharge1Exit() override;
 
-    virtual void AttackCharge1Start();
-    virtual void AttackCharge1StartEnter();
-    virtual void AttackCharge1StartExit();
+    virtual void AttackCharge1Start() override;
+    virtual void AttackCharge1StartEnter() override;
+    virtual void AttackCharge1StartExit() override;
 
-    virtual void AttackCharge1End();
-    virtual void AttackCharge1EndEnter();
-    virtual void AttackCharge1EndExit();
+    virtual void AttackCharge1End() override;
+    virtual void AttackCharge1EndEnter() override;
+    virtual void AttackCharge1EndExit() override;
 
     // 스핀공격 (Lv2)
-    virtual void AttackCharge2();
-    virtual void AttackCharge2Enter();
-    virtual void AttackCharge2Exit();
+    virtual void AttackCharge2() override;
+    virtual void AttackCharge2Enter() override;
+    virtual void AttackCharge2Exit() override;
 
-    virtual void AttackCharge2Start();
-    virtual void AttackCharge2StartEnter();
-    virtual void AttackCharge2StartExit();
+    virtual void AttackCharge2Start() override;
+    virtual void AttackCharge2StartEnter() override;
+    virtual void AttackCharge2StartExit() override;
 
     // 대검찍기 (Lv3)
-    virtual void AttackCharge3();
-    virtual void AttackCharge3Enter();
-    virtual void AttackCharge3Exit();
+    virtual void AttackCharge3() override;
+    virtual void AttackCharge3Enter() override;
+    virtual void AttackCharge3Exit() override;
 
-    virtual void AttackCharge3Start();
-    virtual void AttackCharge3StartEnter();
-    virtual void AttackCharge3StartExit();
+    virtual void AttackCharge3Start() override;
+    virtual void AttackCharge3StartEnter() override;
+    virtual void AttackCharge3StartExit() override;
 
-    virtual void AttackCharge3End();
-    virtual void AttackCharge3EndEnter();
-    virtual void AttackCharge3EndExit();
+    virtual void AttackCharge3End() override;
+    virtual void AttackCharge3EndEnter() override;
+    virtual void AttackCharge3EndExit() override;
 
     // 점프
-    virtual void JumpFallEnter();
+    virtual void JumpFallEnter() override;
 
     // 점프공격
-     virtual void JumpAttack();
-     virtual void JumpAttackEnter();
-     virtual void JumpAttackExit();
+    virtual void JumpAttack() override;
+    virtual void JumpAttackEnter() override;
+    virtual void JumpAttackExit() override;
 
-     virtual void JumpAttackStart();
-     virtual void JumpAttackStartEnter();
-     virtual void JumpAttackStartExit();
+    virtual void JumpAttackStart() override;
+    virtual void JumpAttackStartEnter() override;
+    virtual void JumpAttackStartExit() override;
 
-     // 랜딩
-     virtual void LandingEnter();
-     virtual void LandingExit();
-     
-     // 가드
-     virtual void GuardEnter();
+    // 랜딩
+    virtual void LandingEnter() override;
+    virtual void LandingExit() override;
 
-     virtual void GuardRun();
-     virtual void GuardRunEnter();
-     virtual void GuardRunExit();
+    // 가드
+    virtual void GuardEnter() override;
 
-     // 슬라이드 찌르기
-     virtual void Slide();
-     virtual void SlideEnter();
-     virtual void SlideExit();
+    virtual void GuardRun() override;
+    virtual void GuardRunEnter() override;
+    virtual void GuardRunExit() override;
 
-     virtual void SlideStart();
-     virtual void SlideStartEnter();
-     virtual void SlideStartExit();
+    // 슬라이드 찌르기
+    virtual void Slide() override;
+    virtual void SlideEnter() override;
+    virtual void SlideExit() override;
 
-     virtual void SlideEnd();
-     virtual void SlideEndEnter();
-     virtual void SlideEndExit();
+    virtual void SlideStart() override;
+    virtual void SlideStartEnter() override;
+    virtual void SlideStartExit() override;
 
-     // 슬라이드 콤보공격
-     virtual void SlideAttack();
-     virtual void SlideAttackEnter();
-     virtual void SlideAttackExit();
+    virtual void SlideEnd() override;
+    virtual void SlideEndEnter() override;
+    virtual void SlideEndExit() override;
+
+    // 슬라이드 콤보공격
+    virtual void SlideAttack() override;
+    virtual void SlideAttackEnter() override;
+    virtual void SlideAttackExit() override;
 
     // 변신 돌입
-    virtual void ChangeAbility();
-    virtual void ChangeAbilityEnter();
-    virtual void ChangeAbilityExit();
+    virtual void ChangeAbility() override;
+    virtual void ChangeAbilityEnter() override;
+    virtual void ChangeAbilityExit() override;
 
 public:
     CLONE(CKirbyAbility_Sword)

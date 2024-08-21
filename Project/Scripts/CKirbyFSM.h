@@ -24,11 +24,14 @@ class CKirbyFSM : public CFSMScript
 {
 private:
     CKirbyAbility*          m_arrAbility[(UINT)AbilityCopyType::END];
+    AbilityCopyType         m_PrevAbility;
     AbilityCopyType         m_CurAbility;
     AbilityCopyType         m_NextAbility;
 
     CKirbyObject*           m_arrObject[(UINT)ObjectCopyType::END];
+    ObjectCopyType          m_PrevObject;
     ObjectCopyType          m_CurObject;
+    ObjectCopyType          m_NextObject;
     
     CGameObject*            m_CurHat;
     CGameObject*            m_CurHatBlade;
@@ -136,10 +139,16 @@ public:
     void OnCollider();
 
     CKirbyAbility* GetCurAbility() const { return m_arrAbility[(UINT)m_CurAbility]; }
+    CKirbyAbility* GetPrevAbility() const { return m_arrAbility[(UINT)m_PrevAbility]; } 
     CKirbyAbility* GetNextAbility() const { return m_arrAbility[(UINT)m_NextAbility]; } 
     CKirbyObject* GetCurObject() const { return m_arrObject[(UINT)m_CurObject]; }
+    CKirbyObject* GetPrevObject() const { return m_arrObject[(UINT)m_PrevObject]; }
+    CKirbyObject* GetNextObject() const { return m_arrObject[(UINT)m_NextObject]; }
     AbilityCopyType GetCurAbilityIdx() const { return m_CurAbility; }
+    AbilityCopyType GetPrevAbilityIdx() const { return m_PrevAbility; }
     ObjectCopyType GetCurObjectIdx() const { return m_CurObject; }
+    ObjectCopyType GetPrevObjectIdx() const { return m_PrevObject; }
+    ObjectCopyType GetNextObjectIdx() const { return m_NextObject; }
     CKirbyVacuumCollider* GetVacuumCol() const { return m_VacuumCollider; }
     LastJumpType GetLastJump() const { return m_LastJump; }
     CGameObject* GetCurHat() { return m_CurHat; }

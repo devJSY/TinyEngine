@@ -14,10 +14,10 @@ CKirbyChangeObject::~CKirbyChangeObject()
 
 void CKirbyChangeObject::tick()
 {
-    PLAYERFSM->GetCurObject()->ChangeObject();
+    PLAYERFSM->GetNextObject()->ChangeObject();
 
     // State Change
-    switch (PLAYERFSM->GetCurObjectIdx())
+    switch (PLAYERFSM->GetNextObjectIdx())
     {
     case ObjectCopyType::CONE:
     case ObjectCopyType::VENDING_MACHINE:
@@ -35,7 +35,7 @@ void CKirbyChangeObject::tick()
 void CKirbyChangeObject::Enter()
 {
     PLAYERFSM->SetGlobalState(true);
-    PLAYERFSM->GetCurObject()->ChangeObjectEnter();
+    PLAYERFSM->GetNextObject()->ChangeObjectEnter();
 
     // 변신 중일 땐 커비가 이미시브 효과를 받지않도록 한다.
     PLAYERFSM->SetSkrr(true);
@@ -86,7 +86,7 @@ void CKirbyChangeObject::Enter()
 
 void CKirbyChangeObject::Exit()
 {
-    PLAYERFSM->GetCurObject()->ChangeObjectExit();
+    PLAYERFSM->GetNextObject()->ChangeObjectExit();
 
     // CameraSetting
     CCameraController* CamCtrl = CAMERACTRL;

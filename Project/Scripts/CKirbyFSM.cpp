@@ -19,8 +19,11 @@ CKirbyFSM::CKirbyFSM()
     , m_arrAbility{}
     , m_arrObject{}
     , m_CurAbility(AbilityCopyType::NORMAL)
+    , m_PrevAbility(AbilityCopyType::NONE)
     , m_NextAbility(AbilityCopyType::NONE)
     , m_CurObject(ObjectCopyType::NONE)
+    , m_PrevObject(ObjectCopyType::NONE)
+    , m_NextObject(ObjectCopyType::NONE)
     , m_CurHat(nullptr)
     , m_CurHatBlade(nullptr)
     , m_CurWeapon(nullptr)
@@ -80,8 +83,11 @@ CKirbyFSM::CKirbyFSM(const CKirbyFSM& _Origin)
     , m_arrAbility{}
     , m_arrObject{}
     , m_CurAbility(_Origin.m_CurAbility)
+    , m_PrevAbility(AbilityCopyType::NONE)
     , m_NextAbility(_Origin.m_NextAbility)
     , m_CurObject(_Origin.m_CurObject)
+    , m_PrevObject(ObjectCopyType::NONE)
+    , m_NextObject(ObjectCopyType::NONE)
     , m_CurHat(nullptr)
     , m_CurHatBlade(nullptr)
     , m_CurWeapon(nullptr)
@@ -265,7 +271,7 @@ CKirbyFSM::~CKirbyFSM()
 #include "CKirbyLongDiveLanding.h"
 #include "CKirbyLongDiveBound.h"
 
-//Ladder
+// Ladder
 #include "CKirbyLadderDown.h"
 #include "CKirbyLadderUp.h"
 #include "CKirbyLadderWait.h"
@@ -347,7 +353,7 @@ void CKirbyFSM::begin()
     {
         GamePlayStatic::AddChildObject(GetOwner(), m_CurHatBlade, L"Hat");
     }
-    
+
     if (m_CurWeapon)
     {
         GamePlayStatic::AddChildObject(GetOwner(), m_CurWeapon, L"Weapon");
@@ -482,7 +488,7 @@ void CKirbyFSM::begin()
     AddState(L"LADDER_WAIT", new CKirbyLadderWait);
     AddState(L"LADDER_WAITSTART", new CKirbyLadderWaitStart);
     AddState(L"LADDER_EXIT", new CKirbyLadderExit);
-    
+
     AddState(L"FALL", new CKirbyFall);
 
     ChangeState(L"IDLE");
@@ -613,6 +619,7 @@ void CKirbyFSM::ChangeAbilityCopy(AbilityCopyType _Type)
     // Drop Ability 요청
     if (_Type == AbilityCopyType::NORMAL)
     {
+        m_PrevAbility = m_CurAbility;
         m_CurAbility = _Type;
     }
 
@@ -641,6 +648,7 @@ void CKirbyFSM::ChangeObjectCopy(ObjectCopyType _Type)
     // Drop Object 요청
     if (_Type == ObjectCopyType::NONE)
     {
+        m_PrevObject = m_CurObject;
         m_CurObject = _Type;
     }
 
@@ -653,12 +661,9 @@ void CKirbyFSM::ChangeObjectCopy(ObjectCopyType _Type)
             return;
         }
 
-        // m_NextObject = _Type;
-        // ChangeState(L"CHANGE_OBJECT");
-        // m_CurObject = _Type;
-
-        m_CurObject = _Type;
+        m_NextObject = _Type;
         ChangeState(L"CHANGE_OBJECT");
+        m_CurObject = _Type;
     }
 }
 
@@ -750,7 +755,6 @@ void CKirbyFSM::SetEmissive(bool _Emissive, float _Duration)
                 pMaterial->SetEmission(Vec4(m_EmissiveCoef, m_EmissiveCoef, m_EmissiveCoef, 1.f));
             }
         }
-
 
         m_EmissiveAcc = 0.f;
         m_EmissiveDuration = 0.f;
@@ -851,7 +855,6 @@ UINT CKirbyFSM::SaveToLevelFile(FILE* _File)
 
     MemoryByte += sizeof(UINT);
     MemoryByte += sizeof(UINT);
-
 
     return MemoryByte;
 }
