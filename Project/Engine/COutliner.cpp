@@ -2510,13 +2510,21 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
                 else
                     Module.arrModuleCheck[(UINT)PARTICLE_MODULE::SCALE] = 1;
             }
-            ImGui::SameLine();
+
             if (ImGui::RadioButton("Add Veclocity", Module.arrModuleCheck[(UINT)PARTICLE_MODULE::ADD_VELOCITY] == 1))
             {
                 if (Module.arrModuleCheck[(UINT)PARTICLE_MODULE::ADD_VELOCITY] > 0)
                     Module.arrModuleCheck[(UINT)PARTICLE_MODULE::ADD_VELOCITY] = 0;
                 else
                     Module.arrModuleCheck[(UINT)PARTICLE_MODULE::ADD_VELOCITY] = 1;
+            }
+            ImGui::SameLine();
+            if (ImGui::RadioButton("Spiral Velocity", Module.arrModuleCheck[(UINT)PARTICLE_MODULE::SPIRAL_VELOCITY] == 1))
+            {
+                if (Module.arrModuleCheck[(UINT)PARTICLE_MODULE::SPIRAL_VELOCITY] > 0)
+                    Module.arrModuleCheck[(UINT)PARTICLE_MODULE::SPIRAL_VELOCITY] = 0;
+                else
+                    Module.arrModuleCheck[(UINT)PARTICLE_MODULE::SPIRAL_VELOCITY] = 1;
             }
 
             if (ImGui::RadioButton("Noise Force", Module.arrModuleCheck[(UINT)PARTICLE_MODULE::NOISE_FORCE] == 1))
@@ -2636,6 +2644,32 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
                         ImGui::DragFloat(ImGui_LabelPrefix("Fixed Angle").c_str(), &Module.FixedAngle, 1.f, 0.f, 180.f);
                         ImGui::DragFloat3(ImGui_LabelPrefix("Fixed Direction").c_str(), &Module.vFixedDirection.x, 0.1f, -1.f, 1.f);
                     }
+
+                    ImGui::TreePop();
+                }
+            }
+
+            if (Module.arrModuleCheck[(UINT)PARTICLE_MODULE::SPIRAL_VELOCITY])
+            {
+                if (ImGui::TreeNodeEx("Spiral Velocity Module##Particlesystem", m_DefaultTreeNodeFlag, "Spiral Velocity Module"))
+                {
+                    ImGui::Text("Spiral Velocity Axis");
+                    ImGui::SameLine();
+                    ImGui::RadioButton("X", (int*)&Module.SpiralVelocityAxis, 0);
+                    ImGui::SameLine();
+                    ImGui::RadioButton("Y", (int*)&Module.SpiralVelocityAxis, 1);
+                    ImGui::SameLine();
+                    ImGui::RadioButton("Z", (int*)&Module.SpiralVelocityAxis, 2);
+                    ImGui::SameLine();
+                    ImGui::RadioButton("-X", (int*)&Module.SpiralVelocityAxis, 3);
+                    ImGui::SameLine();
+                    ImGui::RadioButton("-Y", (int*)&Module.SpiralVelocityAxis, 4);
+                    ImGui::SameLine();
+                    ImGui::RadioButton("-Z", (int*)&Module.SpiralVelocityAxis, 5);
+
+                    ImGui::DragFloat(ImGui_LabelPrefix("Spiral Velocity Axis Speed").c_str(), &Module.SpiralVelocityAxisSpeed, 0.1f);
+                    ImGui::DragFloat(ImGui_LabelPrefix("Spiral Velocity Radius Speed").c_str(), &Module.SpiralVelocityRadiusSpeed, 0.1f);
+                    ImGui::DragFloat(ImGui_LabelPrefix("Spiral Velocity Rotate Speed").c_str(), &Module.SpiralVelocityRotateSpeed, 0.1f);
 
                     ImGui::TreePop();
                 }

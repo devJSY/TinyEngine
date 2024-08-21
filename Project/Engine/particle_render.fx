@@ -13,9 +13,10 @@ StructuredBuffer<tParticleModule> g_ParticleModule : register(t21);
 #define DRAG_MODULE 1
 #define SCALE_MODULE 2
 #define ADD_VELOCITY_MODULE 3
-#define NOISE_FORCE_MODULE 4
-#define CALCULATE_FORCE_MODULE 5
-#define RENDER_MODULE 6
+#define SPIRAL_VELOCITY_MODULE 4
+#define NOISE_FORCE_MODULE 5
+#define CALCULATE_FORCE_MODULE 6
+#define RENDER_MODULE 7
 
 struct VS_Input
 {
