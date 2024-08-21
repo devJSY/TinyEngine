@@ -62,14 +62,14 @@ void CElfilisA_Teleport::Enter_Step()
         {
             if (m_AfterPos.x < MapSizeRadius * -1.f + MapFloorOffset.x)
             {
-                m_AfterPos.x = MapSizeRadius * -1.f;
+                m_AfterPos.x = MapSizeRadius * -1.f + MapFloorOffset.x;
             }
         }
         else
         {
             if (m_AfterPos.x > MapSizeRadius + MapFloorOffset.x)
             {
-                m_AfterPos.x = MapSizeRadius;
+                m_AfterPos.x = MapSizeRadius + MapFloorOffset.x;
             }
         }
 
@@ -77,14 +77,14 @@ void CElfilisA_Teleport::Enter_Step()
         {
             if (m_AfterPos.z < MapSizeRadius * -1.f + MapFloorOffset.z)
             {
-                m_AfterPos.z = MapSizeRadius * -1.f;
+                m_AfterPos.z = MapSizeRadius * -1.f + MapFloorOffset.x;
             }
         }
         else
         {
             if (m_AfterPos.z > MapSizeRadius + MapFloorOffset.z)
             {
-                m_AfterPos.z = MapSizeRadius;
+                m_AfterPos.z = MapSizeRadius + MapFloorOffset.x;
             }
         }
 
