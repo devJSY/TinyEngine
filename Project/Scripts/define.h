@@ -106,4 +106,5 @@ enum class BossLevelFlow
     Fight,
     DeathStart,
     Death,
+    Clear,
 };

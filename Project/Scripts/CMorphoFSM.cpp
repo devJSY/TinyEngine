@@ -155,7 +155,7 @@ void CMorphoFSM::tick()
 
     if (KEY_TAP(KEY::ENTER))
     {
-        ChangeState(L"ATKG_WAIT_LEFTSIDEMOVE");
+        ChangeStateGroup(MorphoStateGroup::DEMO, L"DEMO_DEATH");
     }
 
     // Emissive

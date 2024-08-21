@@ -104,9 +104,6 @@ void CFlowMgr_BossElfilis::ChangeFlowFight()
 
 void CFlowMgr_BossElfilis::ChangeFlowResist()
 {
-    if (m_FlowState != BossLevelFlow::Fight)
-        return;
-
     Vec3 NewPos{0.f, 0.f, 450.f};
     PLAYER->Transform()->SetWorldPos(NewPos);
     PLAYER->Transform()->Slerp(-NewPos.Normalize(), 1.f);
