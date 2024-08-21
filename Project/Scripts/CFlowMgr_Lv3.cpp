@@ -22,7 +22,7 @@ void CFlowMgr_Lv3::begin()
     SetStartLevel(false);
 
     LevelStart();
-    SetToneMappingParam(true, true, 0.6f, 0.23f);
+    SetToneMappingParam(true, false, 0.4f, 0.f);
 }
 
 void CFlowMgr_Lv3::tick()

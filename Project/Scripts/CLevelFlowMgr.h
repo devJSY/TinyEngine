@@ -61,6 +61,8 @@ public:
     virtual void TriggerEvent(UINT _Idx){};
 
 public:
+    bool IsChangedLevel() const { return m_bIsChangedLevel; }
+
     void SetNextLevel(const string _string) { m_NextLevelPath = _string; }
 
     void SetStartLevel(bool _bFlag) { m_bStartLevel = _bFlag; }
@@ -87,13 +89,14 @@ public:
     virtual void LevelEnd();
     virtual void LevelRestart();
 
-private:
+protected:
     virtual void LevelExit();
     virtual void MtrlParamUpdate();
 
 public:
     void TurnOnBossHP();
     void TurnOffBossHP();
+    void TurnOnPlayerHP();
     void TurnOffPlayerHP();
 
     void TrunOffStageClearUI();

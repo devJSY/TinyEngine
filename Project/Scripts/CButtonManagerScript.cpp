@@ -53,7 +53,7 @@ void CButtonManagerScript::tick()
     if (m_iPrevBtn != m_iCurBtn)
     {
         m_vBtn[m_iPrevBtn]->ChangeState(ButtonState::NORMAL);
-        m_vBtn[m_iCurBtn]->ChangeState(ButtonState::SELECTED);
+        m_vBtn[m_iCurBtn]->ChangeState(ButtonState::SELECTED); 
 
         m_iPrevBtn = m_iCurBtn;
     }

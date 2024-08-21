@@ -3,6 +3,7 @@
 
 #include "CLevelMgr.h"
 #include "CPhysics2DMgr.h"
+#include "CTaskMgr.h"
 #include <Scripts\\CScriptMgr.h>
 
 #include "CComponent.h"
@@ -22,6 +23,7 @@ CGameObject::CGameObject()
     , m_iLayerIdx(-1) // 어떠한 레벨(레이어) 소속되어있지 않다.
     , m_bActive(true)
     , m_bDead(false)
+    , m_bBeginCalled(false)
     , m_BoneSocket(nullptr)
 {
 }
@@ -34,6 +36,7 @@ CGameObject::CGameObject(const CGameObject& origin)
     , m_iLayerIdx(origin.m_iLayerIdx)
     , m_bActive(origin.m_bActive)
     , m_bDead(false)
+    , m_bBeginCalled(false)
     , m_BoneSocket(origin.m_BoneSocket)
 {
     for (UINT i = 0; i < (UINT)COMPONENT_TYPE::END; ++i)
@@ -80,9 +83,13 @@ CGameObject::~CGameObject()
 
 void CGameObject::begin()
 {
-    // 비활성화 상태이거나 레이어에 소속되어있는 오브젝트가 아닌경우
-    if (!m_bActive || -1 == m_iLayerIdx)
+    // 비활성화 상태 
+    // 레이어에 소속되어있는 오브젝트가 아닌 경우
+    // begin 을 이미 수행 한 경우
+    if (!m_bActive || -1 == m_iLayerIdx || m_bBeginCalled)
         return;
+
+    m_bBeginCalled = true;
 
     for (UINT i = 0; i < UINT(COMPONENT_TYPE::END); ++i)
     {
@@ -339,27 +346,11 @@ void CGameObject::SetActive(bool _bActive)
     if (m_bActive == _bActive)
         return;
 
-    m_bActive = _bActive;
-
-    // 본인 포함 자식오브젝트들 Physics 리셋
-    list<CGameObject*> queue;
-    queue.push_back(this);
-
-    while (!queue.empty())
-    {
-        CGameObject* pObject = queue.front();
-        queue.pop_front();
-
-        const vector<CGameObject*>& vecChildObj = pObject->GetChildObject();
-
-        for (size_t i = 0; i < vecChildObj.size(); ++i)
-        {
-            queue.push_back(vecChildObj[i]);
-        }
-
-        GamePlayStatic::Physics2D_Event(pObject, Physics2D_EVENT_TYPE::RESPAWN);
-        GamePlayStatic::Physics_Event(pObject, Physics_EVENT_TYPE::RESPAWN);
-    }
+    tTask task = {};
+    task.Type = TASK_TYPE::ACTIVE_OBJECT;
+    task.Param_1 = (DWORD_PTR)this;
+    task.Param_2 = (DWORD_PTR)_bActive;
+    CTaskMgr::GetInst()->AddTask(task);
 }
 
 bool CGameObject::IsAncestor(CGameObject* _Other)

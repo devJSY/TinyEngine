@@ -155,3 +155,20 @@ void CLevelMgr::ChangeLevelAsyncFunc(const wstring& _strPath, LEVEL_STATE _Start
     std::scoped_lock lock(m_Mutex); // 상호배제
     GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(_strPath), _StartState);
 }
+
+void CLevelMgr::ThreadRelease()
+{
+    if (m_listLoadThread.empty())
+        return;
+
+    // 각 Thread가 종료될때 까지 대기
+    for (std::thread& Thread : m_listLoadThread)
+    {
+        if (Thread.joinable())
+        {
+            Thread.join();
+        }
+    }
+
+    m_listLoadThread.clear();
+}

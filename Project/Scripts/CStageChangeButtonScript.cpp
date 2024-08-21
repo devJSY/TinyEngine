@@ -25,20 +25,19 @@ void CStageChangeButtonScript::begin()
 {
     CButtonScript::begin();
     m_pManager = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager");
+    ChangeState(ButtonState::SELECTED);
 }
 
 void CStageChangeButtonScript::tick()
 {
     CButtonScript::tick();
-
-    // 정해진 stage가 없을 경우에는 해당 버튼 상태를 Disabled로 만든다.
-    "" == m_vStageName[m_iCurStage] ? ChangeState(ButtonState::DISABLED) : ChangeState(ButtonState::SELECTED);
 }
 
 void CStageChangeButtonScript::Func()
 {
     if (nullptr != m_pManager)
     {
+        CButtonScript::Func();
         m_pManager->GetScript<CLevelFlowMgr>()->LevelEnd();
     }
 }

@@ -95,6 +95,8 @@ void CFlowMgr_BossMorpho::SetFight()
     if (m_FlowState != BossLevelFlow::WaitBoss)
         return;
 
+    // 연출 끝나고 PlayerHP TrunOn
+    TurnOnPlayerHP();
     TurnOnBossHP();
     PLAYERCTRL->UnlockInput();
     m_FlowState = BossLevelFlow::Fight;
@@ -123,6 +125,9 @@ void CFlowMgr_BossMorpho::SpawnMorpho()
     {
         m_Barricade->SetActive(true);
     }
+
+    // 연출 시 PlayerHP TrunOff
+    TurnOffPlayerHP();
 }
 
 UINT CFlowMgr_BossMorpho::SaveToLevelFile(FILE* _File)

@@ -3,9 +3,19 @@
 
 class CUnitScript;
 class CKirbyFSM;
+
+enum class UnitHPState
+{
+    Damaged,
+    Healing,
+    Wait,
+    End,
+};
+
 class CUIHPScript : public CScript
 {
 private:
+    UnitHPState m_eState;
     CGameObject* m_pNameObj;
     string m_TargetName;
 
@@ -19,6 +29,7 @@ private:
 
     float m_fMaxHP;
     float m_fCurHP;
+    float m_fCurPrevHP;
     float m_fPrevHP;
 
     bool m_bIsCombo;
@@ -30,10 +41,21 @@ private:
     float m_fDescSpeed;
 
     bool m_bIsEnter;
+    bool m_bHpHealing;
 
 public:
     virtual void begin() override;
     virtual void tick() override;
+
+private:
+    void ChangeState(UnitHPState _eState);
+    void EnterState();
+    void ExitState();
+
+private:
+    void Damaged();
+    void Healing();
+    void Wait();
 
 public:
     void SetPlayer();
@@ -41,6 +63,7 @@ public:
 
 private:
     void CaculateShading();
+    void CaculateHealingShading();
     void Scaling();
     void SwitchKirbyName();
 

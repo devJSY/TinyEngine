@@ -99,15 +99,24 @@ CButtonScript::~CButtonScript()
 {
 }
 
+void CButtonScript::Func()
+{
+    ChangeState(ButtonState::DISABLED);
+}
+
 void CButtonScript::begin()
 {
     m_vNormalScale = GetOwner()->GetComponent<CTransform>()->GetWorldScale();
+    ChangeState(ButtonState::NORMAL);
 }
 
 void CButtonScript::tick()
 {
     CTransform* _pTr = GetOwner()->GetComponent<CTransform>();
     assert(_pTr);
+
+    if (m_eCurState == ButtonState::DISABLED)
+        return;
 
     if (IsMouseHovered() && m_IsIsolated)
     {
@@ -246,7 +255,7 @@ void CButtonScript::ButtonUpdate()
             for (size_t i = 0; i < pChildObj.size(); i++)
             {
                 if (nullptr != pChildObj[i])
-                    pChildObj[i]->SetActive(false);
+                    pChildObj[i]->SetActive(true);
             }
         }
         else if (ButtonState::SELECTED == m_eCurState)
@@ -263,10 +272,23 @@ void CButtonScript::ButtonUpdate()
         {
             //
         }
+        else if (ButtonState::DISABLED == m_eCurState)
+        {
+            vector<CGameObject*> pChildObj = GetOwner()->GetChildObject();
+
+            for (size_t i = 0; i < pChildObj.size(); i++)
+            {
+                if (nullptr != pChildObj[i])
+                    pChildObj[i]->SetActive(true);
+            }
+        }
         CTransform* _pTr = GetOwner()->GetComponent<CTransform>();
 
         if (_pTr)
-            _pTr->SetWorldScale(m_vNormalScale * m_vButtonScale[(UINT)m_eCurState]);
+        {
+            Vec3 vTransScale = m_vNormalScale * m_vButtonScale[(UINT)m_eCurState];
+            _pTr->SetWorldScale(Vec3(vTransScale.x, vTransScale.y, m_vNormalScale.z));
+        }
     }
     break;
     case ButtonTransition::END:

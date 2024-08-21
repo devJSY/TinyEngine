@@ -3,6 +3,8 @@
 
 #include "CUIFlowScript.h"
 
+bool CFlowMgr_LvStart::m_bEnter = true;
+
 CFlowMgr_LvStart::CFlowMgr_LvStart()
     : CLevelFlowMgr(FLOWMGR_LVSTART)
 {
@@ -23,9 +25,9 @@ void CFlowMgr_LvStart::begin()
 
     SetUILevel(true);
 
-    LevelStart();
-
     SetStartLevel(false);
+    
+    LevelStart();
 
     OffDimensionFade();
     SetToneMappingParam(false);
@@ -34,7 +36,15 @@ void CFlowMgr_LvStart::begin()
 void CFlowMgr_LvStart::LevelStart()
 {
     ResetFadeEffectTimer();
-    ActiveFadeEffect(false);
+    if (m_bEnter)
+    {
+        m_bEnter = false;
+        ActiveFadeEffect(false);
+    }
+    else
+    {
+        SetFadeEffect(Vec3(255.f, 0.f, 255.f), true, 1.f, 1.25f, true);
+    }
 }
 
 void CFlowMgr_LvStart::LevelEnd()

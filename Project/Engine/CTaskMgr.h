@@ -65,6 +65,9 @@ enum class TASK_TYPE
     // Param1 : Mesh Data,
     SET_MODEL,
 
+    // Param1 : Object, Param2 : bool Active
+    ACTIVE_OBJECT,
+
     // Param1 : Level Address
     CHANGE_LEVEL,
 };
@@ -110,7 +113,11 @@ private:
     void PHYSICS_EVNET(const tTask& _Task);
     void APPEND_ANIMATION(const tTask& _Task);
     void SET_MODEL(const tTask& _Task);
+    void ACTIVE_OBJECT(const tTask& _Task);
 
     // 제일 마지막에 실행 되어야하는 이벤트
     void CHANGE_LEVEL(const tTask& _Task);
+
+private:
+    void BeginCall(CGameObject* _pObject);
 };

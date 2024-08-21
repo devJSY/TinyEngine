@@ -153,7 +153,7 @@ void CUIBossHPScript::EnterState()
 
 void CUIBossHPScript::Enter()
 {
-    m_fEnterHP += DT * 20.f;
+    m_fEnterHP += DT * 700.f;
 
     float _fScalingRatio = m_fEnterHP / m_fMaxHP;
 

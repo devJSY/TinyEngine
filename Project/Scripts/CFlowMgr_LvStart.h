@@ -5,6 +5,8 @@
 class CFlowMgr_LvStart : public CLevelFlowMgr
 {
 private:
+    static bool m_bEnter;
+
 public:
     virtual void begin() override;
     

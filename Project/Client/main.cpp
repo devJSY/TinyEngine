@@ -68,11 +68,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
     // CCreatePBRLevel::CreatePBRLevel();
 
 #ifdef DISTRIBUTE // Engine\\global.h
-    // GamePlayStatic::ChangeLevelAsync(L"Default Level.tLevel", LEVEL_STATE::PLAY);
-    GamePlayStatic::ChangeLevelAsync(L"Tutorial Level.tLevel", LEVEL_STATE::PLAY);
-    // GamePlayStatic::ChangeLevelAsync(L"Level1-1-1.tLevel.tLevel", LEVEL_STATE::PLAY);
+    GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(L"Start Level.tLevel"), LEVEL_STATE::PLAY);
 #else
-    GamePlayStatic::ChangeLevelAsync(L"Default Level.tLevel", LEVEL_STATE::STOP);
+    GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(L"Default Level.tLevel"), LEVEL_STATE::STOP);
 #endif // DISTRIBUTE
 
     while (true)

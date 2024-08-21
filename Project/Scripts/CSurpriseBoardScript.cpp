@@ -104,7 +104,8 @@ void CSurpriseBoardScript::EnterState(SurpriseBoardState _state)
     case SurpriseBoardState::Break:
         break;
     case SurpriseBoardState::PopOut: {
-        true == m_bIsRight ? Animator()->Play(ANIMPREFIX("PopOutR"), false) : Animator()->Play(ANIMPREFIX("PopOutL"), false);
+        true == m_bIsRight ? Animator()->Play(ANIMPREFIX("PopOutR"), false, false, 1.5f)
+                           : Animator()->Play(ANIMPREFIX("PopOutL"), false, false, 1.5f);
     }
     break;
     case SurpriseBoardState::PrePopOut: {
