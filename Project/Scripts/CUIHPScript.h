@@ -44,8 +44,8 @@ private:
     bool m_bIsHealedScaling;
 
     int m_iEnterTickCount;
+
 public:
-    virtual void begin() override;
     virtual void tick() override;
 
 public:

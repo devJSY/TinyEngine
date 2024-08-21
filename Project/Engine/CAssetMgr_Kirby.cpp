@@ -503,7 +503,7 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
         pShader->SetDSType(DS_TYPE::NO_TEST);
         pShader->SetBSType(BS_TYPE::DEFAULT);
 
-        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_OPAQUE);
 
         pShader->AddTexParam(TEX_0, "Texture");
         pShader->AddScalarParam(FLOAT_0, "ALPHATHRESHHOLD");

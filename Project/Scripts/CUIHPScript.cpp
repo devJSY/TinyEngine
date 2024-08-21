@@ -75,11 +75,6 @@ CUIHPScript::~CUIHPScript()
 {
 }
 
-void CUIHPScript::begin()
-{
-    // m_fMaxHP = m_fCurHP = m_fPrevH = TargetObject의 MaxHP!
-}
-
 void CUIHPScript::SetPlayer()
 {
     if (PLAYER)
@@ -115,12 +110,24 @@ void CUIHPScript::tick()
         {
             m_vDamageTask.push_back({m_fCurHP, fCheckHP});
             m_bDamaged = true;
+
+            if (m_bHpHealed)
+            {
+                m_bHpHealed = false;
+                m_fCurPrevHP = m_fPrevHP = m_fCurHP;
+            }
         }
         // 체력을 회복함
-        else
+        else if (fCheckHP - m_fCurHP < 0.f)
         {
             m_vHealTask.push_back({m_fCurHP, fCheckHP});
             m_bHpHealed = true;
+
+            if (m_bDamaged)
+            {
+                m_bDamaged = false;
+                m_fCurPrevHP = m_fPrevHP = m_fCurHP;
+            }
         }
     }
 
@@ -322,13 +329,16 @@ void CUIHPScript::HPDamageTask()
 {
     for (size_t i = 0; i < m_vDamageTask.size(); ++i)
     {
-        // m_fPrevHP는 시작 할 때 현재 HP를 복사한다.
+        // 계속해서 데미지가 들어오는지 확인
+        // 둘의 차이가 있다는 것은 곧 데미지가 들어왔다는 의미
+        // Scaling() 시간 초기화
         if (m_fCurPrevHP > m_vDamageTask[i].fCurHP)
         {
             m_fAccTime = 0.f;
             m_fCurPrevHP = m_vDamageTask[i].fCurHP;
         }
 
+        // 가장 큰 전 HP 구하기
         if (m_fPrevHP < m_vDamageTask[i].fPrevHP)
         {
             m_fPrevHP = m_vDamageTask[i].fPrevHP;
@@ -351,7 +361,9 @@ void CUIHPScript::HPHealTask()
 {
     for (size_t i = 0; i < m_vHealTask.size(); ++i)
     {
-        // m_fPrevHP는 시작 할 때 현재 HP를 복사한다.
+        // 계속해서 흡혈이 들어오는지 확인
+        // 둘의 차이가 있다는 것은 곧 흡혈 했다는 의미
+        // Scaling() 시간 초기화
         if (m_fCurPrevHP < m_vHealTask[i].fCurHP)
         {
             m_fAccTime = 0.f;

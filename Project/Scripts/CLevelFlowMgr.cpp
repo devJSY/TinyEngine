@@ -446,7 +446,6 @@ void CLevelFlowMgr::TurnOnBossHP()
         if (nullptr != pScript)
         {
             pScript->GetOwner()->SetActive(true);
-            pScript->ChangeState(HPState::Enter);
         }
     }
 }

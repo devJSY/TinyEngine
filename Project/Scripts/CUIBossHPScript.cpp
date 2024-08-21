@@ -182,12 +182,24 @@ void CUIBossHPScript::HPTick()
         {
             m_vDamageTask.push_back({m_fCurHP, fCheckHP});
             m_bDamaged = true;
+
+            if (m_bHpHealed)
+            {
+                m_bHpHealed = false;
+                m_fCurPrevHP = m_fPrevHP = m_fCurHP;
+            }
         }
         // 체력을 회복함
-        else
+        else if (fCheckHP - m_fCurHP < 0.f)
         {
             m_vHealTask.push_back({m_fCurHP, fCheckHP});
             m_bHpHealed = true;
+
+            if (m_bDamaged)
+            {
+                m_bDamaged = false;
+                m_fCurPrevHP = m_fPrevHP = m_fCurHP;
+            }
         }
     }
 
