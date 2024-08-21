@@ -4,18 +4,17 @@
 class CUnitScript;
 class CKirbyFSM;
 
-enum class UnitHPState
+struct DamageTask
 {
-    Damaged,
-    Healing,
-    Wait,
-    End,
+    float fCurHP;
+    float fPrevHP;
 };
 
 class CUIHPScript : public CScript
 {
 private:
-    UnitHPState m_eState;
+    vector<DamageTask> m_vDamageTask;
+    vector<DamageTask> m_vHealTask;
     CGameObject* m_pNameObj;
     string m_TargetName;
 
@@ -33,30 +32,21 @@ private:
     float m_fCurPrevHP;
     float m_fPrevHP;
 
-    bool m_bIsCombo;
     bool m_bIsScaling;
+    bool m_bDamaged;
 
     Vec4 m_vDecreaseColor;
     Vec4 m_vBasicColor;
 
     float m_fDescSpeed;
 
-    bool m_bIsEnter;
-    bool m_bHpHealing;
+    bool m_bHpHealed;
+    bool m_bIsHealedScaling;
 
+    int m_iEnterTickCount;
 public:
     virtual void begin() override;
     virtual void tick() override;
-
-private:
-    void ChangeState(UnitHPState _eState);
-    void EnterState();
-    void ExitState();
-
-private:
-    void Damaged();
-    void Healing();
-    void Wait();
 
 public:
     void SetPlayer();
@@ -66,12 +56,15 @@ public:
 
 private:
     void CaculateShading();
-    void CaculateHealingShading();
+    void CaculateHealShading();
+
+    void HealScaling();
     void Scaling();
+    
     void SwitchKirbyName();
 
-private:
-    bool IsCombo();
+    void HPDamageTask();
+    void HPHealTask();
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

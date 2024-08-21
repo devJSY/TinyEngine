@@ -12,7 +12,7 @@ float4 main(PS_IN _in) : SV_Target
     {
         output = g_tex_0.Sample(g_LinearWrapSampler, _in.vUV0);
         
-        output *= output.a;
+        //output *= output.a;
         
         if (output.a <= ALPHADISCARD)
             discard;
