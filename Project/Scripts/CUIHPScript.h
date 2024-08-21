@@ -26,6 +26,7 @@ private:
 
     float m_fAccTime;
     float m_fComboTime;
+    float m_fHealingTime;
 
     float m_fMaxHP;
     float m_fCurHP;
@@ -60,6 +61,8 @@ private:
 public:
     void SetPlayer();
     void SetInitInfo();
+
+    void SetHealingTime(float _fValue) { m_fHealingTime = _fValue; }
 
 private:
     void CaculateShading();

@@ -9,9 +9,11 @@
 
 CUIHPScript::CUIHPScript()
     : CScript(UIHPSCRIPT)
+    , m_eState(UnitHPState::Wait)
     , m_TargetName{}
     , m_pRenderer(nullptr)
     , m_pUnitScript(nullptr)
+    , m_pNameObj(nullptr)
     , m_fAccTime(0.f)
     , m_fComboTime(2.f)
     , m_bIsCombo(false)
@@ -22,6 +24,8 @@ CUIHPScript::CUIHPScript()
     , m_fMaxHP(0.f)
     , m_fCurHP(0.f)
     , m_fPrevHP(0.f)
+    , m_fHealingTime(1.f)
+    , m_fCurPrevHP(0.f)
     , m_pFSMScript(nullptr)
     , m_bIsEnter(true)
 {
@@ -37,6 +41,7 @@ CUIHPScript::CUIHPScript(const CUIHPScript& Origin)
     , m_TargetName{}
     , m_pRenderer(nullptr)
     , m_pUnitScript(nullptr)
+    , m_pNameObj(nullptr)
     , m_fAccTime(0.f)
     , m_fComboTime(Origin.m_fComboTime)
     , m_bIsCombo(false)
@@ -47,6 +52,8 @@ CUIHPScript::CUIHPScript(const CUIHPScript& Origin)
     , m_fMaxHP(0.f)
     , m_fCurHP(0.f)
     , m_fPrevHP(0.f)
+    , m_fHealingTime(1.f)
+    , m_fCurPrevHP(0.f)
     , m_pFSMScript(nullptr)
     , m_bIsEnter(true)
 {
@@ -90,7 +97,7 @@ void CUIHPScript::tick()
     }
     break;
     case UnitHPState::Healing: {
-        //Healing();
+        Healing();
     }
     break;
     case UnitHPState::Wait: {
@@ -135,6 +142,25 @@ void CUIHPScript::EnterState()
 
 void CUIHPScript::ExitState()
 {
+    switch (m_eState)
+    {
+    case UnitHPState::Damaged: {
+        m_fAccTime = 0.f;
+    }
+    break;
+    case UnitHPState::Healing: {
+        m_fAccTime = 0.f;
+    }
+    break;
+    case UnitHPState::Wait: {
+        m_fAccTime = 0.f;
+    }
+    break;
+    case UnitHPState::End:
+        break;
+    default:
+        break;
+    }
 }
 
 void CUIHPScript::Damaged()
@@ -142,6 +168,7 @@ void CUIHPScript::Damaged()
     if (!m_pUnitScript)
         return;
 
+    float fPrevCurhp = m_fCurHP;
     m_fCurHP = m_pUnitScript->GetCurInfo().HP;
 
     if (m_bIsCombo)
@@ -159,36 +186,46 @@ void CUIHPScript::Damaged()
     if (m_bIsScaling)
         Scaling();
 
-   /* float fPrevCurhp = m_fCurHP;
-    float m_fCurHP = m_pUnitScript->GetCurInfo().HP;
     if (fPrevCurhp < m_fCurHP)
     {
+        m_fCurPrevHP = fPrevCurhp;
         ChangeState(UnitHPState::Healing);
-    }*/
+    }
 }
 
 void CUIHPScript::Healing()
 {
+    m_fAccTime += DT;
     Scaling();
 
-    CaculateHealingShading();
+    if (m_fAccTime >= m_fHealingTime)
+        CaculateHealingShading();
 
     float fCheckHP = m_fCurHP;
     m_fCurHP = m_pUnitScript->GetCurInfo().HP;
-
     if (m_fCurHP < fCheckHP)
     {
         ChangeState(UnitHPState::Damaged);
     }
 }
 
+// 현재 체력 보존
 void CUIHPScript::Wait()
 {
     if (nullptr == m_pUnitScript)
         return;
 
+    // 현재 체력 계산 후 쉐이딩
+    {
+        m_pRenderer = GetOwner()->GetComponent<CMeshRender>();
+        m_pRenderer->GetMaterial(0)->SetScalarParam(FLOAT_0, m_fCurHP / m_fMaxHP);
+        m_pRenderer->GetMaterial(0)->SetScalarParam(FLOAT_1, m_fPrevHP / m_fMaxHP);
+        m_pRenderer->GetMaterial(0)->SetScalarParam(VEC4_0, m_vBasicColor);
+        m_pRenderer->GetMaterial(0)->SetScalarParam(VEC4_1, m_vDecreaseColor);
+    }
+
     float fPrevCurhp = m_fCurHP;
-    float m_fCurHP = m_pUnitScript->GetCurInfo().HP;
+    m_fCurHP = m_pUnitScript->GetCurInfo().HP;
     if (fPrevCurhp < m_fCurHP)
     {
         ChangeState(UnitHPState::Healing);

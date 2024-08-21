@@ -76,15 +76,26 @@ void CPushOutColliderScript::Stop()
     Transform()->SetWorldPos(m_vBase);
 }
 
-void CPushOutColliderScript::OnTriggerEnter(CCollider* _OtherCollider)
+void CPushOutColliderScript::OnTriggerStay(CCollider* _OtherCollider)
 {
     CGameObject* pObj = _OtherCollider->GetOwner();
     if (L"Body Collider" == pObj->GetName())
     {
-        m_pPlayer= PLAYER;
+        float fOffset = 1.f;
+        Vec3 vWolrdPos = Transform()->GetWorldPos();
+        Vec3 vWorldScale = Transform()->GetWorldScale();
+
+        Vec3 vPlayerPos = pObj->GetParent()->Transform()->GetWorldPos();
+
+        Vec2 LT = Vec2(vWolrdPos.x - vWorldScale.x, vWolrdPos.z - vWorldScale.z);
+        Vec2 RB = Vec2(vWolrdPos.x + vWorldScale.x, vWolrdPos.z + vWorldScale.z);
+
+        if ((LT.x + fOffset <= vPlayerPos.x && vPlayerPos.x <= RB.x - fOffset) && (LT.y + fOffset <= vPlayerPos.z && vPlayerPos.z <= RB.y - fOffset))
+        {
+            m_pPlayer = PLAYER;
+        }
     }
 }
-
 
 void CPushOutColliderScript::OnTriggerExit(CCollider* _OtherCollider)
 {
