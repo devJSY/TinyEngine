@@ -41,6 +41,7 @@ class CElfilisFSM : public CFSMScript
 private:
     // FSM
     map<ElfilisStateGroup, vector<wstring>[2]> m_StateGroup; // ( StateGroup, {{PublicStates}, {PrivateStates}} )
+    map<wstring, UINT> m_StateSelectionCount[(int)ElfilisStateGroup::END];
     ElfilisStateGroup m_CurStateGroup;
     ElfilisPatternType m_Pattern;
     UINT m_Phase;

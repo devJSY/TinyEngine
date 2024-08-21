@@ -324,11 +324,34 @@ void CMorphoFSM::ChangeStateGroup_Random(MorphoStateGroup _Group)
     if (m_CurStateGroup == _Group || m_StateGroup.find(_Group) == m_StateGroup.cend())
         return;
 
-    int Random = GetRandomInt(0, (int)m_StateGroup[_Group][0].size() - 1);
-    wstring RandState = m_StateGroup[_Group][0][Random];
+    // get min counted state
+    int MinCount = UINT_MAX;
+    vector<wstring> MinCountedStates;
+
+    for (pair<wstring, UINT> iter : m_StateSelectionCount[(int)_Group])
+    {
+        if (iter.second > MinCount)
+        {
+            continue;
+        }
+        else if (iter.second == MinCount)
+        {
+            MinCountedStates.push_back(iter.first);
+        }
+        else
+        {
+            MinCount = iter.second;
+            MinCountedStates.clear();
+            MinCountedStates.push_back(iter.first);
+        }
+    }
+
+    int Random = GetRandomInt(0, (int)MinCountedStates.size() - 1);
+    wstring RandState = MinCountedStates[Random];
 
     m_CurStateGroup = _Group;
     ChangeState(RandState);
+    m_StateSelectionCount[(int)_Group][RandState]++;
 }
 
 void CMorphoFSM::ChangeStateGroup_Set(MorphoStateGroup _Group, const wstring& _State)
@@ -353,6 +376,7 @@ void CMorphoFSM::AddGroupPublicState(MorphoStateGroup _Group, const wstring& _St
 
     CFSMScript::AddState(_StateName, _State);
     m_StateGroup[_Group][0].push_back(_StateName);
+    m_StateSelectionCount[(int)_Group][_StateName] = 0;
 }
 
 void CMorphoFSM::AddGroupPrivateState(MorphoStateGroup _Group, const wstring& _StateName, CState* _State)

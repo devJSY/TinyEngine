@@ -37,6 +37,7 @@ class CMorphoFSM : public CFSMScript
 private:
     // FSM
     map<MorphoStateGroup, vector<wstring>[2]> m_StateGroup;  // ( StateGroup, States )
+    map<wstring, UINT> m_StateSelectionCount[(int)MorphoStateGroup::END];
     MorphoStateGroup m_CurStateGroup;
     MorphoPatternType m_Pattern;
     UINT m_Phase;
