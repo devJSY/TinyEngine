@@ -77,15 +77,13 @@ private:
     float m_MapSizeRadius;
 
 public:
+    virtual void begin() override;
+    virtual void tick() override;
+    virtual void OnCollisionEnter(CCollider* _OtherCollider) override;
+
     void ChangeStateGroup(ElfilisStateGroup _Group, const wstring& _State = L"");
     void RepeatState(wstring _State = L"");
     ElfilisStateGroup FindNextStateGroup() const;
-
-public:
-    virtual void begin() override;
-    virtual void tick() override;
-
-    virtual void OnCollisionEnter(CCollider* _OtherCollider) override;
 
 public:
     void ClearComboLevel() { m_ComboLevel = 0; }

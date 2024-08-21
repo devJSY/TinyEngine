@@ -150,7 +150,7 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup() const
     case ElfilisStateGroup::GroundMoveAtk: {
         float Rand = GetRandomfloat(1, 100);
 
-        if (Rand <= 90.f)
+        if (Rand <= 90.f || m_BigElfilis->IsActive())
         {
             if (IsNearPlayer())
             {
@@ -181,7 +181,7 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup() const
             {
                 float Rand = GetRandomfloat(1, 100);
 
-                if (Rand <= 80.f)
+                if (Rand <= 80.f || m_BigElfilis->IsActive())
                 {
                     return ElfilisStateGroup::GroundMove;
                 }
@@ -201,19 +201,22 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup() const
         {
             float Rand = GetRandomfloat(1, 100);
 
-            if (Rand <= 50.f)
+            if (Rand <= 80.f || m_BigElfilis->IsActive())
             {
-                // 같은 Group State가 retrun되는 경우, 반복의 의미 (함수 호출한 쪽에서 직접 값 확인 후 처리)
-                return m_CurStateGroup;
+                if (Rand <= 50.f)
+                {
+                    // 같은 Group State가 retrun되는 경우, 반복의 의미 (함수 호출한 쪽에서 직접 값 확인 후 처리)
+                    return m_CurStateGroup;
+                }
+                else
+                {
+                    return ElfilisStateGroup::GroundMove;
+                }
+                // else if (Rand <= 80.f)
+                //{
+                //     return ElfilisStateGroup::GroundMoveAtk;
+                // }
             }
-            else if (Rand <= 80.f)
-            {
-                return ElfilisStateGroup::GroundMove;
-            }
-            // else if (Rand <= 80.f)
-            //{
-            //     return ElfilisStateGroup::GroundMoveAtk;
-            // }
             else
             {
                 return ElfilisStateGroup::GroundToAir;
@@ -414,7 +417,7 @@ void CElfilisFSM::begin()
         m_Hitbox = Hitbox->BoxCollider();
         m_Hitbox->GetOwner()->SetActive(false);
     }
-    
+
     // get mtrl
     for (int i = 0; i < (int)MeshRender()->GetMtrlCount(); ++i)
     {
@@ -445,13 +448,12 @@ void CElfilisFSM::begin()
 void CElfilisFSM::tick()
 {
     CFSMScript::tick();
-    
+
     if (KEY_TAP(KEY::ENTER))
     {
         Rigidbody()->SetVelocity(Vec3());
         Rigidbody()->SetAngularVelocity(Vec3());
-        Transform()->SetWorldPos(Vec3(0.f, 1200.f, 0.f));
-        ChangeStateGroup(ElfilisStateGroup::AirToGround, L"AIR_TOGROUND_TELEPORT");
+        ChangeStateGroup(ElfilisStateGroup::GroundAtkFar, L"GROUND_ATK_RAYARROW");
     }
 }
 
@@ -535,7 +537,7 @@ void CElfilisFSM::ProcPatternStep()
         }
         else if (m_PatternStep == 1) // 진입 : 외부호출
         {
-            ChangeStateGroup_Set(ElfilisStateGroup::GroundToAir, L"GROUND_TOAIR");
+            ChangeStateGroup_Set(ElfilisStateGroup::GroundToAir, L"GROUND_TOAIR_TELEPORT");
         }
         else if (m_PatternStep == 2)
         {

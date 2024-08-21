@@ -58,6 +58,17 @@ void CElfilisG_NormalAtkTeleportR::Enter()
     Enter_Step();
 }
 
+void CElfilisG_NormalAtkTeleportR::Exit()
+{
+    Exit_Step();
+
+    if (m_Step < StateStep::Progress)
+    {
+        ELFFSM->ClearComboLevel();
+        ELFFSM->OffWeaponTrigger();
+    }
+}
+
 void CElfilisG_NormalAtkTeleportR::Enter_Step()
 {
     switch (m_Step)
