@@ -446,12 +446,19 @@ void CElfilisFSM::tick()
 {
     CFSMScript::tick();
     
+    if (KEY_TAP(KEY::NUM0))
+    {
+        Rigidbody()->SetVelocity(Vec3());
+        Rigidbody()->SetAngularVelocity(Vec3());
+        ChangeStateGroup(ElfilisStateGroup::GroundToAir, L"GROUND_TOAIR_TELEPORT");
+        //ChangeStateGroup(ElfilisStateGroup::GroundMove, L"GROUND_MOVE_TELEPORT");
+    }
     if (KEY_TAP(KEY::ENTER))
     {
         Rigidbody()->SetVelocity(Vec3());
         Rigidbody()->SetAngularVelocity(Vec3());
-        //ChangeStateGroup(ElfilisStateGroup::AirSmallAtk1, L"AIR_ATKS_SLASHCOMBO");
-        ChangeStateGroup(ElfilisStateGroup::GroundMove, L"GROUND_MOVE_TELEPORT");
+        ChangeStateGroup(ElfilisStateGroup::AirSmallAtk1, L"AIR_ATKS_SLASHCOMBO");
+        //ChangeStateGroup(ElfilisStateGroup::GroundMove, L"GROUND_MOVE_TELEPORT");
     }
 }
 
