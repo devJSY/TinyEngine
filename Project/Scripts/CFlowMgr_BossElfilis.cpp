@@ -93,6 +93,12 @@ void CFlowMgr_BossElfilis::SetFight()
     m_FlowState = BossLevelFlow::Fight;
 }
 
+void CFlowMgr_BossElfilis::LevelEnd()
+{
+    CLevelFlowMgr::LevelEnd();
+    SetFadeEffectColor(Vec3(252.f, 75.f, 129.f));
+}
+
 void CFlowMgr_BossElfilis::SpawnElfilis()
 {
     BOSS->SetActive(true);
@@ -108,11 +114,11 @@ void CFlowMgr_BossElfilis::SpawnElfilis()
 
 UINT CFlowMgr_BossElfilis::SaveToLevelFile(FILE* _File)
 {
-     UINT MemoryByte = 0;
+    UINT MemoryByte = 0;
 
-     MemoryByte += CLevelFlowMgr::SaveToLevelFile(_File);
+    MemoryByte += CLevelFlowMgr::SaveToLevelFile(_File);
 
-     return MemoryByte;
+    return MemoryByte;
 }
 
 UINT CFlowMgr_BossElfilis::LoadFromLevelFile(FILE* _File)

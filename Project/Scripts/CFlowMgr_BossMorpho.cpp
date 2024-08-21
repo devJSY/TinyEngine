@@ -90,6 +90,12 @@ void CFlowMgr_BossMorpho::LevelStart()
     }
 }
 
+void CFlowMgr_BossMorpho::LevelEnd()
+{
+    CLevelFlowMgr::LevelEnd();
+    SetFadeEffectColor(Vec3(164.f, 44.f, 174.f));
+}
+
 void CFlowMgr_BossMorpho::SetFight()
 {
     if (m_FlowState != BossLevelFlow::WaitBoss)

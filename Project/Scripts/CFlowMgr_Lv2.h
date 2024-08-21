@@ -11,6 +11,7 @@ public:
 
 public:
     virtual void LevelStart() override;
+    virtual void LevelEnd() override;
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

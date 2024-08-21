@@ -14,6 +14,7 @@ public:
     virtual void TriggerEvent(UINT _Idx);
 
     virtual void LevelStart() override;
+    virtual void LevelEnd() override;
 
     void SetFight();
 

@@ -23,6 +23,14 @@ void CFlowMgr_Lv3::begin()
 
     LevelStart();
     SetToneMappingParam(true, false, 0.4f, 0.f);
+
+    SetFadeEffectColor(Vec3(164.f, 44.f, 174.f));
+}
+
+void CFlowMgr_Lv3::LevelEnd()
+{
+    CLevelFlowMgr::LevelEnd();
+    SetFadeEffectColor(Vec3(164.f, 44.f, 174.f));
 }
 
 void CFlowMgr_Lv3::tick()

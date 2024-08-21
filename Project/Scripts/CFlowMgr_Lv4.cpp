@@ -43,6 +43,8 @@ void CFlowMgr_Lv4::begin()
                 m_pLight[i]->SetFallOffEnd(4000.f);
         }
     }
+
+    SetFadeEffectColor(Vec3(164.f, 44.f, 174.f));
 }
 
 void CFlowMgr_Lv4::tick()
@@ -83,6 +85,12 @@ void CFlowMgr_Lv4::TriggerEvent(UINT _Idx)
     default:
         break;
     }
+}
+
+void CFlowMgr_Lv4::LevelEnd()
+{
+    CLevelFlowMgr::LevelEnd();
+    SetFadeEffectColor(Vec3(180.f, 140.f, 200.f));
 }
 
 void CFlowMgr_Lv4::Idle()

@@ -26,11 +26,27 @@ void CFlowMgr_Lv1::begin()
     SetEnterTime(6.8f);
 
     SetToneMappingParam(true, true, 1.2f, 0.8f);
+
+    SetFadeEffectColor(Vec3(115.f, 156.f, 28.f));
 }
 
 void CFlowMgr_Lv1::tick()
 {
     CLevelFlowMgr::tick();
+}
+
+void CFlowMgr_Lv1::LevelEnd()
+{
+    CLevelFlowMgr::LevelEnd();
+
+    if (L"Level1-1-2.tLevel" == GetCurrentLevel())
+    {
+        SetFadeEffectColor(Vec3(255.f, 150.f, 100.f));
+    }
+    else
+    {
+        SetFadeEffectColor(Vec3(115.f, 156.f, 28.f));
+    }
 }
 
 UINT CFlowMgr_Lv1::SaveToLevelFile(FILE* _File)

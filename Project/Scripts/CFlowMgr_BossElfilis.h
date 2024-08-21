@@ -14,6 +14,8 @@ public:
 
     void SetFight();
 
+    virtual void LevelEnd() override;
+
 private:
     void SpawnElfilis();
 

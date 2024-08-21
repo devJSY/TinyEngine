@@ -15,6 +15,7 @@ public:
     virtual void TriggerEvent(UINT _Idx) override;
 
 public:
+    virtual void LevelEnd() override;
     virtual void LevelExit() override;
 
 public:

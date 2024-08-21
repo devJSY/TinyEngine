@@ -339,6 +339,8 @@ void CLevelFlowMgr::LevelEnd()
     // UI (Fade Out)
     if (!m_bUILevel)
         SetFadeEffect(Vec3(255.f, 0.f, 255.f), false, 1.f, 1.25f, false);
+    else if (m_CurLevelPath == L"Level1-1-2.tLevel")
+        SetFadeEffect(Vec3(164.f, 44.f, 174.f), false, 1.f, 1.25f, false);
 
     if (!m_pClearUI)
         TrunOffStageClearUI();

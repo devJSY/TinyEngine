@@ -135,7 +135,7 @@ void CFlowMgr_LvRobby::LevelStart()
 {
     ResetFadeEffectTimer();
 
-    SetFadeEffect(Vec3(255.f, 0.f, 255.f), true, 1.f, 1.25f, true);
+    SetFadeEffect(Vec3(252.f, 75.f, 129.f), true, 1.f, 1.25f, true);
 }
 
 void CFlowMgr_LvRobby::tick()
@@ -179,7 +179,26 @@ void CFlowMgr_LvRobby::LevelEnd()
 {
     CLevelFlowMgr::LevelEnd();
 
-    SetFadeEffect(Vec3(255.f, 0.f, 255.f), false, 1.f, 1.25f, true);
+    if (0 == m_iCurStage)
+    {
+        SetFadeEffect(Vec3(115.f, 156.f, 28.f), false, 1.f, 1.25f, true);
+    }
+    else if (1 == m_iCurStage)
+    {
+        SetFadeEffect(Vec3(115.f, 156.f, 28.f), false, 1.f, 1.25f, true);
+    }
+    else if (2 == m_iCurStage)
+    {
+        SetFadeEffect(Vec3(164.f, 44.f, 174.f), false, 1.f, 1.25f, true);
+    }
+    else if (3 == m_iCurStage)
+    {
+        SetFadeEffect(Vec3(87.f, 0.f, 150.f), false, 1.f, 1.25f, true);
+    }
+    else
+    {
+        SetFadeEffect(Vec3(87.f, 0.f, 150.f), false, 1.f, 1.25f, true);
+    }  
 }
 
 void CFlowMgr_LvRobby::EnterZoomState()

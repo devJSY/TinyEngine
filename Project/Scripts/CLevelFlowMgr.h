@@ -64,6 +64,7 @@ public:
     bool IsChangedLevel() const { return m_bIsChangedLevel; }
 
     void SetNextLevel(const string _string) { m_NextLevelPath = _string; }
+    wstring& GetCurrentLevel() { return m_CurLevelPath; }
 
     void SetStartLevel(bool _bFlag) { m_bStartLevel = _bFlag; }
     void SetUILevel(bool _bFlag) { m_bUILevel = _bFlag; }
