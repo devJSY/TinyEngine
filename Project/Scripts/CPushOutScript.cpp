@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CPushOutScript.h"
 
+#include "CKirbyMoveController.h"
 #include "CPushOutColliderScript.h"
 #include "CPlayerMgr.h"
 

@@ -40,6 +40,8 @@ CElfilisUnit::~CElfilisUnit()
 #include "CElfilisFSM.h"
 void CElfilisUnit::tick()
 {
+    CUnitScript::tick();
+
     // Check Phase
     if (ELFFSM->GetPhase() == 1)
     {

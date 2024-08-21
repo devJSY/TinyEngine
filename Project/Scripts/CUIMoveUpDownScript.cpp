@@ -97,7 +97,7 @@ void CUIMoveUpDownScript::MoveDown()
     if (vPos.y > MoveTransform().y)
     {
         TransformApply(vPos);
-        SetUIAnimState(UIAnimState::PrePared);
+        SetUIAnimState(UIAnimState::End);
         m_eState = DirState::Stop;
     }
 }
