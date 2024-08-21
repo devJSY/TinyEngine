@@ -57,35 +57,12 @@ void CElfilisA_Teleport::Enter_Step()
         float MapSizeRadius = ELFFSM->GetMapSizeRadius();
         Vec3 MapFloorOffset = ELFFSM->GetMapFloorOffset();
         m_AfterPos = PLAYER->Transform()->GetWorldPos() + PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT) * 100.f;
+        Vec3 NewPosMapDist = m_AfterPos - MapFloorOffset;
 
-        if (m_AfterPos.x < 0)
+        if (NewPosMapDist.Length() > MapSizeRadius)
         {
-            if (m_AfterPos.x < MapSizeRadius * -1.f + MapFloorOffset.x)
-            {
-                m_AfterPos.x = MapSizeRadius * -1.f + MapFloorOffset.x;
-            }
-        }
-        else
-        {
-            if (m_AfterPos.x > MapSizeRadius + MapFloorOffset.x)
-            {
-                m_AfterPos.x = MapSizeRadius + MapFloorOffset.x;
-            }
-        }
-
-        if (m_AfterPos.z < 0)
-        {
-            if (m_AfterPos.z < MapSizeRadius * -1.f + MapFloorOffset.z)
-            {
-                m_AfterPos.z = MapSizeRadius * -1.f + MapFloorOffset.x;
-            }
-        }
-        else
-        {
-            if (m_AfterPos.z > MapSizeRadius + MapFloorOffset.z)
-            {
-                m_AfterPos.z = MapSizeRadius + MapFloorOffset.x;
-            }
+            Vec3 Dir = NewPosMapDist.Normalize();
+            m_AfterPos = MapFloorOffset + Dir * MapSizeRadius;
         }
 
         //@Effect 텔레포드 이펙트
