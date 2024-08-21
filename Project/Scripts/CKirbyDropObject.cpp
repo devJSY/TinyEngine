@@ -12,6 +12,7 @@ CKirbyDropObject::~CKirbyDropObject()
 void CKirbyDropObject::tick()
 {
     PLAYERFSM->GetCurObject()->DropObject();
+    PLAYERFSM->ChangeObjectCopy(ObjectCopyType::NONE);
 
     // State Change
     switch (PLAYERFSM->GetCurObjectIdx())
@@ -49,5 +50,4 @@ void CKirbyDropObject::Exit()
     PLAYERFSM->SetInvincible(false);
 
     PLAYERFSM->ClearYPressedTime();
-    PLAYERFSM->ChangeObjectCopy(ObjectCopyType::NONE);
 }

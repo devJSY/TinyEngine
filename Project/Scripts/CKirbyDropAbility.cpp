@@ -90,6 +90,7 @@ void CKirbyDropAbility::Enter()
 {
     PLAYERFSM->SetGlobalState(true);
     PLAYERFSM->SetInvincible(true);
+    PLAYERFSM->ChangeAbilityCopy(AbilityCopyType::NORMAL);
 
     PLAYER->Animator()->Play(ANIMPREFIX("AbilityDump"), false, false, 1.f);
     CPlayerMgr::ClearBodyMtrl();
@@ -115,5 +116,4 @@ void CKirbyDropAbility::Exit()
 
     PLAYERFSM->SetInvincible(false);
     PLAYERFSM->ClearYPressedTime();
-    PLAYERFSM->ChangeAbilityCopy(AbilityCopyType::NORMAL);
 }
