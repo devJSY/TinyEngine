@@ -62,7 +62,7 @@ void CUIGlowMoveScript::MoveGlowRatio()
         GetOwner()->MeshRender()->GetMaterial(0)->SetScalarParam(FLOAT_3, 0.f);
 
         m_fStartOff = 0.f;
-        SetUIAnimState(UIAnimState::PrePared);
+        SetUIAnimState(UIAnimState::End);
     }
 }
 

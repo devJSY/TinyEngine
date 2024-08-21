@@ -17,7 +17,7 @@ void CDetectAreaScript::OnTriggerEnter(CCollider* _OtherCollider)
     if (!GetOwner()->GetParent())
         return;
 
-    CGameObject* pObj = _OtherCollider->GetOwner();
+    CGameObject* pObj = _OtherCollider->GetOwner(); 
     CMonsterUnitScript* OwnerScript = GetOwner()->GetParent()->GetScript<CMonsterUnitScript>();
 
     // CDetectAreaScript를 보유하고있는 오브젝트의 부모가 Monster가 아닌 경우

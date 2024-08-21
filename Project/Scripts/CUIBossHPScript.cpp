@@ -12,7 +12,6 @@ CUIBossHPScript::CUIBossHPScript()
     , m_pRenderer(nullptr)
     , m_fAccTime(0.f)
     , m_fComboTime(2.f)
-    , m_bIsCombo(false)
     , m_bIsScaling(false)
     , m_fDescSpeed(10.f)
     , m_vDecreaseColor{}
@@ -42,7 +41,6 @@ CUIBossHPScript::CUIBossHPScript(const CUIBossHPScript& Origin)
     , m_pRenderer(nullptr)
     , m_fAccTime(0.f)
     , m_fComboTime(Origin.m_fComboTime)
-    , m_bIsCombo(false)
     , m_bIsScaling(false)
     , m_fDescSpeed(Origin.m_fDescSpeed)
     , m_vDecreaseColor(Origin.m_vDecreaseColor)
@@ -80,7 +78,7 @@ void CUIBossHPScript::tick()
     }
     break;
     case HPState::Tick: {
-        Tick();
+        HPTick();
     }
     break;
     case HPState::End: {
@@ -166,27 +164,53 @@ void CUIBossHPScript::Enter()
     m_pRenderer->GetMaterial(0)->SetScalarParam(FLOAT_1, _fScalingRatio);
 }
 
-void CUIBossHPScript::Tick()
+void CUIBossHPScript::HPTick()
 {
     if (!m_pUnitScript)
         return;
 
+    // 데미지가 달면 현재 체력과 달라짐
+    float fCheckHP = m_fCurHP;
     m_fCurHP = m_pUnitScript->GetCurInfo().HP;
 
-    if (m_bIsCombo)
+    // 뭐든 현재 체력의 변화가 생김
+    if (abs(fCheckHP - m_fCurHP) >= 0.1f)
     {
-        CaculateShading();
+        // 체력의 변화가 생겼다는 것을 감지
+        // 데미지를 받음
+        if (fCheckHP - m_fCurHP > 0.f)
+        {
+            m_vDamageTask.push_back({m_fCurHP, fCheckHP});
+            m_bDamaged = true;
+        }
+        // 체력을 회복함
+        else
+        {
+            m_vHealTask.push_back({m_fCurHP, fCheckHP});
+            m_bHpHealed = true;
+        }
     }
 
-    bool _IsCombo = IsCombo();
-
-    if (!_IsCombo && m_bIsCombo)
+    if (m_bDamaged)
     {
-        m_bIsScaling = true;
+        HPDamageTask();
+    }
+
+    if (m_bHpHealed)
+    {
+        HealScaling();
+        HPHealTask();
     }
 
     if (m_bIsScaling)
+    {
         Scaling();
+    }
+
+    if (m_bIsHealedScaling)
+    {
+        CaculateHealShading();
+    }
 }
 
 void CUIBossHPScript::End()
@@ -197,54 +221,95 @@ void CUIBossHPScript::End()
 void CUIBossHPScript::CaculateShading()
 {
     float _fShadingRatio = m_fCurHP / m_fMaxHP;
+    m_pRenderer->GetMaterial(0)->SetScalarParam(VEC4_1, Vec4(185.f, 107.f, 15.f, 255.f) / 255.f);
     m_pRenderer->GetMaterial(0)->SetScalarParam(FLOAT_0, _fShadingRatio);
+}
+
+void CUIBossHPScript::CaculateHealShading()
+{
+    float _fShadingRatio = m_fPrevHP / m_fMaxHP;
+    m_pRenderer->GetMaterial(0)->SetScalarParam(FLOAT_0, _fShadingRatio);
+    m_bIsHealedScaling = false;
+}
+
+void CUIBossHPScript::HealScaling()
+{
+    m_fPrevHP += CTimeMgr::GetInst()->GetDeltaTime() * m_fDescSpeed;
+
+    if (m_fCurHP <= m_fPrevHP)
+    {
+        m_fPrevHP = m_fCurHP;
+        m_bIsHealedScaling = false;
+    }
+    m_pRenderer->GetMaterial(0)->SetScalarParam(VEC4_1, Vec4(0.f, 176.f, 151.f, 255.f) / 255.f);
+    float _fScalingRatio = m_fPrevHP / m_fMaxHP;
+    m_pRenderer->GetMaterial(0)->SetScalarParam(FLOAT_1, _fScalingRatio);
 }
 
 void CUIBossHPScript::Scaling()
 {
-    m_bIsCombo = false;
-
     m_fPrevHP -= CTimeMgr::GetInst()->GetDeltaTime() * m_fDescSpeed;
 
     if (m_fCurHP >= m_fPrevHP)
     {
-        m_fPrevHP = m_fCurHP;
+        m_fCurPrevHP = m_fPrevHP = m_fCurHP;
+        m_bIsScaling = false;
     }
 
     float _fScalingRatio = m_fPrevHP / m_fMaxHP;
     m_pRenderer->GetMaterial(0)->SetScalarParam(FLOAT_1, _fScalingRatio);
-
-    if (m_fCurHP >= m_fPrevHP)
-    {
-        m_bIsScaling = false;
-    }
 }
 
-bool CUIBossHPScript::IsCombo()
+void CUIBossHPScript::HPDamageTask()
 {
-    bool _IsCombo = m_pUnitScript->IsGetDamage();
-
-    if (_IsCombo)
+    for (size_t i = 0; i < m_vDamageTask.size(); ++i)
     {
-        if (!m_bIsCombo)
+        // m_fPrevHP는 시작 할 때 현재 HP를 복사한다.
+        if (m_fCurPrevHP > m_vDamageTask[i].fCurHP)
         {
-            m_bIsCombo = true;
-            m_bIsScaling = false;
+            m_fAccTime = 0.f;
+            m_fCurPrevHP = m_vDamageTask[i].fCurHP;
+        }
+
+        if (m_fPrevHP < m_vDamageTask[i].fPrevHP)
+        {
+            m_fPrevHP = m_vDamageTask[i].fPrevHP;
         }
     }
 
-    _IsCombo == true ? m_fAccTime = 0.f : m_fAccTime += CTimeMgr::GetInst()->GetDeltaTime();
-
+    m_fAccTime += DT;
     if (m_fAccTime >= m_fComboTime)
     {
-        _IsCombo = false;
-    }
-    else
-    {
-        _IsCombo = true;
+        m_fAccTime = 0.f;
+        m_bDamaged = false;
+        m_bIsScaling = true;
+        m_vDamageTask.clear();
     }
 
-    return _IsCombo;
+    CaculateShading();
+}
+
+void CUIBossHPScript::HPHealTask()
+{
+    for (size_t i = 0; i < m_vHealTask.size(); ++i)
+    {
+        // m_fPrevHP는 시작 할 때 현재 HP를 복사한다.
+        if (m_fCurPrevHP < m_vHealTask[i].fCurHP)
+        {
+            m_fAccTime = 0.f;
+            m_fCurPrevHP = m_vHealTask[i].fCurHP;
+        }
+    }
+
+    m_fAccTime += DT;
+    if (m_fAccTime >= m_fComboTime)
+    {
+        m_fAccTime = 0.f;
+        m_bHpHealed = false;
+        m_bIsScaling = false;
+        m_bIsHealedScaling = true;
+        m_vHealTask.clear();
+    }
 }
 
 UINT CUIBossHPScript::SaveToLevelFile(FILE* _File)

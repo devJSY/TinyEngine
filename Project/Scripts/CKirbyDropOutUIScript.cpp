@@ -51,6 +51,7 @@ void CKirbyDropOutUIScript::begin()
     m_pCircleProgressUI = GetOwner()->GetChildObject(L"UI_CircleProgress");
 
     GetOwner()->Transform()->SetWorldPos(Vec3(0.f, 0.f, 0.f));
+    GetOwner()->Transform()->SetLocalScale(Vec3(2.f, 2.f, 1.f));
 
     for (size_t i = 0; i < m_pProgressUI.size(); i++)
     {
@@ -58,6 +59,12 @@ void CKirbyDropOutUIScript::begin()
         {
             m_pProgressUI[i]->MeshRender()->GetMaterial(0)->SetScalarParam(INT_3, 1);
             m_pProgressUI[i]->MeshRender()->GetMaterial(0)->SetScalarParam(FLOAT_1, 0.f);
+
+            if (L"UI_CircleProgressFontTexture" == m_pProgressUI[i]->GetName())
+            {
+                m_pProgressUI[i]->Transform()->SetLocalPos(Vec3(6.f, -5.f, 0.f));
+                m_pProgressUI[i]->Transform()->SetLocalScale(Vec3(58.f, 17.f, 1.f));
+            }
         }
     }
 }

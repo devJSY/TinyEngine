@@ -58,6 +58,7 @@ void CFlowMgr_LvRobby::begin()
 
     OffDimensionFade();
     SetToneMappingParam(false);
+    SetUIDOFEffect();
 
     m_pUICam = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Main Camera");
 
