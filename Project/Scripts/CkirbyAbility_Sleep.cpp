@@ -48,6 +48,8 @@ void CKirbyAbility_Sleep::IdleStartEnter()
 
 void CKirbyAbility_Sleep::IdleStartExit()
 {
+    CPlayerMgr::SetPlayerFace(FaceType::Normal);
+
     PLAYERCTRL->UnlockMove();
     PLAYERCTRL->UnlockDirection();
     PLAYERCTRL->UnlockJump();
@@ -73,7 +75,7 @@ void CKirbyAbility_Sleep::RunExit()
 {
     CPlayerMgr::ClearMouthMtrl();
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));
-    CPlayerMgr::SetPlayerFace(FaceType::Half);
+    CPlayerMgr::SetPlayerFace(FaceType::Normal);
 
     PLAYERCTRL->SetSpeed(m_PrevSpeed);
     PLAYERCTRL->UnlockJump();
@@ -88,6 +90,7 @@ void CKirbyAbility_Sleep::JumpFallEnter()
     PLAYER->Animator()->Play(ANIMPREFIX("SleepFall"));
     CPlayerMgr::ClearMouthMtrl();
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthOpen));
+    CPlayerMgr::SetPlayerFace(FaceType::Half);
 
     m_PrevSpeed = PLAYERCTRL->GetSpeed();
     PLAYERCTRL->SetSpeed(m_Speed);
@@ -97,6 +100,7 @@ void CKirbyAbility_Sleep::JumpFallExit()
 {
     CPlayerMgr::ClearMouthMtrl();
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));
+    CPlayerMgr::SetPlayerFace(FaceType::Half);
 
     PLAYERCTRL->SetSpeed(m_PrevSpeed);
 }
@@ -117,6 +121,7 @@ void CKirbyAbility_Sleep::Attack()
 void CKirbyAbility_Sleep::AttackEnter()
 {
     PLAYER->Animator()->Play(ANIMPREFIX("Sleep"), true);
+    CPlayerMgr::SetPlayerFace(FaceType::Half);
 
     PLAYERCTRL->LockMove();
     PLAYERCTRL->LockDirection();
@@ -125,6 +130,8 @@ void CKirbyAbility_Sleep::AttackEnter()
 
 void CKirbyAbility_Sleep::AttackExit()
 {
+    CPlayerMgr::SetPlayerFace(FaceType::Normal);
+
     PLAYERCTRL->UnlockMove();
     PLAYERCTRL->UnlockDirection();
     PLAYERCTRL->UnlockJump();
@@ -151,6 +158,8 @@ void CKirbyAbility_Sleep::AttackStartEnter()
 
 void CKirbyAbility_Sleep::AttackStartExit()
 {
+    CPlayerMgr::SetPlayerFace(FaceType::Normal);
+
     PLAYERCTRL->UnlockMove();
     PLAYERCTRL->UnlockDirection();
     PLAYERCTRL->UnlockJump();
@@ -160,6 +169,7 @@ void CKirbyAbility_Sleep::AttackStartExit()
 void CKirbyAbility_Sleep::AttackEndEnter()
 {
     PLAYER->Animator()->Play(ANIMPREFIX("SleepEnd"), false);
+    CPlayerMgr::SetPlayerFace(FaceType::Half);
 
     PLAYERCTRL->LockMove();
     PLAYERCTRL->LockDirection();
@@ -175,6 +185,8 @@ void CKirbyAbility_Sleep::AttackEndEnter()
 
 void CKirbyAbility_Sleep::AttackEndExit()
 {
+    CPlayerMgr::SetPlayerFace(FaceType::Normal);
+
     PLAYERCTRL->UnlockMove();
     PLAYERCTRL->UnlockDirection();
     PLAYERCTRL->UnlockJump();
