@@ -54,6 +54,7 @@ void CElfilisA_Stab::Enter()
         m_Step = StateStep::Start;
     }
 
+    ELFFSM->OnWeaponTrigger();
     Enter_Step();
 }
 
@@ -78,7 +79,6 @@ void CElfilisA_Stab::Enter_Step()
     {
     case StateStep::Ready: {
         GetOwner()->Animator()->Play(ANIMPREFIX("StabReady"), false);
-        ELFFSM->OnWeaponTrigger();
     }
     break;
     case StateStep::Start: {
@@ -137,8 +137,6 @@ void CElfilisA_Stab::Enter_Step()
 
         // Åõ Å¸°Ù
         CAMERACTRL->SetElfilisTwoTarget();
-       
-       
     }
     break;
     case StateStep::End: {

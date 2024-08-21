@@ -412,9 +412,6 @@
     <ClInclude Include="CCanJuice.h">
       <Filter>Scripts\Projectile</Filter>
     </ClInclude>
-    <ClInclude Include="CMonsterTest.h">
-      <Filter>Scripts</Filter>
-    </ClInclude>
     <ClInclude Include="CMomentaryObjScript.h">
       <Filter>Scripts\Gimmik\MomentaryObj</Filter>
     </ClInclude>
@@ -1364,9 +1361,6 @@
     </ClCompile>
     <ClCompile Include="CCanJuice.cpp">
       <Filter>Scripts\Projectile</Filter>
-    </ClCompile>
-    <ClCompile Include="CMonsterTest.cpp">
-      <Filter>Scripts</Filter>
     </ClCompile>
     <ClCompile Include="CMomentaryObjScript.cpp">
       <Filter>Scripts\Gimmik\MomentaryObj</Filter>

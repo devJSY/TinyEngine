@@ -242,7 +242,6 @@ call CodeGen.exe</Command>
     <ClInclude Include="CLightBulbGimmickScript.h" />
     <ClInclude Include="CMomentaryObjScript.h" />
     <ClInclude Include="CMonsterATKScript.h" />
-    <ClInclude Include="CMonsterTest.h" />
     <ClInclude Include="CElevatorScript.h" />
     <ClInclude Include="CMorphoAtkA_DoubleSword.h" />
     <ClInclude Include="CMorphoAtkA_DoubleSwordAtkL.h" />
@@ -579,7 +578,6 @@ call CodeGen.exe</Command>
     <ClCompile Include="CLightBulbGimmickScript.cpp" />
     <ClCompile Include="CMomentaryObjScript.cpp" />
     <ClCompile Include="CMonsterATKScript.cpp" />
-    <ClCompile Include="CMonsterTest.cpp" />
     <ClCompile Include="CElevatorScript.cpp" />
     <ClCompile Include="CMorphoAtkA_DoubleSword.cpp" />
     <ClCompile Include="CMorphoAtkA_DoubleSwordAtkL.cpp" />

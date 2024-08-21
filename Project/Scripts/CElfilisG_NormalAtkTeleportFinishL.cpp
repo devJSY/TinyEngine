@@ -204,38 +204,15 @@ void CElfilisG_NormalAtkTeleportFinishL::SpawnTeleport()
     m_AfterPos = PLAYER->Transform()->GetWorldPos() + Dist;
     m_AfterPos.y = 0.f;
 
-    // limit in map
+    // map limit
     float MapSizeRadius = ELFFSM->GetMapSizeRadius();
     Vec3 MapFloorOffset = ELFFSM->GetMapFloorOffset();
+    Vec3 NewPosMapDist = m_AfterPos - MapFloorOffset;
 
-    if (m_AfterPos.x < 0)
+    if (NewPosMapDist.Length() > MapSizeRadius)
     {
-        if (m_AfterPos.x < MapSizeRadius * -1.f + MapFloorOffset.x)
-        {
-            m_AfterPos.x = MapSizeRadius * -1.f;
-        }
-    }
-    else
-    {
-        if (m_AfterPos.x > MapSizeRadius + MapFloorOffset.x)
-        {
-            m_AfterPos.x = MapSizeRadius;
-        }
-    }
-
-    if (m_AfterPos.z < 0)
-    {
-        if (m_AfterPos.z < MapSizeRadius * -1.f + MapFloorOffset.z)
-        {
-            m_AfterPos.z = MapSizeRadius * -1.f;
-        }
-    }
-    else
-    {
-        if (m_AfterPos.z > MapSizeRadius + MapFloorOffset.z)
-        {
-            m_AfterPos.z = MapSizeRadius;
-        }
+        Vec3 Dir = NewPosMapDist.Normalize();
+        m_AfterPos = MapFloorOffset + Dir * MapSizeRadius;
     }
 
     //@Effect 텔레포드 이펙트

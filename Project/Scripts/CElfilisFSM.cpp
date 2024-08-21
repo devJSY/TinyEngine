@@ -445,12 +445,13 @@ void CElfilisFSM::begin()
 void CElfilisFSM::tick()
 {
     CFSMScript::tick();
-
+    
     if (KEY_TAP(KEY::ENTER))
     {
         Rigidbody()->SetVelocity(Vec3());
         Rigidbody()->SetAngularVelocity(Vec3());
-        ChangeState(L"DEMO_RESIST");
+        Transform()->SetWorldPos(Vec3(0.f, 1200.f, 0.f));
+        ChangeStateGroup(ElfilisStateGroup::AirToGround, L"AIR_TOGROUND_TELEPORT");
     }
 }
 
