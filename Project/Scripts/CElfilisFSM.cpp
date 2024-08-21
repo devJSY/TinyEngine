@@ -415,7 +415,7 @@ void CElfilisFSM::begin()
     if (Hitbox)
     {
         m_Hitbox = Hitbox->BoxCollider();
-        m_Hitbox->GetOwner()->SetActive(false);
+        Hitbox->SetActive(false);
     }
 
     // get mtrl

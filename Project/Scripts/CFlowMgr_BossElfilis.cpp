@@ -61,6 +61,8 @@ void CFlowMgr_BossElfilis::tick()
     {
     case BossLevelFlow::LevelStart: {
         BOSS->SetActive(false);
+        ELFFSM->GetBigBoss()->SetActive(false);
+
         if (m_LevelEnterWall)
         {
             m_LevelEnterWall->SetActive(false);
