@@ -15,6 +15,14 @@ RWStructuredBuffer<int4> g_SpawnCount : register(u1);
 #define Module      g_Module[0]
 #define CenterPos   g_vec4_0.xyz
 
+#define SPAWN_MODULE 0
+#define DRAG_MODULE 1
+#define SCALE_MODULE 2
+#define ADD_VELOCITY_MODULE 3
+#define NOISE_FORCE_MODULE 4
+#define CALCULATE_FORCE_MODULE 5
+#define RENDER_MODULE 6
+
 [numthreads(32, 1, 1)]
 void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
 {
@@ -25,7 +33,7 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
     if (0 == Particle.Active)
     {
         // 스폰 모듈 활성화 체크
-        if (0 == Module.arrModuleCheck[0])
+        if (0 == Module.arrModuleCheck[SPAWN_MODULE])
             return;
         
         while (0 < SpawnCount)
@@ -93,7 +101,7 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
                 Particle.Mass = (Module.MaxMass - Module.MinMass) * vRand1.b + Module.MinMass;
                               
                 // Add VelocityModule
-                if (Module.arrModuleCheck[3])
+                if (Module.arrModuleCheck[ADD_VELOCITY_MODULE])
                 {
                     if (0 == Module.AddVelocityType)  // 0 : From Center
                     {
@@ -140,7 +148,7 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
         }
         
         // Add VelocityModule - To Center 타입 일경우
-        if (Module.arrModuleCheck[3] && 1 == Module.AddVelocityType)
+        if (Module.arrModuleCheck[ADD_VELOCITY_MODULE] && 1 == Module.AddVelocityType)
         {
             float len = length(CenterPos - Particle.vWorldPos.xyz);
             if (len < 10)
@@ -161,13 +169,13 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
         Particle.NormalizeAge = Particle.Age / Particle.Life;
         
         // Scale 모듈
-        if (Module.arrModuleCheck[2])
+        if (Module.arrModuleCheck[SCALE_MODULE])
         {
             Particle.vWorldScale = Particle.vWorldInitScale * (1.f + (Module.vScaleRatio - 1.f) * Particle.NormalizeAge);
         }
         
         // Noise Force
-        if (Module.arrModuleCheck[4])
+        if (Module.arrModuleCheck[NOISE_FORCE_MODULE])
         {
             if (Particle.NoiseForceTime == 0.f) // 초기 Force
             {
@@ -182,7 +190,7 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
         }
                 
         // Calculate Force
-        if (Module.arrModuleCheck[5])
+        if (Module.arrModuleCheck[CALCULATE_FORCE_MODULE])
         {
             Particle.vForce.xyz += Particle.vNoiseForce.xyz;
             
@@ -195,7 +203,7 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
             
             float4 DragForce = float4(0.f, 0.f, 0.f, 0.f);
             // Drag 모듈
-            if (Module.arrModuleCheck[1])
+            if (Module.arrModuleCheck[DRAG_MODULE])
             {
                 float LimitTime = Module.DragTime - Particle.Age;
             
