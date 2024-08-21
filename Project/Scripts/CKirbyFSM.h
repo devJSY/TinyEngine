@@ -1,5 +1,9 @@
 #pragma once
 #include "CFSMScript.h"
+class CKirbyAbility;
+class CKirbyObject;
+class CKirbyVacuumCollider;
+class CKirbyLightScript;
 
 enum class LastJumpType
 {
@@ -15,10 +19,6 @@ enum class DodgeType
     BACK,
     LEFT,
 };
-
-class CKirbyAbility;
-class CKirbyObject;
-class CKirbyVacuumCollider;
 
 class CKirbyFSM : public CFSMScript
 {
@@ -37,6 +37,7 @@ private:
 
     CCapsuleCollider*       m_BodyCollider;
     CKirbyVacuumCollider*   m_VacuumCollider;
+    CKirbyLightScript*      m_PointLight;
 
     // 상태 관리를 위한 값들
     const float             m_HoveringLimitTime;
@@ -145,6 +146,7 @@ public:
     CGameObject* GetCurHatBlade() { return m_CurHatBlade; }
     CGameObject* GetCurWeapon() { return m_CurWeapon; }
     CGameObject* GetStuffedObj() { return m_StuffedObj; }
+    CKirbyLightScript* GetPointLight() { return m_PointLight; }
     DodgeType GetDodgeType() const { return m_DodgeType; }
     float GetComboAccTime() const { return m_ComboAccTime; }
     float GetChargeAccTime() const { return m_ChargeAccTime; }

@@ -3,6 +3,7 @@
 #include "CKirbyAbility.h"
 #include "CKirbyObject.h"
 #include "CKirbyVacuumCollider.h"
+#include "CKirbyLightScript.h"
 
 #include "CKirbyAbility_Normal.h"
 #include "CKirbyAbility_Fire.h"
@@ -276,11 +277,21 @@ CKirbyFSM::~CKirbyFSM()
 
 void CKirbyFSM::begin()
 {
-    // State Init
+    // Get Childs
     if (!GetOwner()->GetChildObject(L"Vacuum Collider") || !GetOwner()->GetChildObject(L"Vacuum Collider")->GetScript<CKirbyVacuumCollider>())
     {
         MessageBox(nullptr, L"Player에 자식 오브젝트 'Vacuum Collider'가 존재하지 않습니다", L"Player FSM begin() 실패", MB_OK);
         return;
+    }
+
+    m_VacuumCollider = GetOwner()->GetChildObject(L"Vacuum Collider")->GetScript<CKirbyVacuumCollider>();
+    m_BodyCollider = GetOwner()->GetChildObject(L"Body Collider")->CapsuleCollider();
+
+    CGameObject* PointLight = GetOwner()->GetChildObject(L"DeformLight PointLight");
+    if (PointLight)
+    {
+        m_PointLight = PointLight->GetScript<CKirbyLightScript>();
+        m_PointLight->GetOwner()->SetActive(false);
     }
 
     // NONE일 경우 예외처리
@@ -288,9 +299,6 @@ void CKirbyFSM::begin()
     {
         m_CurAbility = AbilityCopyType::NORMAL;
     }
-
-    m_VacuumCollider = GetOwner()->GetChildObject(L"Vacuum Collider")->GetScript<CKirbyVacuumCollider>();
-    m_BodyCollider = GetOwner()->GetChildObject(L"Body Collider")->CapsuleCollider();
 
     vector<CGameObject*> KirbyChildObject = GetOwner()->GetChildObject();
 
@@ -362,7 +370,6 @@ void CKirbyFSM::begin()
         }
     }
     m_bEmissive = false;
-
 
     // State 추가
     AddState(L"IDLE", new CKirbyIdle);
