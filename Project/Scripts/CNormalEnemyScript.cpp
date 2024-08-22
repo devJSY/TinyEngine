@@ -582,7 +582,7 @@ void CNormalEnemyScript::Find()
     Vec3 vDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
     Vec3 vTargetDir = PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos();
 
-    if (vDir.Dot(vTargetDir.Normalize()) >= cosf(0.f) - 0.1f)
+    if (vDir.Dot(vTargetDir.Normalize()) >= cosf(0.f) - 0.2f)
     {
         if (Animator()->IsFinish())
         {
