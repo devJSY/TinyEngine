@@ -169,28 +169,21 @@ void CElfilisA_SlashCombo::Progress()
             CMomentaryObjScript* pScript = pRock->GetScript<CMomentaryObjScript>();
             m_SpawnDist -= SpawnBetween;
 
-            if (pScript)
+            Vec3 NewPos = GetOwner()->Transform()->GetWorldPos();
+            NewPos.y = 0.f;
+
+            Vec3 NewDir = Vec3(GetRandomfloat(-100.f, 100.f), 0.f, GetRandomfloat(-100.f, 100.f)).Normalize();
+            if (NewDir.Length() <= 0.f)
             {
-                Vec3 NewPos = GetOwner()->Transform()->GetWorldPos();
-                NewPos.y = 0.f;
-
-                Vec3 NewDir = Vec3(GetRandomfloat(-100.f, 100.f), 0.f, GetRandomfloat(-100.f, 100.f)).Normalize();
-                if (NewDir.Length() <= 0.f)
-                {
-                    NewDir = Vec3(1.f, 0.f, 1.f);
-                }
-
-                pRock->Transform()->SetWorldPos(NewPos);
-                pRock->Transform()->Slerp(NewDir, 1.f);
-
-                pScript->SetPlayTime(5.f);
-
-                GamePlayStatic::SpawnGameObject(pRock, LAYER_DYNAMIC);
+                NewDir = Vec3(1.f, 0.f, 1.f);
             }
-            else
-            {
-                delete pRock;
-            }
+
+            pRock->Transform()->SetWorldPos(NewPos);
+            pRock->Transform()->Slerp(NewDir, 1.f);
+
+            pScript->SetPlayTime(5.f);
+
+            GamePlayStatic::SpawnGameObject(pRock, LAYER_DYNAMIC);
         }
     }
 

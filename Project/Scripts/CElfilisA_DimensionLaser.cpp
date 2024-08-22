@@ -96,18 +96,11 @@ void CElfilisA_DimensionLaser::Enter_Step()
             CGameObject* DimensionStart = m_DimensionStartPref->Instantiate();
             m_DimensionStart = DimensionStart->GetScript<CElfilisDimensionLaser>();
 
-            if (m_DimensionStart)
-            {
-                DimensionStart->Transform()->SetWorldPos(GetOwner()->Transform()->GetWorldPos());
-                DimensionStart->Transform()->SetWorldRotation(NewRot);
-                m_DimensionStart->SetLaserStartLcok(true);
-                m_DimensionStart->PlaySpawn();
-                GamePlayStatic::SpawnGameObject(DimensionStart, LAYER_MONSTERATK_TRIGGER);
-            }
-            else
-            {
-                delete DimensionStart;
-            }
+            DimensionStart->Transform()->SetWorldPos(GetOwner()->Transform()->GetWorldPos());
+            DimensionStart->Transform()->SetWorldRotation(NewRot);
+            m_DimensionStart->SetLaserStartLcok(true);
+            m_DimensionStart->PlaySpawn();
+            GamePlayStatic::SpawnGameObject(DimensionStart, LAYER_MONSTERATK_TRIGGER);
         }
     }
     break;
@@ -223,18 +216,7 @@ void CElfilisA_DimensionLaser::SpawnDimension(int _Idx)
 {
     m_Dimension[_Idx] = m_DimensionPref->Instantiate();
     CElfilisDimensionLaser* Script = m_Dimension[_Idx]->GetScript<CElfilisDimensionLaser>();
-
-     if (Script)
-    {
-         m_DimensionScript[_Idx] = Script;
-     }
-     else
-    {
-         delete m_Dimension[_Idx];
-         m_Dimension[_Idx] = nullptr;
-         m_DimensionScript[_Idx] = nullptr;
-         return;
-     }
+    m_DimensionScript[_Idx] = Script;
 
     Vec3 InitDir = GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT);
     InitDir.y = 0.f;

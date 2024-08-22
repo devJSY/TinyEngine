@@ -114,25 +114,18 @@ void CElfilisA_Stab::Enter_Step()
             CGameObject* pRock = m_StabRockPref->Instantiate();
             CMomentaryObjScript* pScript = pRock->GetScript<CMomentaryObjScript>();
 
-            if (pScript)
-            {
-                Vec3 NewPos = GetOwner()->Transform()->GetWorldPos();
-                NewPos.y = 0.f;
-                Vec3 NewDir = GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT);
-                NewDir.y = 0.f;
-                NewDir.Normalize();
+            Vec3 NewPos = GetOwner()->Transform()->GetWorldPos();
+            NewPos.y = 0.f;
+            Vec3 NewDir = GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+            NewDir.y = 0.f;
+            NewDir.Normalize();
 
-                pRock->Transform()->SetWorldPos(NewPos);
-                pRock->Transform()->Slerp(NewDir, 1.f);
+            pRock->Transform()->SetWorldPos(NewPos);
+            pRock->Transform()->Slerp(NewDir, 1.f);
 
-                pScript->SetPlayTime(5.f);
+            pScript->SetPlayTime(5.f);
 
-                GamePlayStatic::SpawnGameObject(pRock, LAYER_DYNAMIC);
-            }
-            else
-            {
-                delete pRock;
-            }
+            GamePlayStatic::SpawnGameObject(pRock, LAYER_DYNAMIC);
         }
 
         // ≈ı ≈∏∞Ÿ
