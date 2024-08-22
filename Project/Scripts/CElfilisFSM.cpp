@@ -97,7 +97,7 @@ void CElfilisFSM::ChangeStateGroup_Random(ElfilisStateGroup _Group)
         return;
 
     // get min counted state
-    int MinCount = UINT_MAX;
+    UINT MinCount = UINT_MAX;
     vector<wstring> MinCountedStates;
 
     for (pair<wstring, UINT> iter : m_StateSelectionCount[(int)_Group])
