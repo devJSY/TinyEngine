@@ -120,8 +120,6 @@ struct tParticle
     float Age; // 현재 나이
     float Life; // 수명
     int Active; // 활성화, 비활성화 여부
-    
-    int2 particlepadding;
 };
 
 struct tParticleModule
@@ -173,7 +171,7 @@ struct tParticleModule
     // Module On / Off
     int arrModuleCheck[8];
     
-    float2 modulepadd;
+    float modulepadd;
 };
 
 struct tRaycastOut

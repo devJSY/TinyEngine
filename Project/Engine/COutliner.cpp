@@ -2562,9 +2562,9 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
                     ImGui::SameLine();
                     ImGui::Dummy(ImVec2(70.f, 0.f));
                     ImGui::SameLine();
-                    ImGui::RadioButton("Local Space", (int*)&Module.SpaceType, 0);
+                    ImGui::RadioButton("Local Space##Space Type", (int*)&Module.SpaceType, 0);
                     ImGui::SameLine();
-                    ImGui::RadioButton("World Space", (int*)&Module.SpaceType, 1);
+                    ImGui::RadioButton("World Space##Space Type", (int*)&Module.SpaceType, 1);
 
                     ImGui::ColorEdit4(ImGui_LabelPrefix("Color").c_str(), &Module.vSpawnColor.x);
                     ImGui::DragFloat3(ImGui_LabelPrefix("Min Scale").c_str(), &Module.vSpawnMinScale.x, 1.f, 0.f, D3D11_FLOAT32_MAX);
@@ -2587,9 +2587,9 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
                     ImGui::SameLine();
                     ImGui::Dummy(ImVec2(50.f, 0.f));
                     ImGui::SameLine();
-                    ImGui::RadioButton("Sphere", (int*)&Module.SpawnShape, 0);
+                    ImGui::RadioButton("Sphere##Spawn Shape", (int*)&Module.SpawnShape, 0);
                     ImGui::SameLine();
-                    ImGui::RadioButton("Box", (int*)&Module.SpawnShape, 1);
+                    ImGui::RadioButton("Box##Spawn Shape", (int*)&Module.SpawnShape, 1);
 
                     // Spawn Shape - Sphere
                     if (0 == Module.SpawnShape)
@@ -2655,16 +2655,16 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
                 {
                     ImGui::Text("Spiral Velocity Axis");
                     ImGui::SameLine();
-                    ImGui::RadioButton("X", (int*)&Module.SpiralVelocityAxis, 0);
+                    ImGui::RadioButton("X##Spiral Velocity Axis", (int*)&Module.SpiralVelocityAxis, 0);
                     ImGui::SameLine();
-                    ImGui::RadioButton("Y", (int*)&Module.SpiralVelocityAxis, 1);
+                    ImGui::RadioButton("Y##Spiral Velocity Axis", (int*)&Module.SpiralVelocityAxis, 1);
                     ImGui::SameLine();
-                    ImGui::RadioButton("Z", (int*)&Module.SpiralVelocityAxis, 2);
+                    ImGui::RadioButton("Z##Spiral Velocity Axis", (int*)&Module.SpiralVelocityAxis, 2);
 
                     ImGui::DragFloat(ImGui_LabelPrefix("Spiral Velocity Axis Speed").c_str(), &Module.SpiralVelocityAxisSpeed, 0.1f);
                     ImGui::DragFloat(ImGui_LabelPrefix("Spiral Velocity Start Radius").c_str(), &Module.SpiralVelocityStartRadius, 0.1f);
                     ImGui::DragFloat(ImGui_LabelPrefix("Spiral Velocity End Radius").c_str(), &Module.SpiralVelocityEndRadius, 0.1f);
-                    ImGui::DragFloat(ImGui_LabelPrefix("Spiral Velocity Rotate Speed").c_str(), &Module.SpiralVelocityRotateSpeed, 0.1f);
+                    ImGui::DragFloat(ImGui_LabelPrefix("Spiral Velocity Rotate Speed").c_str(), &Module.SpiralVelocityRotateSpeed, 1e-3f);
 
                     ImGui::TreePop();
                 }
@@ -2686,23 +2686,23 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
                 {
                     ImGui::Text("Velocity Alignment");
                     ImGui::SameLine();
-                    ImGui::RadioButton("Off", (int*)&Module.VelocityAlignment, 0);
+                    ImGui::RadioButton("Off##Velocity Alignment", (int*)&Module.VelocityAlignment, 0);
                     ImGui::SameLine();
-                    ImGui::RadioButton("On", (int*)&Module.VelocityAlignment, 1);
+                    ImGui::RadioButton("On##Velocity Alignment", (int*)&Module.VelocityAlignment, 1);
                     ImGui::SameLine();
-                    ImGui::RadioButton("Cross Mesh", (int*)&Module.VelocityAlignment, 2);
+                    ImGui::RadioButton("Cross Mesh##Velocity Alignment", (int*)&Module.VelocityAlignment, 2);
 
                     ImGui::Text("Velocity Type");
                     ImGui::SameLine();
-                    ImGui::RadioButton("Off", (int*)&Module.AlphaBasedLife, 0);
+                    ImGui::RadioButton("Off##Velocity Type", (int*)&Module.AlphaBasedLife, 0);
                     ImGui::SameLine();
-                    ImGui::RadioButton("Normalized Age", (int*)&Module.AlphaBasedLife, 1);
+                    ImGui::RadioButton("Normalized Age##Velocity Type", (int*)&Module.AlphaBasedLife, 1);
                     ImGui::SameLine();
-                    ImGui::RadioButton("Max Age", (int*)&Module.AlphaBasedLife, 2);
+                    ImGui::RadioButton("Max Age##Velocity Type", (int*)&Module.AlphaBasedLife, 2);
 
                     if (2 == Module.AlphaBasedLife)
                     {
-                        ImGui::DragFloat(ImGui_LabelPrefix("Alpha Max Age").c_str(), &Module.AlphaMaxAge, 0.1f, 0.f, Module.MaxLife);
+                        ImGui::DragFloat(ImGui_LabelPrefix("Alpha Max Age##Velocity Type").c_str(), &Module.AlphaMaxAge, 0.1f, 0.f, Module.MaxLife);
                     }
 
                     ImGui::TreePop();
