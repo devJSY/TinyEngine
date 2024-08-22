@@ -71,6 +71,13 @@ CParticleSystem::CParticleSystem()
     m_Module.FixedAngle = 180.f;
     m_Module.vFixedDirection = Vec4(0.f, 0.f, 0.f, 1.f);
 
+    // Spiral Velocity 모듈
+    m_Module.SpiralVelocityAxis = 1; // Y
+    m_Module.SpiralVelocityAxisSpeed = 100.f;
+    m_Module.SpiralVelocityStartRadius = 1.f;
+    m_Module.SpiralVelocityEndRadius = 5.f;
+    m_Module.SpiralVelocityRotateSpeed = 0.1f;
+
     // Noise Force 모듈
     m_Module.NoiseForceScale = 100.f;
     m_Module.NoiseForceTerm = 1.f;

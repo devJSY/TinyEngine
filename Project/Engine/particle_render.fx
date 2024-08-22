@@ -9,6 +9,15 @@ StructuredBuffer<tParticleModule> g_ParticleModule : register(t21);
 
 #define Particle g_ParticleBuffer[_in.iInstID]
 
+#define SPAWN_MODULE 0
+#define DRAG_MODULE 1
+#define SCALE_MODULE 2
+#define ADD_VELOCITY_MODULE 3
+#define SPIRAL_VELOCITY_MODULE 4
+#define NOISE_FORCE_MODULE 5
+#define CALCULATE_FORCE_MODULE 6
+#define RENDER_MODULE 7
+
 struct VS_Input
 {
     float3 vPos : POSITION;
@@ -84,7 +93,7 @@ void GS_ParticleRender(point VS_Output _in[1], inout TriangleStream<GS_Output> _
        
     
     // 렌더모듈 기능
-    if (g_ParticleModule[0].arrModuleCheck[6])
+    if (g_ParticleModule[0].arrModuleCheck[RENDER_MODULE])
     {
         // 속도에 따른 정렬 기능
         if (0 != g_ParticleModule[0].VelocityAlignment)
@@ -131,7 +140,7 @@ void GS_ParticleRender(point VS_Output _in[1], inout TriangleStream<GS_Output> _
     _OutStream.Append(output[2]);
     _OutStream.RestartStrip();
         
-    if (g_ParticleModule[0].arrModuleCheck[6])
+    if (g_ParticleModule[0].arrModuleCheck[RENDER_MODULE])
     {
         // Cross Mesh 
         if (2 == g_ParticleModule[0].VelocityAlignment)
@@ -170,7 +179,7 @@ float4 PS_ParticleRender(GS_Output _in) : SV_Target
     }
     
     // 렌더모듈이 켜져 있으면
-    if (module.arrModuleCheck[6])
+    if (module.arrModuleCheck[RENDER_MODULE])
     {
         if (1 == module.AlphaBasedLife) // Normalize Age
         {
@@ -266,7 +275,7 @@ PS_Std2D_Glow_Output PS_ParticleRender_Glow(GS_Output _in)
     }
   
     // 렌더모듈이 켜져 있으면
-    if (module.arrModuleCheck[6])
+    if (module.arrModuleCheck[RENDER_MODULE])
     {
         if (1 == module.AlphaBasedLife) // Normalize Age
         {
@@ -313,7 +322,7 @@ float4 PS_ParticleRender_Fire(GS_Output _in) : SV_Target
     }
 
     // 렌더모듈이 켜져 있으면
-    if (module.arrModuleCheck[6])
+    if (module.arrModuleCheck[RENDER_MODULE])
     {
         if (1 == module.AlphaBasedLife) // Normalize Age
         {

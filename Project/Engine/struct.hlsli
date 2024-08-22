@@ -110,6 +110,9 @@ struct tParticle
     float4 vColor; // 색상
     float4 vForce; // 입자에 적용된 누적 힘 총량
     float4 vNoiseForce; // NoiseForce 모듈로 인한 랜덤 힘
+    
+    float Angle; // 현재 각도
+    float Radius; // 현재 반경
 
     float NoiseForceTime; // NoiseForce 를 세팅받은 시간
     float NormalizeAge; // Age 를 Life 기준으로 정규화한 값
@@ -117,8 +120,6 @@ struct tParticle
     float Age; // 현재 나이
     float Life; // 수명
     int Active; // 활성화, 비활성화 여부
-    
-    int2 particlepadding;
 };
 
 struct tParticleModule
@@ -150,20 +151,27 @@ struct tParticleModule
     float MaxSpeed;
     float FixedAngle; // 해당 방향에서 랜덤범위 각도
     float4 vFixedDirection; // 지정 방향
+    
+    // Spiral Velocity
+    int SpiralVelocityAxis; // 0 : X, 1 : Y, 2 : Z
+    float SpiralVelocityAxisSpeed; // 축방향 이동 속도
+    float SpiralVelocityStartRadius; // 시작 궤적 반경
+    float SpiralVelocityEndRadius; // 종료 궤적 반경
+    float SpiralVelocityRotateSpeed; // 회전 속도
 
     // Noise Force
     float NoiseForceScale;
     float NoiseForceTerm;
     
 	// Render
-    int VelocityAlignment;  // 0 : off, 1 : On, 2 : Cross Mesh
-    int AlphaBasedLife;     // 0 : off, 1 : NomrlizedAge, 2: Age
+    int VelocityAlignment; // 0 : off, 1 : On, 2 : Cross Mesh
+    int AlphaBasedLife; // 0 : off, 1 : NomrlizedAge, 2: Age
     float AlphaMaxAge;
 
     // Module On / Off
-    int arrModuleCheck[7];
+    int arrModuleCheck[8];
     
-    float3 modulepadd;
+    float modulepadd;
 };
 
 struct tRaycastOut
