@@ -110,7 +110,12 @@ void CKabuScript::OnTriggerEnter(CCollider* _OtherCollider)
 
     Vec3 vDir = PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos();
     UnitHit hitInfo = {DAMAGE_TYPE::NORMAL, vDir.Normalize(), GetCurInfo().ATK, 0.f, 0.f};
-    L"Body Collider" == pObj->GetName() ? pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo) : void();
+    UINT Layer = _OtherCollider->GetOwner()->GetLayerIdx();
+
+    if (Layer == LAYER_PLAYER_TRIGGER && L"Body Collider" == pObj->GetName())
+    {
+        pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo);
+    }
 }
 
 void CKabuScript::OnTriggerExit(CCollider* _OtherCollider)

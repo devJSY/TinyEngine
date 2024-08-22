@@ -184,7 +184,7 @@ void CKirbyBulletScript::OnTriggerEnter(CCollider* _OtherCollider)
     if (LayerIdx == LAYER_MONSTER_TRIGGER)
     {
         if (_OtherCollider->GetOwner()->GetName() == L"AttackArea" || _OtherCollider->GetName() == L"Attack Area" ||
-            _OtherCollider->GetName() == L"BodyCollider")
+            _OtherCollider->GetName() == L"Body Collider")
         {
             CUnitScript* pMonster = _OtherCollider->GetOwner()->GetParent()->GetScript<CUnitScript>();
             if (!pMonster)

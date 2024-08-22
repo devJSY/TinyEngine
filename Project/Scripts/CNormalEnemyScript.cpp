@@ -103,7 +103,12 @@ void CNormalEnemyScript::OnTriggerEnter(CCollider* _OtherCollider)
 
     Vec3 vDir = PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos();
     UnitHit hitInfo = {DAMAGE_TYPE::NORMAL, vDir.Normalize(), GetCurInfo().ATK, 0.f, 0.f};
-    L"Body Collider" == pObj->GetName() ? pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo) : void();
+    UINT Layer = _OtherCollider->GetOwner()->GetLayerIdx();
+
+    if (Layer == LAYER_PLAYER_TRIGGER && L"Body Collider" == pObj->GetName())
+    {
+        pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo);
+    }
 }
 
 void CNormalEnemyScript::OnTriggerExit(CCollider* _OtherCollider)
@@ -410,6 +415,8 @@ void CNormalEnemyScript::ExitState(NormalEnemyState _state)
 
 void CNormalEnemyScript::ChangeState(NormalEnemyState _state)
 {
+    string iState = std::to_string((int)_state);
+    LOG(LOG_LEVEL::Log, (string("[Monster State Change] : ") + iState).c_str());
     ExitState(m_eState);
     m_eState = _state;
     EnterState(m_eState);

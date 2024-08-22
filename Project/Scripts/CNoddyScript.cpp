@@ -413,7 +413,9 @@ void CNoddyScript::OnTriggerEnter(CCollider* _OtherCollider)
         return;
 
     CGameObject* pObj = _OtherCollider->GetOwner();
-    if (L"Body Collider" == pObj->GetName())
+    UINT Layer = _OtherCollider->GetOwner()->GetLayerIdx();
+
+    if (Layer == LAYER_PLAYER_TRIGGER && L"Body Collider" == pObj->GetName())
     {
         Vec3 vDir = PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos();
         UnitHit hitInfo = {DAMAGE_TYPE::NORMAL, vDir.Normalize(), GetCurInfo().ATK, 0.f, 0.f};
