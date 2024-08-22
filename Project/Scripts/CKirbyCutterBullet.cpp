@@ -205,6 +205,33 @@ void CKirbyCutterBullet::tick()
             m_MoveDir.Normalize();
         }
 
+        if (m_MoveDir.Dot(NewDir) > 0.f)
+        {
+            RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(CurPos, Vec3(0.f, -1.f, 0.f), 100.f, {L"World Static"});
+
+            float newY = Lerp(m_MoveDir.y, NewDir.y, 0.3f);
+            NewDir.y = newY;
+
+            m_MoveDir = DirectX::SimpleMath::Vector3::Lerp(m_MoveDir, NewDir, 0.15f);
+
+            // 땅이랑 가까워질 경우 y축 이동속도를 0으로 한다.
+            if (Hit.Distance < 20.f)
+            {
+                m_MoveDir.y = 0.f;
+            }
+
+            m_MoveDir.Normalize();
+
+
+        }
+        else
+        {
+            if (m_MoveDir.y < 0.f)
+            {
+                m_MoveDir.y = 0.f;
+            }
+        }
+
         float phase = (m_Acc / 0.2f) * XM_PI / 2.f;
         phase = clamp(phase, 0.f, XM_PI / 2.f);
         phase = std::sin(phase);
@@ -401,7 +428,7 @@ void CKirbyCutterBullet::OnTriggerEnter(CCollider* _OtherCollider)
     int LayerIdx = _OtherCollider->GetOwner()->GetLayerIdx();
 
     // WorldStatic
-    if (LayerIdx == LAYER_PLAYER_TRIGGER)
+    if (LayerIdx == LAYER_PLAYER_TRIGGER && _OtherCollider->GetOwner()->GetName() == L"Body Collider")
     {
         // 커비한테 돌아가는 상태라면
         if (m_IsBack)
@@ -420,9 +447,8 @@ void CKirbyCutterBullet::OnTriggerEnter(CCollider* _OtherCollider)
         }
     }
     // Monster
-    else if (LayerIdx == LAYER_MONSTER_TRIGGER)
+    else if (LayerIdx == LAYER_MONSTER_TRIGGER && _OtherCollider->GetOwner()->GetName() == L"Body Collider")
     {
-        //CMonsterUnitScript* Monster = _OtherCollider->GetOwner()->GetScript<CMonsterUnitScript>();
         CMonsterUnitScript* Monster = _OtherCollider->GetOwner()->GetParent()->GetScript<CMonsterUnitScript>();
         if (nullptr != Monster)
         {
