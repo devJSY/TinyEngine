@@ -293,6 +293,8 @@ void CLevelFlowMgr::LevelStart()
     }
 
     // Player Spawn
+
+    MainPlayer->SetName(L"Main Player");
     MainPlayer->Transform()->SetWorldPos(StartingPos);
     MainPlayer->Transform()->SetWorldRotation(StartingRot);
 
@@ -365,8 +367,17 @@ void CLevelFlowMgr::LevelExit()
         if (nullptr != PLAYER)
         {
             Ptr<CPrefab> MainPlayerPref = new CPrefab(PLAYER->Clone());
-            CAssetMgr::GetInst()->ReplacePrefab(MainPlayerPref, L"prefab\\Main Player.pref");
             MainPlayerPref->Save(L"prefab\\Main Player.pref");
+
+            Ptr<CPrefab> CurKirbyPref = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\Main Player.pref");
+
+            if (CurKirbyPref.Get())
+            {
+                GamePlayStatic::DeleteAsset(ASSET_TYPE::PREFAB, CurKirbyPref.Get());
+            }
+
+            
+            //CAssetMgr::GetInst()->ReplacePrefab(MainPlayerPref, L"prefab\\Main Player.pref");
         }
     }
 

@@ -148,7 +148,7 @@ void CKirbyMoveController::Input()
 
 void CKirbyMoveController::RayGround()
 {
-    Vec3 RayStart = Transform()->GetWorldPos() + Vec3(0.f, 1.f, 0.f);
+    Vec3 RayStart = CharacterController()->GetFootPos() + Vec3(0.f, 1.f, 0.f);
     static vector<wstring> vecCollision{L"World Static", L"World Dynamic"};
     m_RayHit = CPhysicsMgr::GetInst()->RayCast(RayStart, Vec3(0.f, -1.f, 0.f), 200.f, vecCollision);
 
