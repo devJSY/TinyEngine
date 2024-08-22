@@ -36,7 +36,7 @@ float4 main(PS_IN input) : SV_TARGET
     float metallic = MtrlMetallic;
     float roughness = MtrlRoughness;
     float ao = SSAOTex.Sample(g_LinearWrapSampler, input.vUV0).r;
-    float3 emission = MtrlEmission;
+    float3 emission = MtrlEmission.rgb;
 
     // Lighting
     float3 ambientLighting = AmbientLightingByIBL(MtrlAlbedo.rgb, normalWorld, pixelToEye, ao, metallic, roughness);
