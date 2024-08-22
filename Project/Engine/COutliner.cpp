@@ -1147,7 +1147,7 @@ void COutliner::DrawLight2D(CGameObject* obj)
         if (ImGui::SliderFloat(ImGui_LabelPrefix("FallOffStart").c_str(), &FallOffStart, 0.0f, FallOffEnd - offset))
             pLight->SetFallOffStart(FallOffStart);
 
-        if (ImGui::SliderFloat(ImGui_LabelPrefix("FallOffEnd").c_str(), &FallOffEnd, FallOffStart + offset, 10000.f))
+        if (ImGui::SliderFloat(ImGui_LabelPrefix("FallOffEnd").c_str(), &FallOffEnd, FallOffStart + offset, 50000.f))
             pLight->SetFallOffEnd(FallOffEnd);
 
         float spotPower = pLight->GetSpotPower();
@@ -1209,7 +1209,7 @@ void COutliner::DrawLight(CGameObject* obj)
         if (ImGui::SliderFloat(ImGui_LabelPrefix("FallOffStart").c_str(), &FallOffStart, 0.f, FallOffEnd - offset))
             pLight->SetFallOffStart(FallOffStart);
 
-        if (ImGui::SliderFloat(ImGui_LabelPrefix("FallOffEnd").c_str(), &FallOffEnd, FallOffStart + offset, 10000.f))
+        if (ImGui::SliderFloat(ImGui_LabelPrefix("FallOffEnd").c_str(), &FallOffEnd, FallOffStart + offset, 5000.f))
             pLight->SetFallOffEnd(FallOffEnd);
 
         float spotPower = pLight->GetSpotPower();
@@ -1217,7 +1217,7 @@ void COutliner::DrawLight(CGameObject* obj)
             pLight->SetSpotPower(spotPower);
 
         float HaloRadius = pLight->GetHaloRadius();
-        if (ImGui::DragFloat(ImGui_LabelPrefix("Halo Radius").c_str(), &HaloRadius, 1.f, 0.f, 10000.f))
+        if (ImGui::DragFloat(ImGui_LabelPrefix("Halo Radius").c_str(), &HaloRadius, 1.f, 0.f, 5000.f))
             pLight->SetHaloRadius(HaloRadius);
 
         float HaloStrength = pLight->GetHaloStrength();
