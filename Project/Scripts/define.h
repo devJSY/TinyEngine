@@ -82,6 +82,7 @@ enum class ObjectCopyType
 
 enum class StateStep
 {
+    ReadyStart,
     Ready,
     ReadyWait,
     Charge,
@@ -103,4 +104,7 @@ enum class BossLevelFlow
     LevelStart,
     WaitBoss,
     Fight,
+    DeathStart,
+    Death,
+    Clear,
 };

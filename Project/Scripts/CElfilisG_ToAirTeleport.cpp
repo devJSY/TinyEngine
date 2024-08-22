@@ -45,7 +45,7 @@ void CElfilisG_ToAirTeleport::Enter_Step()
 
         SpawnTeleport();
 
-        //카메라 하늘
+        // 카메라 하늘
         CAMERACTRL->SetElfilisSky();
     }
     break;
@@ -116,7 +116,7 @@ void CElfilisG_ToAirTeleport::End()
 void CElfilisG_ToAirTeleport::SpawnTeleport()
 {
     //@Effect 일부분만 그리는 셰이더 작성 필요
-    
+
     // copy object
     m_BeforeObj = new CGameObject;
     m_BeforeObj->AddComponent(GetOwner()->Transform()->Clone());
@@ -126,13 +126,25 @@ void CElfilisG_ToAirTeleport::SpawnTeleport()
     GamePlayStatic::SpawnGameObject(m_BeforeObj, LAYER_MONSTER);
 
     // teleport
-    Vec3 RandDir = Vec3(GetRandomfloat(-100.f, 100.f), 0.f, GetRandomfloat(-100.f, 100.f)).Normalize();
-    if (RandDir.Length() <= 0.f)
+    if (!ELFFSM->IsPattern(ElfilisPatternType::BigCombo, 1))
     {
-        RandDir = Vec3(1.f, 0.f, 1.f);
+        Vec3 RandDir = Vec3(GetRandomfloat(-100.f, 100.f), 0.f, GetRandomfloat(-100.f, 100.f)).Normalize();
+        if (RandDir.Length() <= 0.f)
+        {
+            RandDir = Vec3(1.f, 0.f, 1.f);
+        }
+        Vec3 RandAirPos = RandDir * ELFFSM->GetAirPos().z + Vec3(0.f, ELFFSM->GetAirPos().y, 0.f);
+        m_AfterPos = RandAirPos;
     }
-    Vec3 RandAirPos = RandDir * ELFFSM->GetAirPos().z + Vec3(0.f, ELFFSM->GetAirPos().y, 0.f);
-    m_AfterPos = RandAirPos;
+    else
+    {
+        Vec3 TargetDir = ELFFSM->GetBigBoss()->Transform()->GetWorldPos() - ELFFSM->GetMapFloorOffset();
+        TargetDir.y = 0.f;
+        TargetDir.Normalize();
+
+        Vec3 NewPos = TargetDir * ELFFSM->GetAirPos().z + Vec3(0.f, ELFFSM->GetAirPos().y, 0.f);
+        m_AfterPos = NewPos;
+    }
 
     //@Effect 텔레포드 이펙트
     Vec3 Pos = GetOwner()->Transform()->GetWorldPos();

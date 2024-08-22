@@ -123,16 +123,9 @@ void CElfilisAirArrow::OnCollisionEnter(CCollider* _OtherCollider)
             Effect->Transform()->SetWorldPos(InitPos);
 
             CMomentaryObjScript* Script = Effect->GetScript<CMomentaryObjScript>();
-            if (Script)
-            {
-                Script->SetPlayTime(0.5f);
-                Script->AddEffect(MomentaryEffectType::Scaling);
-                GamePlayStatic::SpawnGameObject(Effect, LAYER_EFFECT);
-            }
-            else
-            {
-                delete Effect;
-            }
+            Script->SetPlayTime(0.5f);
+            Script->AddEffect(MomentaryEffectType::Scaling);
+            GamePlayStatic::SpawnGameObject(Effect, LAYER_EFFECT);
         }
     }
 }
@@ -153,16 +146,9 @@ void CElfilisAirArrow::OnCollisionStay(CCollider* _OtherCollider)
             Effect->Transform()->SetWorldPos(InitPos);
 
             CMomentaryObjScript* Script = Effect->GetScript<CMomentaryObjScript>();
-            if (Script)
-            {
-                Script->SetPlayTime(0.5f);
-                Script->AddEffect(MomentaryEffectType::Scaling);
-                GamePlayStatic::SpawnGameObject(Effect, LAYER_EFFECT);
-            }
-            else
-            {
-                delete Effect;
-            }
+            Script->SetPlayTime(0.5f);
+            Script->AddEffect(MomentaryEffectType::Scaling);
+            GamePlayStatic::SpawnGameObject(Effect, LAYER_EFFECT);
         }
     }
 }
@@ -348,8 +334,7 @@ void CElfilisAirArrow::Attack()
 
         if (m_AccTime > 1.f)
         {
-            GamePlayStatic::DetachObject(GetOwner());
-            m_Step = 0;
+            GamePlayStatic::DestroyGameObject(GetOwner());
         }
     }
 }

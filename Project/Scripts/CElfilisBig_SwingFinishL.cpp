@@ -106,16 +106,9 @@ void CElfilisBig_SwingFinishL::Progress()
             CGameObject* pRock = m_Rock->Instantiate();
             CMomentaryObjScript* pScript = pRock->GetScript<CMomentaryObjScript>();
 
-            if (pScript)
-            {
-                // pScript->AddEffect(MomentaryEffectType::AppearScaling);
-                pScript->SetPlayTime(3.5f);
-                GamePlayStatic::SpawnGameObject(pRock, LAYER_DYNAMIC);
-            }
-            else
-            {
-                delete pRock;
-            }
+            // pScript->AddEffect(MomentaryEffectType::AppearScaling);
+            pScript->SetPlayTime(3.5f);
+            GamePlayStatic::SpawnGameObject(pRock, LAYER_DYNAMIC);
         }
 
         m_bFrmEnter = false;

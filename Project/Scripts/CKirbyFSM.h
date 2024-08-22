@@ -1,5 +1,9 @@
 #pragma once
 #include "CFSMScript.h"
+class CKirbyAbility;
+class CKirbyObject;
+class CKirbyVacuumCollider;
+class CKirbyLightScript;
 
 enum class LastJumpType
 {
@@ -16,19 +20,18 @@ enum class DodgeType
     LEFT,
 };
 
-class CKirbyAbility;
-class CKirbyObject;
-class CKirbyVacuumCollider;
-
 class CKirbyFSM : public CFSMScript
 {
 private:
     CKirbyAbility*          m_arrAbility[(UINT)AbilityCopyType::END];
+    AbilityCopyType         m_PrevAbility;
     AbilityCopyType         m_CurAbility;
     AbilityCopyType         m_NextAbility;
 
     CKirbyObject*           m_arrObject[(UINT)ObjectCopyType::END];
+    ObjectCopyType          m_PrevObject;
     ObjectCopyType          m_CurObject;
+    ObjectCopyType          m_NextObject;
     
     CGameObject*            m_CurHat;
     CGameObject*            m_CurHatBlade;
@@ -37,6 +40,7 @@ private:
 
     CCapsuleCollider*       m_BodyCollider;
     CKirbyVacuumCollider*   m_VacuumCollider;
+    CKirbyLightScript*      m_PointLight;
 
     // 상태 관리를 위한 값들
     const float             m_HoveringLimitTime;
@@ -135,16 +139,23 @@ public:
     void OnCollider();
 
     CKirbyAbility* GetCurAbility() const { return m_arrAbility[(UINT)m_CurAbility]; }
+    CKirbyAbility* GetPrevAbility() const { return m_arrAbility[(UINT)m_PrevAbility]; } 
     CKirbyAbility* GetNextAbility() const { return m_arrAbility[(UINT)m_NextAbility]; } 
     CKirbyObject* GetCurObject() const { return m_arrObject[(UINT)m_CurObject]; }
+    CKirbyObject* GetPrevObject() const { return m_arrObject[(UINT)m_PrevObject]; }
+    CKirbyObject* GetNextObject() const { return m_arrObject[(UINT)m_NextObject]; }
     AbilityCopyType GetCurAbilityIdx() const { return m_CurAbility; }
+    AbilityCopyType GetPrevAbilityIdx() const { return m_PrevAbility; }
     ObjectCopyType GetCurObjectIdx() const { return m_CurObject; }
+    ObjectCopyType GetPrevObjectIdx() const { return m_PrevObject; }
+    ObjectCopyType GetNextObjectIdx() const { return m_NextObject; }
     CKirbyVacuumCollider* GetVacuumCol() const { return m_VacuumCollider; }
     LastJumpType GetLastJump() const { return m_LastJump; }
     CGameObject* GetCurHat() { return m_CurHat; }
     CGameObject* GetCurHatBlade() { return m_CurHatBlade; }
     CGameObject* GetCurWeapon() { return m_CurWeapon; }
     CGameObject* GetStuffedObj() { return m_StuffedObj; }
+    CKirbyLightScript* GetPointLight() { return m_PointLight; }
     DodgeType GetDodgeType() const { return m_DodgeType; }
     float GetComboAccTime() const { return m_ComboAccTime; }
     float GetChargeAccTime() const { return m_ChargeAccTime; }

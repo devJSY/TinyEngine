@@ -11,7 +11,7 @@
 
 float4 main(PS_IN _in) : SV_Target0
 {
-    float3 OutColor = MtrlEmission;
+    float3 OutColor = MtrlEmission.rgb;
     float Alpha = 0.f;
     
     // ¿Ü°ûÃ³¸®

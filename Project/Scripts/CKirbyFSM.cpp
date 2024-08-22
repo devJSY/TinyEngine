@@ -3,6 +3,7 @@
 #include "CKirbyAbility.h"
 #include "CKirbyObject.h"
 #include "CKirbyVacuumCollider.h"
+#include "CKirbyLightScript.h"
 
 #include "CKirbyAbility_Normal.h"
 #include "CKirbyAbility_Fire.h"
@@ -18,8 +19,11 @@ CKirbyFSM::CKirbyFSM()
     , m_arrAbility{}
     , m_arrObject{}
     , m_CurAbility(AbilityCopyType::NORMAL)
+    , m_PrevAbility(AbilityCopyType::NONE)
     , m_NextAbility(AbilityCopyType::NONE)
     , m_CurObject(ObjectCopyType::NONE)
+    , m_PrevObject(ObjectCopyType::NONE)
+    , m_NextObject(ObjectCopyType::NONE)
     , m_CurHat(nullptr)
     , m_CurHatBlade(nullptr)
     , m_CurWeapon(nullptr)
@@ -79,8 +83,11 @@ CKirbyFSM::CKirbyFSM(const CKirbyFSM& _Origin)
     , m_arrAbility{}
     , m_arrObject{}
     , m_CurAbility(_Origin.m_CurAbility)
+    , m_PrevAbility(AbilityCopyType::NONE)
     , m_NextAbility(_Origin.m_NextAbility)
     , m_CurObject(_Origin.m_CurObject)
+    , m_PrevObject(ObjectCopyType::NONE)
+    , m_NextObject(ObjectCopyType::NONE)
     , m_CurHat(nullptr)
     , m_CurHatBlade(nullptr)
     , m_CurWeapon(nullptr)
@@ -264,7 +271,7 @@ CKirbyFSM::~CKirbyFSM()
 #include "CKirbyLongDiveLanding.h"
 #include "CKirbyLongDiveBound.h"
 
-//Ladder
+// Ladder
 #include "CKirbyLadderDown.h"
 #include "CKirbyLadderUp.h"
 #include "CKirbyLadderWait.h"
@@ -276,11 +283,21 @@ CKirbyFSM::~CKirbyFSM()
 
 void CKirbyFSM::begin()
 {
-    // State Init
+    // Get Childs
     if (!GetOwner()->GetChildObject(L"Vacuum Collider") || !GetOwner()->GetChildObject(L"Vacuum Collider")->GetScript<CKirbyVacuumCollider>())
     {
         MessageBox(nullptr, L"Player에 자식 오브젝트 'Vacuum Collider'가 존재하지 않습니다", L"Player FSM begin() 실패", MB_OK);
         return;
+    }
+
+    m_VacuumCollider = GetOwner()->GetChildObject(L"Vacuum Collider")->GetScript<CKirbyVacuumCollider>();
+    m_BodyCollider = GetOwner()->GetChildObject(L"Body Collider")->CapsuleCollider();
+
+    CGameObject* PointLight = GetOwner()->GetChildObject(L"DeformLight PointLight");
+    if (PointLight)
+    {
+        m_PointLight = PointLight->GetScript<CKirbyLightScript>();
+        m_PointLight->GetOwner()->SetActive(false);
     }
 
     // NONE일 경우 예외처리
@@ -288,9 +305,6 @@ void CKirbyFSM::begin()
     {
         m_CurAbility = AbilityCopyType::NORMAL;
     }
-
-    m_VacuumCollider = GetOwner()->GetChildObject(L"Vacuum Collider")->GetScript<CKirbyVacuumCollider>();
-    m_BodyCollider = GetOwner()->GetChildObject(L"Body Collider")->CapsuleCollider();
 
     vector<CGameObject*> KirbyChildObject = GetOwner()->GetChildObject();
 
@@ -339,7 +353,7 @@ void CKirbyFSM::begin()
     {
         GamePlayStatic::AddChildObject(GetOwner(), m_CurHatBlade, L"Hat");
     }
-    
+
     if (m_CurWeapon)
     {
         GamePlayStatic::AddChildObject(GetOwner(), m_CurWeapon, L"Weapon");
@@ -362,7 +376,6 @@ void CKirbyFSM::begin()
         }
     }
     m_bEmissive = false;
-
 
     // State 추가
     AddState(L"IDLE", new CKirbyIdle);
@@ -475,7 +488,7 @@ void CKirbyFSM::begin()
     AddState(L"LADDER_WAIT", new CKirbyLadderWait);
     AddState(L"LADDER_WAITSTART", new CKirbyLadderWaitStart);
     AddState(L"LADDER_EXIT", new CKirbyLadderExit);
-    
+
     AddState(L"FALL", new CKirbyFall);
 
     ChangeState(L"IDLE");
@@ -606,6 +619,7 @@ void CKirbyFSM::ChangeAbilityCopy(AbilityCopyType _Type)
     // Drop Ability 요청
     if (_Type == AbilityCopyType::NORMAL)
     {
+        m_PrevAbility = m_CurAbility;
         m_CurAbility = _Type;
     }
 
@@ -634,6 +648,7 @@ void CKirbyFSM::ChangeObjectCopy(ObjectCopyType _Type)
     // Drop Object 요청
     if (_Type == ObjectCopyType::NONE)
     {
+        m_PrevObject = m_CurObject;
         m_CurObject = _Type;
     }
 
@@ -646,12 +661,9 @@ void CKirbyFSM::ChangeObjectCopy(ObjectCopyType _Type)
             return;
         }
 
-        // m_NextObject = _Type;
-        // ChangeState(L"CHANGE_OBJECT");
-        // m_CurObject = _Type;
-
-        m_CurObject = _Type;
+        m_NextObject = _Type;
         ChangeState(L"CHANGE_OBJECT");
+        m_CurObject = _Type;
     }
 }
 
@@ -743,7 +755,6 @@ void CKirbyFSM::SetEmissive(bool _Emissive, float _Duration)
                 pMaterial->SetEmission(Vec4(m_EmissiveCoef, m_EmissiveCoef, m_EmissiveCoef, 1.f));
             }
         }
-
 
         m_EmissiveAcc = 0.f;
         m_EmissiveDuration = 0.f;
@@ -844,7 +855,6 @@ UINT CKirbyFSM::SaveToLevelFile(FILE* _File)
 
     MemoryByte += sizeof(UINT);
     MemoryByte += sizeof(UINT);
-
 
     return MemoryByte;
 }

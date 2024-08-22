@@ -293,9 +293,12 @@ PS_Std2D_Glow_Output PS_ParticleRender_Glow(GS_Output _in)
     return output;
 }
 
+#define MaskColor g_int_0
 #define LerpRatio g_float_1
 #define InitFireColor g_vec4_1
 #define EndFireColor g_vec4_2
+
+#define MtrlAlbedo g_vAlbedo
 
 float4 PS_ParticleRender_Fire(GS_Output _in) : SV_Target
 {
@@ -317,6 +320,13 @@ float4 PS_ParticleRender_Fire(GS_Output _in) : SV_Target
         }
         
         float4 vSampleColor = g_tex_0.Sample(g_LinearWrapSampler, _in.vUV);
+        // base color의 검은부분 색 변경
+        if (MaskColor)
+        {
+            float WhiteRatio = length(vSampleColor);
+            vSampleColor = vSampleColor * (WhiteRatio) + MtrlAlbedo * (1.f - WhiteRatio);
+        }
+        
         vOutColor.rgb *= vSampleColor.rgb;
         vOutColor.a = vSampleColor.a;
     }

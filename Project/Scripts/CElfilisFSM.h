@@ -41,6 +41,7 @@ class CElfilisFSM : public CFSMScript
 private:
     // FSM
     map<ElfilisStateGroup, vector<wstring>[2]> m_StateGroup; // ( StateGroup, {{PublicStates}, {PrivateStates}} )
+    map<wstring, UINT> m_StateSelectionCount[(int)ElfilisStateGroup::END];
     ElfilisStateGroup m_CurStateGroup;
     ElfilisPatternType m_Pattern;
     UINT m_Phase;
@@ -64,20 +65,26 @@ private:
     CGameObject* m_Weapon;
     CBoxCollider* m_Hitbox;
 
+    // materials
+    vector<Ptr<CMaterial>> m_listBodyMtrl;
+    vector<Ptr<CMaterial>> m_listWeaponMtrl;
+    vector<Ptr<CTexture>> m_listBodyEmissiveTex;
+    vector<Ptr<CTexture>> m_listWeaponEmissiveTex;
+    vector<Vec3> m_listBodyEmissive;
+    vector<Vec3> m_listWeaponEmissive;
+
     // map
     Vec3 m_MapFloorOffset;
     float m_MapSizeRadius;
 
 public:
+    virtual void begin() override;
+    virtual void tick() override;
+    virtual void OnCollisionEnter(CCollider* _OtherCollider) override;
+
     void ChangeStateGroup(ElfilisStateGroup _Group, const wstring& _State = L"");
     void RepeatState(wstring _State = L"");
     ElfilisStateGroup FindNextStateGroup() const;
-
-public:
-    virtual void begin() override;
-    virtual void tick() override;
-
-    virtual void OnCollisionEnter(CCollider* _OtherCollider) override;
 
 public:
     void ClearComboLevel() { m_ComboLevel = 0; }
@@ -85,6 +92,8 @@ public:
     void SetPattern(ElfilisPatternType _Pattern);
     void ProcPatternStep();
     void SetPhase(int _Phase) { m_Phase = _Phase; }
+    void ResetEmissive();
+    void AddEmissive(Vec3 _Color);
     void OnWeaponTrigger();
     void OffWeaponTrigger();
 

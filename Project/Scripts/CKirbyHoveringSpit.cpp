@@ -3,6 +3,12 @@
 
 CKirbyHoveringSpit::CKirbyHoveringSpit()
 {
+    m_SpitSmoke = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\SpitSmoke.pref");
+}
+
+CKirbyHoveringSpit::CKirbyHoveringSpit(const CKirbyHoveringSpit& _Origin)
+{
+    m_SpitSmoke = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\SpitSmoke.pref");
 }
 
 CKirbyHoveringSpit::~CKirbyHoveringSpit()
@@ -40,12 +46,13 @@ void CKirbyHoveringSpit::Enter()
     PLAYERCTRL->LockDirection();
     PLAYERCTRL->SetSpeed(PLAYERUNIT->GetInitInfo().Speed / 3.f);
 
+    PLAYERFSM->SetHovering(true);
     PLAYERFSM->SetDroppable(true);
 
-    Ptr<CPrefab> SpitSmoke = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\SpitSmoke.pref");
-    if (SpitSmoke.Get())
+    // spit
+    if (m_SpitSmoke != nullptr)
     {
-        CGameObject* SpitSmokeObj = SpitSmoke->Instantiate();
+        CGameObject* SpitSmokeObj = m_SpitSmoke->Instantiate();
 
         Vec3 PlayerPos = PLAYER->Transform()->GetWorldPos();
         Vec3 PlayerDir = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT);
@@ -66,10 +73,10 @@ void CKirbyHoveringSpit::Exit()
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyNormal));
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));
 
-    PLAYERFSM->SetHovering(false);
     PLAYERCTRL->UnlockJump();
     PLAYERCTRL->UnlockDirection();
     PLAYERCTRL->SetSpeed(PLAYERUNIT->GetInitInfo().Speed);
 
+    PLAYERFSM->SetHovering(false);
     PLAYERFSM->SetDroppable(false);
 }

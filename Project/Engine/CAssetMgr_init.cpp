@@ -556,6 +556,7 @@ void CAssetMgr::CreateDefaultGraphicsShader()
         pShader->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
 
         pShader->AddTexParam(TEX_0, "Texture");
+        pShader->AddScalarParam(INT_0, "Change BlackColor");
         pShader->AddScalarParam(FLOAT_1, "Lerp Ratio");
         pShader->AddScalarParam(VEC4_1, "Init Fire Color");
         pShader->AddScalarParam(VEC4_2, "End Fire Color");
