@@ -85,6 +85,8 @@ void CMorphoAtkG_Teleport_FireWall::Exit_Step()
 
 void CMorphoAtkG_Teleport_FireWall::Start()
 {
+    RotateToPlayer(DT * 0.75f);
+
     if (GetOwner()->Animator()->IsFinish())
     {
         ChangeStep(StateStep::Progress);
