@@ -348,8 +348,7 @@ void CElfilisAirArrow::Attack()
 
         if (m_AccTime > 1.f)
         {
-            GamePlayStatic::DetachObject(GetOwner());
-            m_Step = 0;
+            GamePlayStatic::DestroyGameObject(GetOwner());
         }
     }
 }

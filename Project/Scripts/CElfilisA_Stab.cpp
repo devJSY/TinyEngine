@@ -181,6 +181,13 @@ void CElfilisA_Stab::Start()
 
 void CElfilisA_Stab::Progress()
 {
+    Vec3 Veloc = GetOwner()->Rigidbody()->GetVelocity();
+    if (Veloc.Length() <= 100.f)
+    {
+        Veloc = Veloc.Normalize() * 100.f;
+        GetOwner()->Rigidbody()->SetVelocity(Veloc);
+    }
+
     if (ELFFSM->IsGround())
     {
         ChangeStep(StateStep::Wait);
