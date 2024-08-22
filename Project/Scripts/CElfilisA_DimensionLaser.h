@@ -6,16 +6,17 @@ class CElfilisA_DimensionLaser : public CBossState
 {
 private:
     Ptr<CPrefab> m_DimensionStartPref;
+    Ptr<CPrefab> m_DimensionPref;
     CGameObject* m_Dimension[5];
     CElfilisDimensionLaser* m_DimensionStart;
     CElfilisDimensionLaser* m_DimensionScript[5];
     int m_ProgressStep;
     float m_AccTime;
-    int m_bDimensionSpawn[5];
 
 public:
     virtual void tick() override;
     virtual void Enter() override;
+    virtual void Exit() override;
 
 private:
     virtual void Enter_Step() override;

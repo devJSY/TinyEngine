@@ -8,6 +8,7 @@ private:
 
 public:
     virtual void tick() override;
+    virtual void Exit() override;
 
 private:
     virtual void Enter_Step() override;

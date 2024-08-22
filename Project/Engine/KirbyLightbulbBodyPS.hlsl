@@ -62,11 +62,11 @@ PS_OUT_FORWARD main(PS_IN input)
         float3 B = normalize(cross(N, T));
         
         float3x3 TBN = float3x3(T, B, N);
-        normalWorld = float4(normalize(mul(normal, TBN)), 1.f);
+        normalWorld = normalize(mul(normal, TBN));
     }
     else
     {
-        normalWorld = float4(normalize(input.vNormalWorld), 1.f);
+        normalWorld = normalize(input.vNormalWorld);
     }
 
     float metallic = MtrlMetallic;
@@ -85,9 +85,9 @@ PS_OUT_FORWARD main(PS_IN input)
     
     // Lightbulb ±¤¿ø ¿¬»ê
     float3 InnerLighting = (float3) 0.f;
-    for (uint i = 0; i < g_LightCount; ++i)
+    for (uint j = 0; j < g_LightCount; ++j)
     {
-        tLightInfo LightInfo = g_Light[i];
+        tLightInfo LightInfo = g_Light[j];
         if (LIGHT_POINT == LightInfo.LightType)
         {
             float fDot = dot(normalWorld, pixelToEye);

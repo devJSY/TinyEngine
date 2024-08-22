@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "CElfilisUnit.h"
+#include "CBossMgr.h"
+#include "CElfilisFSM.h"
 
 CElfilisUnit::CElfilisUnit()
     : CUnitScript(ELFILISUNIT)
@@ -36,8 +38,6 @@ CElfilisUnit::~CElfilisUnit()
 {
 }
 
-#include "CBossMgr.h"
-#include "CElfilisFSM.h"
 void CElfilisUnit::tick()
 {
     CUnitScript::tick();

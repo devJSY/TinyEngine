@@ -1,0 +1,138 @@
+#include "pch.h"
+#include "CElfilisD_ResistFail.h"
+#include "CElfilisFSM.h"
+#include "CCameraController.h"
+#include "CFlowMgr_BossElfilis.h"
+#include "CStageClear.h"
+
+CElfilisD_ResistFail::CElfilisD_ResistFail()
+    : m_AccTime(0.f)
+    , m_bFrmEnter(true)
+{
+    m_StageClearPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\CStageGoal.pref");
+}
+
+CElfilisD_ResistFail::~CElfilisD_ResistFail()
+{
+}
+
+void CElfilisD_ResistFail::tick()
+{
+    switch (m_Step)
+    {
+    case StateStep::Start: {
+        Start();
+    }
+    break;
+    case StateStep::Progress: {
+        Progress();
+    }
+    break;
+    }
+}
+
+void CElfilisD_ResistFail::Enter_Step()
+{
+    switch (m_Step)
+    {
+    case StateStep::Start: {
+        GetOwner()->Animator()->Play(ANIMPREFIX("ResistFail"), false);
+        m_AccTime = 0.f;
+
+        // TimeScale & Camera Àá±ñ ¸ØÃã
+        CTimeMgr::GetInst()->SetTimeScale(0.5f, 0.f);
+        CAMERACTRL->Shake(0.3f, 30.f, 30.f);
+        CAMERACTRL->SetLock(true, 0.5f);
+    }
+    break;
+    case StateStep::Progress: {
+        m_AccTime = 0.f;
+        m_bFrmEnter = true;
+
+        // Flow Mgr
+        CBossMgr::GetElfilisFlowMgr()->ChangeFlowDeath();
+
+        //@CAMERA ¿¡ÇÇ¸®½º Å¸°Ù, ½Ã³×¸¶ºä
+        CAMERACTRL->SetMainTarget(BOSS);
+        CAMERACTRL->SetOffset(Vec3(0.f, 0.f, 0.f));
+        CAMERACTRL->SetTargetOffset(Vec3(0.f, 0.f, 0.f));
+        CAMERACTRL->SetSubTargetOffset(Vec3(0.f, 0.f, 0.f));
+
+        Vec3 BossDirFront = BOSS->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+        Vec3 BossDirRight = BOSS->Transform()->GetWorldDir(DIR_TYPE::RIGHT);
+        Vec3 CamDir = BossDirFront + BossDirRight;
+        CamDir.Normalize();
+        CamDir.y = tanf(40.f * XM_PI / 180.f);
+        CamDir.Normalize();
+
+        CAMERACTRL->SetLookDir(-CamDir);
+        CAMERACTRL->SetLookDist(400.f);
+        CAMERACTRL->Normal(true);
+    }
+    break;
+    }
+}
+
+void CElfilisD_ResistFail::Exit_Step()
+{
+    switch (m_Step)
+    {
+    case StateStep::Start:
+        break;
+    case StateStep::Progress: {
+        ELFFSM->ResetEmissive();
+
+        //@CAMERA Ä¿ºñÅ¸°Ù
+        CAMERACTRL->SetMainTarget(PLAYER);
+        CAMERACTRL->LoadInitSetting();
+        CAMERACTRL->ResetCamera();
+    }
+    break;
+    }
+}
+
+void CElfilisD_ResistFail::Start()
+{
+    m_AccTime += DT;
+
+    if (m_AccTime > 0.5f)
+    {
+        ChangeStep(StateStep::Progress);
+    }
+}
+
+void CElfilisD_ResistFail::Progress()
+{
+    m_AccTime += DT;
+
+    // emissive
+    float ProgressTime = 2.f;
+    float t1 = m_AccTime / ProgressTime;
+    float t2 = sinf(t1 * XM_PI / 2.f) * 2.f;
+    Vec3 Color = Vec3(t2, t2, t1);
+
+    ELFFSM->AddEmissive(Color);
+
+    if (m_AccTime > 3.f)
+    {
+        if (m_bFrmEnter)
+        {
+            if (m_StageClearPref != nullptr)
+            {
+                CGameObject* Star = m_StageClearPref->Instantiate();
+                Star->Transform()->SetWorldPos(GetOwner()->Transform()->GetWorldPos());
+
+                CStageClear* Script = Star->GetScript<CStageClear>();
+                Script->SetKirbyDance(true);
+                Script->SetKirbyPos(Vec3(0.f, 0.f, 100.f));
+                Script->SetKirbyDir(Vec3(0.f, -0.05f, 1.f).Normalize());
+
+                GamePlayStatic::SpawnGameObject(Star, LAYER_DYNAMIC);
+            }
+
+            //@EFFECT ÅÍÁö´Â ÆÄÆ¼Å¬
+        }
+
+        GetOwner()->SetActive(false);
+    }
+}

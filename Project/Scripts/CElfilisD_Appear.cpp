@@ -43,7 +43,7 @@ void CElfilisD_Appear::Exit()
 
     if (CBossMgr::GetElfilisFlowMgr())
     {
-        CBossMgr::GetElfilisFlowMgr()->SetFight();
+        CBossMgr::GetElfilisFlowMgr()->ChangeFlowFight();
     }
 }
 

@@ -11,10 +11,10 @@ CKirbyDropObjectStart::~CKirbyDropObjectStart()
 
 void CKirbyDropObjectStart::tick()
 {
-    PLAYERFSM->GetCurObject()->DropObjectStart();
+    PLAYERFSM->GetPrevObject()->DropObjectStart();
 
     // State Change
-    switch (PLAYERFSM->GetCurObjectIdx())
+    switch (PLAYERFSM->GetPrevObjectIdx())
     {
     case ObjectCopyType::CONE:
     case ObjectCopyType::VENDING_MACHINE:
@@ -31,13 +31,14 @@ void CKirbyDropObjectStart::tick()
 
 void CKirbyDropObjectStart::Enter()
 {
+    PLAYERFSM->ChangeObjectCopy(ObjectCopyType::NONE);
     PLAYERFSM->SetGlobalState(true);
     PLAYERFSM->SetInvincible(true);
-    PLAYERFSM->GetCurObject()->DropObjectStartEnter();
+    PLAYERFSM->GetPrevObject()->DropObjectStartEnter();
 }
 
 void CKirbyDropObjectStart::Exit()
 {
     PLAYERFSM->SetInvincible(false);
-    PLAYERFSM->GetCurObject()->DropObjectStartExit();
+    PLAYERFSM->GetPrevObject()->DropObjectStartExit();
 }

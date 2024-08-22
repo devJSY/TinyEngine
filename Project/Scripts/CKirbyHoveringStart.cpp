@@ -49,5 +49,6 @@ void CKirbyHoveringStart::Exit()
     PLAYERCTRL->SetGravity(m_SavedGravity);
     PLAYERCTRL->SetSpeed(PLAYERUNIT->GetInitInfo().Speed);
 
+    PLAYERFSM->SetHovering(false);
     PLAYERFSM->SetDroppable(false);
 }

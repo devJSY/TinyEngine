@@ -55,8 +55,6 @@ void CElfilisBigFSM::begin()
             m_vecMtrls.push_back(Weapon->MeshRender()->GetMaterial(i));
         }
     }
-    
-    GetOwner()->SetActive(false);
 }
 
 void CElfilisBigFSM::Activate()
@@ -72,7 +70,7 @@ void CElfilisBigFSM::Activate()
     Transform()->Slerp(NewDir, 1.f);
 
     GetOwner()->SetActive(true);
-    SetMtrlTransparent(0.6f);
+    SetMtrlTransparent(0.8f);
 
     ChangeState(L"IDLE");
 }

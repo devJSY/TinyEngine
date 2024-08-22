@@ -62,16 +62,8 @@ void CElfilisG_RayArrow::Enter_Step()
         {
             m_Arrows = m_ArrowsPref->Instantiate();
             m_ArrowSet = m_Arrows->GetScript<CElfilisArrowSetScript>();
-            if (m_ArrowSet)
-            {
-                m_ArrowSet->SetTarget(PLAYER);
-                GamePlayStatic::SpawnGameObject(m_Arrows, LAYER_MONSTERATK_TRIGGER);
-            }
-            else
-            {
-                delete m_Arrows;
-                m_Arrows = nullptr;
-            }
+            m_ArrowSet->SetTarget(PLAYER);
+            GamePlayStatic::SpawnGameObject(m_Arrows, LAYER_MONSTERATK_TRIGGER);
         }
     }
     break;
