@@ -155,9 +155,10 @@ struct tParticleModule
     float4 vFixedDirection; // 지정 방향
     
     // Spiral Velocity
-    int SpiralVelocityAxis; // 0 : X, 1 : Y, 2 : Z, 4 : -X, 5 : -Y, 6 : -Z
+    int SpiralVelocityAxis; // 0 : X, 1 : Y, 2 : Z
     float SpiralVelocityAxisSpeed; // 축방향 이동 속도
-    float SpiralVelocityRadiusSpeed; // 회전 궤적 확장 속도
+    float SpiralVelocityStartRadius; // 시작 궤적 반경
+    float SpiralVelocityEndRadius; // 종료 궤적 반경
     float SpiralVelocityRotateSpeed; // 회전 속도
 
     // Noise Force

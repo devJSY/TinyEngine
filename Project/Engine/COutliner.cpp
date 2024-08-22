@@ -2660,15 +2660,10 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
                     ImGui::RadioButton("Y", (int*)&Module.SpiralVelocityAxis, 1);
                     ImGui::SameLine();
                     ImGui::RadioButton("Z", (int*)&Module.SpiralVelocityAxis, 2);
-                    ImGui::SameLine();
-                    ImGui::RadioButton("-X", (int*)&Module.SpiralVelocityAxis, 3);
-                    ImGui::SameLine();
-                    ImGui::RadioButton("-Y", (int*)&Module.SpiralVelocityAxis, 4);
-                    ImGui::SameLine();
-                    ImGui::RadioButton("-Z", (int*)&Module.SpiralVelocityAxis, 5);
 
                     ImGui::DragFloat(ImGui_LabelPrefix("Spiral Velocity Axis Speed").c_str(), &Module.SpiralVelocityAxisSpeed, 0.1f);
-                    ImGui::DragFloat(ImGui_LabelPrefix("Spiral Velocity Radius Speed").c_str(), &Module.SpiralVelocityRadiusSpeed, 0.1f);
+                    ImGui::DragFloat(ImGui_LabelPrefix("Spiral Velocity Start Radius").c_str(), &Module.SpiralVelocityStartRadius, 0.1f);
+                    ImGui::DragFloat(ImGui_LabelPrefix("Spiral Velocity End Radius").c_str(), &Module.SpiralVelocityEndRadius, 0.1f);
                     ImGui::DragFloat(ImGui_LabelPrefix("Spiral Velocity Rotate Speed").c_str(), &Module.SpiralVelocityRotateSpeed, 0.1f);
 
                     ImGui::TreePop();

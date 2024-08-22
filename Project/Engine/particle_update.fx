@@ -101,7 +101,7 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
                 // 스폰 Mass 설정
                 Particle.Mass = (Module.MaxMass - Module.MinMass) * vRand1.b + Module.MinMass;
                               
-                Particle.Radius = 0.f;
+                Particle.Radius = Module.SpiralVelocityStartRadius;
                 
                 // Add VelocityModule
                 if (Module.arrModuleCheck[ADD_VELOCITY_MODULE])
@@ -171,45 +171,41 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
         // Normalize Age 계산
         Particle.NormalizeAge = Particle.Age / Particle.Life;
         
-                  
         // Spiral Velocity
         if (Module.arrModuleCheck[SPIRAL_VELOCITY_MODULE])
         {
+            // 생명 주기에 비례하여 반경 설정
+            Particle.Radius = lerp(Module.SpiralVelocityStartRadius, Module.SpiralVelocityEndRadius, Particle.NormalizeAge);
+                
             // X
             if (0 == Module.SpiralVelocityAxis)
             {
-
+                // 반경에 따라 회전
+                Particle.vWorldPos.y += cos(Particle.vWorldPos.x * Module.SpiralVelocityRotateSpeed + g_DT) * Particle.Radius;
+                Particle.vWorldPos.z += sin(Particle.vWorldPos.x * Module.SpiralVelocityRotateSpeed + g_DT) * Particle.Radius;
+                
+                // 축 방향 이동
+                Particle.vWorldPos.x += g_DT * Module.SpiralVelocityAxisSpeed;
             }
             // Y
             else if (1 == Module.SpiralVelocityAxis)
             {
-                    
+                // 반경에 따라 회전
+                Particle.vWorldPos.x += cos(Particle.vWorldPos.y * Module.SpiralVelocityRotateSpeed + g_DT) * Particle.Radius;
+                Particle.vWorldPos.z += sin(Particle.vWorldPos.y * Module.SpiralVelocityRotateSpeed + g_DT) * Particle.Radius;
+                
+                // 축 방향 이동
+                Particle.vWorldPos.y += g_DT * Module.SpiralVelocityAxisSpeed;
             }
             // Z
             else if (2 == Module.SpiralVelocityAxis)
             {
-                Particle.Radius += g_DT * Module.SpiralVelocityRadiusSpeed;
+                // 반경에 따라 회전
+                Particle.vWorldPos.x += cos(Particle.vWorldPos.z * Module.SpiralVelocityRotateSpeed + g_DT) * Particle.Radius;
+                Particle.vWorldPos.y += sin(Particle.vWorldPos.z * Module.SpiralVelocityRotateSpeed + g_DT) * Particle.Radius;
                 
-                // 코사인과 사인 함수로 원형 경로를 따라 이동
-                Particle.vWorldPos.x += cos(Particle.vWorldPos.y * Module.SpiralVelocityRotateSpeed + g_DT) * Particle.Radius;
-                Particle.vWorldPos.z += sin(Particle.vWorldPos.y * Module.SpiralVelocityRotateSpeed + g_DT) * Particle.Radius;
-                
-                Particle.vWorldPos.y += g_DT * Module.SpiralVelocityAxisSpeed;
-            }
-            // -X
-            else if (3 == Module.SpiralVelocityAxis)
-            {
-                    
-            }
-            // -Y
-            else if (4 == Module.SpiralVelocityAxis)
-            {
-                    
-            }
-            // -Z
-            else if (5 == Module.SpiralVelocityAxis)
-            {
-                    
+                // 축 방향 이동
+                Particle.vWorldPos.z += g_DT * Module.SpiralVelocityAxisSpeed;
             }
         }
         else
