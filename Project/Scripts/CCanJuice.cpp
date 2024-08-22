@@ -107,7 +107,7 @@ void CCanJuice::OnTriggerEnter(CCollider* _OtherCollider)
 
         UnitHit JuiceHit = {DAMAGE_TYPE::NORMAL, HitDir, m_Damage, 0.f, 0.f};
 
-        _OtherCollider->GetOwner()->GetScript<CUnitScript>()->GetDamage(JuiceHit);
+        _OtherCollider->GetOwner()->GetParent()->GetScript<CUnitScript>()->GetDamage(JuiceHit);
 
         Ptr<CPrefab> CanAttackSmokeSpawner = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\(M)ImpactSmokeSpanwer.pref");
         CGameObject* Spawner = CanAttackSmokeSpawner->Instantiate();
