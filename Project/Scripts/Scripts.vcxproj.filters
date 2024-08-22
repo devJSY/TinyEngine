@@ -2801,9 +2801,6 @@
     <Filter Include="State\MorphoState\AtkA\DoubleSword\Division">
       <UniqueIdentifier>{89aa4661-afd1-45f3-872c-be3b05de335c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Gimmik\ChangeAlpha2">
-      <UniqueIdentifier>{56ce7cc3-a157-4199-82db-2e555903c3f1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="State\MorphoState\MoveGround\TeleportCombo">
       <UniqueIdentifier>{a74d43f7-3ea5-4560-b1af-fe178405585c}</UniqueIdentifier>
     </Filter>

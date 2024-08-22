@@ -19,6 +19,8 @@ void CBossDropStarScript::begin()
     m_Light = GetOwner()->GetChildObject(L"Point Light")->Light();
     m_AccTime = 0.f;
     m_OriginScale = GetOwner()->Transform()->GetWorldScale();
+
+    Rigidbody()->AddForce(Vec3(0.f, 30.f, 0.f), ForceMode::Impulse);
 }
 
 void CBossDropStarScript::tick()
@@ -41,7 +43,7 @@ void CBossDropStarScript::tick()
     float Ratio = m_LightAccTime / period;
     float Delta1 = (sin(XM_PI * 2.f * Ratio + XM_PI / 2.f) + 1.f) / 2.f; // 0~1·Î ¸ÅÇÎ
     float Delta2 = 1 - Delta1;
-    Vec3 LightColor = Vec3(300.f, 100.f, 0.f) * Delta1 + Vec3(300.f, 300.f, 0.f) * Delta2;
+    Vec3 LightColor = Vec3(300.f, 100.f, 0.f) * Delta1 + Vec3(400.f, 400.f, 0.f) * Delta2;
     LightColor /= 255.f;
 
     m_Light->SetLightRadiance(LightColor);
@@ -49,6 +51,7 @@ void CBossDropStarScript::tick()
     // destroy
     if (m_AccTime > m_LifeTime)
     {
+        m_Light->SetLightRadiance(Vec3());
         GamePlayStatic::DestroyGameObject(GetOwner());
     }
 
