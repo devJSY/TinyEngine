@@ -35,6 +35,7 @@ void CKirbyDeath::tick()
 
         // Camera Á¶ÀÛ
         CCameraController* CamCtrl = CAMERACTRL;
+        CamCtrl->Normal(false);
         CamCtrl->SetOffset(Vec3(0.f, 0.f, 0));
         CamCtrl->SetLookDir(Vec3(0.f, -1.f, 0.f));
         CamCtrl->SetLookDist(100.f);

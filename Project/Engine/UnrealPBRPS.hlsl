@@ -70,8 +70,7 @@ PS_OUT_FORWARD main(PS_IN input)
     }
     
     // Rim
-    float3 toEye = normalize(g_eyeWorld - input.vPosWorld);
-    float3 RimColor = RimLight(input.vNormalWorld, toEye, RIM_COLOR.rgb, RIM_POWER);
+    float3 RimColor = RimLight(input.vNormalWorld, pixelToEye, RIM_COLOR.rgb, RIM_POWER);
     
     PS_OUT_FORWARD output;
     output.vColor = float4(ambientLighting + directLighting + emission + RimColor, 1.0);

@@ -23,7 +23,7 @@ void CKirbyStageClear::tick()
         PLAYER->Animator()->SetPlay(false);
 
         CCameraController* CamCtrl = CAMERACTRL;
-        CamCtrl->ResetCamera();
+        CamCtrl->Normal(true);
         CamCtrl->SetOffset(Vec3(0.f, -5.f, 0));
         //CamCtrl->SetLookDir(Vec3(0.f, -0.331f, 0.944f));
         CamCtrl->RotationLookDirRightAxis(15.f);

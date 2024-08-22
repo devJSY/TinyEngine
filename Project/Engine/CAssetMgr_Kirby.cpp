@@ -41,7 +41,7 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
         pShader->SetDSType(DS_TYPE::LESS);
         pShader->SetBSType(BS_TYPE::DEFAULT);
 
-        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEFERRED);
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_OPAQUE);
 
         pShader->AddTexParam(TEX_0, "Eye Base Texture");
         pShader->AddTexParam(TEX_1, "Eye Mask Texture");

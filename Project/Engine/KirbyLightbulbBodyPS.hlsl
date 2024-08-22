@@ -13,10 +13,11 @@
 #define MtrlRoughness 0.95f
 #define MtrlEmission g_vEmission
 
-PS_OUT_DEFERRED main(PS_IN input)
+PS_OUT_FORWARD main(PS_IN input)
 {
-    PS_OUT_DEFERRED output = (PS_OUT_DEFERRED) 0.f;
-
+    float3 pixelToEye = normalize(g_eyeWorld - input.vPosWorld);
+    float3 normalWorld = (float3) 0.f;
+    
     float3 albedo = float3(1.f, 0.18f, 0.37f);
     float4 eyeBase = g_btex_0 ? Albedo0Tex.Sample(g_LinearClampSampler, input.vUV0) : (float4) 0.f;
     float4 eyeMask = g_btex_1 ? Albedo1Tex.Sample(g_LinearClampSampler, input.vUV0) : (float4) 0.f;
@@ -51,7 +52,7 @@ PS_OUT_DEFERRED main(PS_IN input)
     // normal
     if (dot(eyeBase.rgb, float3(1.0, 1.0, 1.0)) / 3.f > 0.99f)
     {
-        float3 normalWorld = normalize(input.vNormalWorld);
+        normalWorld = normalize(input.vNormalWorld);
         float3 normal = eyeNormal.rgb;
         normal.b = 1.f;
         normal = 2.0 * normal - 1.0;
@@ -61,25 +62,53 @@ PS_OUT_DEFERRED main(PS_IN input)
         float3 B = normalize(cross(N, T));
         
         float3x3 TBN = float3x3(T, B, N);
-        output.vNormal = float4(normalize(mul(normal, TBN)), 1.f);
+        normalWorld = float4(normalize(mul(normal, TBN)), 1.f);
     }
     else
     {
-        output.vNormal = float4(normalize(input.vNormalWorld), 1.f);
+        normalWorld = float4(normalize(input.vNormalWorld), 1.f);
     }
-    
+
     float metallic = MtrlMetallic;
     float roughness = MtrlRoughness;
     float ao = SSAOTex.Sample(g_LinearWrapSampler, input.vUV0).r;
     float3 emission = MtrlEmission.rgb;
-
-    output.vColor = float4(albedo, 1.f);
-    output.vPosition = float4(input.vPosWorld, 1.f);
-    output.vTangent = float4(input.vTangentWorld, 1.f);
-    output.vBitangent = float4(normalize(cross(input.vNormalWorld.xyz, input.vTangentWorld.xyz)), 1.f);
-    output.vEmissive = float4(emission, 1.f);
-    output.vMRA = float4(metallic, roughness, ao, 1.f);
     
+    float3 ambientLighting = AmbientLightingByIBL(albedo, normalWorld, pixelToEye, ao, metallic, roughness);
+    
+    float3 directLighting = float3(0, 0, 0);
+
+    for (uint i = 0; i < g_LightCount; ++i)
+    {
+        DirectLighting(i, input.vPosWorld, normalWorld, albedo, ao, metallic, roughness, directLighting);
+    }
+    
+    // Lightbulb ±¤¿ø ¿¬»ê
+    float3 InnerLighting = (float3) 0.f;
+    for (uint i = 0; i < g_LightCount; ++i)
+    {
+        tLightInfo LightInfo = g_Light[i];
+        if (LIGHT_POINT == LightInfo.LightType)
+        {
+            float fDot = dot(normalWorld, pixelToEye);
+            fDot = saturate(smoothstep(0.0, 1.0, fDot)); // saturate() 0 ~ 1 Climp 
+            
+            float3 lightVec = LightInfo.vWorldPos - input.vPosWorld;
+            float lightDist = length(lightVec);
+            lightVec /= lightDist;
+            
+            // Distance attenuation
+            float att = saturate((LightInfo.fallOffEnd - lightDist)
+                         / (LightInfo.fallOffEnd - LightInfo.fallOffStart));
+    
+            InnerLighting += albedo * LightInfo.vRadiance.rgb * fDot * att;
+        }
+    }
+    
+    PS_OUT_FORWARD output;
+    output.vColor = float4(ambientLighting + directLighting + InnerLighting + emission, 1.0);
+    output.vColor = clamp(output.vColor, 0.0, 1000.0);
+
     output.vMotionVector.xy = input.vMotionVector.xy; // Vector
     output.vMotionVector.z = 1.f;
     output.vMotionVector.w = input.vMotionVector.z / input.vMotionVector.w; // Depth
