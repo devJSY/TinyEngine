@@ -28,6 +28,8 @@ CElfilisFSM::CElfilisFSM()
         m_StateGroup[(ElfilisStateGroup)i][0] = vector<wstring>();
         m_StateGroup[(ElfilisStateGroup)i][1] = vector<wstring>();
     }
+
+    m_DropStarPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\BossDropStar.pref");
 }
 
 CElfilisFSM::CElfilisFSM(const CElfilisFSM& _Origin)
@@ -55,17 +57,7 @@ CElfilisFSM::CElfilisFSM(const CElfilisFSM& _Origin)
         m_StateGroup[(ElfilisStateGroup)it.first][1] = vector<wstring>();
     }
 
-    // for (auto it : m_StateGroup)
-    //{
-    //     for (auto state : it.second[0])
-    //     {
-    //         m_StateGroup[it.first][0].push_back(state);
-    //     }
-    //     for (auto state : it.second[1])
-    //     {
-    //         m_StateGroup[it.first][1].push_back(state);
-    //     }
-    // }
+    m_DropStarPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\BossDropStar.pref");
 }
 
 CElfilisFSM::~CElfilisFSM()
@@ -327,6 +319,16 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup() const
     return ElfilisStateGroup::END;
 }
 
+void CElfilisFSM::SpawnDropStar(Vec3 _Pos)
+{
+    if (m_DropStarPref == nullptr)
+        return;
+
+    CGameObject* pDropStar = m_DropStarPref->Instantiate();
+    pDropStar->Transform()->SetWorldPos(_Pos);
+    GamePlayStatic::SpawnGameObject(pDropStar, LAYER_DYNAMIC);
+}
+
 #include "CElfilisD_Appear.h"
 #include "CElfilisD_Damage.h"
 #include "CElfilisD_Jump.h"
@@ -476,7 +478,7 @@ void CElfilisFSM::tick()
     {
         Rigidbody()->SetVelocity(Vec3());
         Rigidbody()->SetAngularVelocity(Vec3());
-        ChangeStateGroup(ElfilisStateGroup::GroundAtkFar, L"GROUND_ATK_RAYARROW");
+        ChangeStateGroup(ElfilisStateGroup::AirSmallAtk2, L"AIR_ATKS_DIMENSIONLASER");
     }
 }
 

@@ -167,17 +167,25 @@ void CElfilisA_DimensionLaser::Progress()
         // 게이트 순차 생성 : 이전 게이트에서 레이저 발사가 시작됐다면 다음 게이트 오픈
         for (int i = 1; i < 5; i++)
         {
-            if (!m_Dimension[i] && m_DimensionScript[i - 1]->IsLaserStart())
+            if (!m_Dimension[i] && m_Dimension[i - 1] && m_DimensionScript[i - 1]->IsLaserStart())
             {
                 SpawnDimension(i);
             }
         }
 
         // 게이트 생성 종료 : 마지막 게이트까지 레이저 발사가 진행됐다면 중앙 게이트 레이저 종료
-        if (m_DimensionScript[4]->IsLaserEnd())
+        if (m_Dimension[4] && m_DimensionScript[4]->IsLaserEnd())
         {
             m_DimensionStart->PlayEndLaser();
             m_ProgressStep = 2;
+
+            Vec3 CenterPos = m_DimensionScript[4]->Transform()->GetWorldPos();
+            Vec3 RightDir = m_DimensionScript[4]->Transform()->GetWorldDir(DIR_TYPE::RIGHT);
+
+            for (int i = 0; i < 5; ++i)
+            {
+                ELFFSM->SpawnDropStar(CenterPos + RightDir * (-400.f + 200.f * i));
+            }
         }
     }
     break;

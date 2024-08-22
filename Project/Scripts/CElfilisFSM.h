@@ -76,6 +76,7 @@ private:
     // map
     Vec3 m_MapFloorOffset;
     float m_MapSizeRadius;
+    Ptr<CPrefab> m_DropStarPref;
 
 public:
     virtual void begin() override;
@@ -85,6 +86,7 @@ public:
     void ChangeStateGroup(ElfilisStateGroup _Group, const wstring& _State = L"");
     void RepeatState(wstring _State = L"");
     ElfilisStateGroup FindNextStateGroup() const;
+    void SpawnDropStar(Vec3 _Pos);
 
 public:
     void ClearComboLevel() { m_ComboLevel = 0; }
