@@ -940,6 +940,9 @@
     <ClInclude Include="CElfilisD_ResistSuccess.h">
       <Filter>State\ElfilisState\Demo_Death\1. ResistSuccess</Filter>
     </ClInclude>
+    <ClInclude Include="CBossDropStarScript.h">
+      <Filter>Scripts\Gimmik\BossDropStar</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1889,6 +1892,9 @@
     </ClCompile>
     <ClCompile Include="CElfilisD_ResistSuccess.cpp">
       <Filter>State\ElfilisState\Demo_Death\1. ResistSuccess</Filter>
+    </ClCompile>
+    <ClCompile Include="CBossDropStarScript.cpp">
+      <Filter>Scripts\Gimmik\BossDropStar</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2986,6 +2992,9 @@
     </Filter>
     <Filter Include="State\ElfilisState\Demo_Death\1. ResistFail">
       <UniqueIdentifier>{5c1b69cf-cc80-4c9b-a518-837ddd0a5c00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\BossDropStar">
+      <UniqueIdentifier>{b4e00075-1777-4b85-a3a2-76c54ae2eabf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
