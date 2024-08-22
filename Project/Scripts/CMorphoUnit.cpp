@@ -23,6 +23,8 @@ CMorphoUnit::~CMorphoUnit()
 
 void CMorphoUnit::tick()
 {
+    CUnitScript::tick();
+
     if (m_CurInfo.HP <= 0.f)
     {
         MRPFSM->ChangeStateGroup(MorphoStateGroup::DEMO, L"DEMO_DEATH");

@@ -345,8 +345,9 @@ void CLevelFlowMgr::LevelEnd()
     if (!m_pClearUI)
         TrunOffStageClearUI();
 
-    // Player UI
+    // HP UI Turn Off
     TurnOffPlayerHP();
+    TurnOffBossHP();
 
     m_bIsChangedLevel = true;
     m_bFadeEffect = true;
@@ -635,6 +636,16 @@ void CLevelFlowMgr::LevelLoading()
         m_bLoadingUIWait = true;
         m_pLoadingUI->SetActive(true);
     }
+}
+
+void CLevelFlowMgr::SetUIDOFEffect()
+{
+    static Ptr<CMaterial> pDOFMtrl = CAssetMgr::GetInst()->Load<CMaterial>(L"DOFMtrl");
+
+    pDOFMtrl->SetScalarParam(VEC2_0, Vec2(-0.5f, -0.5f));
+
+    pDOFMtrl->SetScalarParam(FLOAT_0, 1.f);
+    pDOFMtrl->SetScalarParam(FLOAT_0, 3000.f);
 }
 
 void CLevelFlowMgr::ResetFadeEffectTimer()

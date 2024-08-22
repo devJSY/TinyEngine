@@ -102,10 +102,11 @@ public:
     void TrunOffStageClearUI();
     void TurnOnStageclearUI();
 
+    void LevelLoading();
     void SetEnterTime(const float _fTime) { m_fFadeInWaitTime = _fTime; }
 
-    void LevelLoading();
-
+    void SetUIDOFEffect();
+    
 public:
     void ResetFadeEffectTimer();
 

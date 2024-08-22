@@ -35,7 +35,7 @@ public:
 
     float GetAccTime() const { return m_fAccTime; }
 
-    void SetLoopUI(const bool _flag) { m_bLoopUI = m_bLoopUI; }
+    void SetLoopUI(const bool _flag) { m_bLoopUI = _flag; }
     bool GetLoopUI() const { return m_bLoopUI; }
 
 public:

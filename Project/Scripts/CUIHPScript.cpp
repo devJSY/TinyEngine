@@ -9,12 +9,15 @@
 
 CUIHPScript::CUIHPScript()
     : CScript(UIHPSCRIPT)
+    , m_vDamageTask{}
+    , m_vHealTask{}
     , m_TargetName{}
     , m_pRenderer(nullptr)
     , m_pUnitScript(nullptr)
+    , m_pNameObj(nullptr)
     , m_fAccTime(0.f)
     , m_fComboTime(2.f)
-    , m_bIsCombo(false)
+    , m_fHealingTime(2.f)
     , m_bIsScaling(false)
     , m_fDescSpeed(10.f)
     , m_vDecreaseColor{}
@@ -22,8 +25,12 @@ CUIHPScript::CUIHPScript()
     , m_fMaxHP(0.f)
     , m_fCurHP(0.f)
     , m_fPrevHP(0.f)
+    , m_fCurPrevHP(0.f)
     , m_pFSMScript(nullptr)
-    , m_bIsEnter(true)
+    , m_iEnterTickCount(0)
+    , m_bDamaged(false)
+    , m_bHpHealed(false)
+    , m_bIsHealedScaling(false)
 {
     AddScriptParam(SCRIPT_PARAM::STRING, &m_TargetName, "TargetName");
     AddScriptParam(SCRIPT_PARAM::VEC4, &m_vBasicColor, "Basic Color");
@@ -34,21 +41,28 @@ CUIHPScript::CUIHPScript()
 
 CUIHPScript::CUIHPScript(const CUIHPScript& Origin)
     : CScript(Origin)
+    , m_vDamageTask{}
+    , m_vHealTask{}
     , m_TargetName{}
     , m_pRenderer(nullptr)
     , m_pUnitScript(nullptr)
+    , m_pNameObj(nullptr)
     , m_fAccTime(0.f)
+    , m_fHealingTime(Origin.m_fHealingTime)
     , m_fComboTime(Origin.m_fComboTime)
-    , m_bIsCombo(false)
     , m_bIsScaling(false)
-    , m_fDescSpeed(Origin.m_fDescSpeed)
+    , m_fDescSpeed(10.f)
     , m_vDecreaseColor(Origin.m_vDecreaseColor)
     , m_vBasicColor(Origin.m_vBasicColor)
     , m_fMaxHP(0.f)
     , m_fCurHP(0.f)
     , m_fPrevHP(0.f)
+    , m_fCurPrevHP(0.f)
     , m_pFSMScript(nullptr)
-    , m_bIsEnter(true)
+    , m_iEnterTickCount(0)
+    , m_bDamaged(false)
+    , m_bHpHealed(false)
+    , m_bIsHealedScaling(false)
 {
     AddScriptParam(SCRIPT_PARAM::STRING, &m_TargetName, "TargetName");
     AddScriptParam(SCRIPT_PARAM::VEC4, &m_vBasicColor, "Basic Color");
@@ -72,7 +86,6 @@ void CUIHPScript::SetPlayer()
     {
         m_pUnitScript = PLAYER->GetScript<CUnitScript>();
         m_pFSMScript = PLAYER->GetScript<CKirbyFSM>();
-        m_bIsEnter = true;
     }
 }
 
@@ -83,125 +96,61 @@ void CUIHPScript::tick()
 
     SetInitInfo();
 
-    switch (m_eState)
+    if (m_iEnterTickCount <= 1)
     {
-    case UnitHPState::Damaged: {
-        Damaged();
+        m_iEnterTickCount++;
+        return;
     }
-    break;
-    case UnitHPState::Healing: {
-        //Healing();
+
+    // 데미지가 달면 현재 체력과 달라짐
+    float fCheckHP = m_fCurHP;
+    m_fCurHP = m_pUnitScript->GetCurInfo().HP;
+
+    // 뭐든 현재 체력의 변화가 생김
+    if (abs(fCheckHP - m_fCurHP) >= 0.1f)
+    {
+        // 체력의 변화가 생겼다는 것을 감지
+        // 데미지를 받음
+        if (fCheckHP - m_fCurHP > 0.f)
+        {
+            m_vDamageTask.push_back({m_fCurHP, fCheckHP});
+            m_bDamaged = true;
+        }
+        // 체력을 회복함
+        else
+        {
+            m_vHealTask.push_back({m_fCurHP, fCheckHP});
+            m_bHpHealed = true;
+        }
     }
-    break;
-    case UnitHPState::Wait: {
-        Wait();
+
+    if (m_bDamaged)
+    {
+        HPDamageTask();
     }
-    break;
-    case UnitHPState::End:
-        break;
-    default:
-        break;
+
+    if (m_bHpHealed)
+    {
+        HealScaling();
+        HPHealTask();
+    }
+
+    if (m_bIsScaling)
+    {
+        Scaling();
+    }
+
+    if (m_bIsHealedScaling)
+    {
+        CaculateHealShading();
     }
 
     SwitchKirbyName();
 }
 
-void CUIHPScript::ChangeState(UnitHPState _eState)
-{
-    ExitState();
-    m_eState = _eState;
-    EnterState();
-}
-
-void CUIHPScript::EnterState()
-{
-    switch (m_eState)
-    {
-    case UnitHPState::Damaged:
-        break;
-    case UnitHPState::Healing: {
-        if (nullptr != m_pUnitScript)
-            m_fPrevHP = m_pUnitScript->GetCurInfo().HP;
-    }
-    break;
-    case UnitHPState::Wait:
-        break;
-    case UnitHPState::End:
-        break;
-    default:
-        break;
-    }
-}
-
-void CUIHPScript::ExitState()
-{
-}
-
-void CUIHPScript::Damaged()
-{
-    if (!m_pUnitScript)
-        return;
-
-    m_fCurHP = m_pUnitScript->GetCurInfo().HP;
-
-    if (m_bIsCombo)
-    {
-        CaculateShading();
-    }
-
-    bool _IsCombo = IsCombo();
-
-    if (!_IsCombo && m_bIsCombo)
-    {
-        m_bIsScaling = true;
-    }
-
-    if (m_bIsScaling)
-        Scaling();
-
-   /* float fPrevCurhp = m_fCurHP;
-    float m_fCurHP = m_pUnitScript->GetCurInfo().HP;
-    if (fPrevCurhp < m_fCurHP)
-    {
-        ChangeState(UnitHPState::Healing);
-    }*/
-}
-
-void CUIHPScript::Healing()
-{
-    Scaling();
-
-    CaculateHealingShading();
-
-    float fCheckHP = m_fCurHP;
-    m_fCurHP = m_pUnitScript->GetCurInfo().HP;
-
-    if (m_fCurHP < fCheckHP)
-    {
-        ChangeState(UnitHPState::Damaged);
-    }
-}
-
-void CUIHPScript::Wait()
-{
-    if (nullptr == m_pUnitScript)
-        return;
-
-    float fPrevCurhp = m_fCurHP;
-    float m_fCurHP = m_pUnitScript->GetCurInfo().HP;
-    if (fPrevCurhp < m_fCurHP)
-    {
-        ChangeState(UnitHPState::Healing);
-    }
-    else if (m_fCurHP < fPrevCurhp)
-    {
-        ChangeState(UnitHPState::Damaged);
-    }
-}
-
 void CUIHPScript::SetInitInfo()
 {
-    if (!m_bIsEnter)
+    if (1 != m_iEnterTickCount)
         return;
 
     m_pNameObj = GetOwner()->GetChildObject(L"UI_PlayerName");
@@ -209,49 +158,56 @@ void CUIHPScript::SetInitInfo()
     if (!m_pUnitScript)
         return;
 
+    m_fMaxHP = PLAYER->GetScript<CUnitScript>()->GetCurInfo().MAXHP;
+    m_fCurPrevHP = m_fPrevHP = m_fCurHP = PLAYER->GetScript<CUnitScript>()->GetCurInfo().HP;
+
     m_pRenderer = GetOwner()->GetComponent<CMeshRender>();
     m_pRenderer->GetMaterial(0)->SetScalarParam(FLOAT_0, m_fCurHP / m_fMaxHP);
     m_pRenderer->GetMaterial(0)->SetScalarParam(FLOAT_1, m_fPrevHP / m_fMaxHP);
     m_pRenderer->GetMaterial(0)->SetScalarParam(VEC4_0, m_vBasicColor);
     m_pRenderer->GetMaterial(0)->SetScalarParam(VEC4_1, m_vDecreaseColor);
-
-    m_fMaxHP = PLAYER->GetScript<CUnitScript>()->GetCurInfo().MAXHP;
-    m_fPrevHP = m_fCurHP = PLAYER->GetScript<CUnitScript>()->GetCurInfo().HP;
-
-    m_bIsEnter = false;
 }
 
 void CUIHPScript::CaculateShading()
 {
     float _fShadingRatio = m_fCurHP / m_fMaxHP;
+    m_pRenderer->GetMaterial(0)->SetScalarParam(VEC4_1, Vec4(255.f, 255.f, 0.f, 255.f) / 255.f);
     m_pRenderer->GetMaterial(0)->SetScalarParam(FLOAT_0, _fShadingRatio);
 }
 
-void CUIHPScript::CaculateHealingShading()
+void CUIHPScript::CaculateHealShading()
 {
-    m_fCurPrevHP += m_fDescSpeed * DT;
-    float _fShadingRatio = m_fCurPrevHP / m_fMaxHP;
+    float _fShadingRatio = m_fPrevHP / m_fMaxHP;
     m_pRenderer->GetMaterial(0)->SetScalarParam(FLOAT_0, _fShadingRatio);
+    m_bIsHealedScaling = false;
+}
+
+void CUIHPScript::HealScaling()
+{
+    m_fPrevHP += CTimeMgr::GetInst()->GetDeltaTime() * m_fDescSpeed;
+
+    if (m_fCurHP <= m_fPrevHP)
+    {
+        m_fPrevHP = m_fCurHP;
+        m_bIsHealedScaling = false;
+    }
+    m_pRenderer->GetMaterial(0)->SetScalarParam(VEC4_1, Vec4(255.f, 182.f, 206.f, 255.f) / 255.f);
+    float _fScalingRatio = m_fPrevHP / m_fMaxHP;
+    m_pRenderer->GetMaterial(0)->SetScalarParam(FLOAT_1, _fScalingRatio);
 }
 
 void CUIHPScript::Scaling()
 {
-    m_bIsCombo = false;
-
     m_fPrevHP -= CTimeMgr::GetInst()->GetDeltaTime() * m_fDescSpeed;
 
     if (m_fCurHP >= m_fPrevHP)
     {
-        m_fPrevHP = m_fCurHP;
+        m_fCurPrevHP = m_fPrevHP = m_fCurHP;
+        m_bIsScaling = false;
     }
 
     float _fScalingRatio = m_fPrevHP / m_fMaxHP;
     m_pRenderer->GetMaterial(0)->SetScalarParam(FLOAT_1, _fScalingRatio);
-
-    if (m_fCurHP >= m_fPrevHP)
-    {
-        m_bIsScaling = false;
-    }
 }
 
 void CUIHPScript::SwitchKirbyName()
@@ -362,31 +318,56 @@ void CUIHPScript::SwitchKirbyName()
     }
 }
 
-bool CUIHPScript::IsCombo()
+void CUIHPScript::HPDamageTask()
 {
-    bool _IsCombo = m_pUnitScript->IsGetDamage();
-
-    if (_IsCombo)
+    for (size_t i = 0; i < m_vDamageTask.size(); ++i)
     {
-        if (!m_bIsCombo)
+        // m_fPrevHP는 시작 할 때 현재 HP를 복사한다.
+        if (m_fCurPrevHP > m_vDamageTask[i].fCurHP)
         {
-            m_bIsCombo = true;
-            m_bIsScaling = false;
+            m_fAccTime = 0.f;
+            m_fCurPrevHP = m_vDamageTask[i].fCurHP;
+        }
+
+        if (m_fPrevHP < m_vDamageTask[i].fPrevHP)
+        {
+            m_fPrevHP = m_vDamageTask[i].fPrevHP;
         }
     }
 
-    _IsCombo == true ? m_fAccTime = 0.f : m_fAccTime += CTimeMgr::GetInst()->GetDeltaTime();
-
+    m_fAccTime += DT;
     if (m_fAccTime >= m_fComboTime)
     {
-        _IsCombo = false;
-    }
-    else
-    {
-        _IsCombo = true;
+        m_fAccTime = 0.f;
+        m_bDamaged = false;
+        m_bIsScaling = true;
+        m_vDamageTask.clear();
     }
 
-    return _IsCombo;
+    CaculateShading();
+}
+
+void CUIHPScript::HPHealTask()
+{
+    for (size_t i = 0; i < m_vHealTask.size(); ++i)
+    {
+        // m_fPrevHP는 시작 할 때 현재 HP를 복사한다.
+        if (m_fCurPrevHP < m_vHealTask[i].fCurHP)
+        {
+            m_fAccTime = 0.f;
+            m_fCurPrevHP = m_vHealTask[i].fCurHP;
+        }
+    }
+
+    m_fAccTime += DT;
+    if (m_fAccTime >= m_fComboTime)
+    {
+        m_fAccTime = 0.f;
+        m_bHpHealed = false;
+        m_bIsScaling = false;
+        m_bIsHealedScaling = true;
+        m_vHealTask.clear();
+    }
 }
 
 UINT CUIHPScript::SaveToLevelFile(FILE* _File)

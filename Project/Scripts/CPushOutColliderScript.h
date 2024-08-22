@@ -44,7 +44,7 @@ private:
     void Move(Vec3 _vDir, float _fSpeed);
 
 private:
-    virtual void OnTriggerEnter(CCollider* _OtherCollider) override;
+    virtual void OnTriggerStay(CCollider* _OtherCollider) override;
     virtual void OnTriggerExit(CCollider* _OtherCollider) override;
 
 public:

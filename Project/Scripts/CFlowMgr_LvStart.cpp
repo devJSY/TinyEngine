@@ -26,11 +26,12 @@ void CFlowMgr_LvStart::begin()
     SetUILevel(true);
 
     SetStartLevel(false);
-    
+
     LevelStart();
 
     OffDimensionFade();
     SetToneMappingParam(false);
+    SetUIDOFEffect();
 }
 
 void CFlowMgr_LvStart::LevelStart()
