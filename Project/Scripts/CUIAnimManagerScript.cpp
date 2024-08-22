@@ -6,6 +6,7 @@
 CUIAnimManagerScript::CUIAnimManagerScript()
     : CScript(UIANIMMANAGERSCRIPT)
     , m_vAnimScript{}
+    , m_fAccTime(0.f)
 {
 }
 
@@ -30,11 +31,26 @@ void CUIAnimManagerScript::begin()
 
 void CUIAnimManagerScript::tick()
 {
+    bool bFlag = false;
     for (size_t i = 0; i < m_vAnimScript.size(); i++)
     {
-        if (nullptr != m_vAnimScript[i])
+        if (UIAnimState::End != m_vAnimScript[i]->GetUIAnimState() && !m_vAnimScript[i]->GetLoopUI())
         {
-            m_vAnimScript[i]->tick();
+            bFlag = true;
+        }
+    }
+
+    if (!bFlag)
+    {
+        m_fAccTime += DT;
+        if (m_fAccTime >= 2.f)
+        {
+            for (size_t i = 0; i < m_vAnimScript.size(); i++)
+            {
+                if (nullptr != m_vAnimScript[i] && !m_vAnimScript[i]->GetLoopUI())
+                    m_vAnimScript[i]->SetUIAnimState(UIAnimState::PrePared);
+            }
+            m_fAccTime = 0.f;
         }
     }
 }

@@ -6,6 +6,7 @@ class CUIAnimManagerScript : public CScript
 {
 private:
     vector<CUIAnimScript*> m_vAnimScript;
+    float m_fAccTime;
 
 public:
     virtual void begin() override;
