@@ -226,9 +226,20 @@ void CSirKibbleScript::EnterState(SirKibbleState _state)
         Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
 
         Vec3 vHitDir = GetOwner()->GetScript<CUnitScript>()->GetHitDir();
-        vHitDir.y = 1.5f;
 
-        Rigidbody()->AddForce(vHitDir.Normalize() * 5.f, ForceMode::Impulse);
+        float fForce = 0.f;
+        if (GetCurInfo().HP <= 0.1f)
+        {
+            fForce = 12.f;
+            vHitDir.y = 1.5f;
+        }
+        else
+        {
+            fForce = 9.f;
+            vHitDir.y = 0.8f;
+        }
+
+        Rigidbody()->AddForce(vHitDir.Normalize() * fForce, ForceMode::Impulse);
 
         Animator()->Play(ANIMPREFIX("Damage"), false);
     }

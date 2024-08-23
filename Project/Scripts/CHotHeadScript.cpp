@@ -278,11 +278,24 @@ void CHotHeadScript::EnterState(HotHeadState _state)
         Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
 
         Vec3 vHitDir = GetOwner()->GetScript<CUnitScript>()->GetHitDir();
-        vHitDir.y = 1.5f;
+        float fForce = 0.f;
+        float fDamageTime = 0.f;
+        if (GetCurInfo().HP <= 0.1f)
+        {
+            fForce = 14.f;
+            vHitDir.y = 1.5f;
+            fDamageTime = 0.6f;
+        }
+        else
+        {
+            fForce = 14.f;
+            vHitDir.y = 1.2f;
+            fDamageTime = 2.f;
+        }
 
-        Rigidbody()->AddForce(vHitDir.Normalize() * 8.f, ForceMode::Impulse);
+        Rigidbody()->AddForce(vHitDir.Normalize() * fForce, ForceMode::Impulse);
 
-        Animator()->Play(ANIMPREFIX("Damage"), false);
+        Animator()->Play(ANIMPREFIX("Damage"), false, false, fDamageTime);
     }
     break;
     case HotHeadState::Eaten: {

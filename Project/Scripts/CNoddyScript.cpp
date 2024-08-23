@@ -146,11 +146,21 @@ void CNoddyScript::EnterState()
 
         // 피격 방향으로 Impulse
         Vec3 Impulse = GetHitDir();
-        Impulse.Normalize();
-        Impulse *= 5.f;
-        Rigidbody()->AddForce(Impulse, ForceMode::Impulse);
+        float fForce = 0.f;
+        if (GetCurInfo().HP <= 0.1f)
+        {
+            fForce = 8.f;
+            Impulse.y = 1.5f;
+        }
+        else
+        {
+            fForce = 5.f;
+            Impulse.y = 1.f;
+        }
 
-        Animator()->Play(ANIMPREFIX("Damage"), false);
+        Rigidbody()->AddForce(Impulse.Normalize() * fForce, ForceMode::Impulse);
+
+        Animator()->Play(ANIMPREFIX("Damage"), false, false, 1.5f);
 
         Ptr<CMaterial> pMtrl = MeshRender()->GetMaterial(0);
         pMtrl->SetTexParam(TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\Noddy\\ChNoddy.01.png",

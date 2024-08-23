@@ -214,9 +214,19 @@ void CBladeKnightScript::EnterState()
 
         // 피격 방향으로 Impulse
         Vec3 Impulse = GetHitDir();
-        Impulse.Normalize();
-        Impulse *= 5.f;
-        Rigidbody()->AddForce(Impulse, ForceMode::Impulse);
+        float fForce = 0.f;
+        if (GetCurInfo().HP <= 0.1f)
+        {
+            fForce = 8.f;
+            Impulse.y = 1.5f;
+        }
+        else
+        {
+            fForce = 5.f;
+            Impulse.y = 1.f;
+        }
+
+        Rigidbody()->AddForce(Impulse.Normalize() * fForce, ForceMode::Impulse);
 
         Animator()->Play(ANIMPREFIX("Damage"), false);
     }

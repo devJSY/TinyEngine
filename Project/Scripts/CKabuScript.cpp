@@ -118,6 +118,23 @@ void CKabuScript::OnTriggerEnter(CCollider* _OtherCollider)
     }
 }
 
+void CKabuScript::OnTriggerStay(CCollider* _OtherCollider)
+{
+    if (KabuState::Eaten == m_eState)
+        return;
+
+    CGameObject* pObj = _OtherCollider->GetOwner();
+
+    Vec3 vDir = PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos();
+    UnitHit hitInfo = {DAMAGE_TYPE::NORMAL, vDir.Normalize(), GetCurInfo().ATK, 0.f, 0.f};
+    UINT Layer = _OtherCollider->GetOwner()->GetLayerIdx();
+
+    if (Layer == LAYER_PLAYER_TRIGGER && L"Body Collider" == pObj->GetName())
+    {
+        pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo);
+    }
+}
+
 void CKabuScript::OnTriggerExit(CCollider* _OtherCollider)
 {
     CGameObject* pObj = _OtherCollider->GetOwner();
@@ -226,9 +243,19 @@ void CKabuScript::EnterState(KabuState _state)
         Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
 
         Vec3 vHitDir = GetOwner()->GetScript<CUnitScript>()->GetHitDir();
-        vHitDir.y = 1.5f;
+        float fForce = 0.f;
+        if (GetCurInfo().HP <= 0.1f)
+        {
+            fForce = 200.f;
+            vHitDir.y = 1.5f;
+        }
+        else
+        {
+            fForce = 140.f;
+            vHitDir.y = 1.f;
+        }
 
-        Rigidbody()->AddForce(vHitDir.Normalize() * 5.f, ForceMode::Impulse);
+        Rigidbody()->AddForce(vHitDir.Normalize() * fForce, ForceMode::Impulse);
 
         Animator()->Play(ANIMPREFIX("Damage"), false, false, 1.5f);
     }
@@ -388,7 +415,7 @@ void CKabuScript::LinearMove()
 
     if ((m_vDestPos.x - 10.f <= vPos.x && vPos.x <= m_vDestPos.x + 10.f) && (m_vDestPos.z - 5.f <= vPos.z && vPos.z <= m_vDestPos.z + 5.f))
     {
-        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
+        Rigidbody()->SetVelocity(Vec3(0.f, -9.81f, 0.f));
         Vec3 vTemp = m_vDestPos;
         m_vDestPos = m_vOriginPos;
         m_vOriginPos = vTemp;
@@ -445,19 +472,9 @@ void CKabuScript::Damage()
     }
     else
     {
-        if (!m_bFlag)
-        {
-            Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
-
-            m_vDamageDir.Normalize();
-            m_vDamageDir.y = 1.5f;
-            Rigidbody()->AddForce(m_vDamageDir * 50.f, ForceMode::Impulse);
-            m_bFlag = true;
-        }
-
         if (Animator()->IsFinish())
         {
-            ChangeState(KabuState::Patrol);
+            ChangeState(KabuState::Fall);
         }
     }
 }

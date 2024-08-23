@@ -97,13 +97,6 @@ void CFlowMgr_BossMorpho::LevelStart()
 }
 
 void CFlowMgr_BossMorpho::ChangeFlowFight()
-void CFlowMgr_BossMorpho::LevelEnd()
-{
-    CLevelFlowMgr::LevelEnd();
-    SetFadeEffectColor(Vec3(164.f, 44.f, 174.f));
-}
-
-void CFlowMgr_BossMorpho::SetFight()
 {
     if (m_FlowState == BossLevelFlow::WaitBoss)
     {
@@ -113,6 +106,12 @@ void CFlowMgr_BossMorpho::SetFight()
 
     PLAYERCTRL->UnlockInput();
     m_FlowState = BossLevelFlow::Fight;
+}
+
+void CFlowMgr_BossMorpho::LevelEnd()
+{
+    CLevelFlowMgr::LevelEnd();
+    SetFadeEffectColor(Vec3(164.f, 44.f, 174.f));
 }
 
 void CFlowMgr_BossMorpho::ChangeFlowDeath()
