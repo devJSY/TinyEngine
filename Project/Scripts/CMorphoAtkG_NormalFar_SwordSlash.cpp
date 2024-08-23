@@ -50,7 +50,7 @@ void CMorphoAtkG_NormalFar_SwordSlash::Exit()
 
     for (int i = 0; i < 3; ++i)
     {
-        m_SwordSlash[0] = nullptr;
+        m_SwordSlash[i] = nullptr;
     }
 }
 

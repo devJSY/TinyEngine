@@ -155,7 +155,7 @@ void CMorphoFSM::tick()
 
     if (KEY_TAP(KEY::ENTER))
     {
-        ChangeStateGroup(MorphoStateGroup::AtkGroundTeleport1, L"ATKG_TELEPORT_FIREWALL");
+        ChangeStateGroup(MorphoStateGroup::AtkGroundNormalNear, L"ATKG_NORMALNEAR_ATK1");
     }
 
     // Emissive

@@ -67,13 +67,10 @@ void CMorphoAtkG_NormalNear_Atk1::Enter_Step()
         GetOwner()->Animator()->Play(ANIMPREFIX("Attack1"), false, false, 1.5f);
         MRPFSM->OnWeaponRTrigger();
 
-        // move
-        Vec3 Dir = PLAYER->Transform()->GetWorldPos() - GetOwner()->Transform()->GetWorldPos();
-        Dir.y = 0.f;
-        Dir.Normalize();
-
-        m_PrevDrag = GetOwner()->Rigidbody()->GetDrag();
-        GetOwner()->Rigidbody()->AddForce(Dir * 15.f, ForceMode::Impulse);
+        // move dir
+        m_ForceDir = PLAYER->Transform()->GetWorldPos() - GetOwner()->Transform()->GetWorldPos();
+        m_ForceDir.y = 0.f;
+        m_ForceDir.Normalize();
     }
     break;
     case StateStep::End: {
@@ -143,11 +140,11 @@ void CMorphoAtkG_NormalNear_Atk1::Progress()
 {
     RotateToPlayer();
 
-    // Add drag
+    // move
     float t = GetOwner()->Animator()->GetClipPlayRatio();
-    float Ratio = t * XM_PI / 2.f;
-    float NewDrag = 5.f * sinf(Ratio);
-    GetOwner()->Rigidbody()->SetDrag(NewDrag);
+    float NewSpeed = 15.f * sinf(t * XM_PI / 2.f);
+    Vec3 NewVeloc = m_ForceDir * NewSpeed;
+    GetOwner()->Rigidbody()->SetVelocity(NewVeloc);
 
     // Change Step
     if (GetOwner()->Animator()->IsFinish())
