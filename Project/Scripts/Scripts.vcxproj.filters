@@ -934,6 +934,9 @@
     <ClInclude Include="CKirbyCantEat.h">
       <Filter>Scripts\Character\Kirby\KirbyCantEat</Filter>
     </ClInclude>
+    <ClInclude Include="CKirbyFireBullet.h">
+      <Filter>Scripts\Projectile</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1877,6 +1880,9 @@
     </ClCompile>
     <ClCompile Include="CKirbyCantEat.cpp">
       <Filter>Scripts\Character\Kirby\KirbyCantEat</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyFireBullet.cpp">
+      <Filter>Scripts\Projectile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

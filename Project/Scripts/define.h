@@ -39,6 +39,7 @@
 #define LAYER_MONSTERATK                10
 #define LAYER_MONSTERATK_TRIGGER        11
 #define LAYER_STATIC_TRIGGER            12
+#define LAYER_FIREBULLET                13
 #define LAYER_EFFECT                    14
 #define LAYER_UI                        15
 

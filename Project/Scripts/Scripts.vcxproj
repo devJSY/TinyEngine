@@ -197,6 +197,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CFollowPlayerScript.h" />
     <ClInclude Include="CKirbyBulletSize.h" />
     <ClInclude Include="CKirbyDropOutUIScript.h" />
+    <ClInclude Include="CKirbyFireBullet.h" />
     <ClInclude Include="CKirbyLightScript.h" />
     <ClInclude Include="CKirbyObjDetectCollider.h" />
     <ClInclude Include="CKirbySmoke.h" />
@@ -525,6 +526,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CFollowPlayerScript.cpp" />
     <ClCompile Include="CKirbyBulletSize.cpp" />
     <ClCompile Include="CKirbyDropOutUIScript.cpp" />
+    <ClCompile Include="CKirbyFireBullet.cpp" />
     <ClCompile Include="CKirbyLightScript.cpp" />
     <ClCompile Include="CKirbyObjDetectCollider.cpp" />
     <ClCompile Include="CKirbySmoke.cpp" />
