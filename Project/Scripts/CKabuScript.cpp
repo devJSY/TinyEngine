@@ -384,7 +384,7 @@ void CKabuScript::LinearMove()
 
     m_vDir.y = 0.f;
 
-    Rigidbody()->SetVelocity(m_vDir * GetCurInfo().Speed * DT);
+    Rigidbody()->SetVelocity(m_vDir * GetCurInfo().Speed * DT + Vec3(0.f, -9.81f, 0.f));
 
     if ((m_vDestPos.x - 10.f <= vPos.x && vPos.x <= m_vDestPos.x + 10.f) && (m_vDestPos.z - 5.f <= vPos.z && vPos.z <= m_vDestPos.z + 5.f))
     {

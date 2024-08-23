@@ -1,6 +1,8 @@
 #include "global.hlsli"
 #include "UnrealPBRCommon.hlsli"
 
+#include "Light.hlsli"
+
 #define RIM_POWER g_float_1
 #define RIM_COLOR g_vec4_0
 
@@ -21,7 +23,7 @@ float4 main(PS_IN input) : SV_Target
     
     float3 ambientLighting = AmbientLightingByIBL(albedo, normalWorld, pixelToEye, ao, metallic, roughness);
     float3 directLighting = g_tex_5.Sample(g_LinearWrapSampler, input.vUV0).rgb;
-
+    
     float4 output = float4(0.f, 0.f, 0.f, 1.f);
     output = float4(ambientLighting + directLighting + emission, 1.f);
     output = clamp(output, 0.0, 1000.0);

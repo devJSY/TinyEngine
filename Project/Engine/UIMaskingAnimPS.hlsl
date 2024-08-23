@@ -1,6 +1,7 @@
 
 #include "struct.hlsli"
 #include "global.hlsli"
+#include "func.hlsli"
 
 #define MtrlAlbedo g_vAlbedo
 

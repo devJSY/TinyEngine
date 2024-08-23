@@ -15,7 +15,6 @@ CGordoLongScript::CGordoLongScript(const CGordoLongScript& Origin)
 
 CGordoLongScript::~CGordoLongScript()
 {
-    SetEatable(false);
 }
 
 void CGordoLongScript::begin()
@@ -27,6 +26,17 @@ void CGordoLongScript::begin()
 void CGordoLongScript::tick()
 {
     Rotating();
+}
+
+void CGordoLongScript::OnTriggerStay(CCollider* _OtherCollider)
+{
+    CGameObject* pObj = _OtherCollider->GetOwner();
+
+    if (pObj->GetLayerIdx() == LAYER_PLAYER && pObj->GetName() == L"Main Player")
+    {
+        UnitHit hitInfo = {DAMAGE_TYPE::NORMAL, Transform()->GetWorldDir(DIR_TYPE::FRONT), 8.f, 0.f, 0.f};
+        pObj->GetScript<CUnitScript>()->GetDamage(hitInfo);
+    }
 }
 
 UINT CGordoLongScript::SaveToLevelFile(FILE* _File)
@@ -45,12 +55,4 @@ UINT CGordoLongScript::LoadFromLevelFile(FILE* _File)
     MemoryByte += CMonsterUnitScript::LoadFromLevelFile(_File);
 
     return MemoryByte;
-}
-
-void CGordoLongScript::OnTriggerEnter(CCollider* _OtherCollider)
-{
-    CGameObject* pObj = _OtherCollider->GetOwner();
-
-    UnitHit hitInfo = {DAMAGE_TYPE::NORMAL, Transform()->GetWorldDir(DIR_TYPE::FRONT), m_CurInfo.ATK, 0.f, 0.f};
-    (LAYER_PLAYER == pObj->GetLayerIdx() && L"Main Player" == pObj->GetName()) ? pObj->GetScript<CUnitScript>()->GetDamage(hitInfo) : void();
 }

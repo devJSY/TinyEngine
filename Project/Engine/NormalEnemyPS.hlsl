@@ -2,6 +2,7 @@
 #include "global.hlsli"
 #include "func.hlsli"
 #include "UnrealPBRCommon.hlsli"
+#include "Light.hlsli"
 
 /*********************
 |   Tex0 : EyeBase
@@ -27,6 +28,9 @@
 #define MtrlEmission g_vEmission
 
 #define sparklyEffect g_float_0
+
+#define RimColor g_vec4_0
+#define RimPower g_float_1
 
 PS_OUT_DEFERRED main(PS_IN input)
 {
@@ -64,6 +68,9 @@ PS_OUT_DEFERRED main(PS_IN input)
     output.vMotionVector.xy = input.vMotionVector.xy; // Vector
     output.vMotionVector.z = 1.f;
     output.vMotionVector.w = input.vMotionVector.z / input.vMotionVector.w; // Depth
+    
+    
+    
     
     return output;
 }

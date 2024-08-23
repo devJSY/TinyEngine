@@ -2,6 +2,7 @@
 #include "global.hlsli"
 #include "UnrealPBRCommon.hlsli"
 #include "func.hlsli"
+#include "Light.hlsli"
 
 /*********************
 |   Tex0 : SkinBase
@@ -26,6 +27,9 @@
 #define MtrlEmission g_vEmission
 
 #define sparklyEffect g_float_0
+
+#define RimColor g_vec4_0
+#define RimPower g_float_1
 
 struct PS_OUT
 {
