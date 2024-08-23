@@ -86,27 +86,19 @@ void CMorphoAtkG_Teleport_Tornado::Enter_Step()
         {
             CGameObject* Effect = m_ChargeEffect->Instantiate();
             CMomentaryObjScript* Script = Effect->GetScript<CMomentaryObjScript>();
+            Vec3 Pos = GetOwner()->GetChildObject(L"BossMorphoSwordR")->Transform()->GetWorldPos();
+            Vec3 Dir = GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+            Dir.y = 0.f;
+            Dir.Normalize();
 
-            if (Script)
-            {
-                Vec3 Pos = GetOwner()->GetChildObject(L"BossMorphoSwordR")->Transform()->GetWorldPos();
-                Vec3 Dir = GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT);
-                Dir.y = 0.f;
-                Dir.Normalize();
+            Effect->Transform()->SetWorldPos(Pos);
+            Effect->Transform()->Slerp(Dir, 1.f);
 
-                Effect->Transform()->SetWorldPos(Pos);
-                Effect->Transform()->Slerp(Dir, 1.f);
+            Script->SetPlayTime(m_ChargeTime);
 
-                Script->SetPlayTime(m_ChargeTime);
+            //@EFFECT Â÷Â¡ÀÌÆåÆ® Àç»ý
 
-                //@EFFECT Â÷Â¡ÀÌÆåÆ® Àç»ý
-
-                GamePlayStatic::SpawnGameObject(Effect, LAYER_EFFECT);
-            }
-            else
-            {
-                delete Effect;
-            }
+            GamePlayStatic::SpawnGameObject(Effect, LAYER_EFFECT);
         }
     }
     break;
