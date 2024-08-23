@@ -69,6 +69,7 @@ void CElfilisA_SlashCombo::Enter_Step()
         }
 
         ELFFSM->OnWeaponTrigger();
+        m_StartPos = GetOwner()->Transform()->GetWorldPos();
     }
     break;
     case StateStep::Start: {
@@ -159,7 +160,7 @@ void CElfilisA_SlashCombo::Progress()
     // Slash Rock º“»Ø
     if (CurPos.Length() <= ELFFSM->GetMapSizeRadius())
     {
-        float SpawnBetween = 30.f;
+        float SpawnBetween = 5.f;
         m_SpawnDist += (CurPos - m_PrevPos).Length();
 
         if (m_SpawnDist >= SpawnBetween && m_StabRockPref != nullptr)
@@ -168,38 +169,29 @@ void CElfilisA_SlashCombo::Progress()
             CMomentaryObjScript* pScript = pRock->GetScript<CMomentaryObjScript>();
             m_SpawnDist -= SpawnBetween;
 
-            if (pScript)
+            Vec3 NewPos = GetOwner()->Transform()->GetWorldPos();
+            NewPos.y = 0.f;
+
+            Vec3 NewDir = Vec3(GetRandomfloat(-100.f, 100.f), 0.f, GetRandomfloat(-100.f, 100.f)).Normalize();
+            if (NewDir.Length() <= 0.f)
             {
-                Vec3 NewPos = GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT);
-                NewPos.y = 0.f;
-                NewPos += NewPos.Normalize() * -m_SpawnDist;
-                NewPos += GetOwner()->Transform()->GetWorldPos();
-                NewPos.y = 0.f;
-
-                Vec3 NewDir = Vec3(GetRandomfloat(-100.f, 100.f), 0.f, GetRandomfloat(-100.f, 100.f)).Normalize();
-                if (NewDir.Length() <= 0.f)
-                {
-                    NewDir = Vec3(1.f, 0.f, 1.f);
-                }
-
-                pRock->Transform()->SetWorldPos(NewPos);
-                pRock->Transform()->Slerp(NewDir, 1.f);
-
-                pScript->SetPlayTime(5.f);
-
-                GamePlayStatic::SpawnGameObject(pRock, LAYER_DYNAMIC);
+                NewDir = Vec3(1.f, 0.f, 1.f);
             }
-            else
-            {
-                delete pRock;
-            }
+
+            pRock->Transform()->SetWorldPos(NewPos);
+            pRock->Transform()->Slerp(NewDir, 1.f);
+
+            pScript->SetPlayTime(5.f);
+
+            GamePlayStatic::SpawnGameObject(pRock, LAYER_DYNAMIC);
         }
     }
 
     m_PrevPos = CurPos;
 
     // Change Step
-    if (CurPos.Length() > ELFFSM->GetAirPos().z)
+    float ProgressDist = (m_StartPos - GetOwner()->Transform()->GetWorldPos()).Length();
+    if (ProgressDist >= ELFFSM->GetAirPos().z * 2.f)
     {
         ChangeStep(StateStep::Wait);
     }

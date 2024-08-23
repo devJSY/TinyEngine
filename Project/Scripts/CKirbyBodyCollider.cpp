@@ -78,12 +78,13 @@ float CKirbyBodyCollider::FindDamage()
     {
         switch (PLAYERFSM->GetCurObjectIdx())
         {
-        case ObjectCopyType::CONE:
-            if (StateName == L"ATTACK" || StateName == L"ATTACK_END" || L"ATTACK_COMBO1")
+        case ObjectCopyType::CONE: {
+            if (StateName == L"ATTACK" || StateName == L"ATTACK_END" || StateName == L"ATTACK_COMBO1")
             {
                 Damage = 100.f;
             }
-            break;
+        }
+        break;
         }
     }
 

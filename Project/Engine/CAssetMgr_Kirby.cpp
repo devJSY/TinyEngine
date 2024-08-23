@@ -41,7 +41,7 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
         pShader->SetDSType(DS_TYPE::LESS);
         pShader->SetBSType(BS_TYPE::DEFAULT);
 
-        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEFERRED);
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_OPAQUE);
 
         pShader->AddTexParam(TEX_0, "Eye Base Texture");
         pShader->AddTexParam(TEX_1, "Eye Mask Texture");
@@ -620,6 +620,30 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
 
         pShader->SetName(L"GlassShader");
         AddAsset(L"GlassShader", pShader);
+    }
+
+    // =================================
+    // Rim Only Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\UnrealPBRVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\RimOnlyPs.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetDSType(DS_TYPE::LESS);
+        pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
+
+        pShader->AddScalarParam(FLOAT_2, "Change Duration");
+        pShader->AddScalarParam(FLOAT_1, "Rim Power");
+        pShader->AddScalarParam(VEC4_0, "Rim Color 1");
+        pShader->AddScalarParam(VEC4_1, "Rim Color 2");
+        pShader->AddScalarParam(FLOAT_3, "Background Alpha");
+
+        pShader->SetName(L"RimOnlyShader");
+        AddAsset(L"RimOnlyShader", pShader);
     }
 
     // =================================

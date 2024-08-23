@@ -41,7 +41,6 @@
 #include "CKirbyHatBlade.h"
 #include "CKirbyCutterBullet.h"
 #include "CCanJuice.h"
-#include "CMonsterTest.h"
 #include "CMomentaryObjScript.h"
 #include "CKirbyWeaponHitbox.h"
 #include "CCameraController.h"
@@ -118,6 +117,7 @@
 #include "CKirbyDropOutUIScript.h"
 #include "CPlayerHitbox.h"
 #include "CKirbyCantEat.h"
+#include "CBossDropStarScript.h"
 #include "CKirbyFireBullet.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
@@ -162,7 +162,6 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CKirbyHatBlade");
 	_vec.push_back(L"CKirbyCutterBullet");
 	_vec.push_back(L"CCanJuice");
-	_vec.push_back(L"CMonsterTest");
 	_vec.push_back(L"CMomentaryObjScript");
 	_vec.push_back(L"CKirbyWeaponHitbox");
 	_vec.push_back(L"CCameraController");
@@ -239,6 +238,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CKirbyDropOutUIScript");
 	_vec.push_back(L"CPlayerHitbox");
 	_vec.push_back(L"CKirbyCantEat");
+	_vec.push_back(L"CBossDropStarScript");
 	_vec.push_back(L"CKirbyFireBullet");
 }
 
@@ -324,8 +324,6 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CKirbyCutterBullet;
 	if (L"CCanJuice" == _strScriptName)
 		return new CCanJuice;
-	if (L"CMonsterTest" == _strScriptName)
-		return new CMonsterTest;
 	if (L"CMomentaryObjScript" == _strScriptName)
 		return new CMomentaryObjScript;
 	if (L"CKirbyWeaponHitbox" == _strScriptName)
@@ -478,6 +476,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CPlayerHitbox;
 	if (L"CKirbyCantEat" == _strScriptName)
 		return new CKirbyCantEat;
+	if (L"CBossDropStarScript" == _strScriptName)
+		return new CBossDropStarScript;
 	if (L"CKirbyFireBullet" == _strScriptName)
 		return new CKirbyFireBullet;
 	return nullptr;
@@ -567,8 +567,6 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CKirbyCutterBullet;
 	case (UINT)SCRIPT_TYPE::CANJUICE:
 		return new CCanJuice;
-	case (UINT)SCRIPT_TYPE::MONSTERTEST:
-		return new CMonsterTest;
 	case (UINT)SCRIPT_TYPE::MOMENTARYOBJSCRIPT:
 		return new CMomentaryObjScript;
 	case (UINT)SCRIPT_TYPE::KIRBYWEAPONHITBOX:
@@ -721,6 +719,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CPlayerHitbox;
 	case (UINT)SCRIPT_TYPE::KIRBYCANTEAT:
 		return new CKirbyCantEat;
+	case (UINT)SCRIPT_TYPE::BOSSDROPSTARSCRIPT:
+		return new CBossDropStarScript;
 	case (UINT)SCRIPT_TYPE::KIRBYFIREBULLET:
 		return new CKirbyFireBullet;
 	}
@@ -811,8 +811,6 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CKirbyCutterBullet";
 	case SCRIPT_TYPE::CANJUICE:
 		return L"CCanJuice";
-	case SCRIPT_TYPE::MONSTERTEST:
-		return L"CMonsterTest";
 	case SCRIPT_TYPE::MOMENTARYOBJSCRIPT:
 		return L"CMomentaryObjScript";
 	case SCRIPT_TYPE::KIRBYWEAPONHITBOX:
@@ -965,6 +963,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CPlayerHitbox";
 	case SCRIPT_TYPE::KIRBYCANTEAT:
 		return L"CKirbyCantEat";
+	case SCRIPT_TYPE::BOSSDROPSTARSCRIPT:
+		return L"CBossDropStarScript";
 	case SCRIPT_TYPE::KIRBYFIREBULLET:
 		return L"CKirbyFireBullet";
 	}

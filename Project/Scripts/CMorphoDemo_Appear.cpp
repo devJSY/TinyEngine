@@ -50,7 +50,7 @@ void CMorphoDemo_Appear::Exit()
 
     if (CBossMgr::GetMorphoFlowMgr())
     {
-        CBossMgr::GetMorphoFlowMgr()->SetFight();
+        CBossMgr::GetMorphoFlowMgr()->ChangeFlowFight();
     }
 }
 

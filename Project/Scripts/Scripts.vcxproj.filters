@@ -412,9 +412,6 @@
     <ClInclude Include="CCanJuice.h">
       <Filter>Scripts\Projectile</Filter>
     </ClInclude>
-    <ClInclude Include="CMonsterTest.h">
-      <Filter>Scripts</Filter>
-    </ClInclude>
     <ClInclude Include="CMomentaryObjScript.h">
       <Filter>Scripts\Gimmik\MomentaryObj</Filter>
     </ClInclude>
@@ -934,6 +931,18 @@
     <ClInclude Include="CKirbyCantEat.h">
       <Filter>Scripts\Character\Kirby\KirbyCantEat</Filter>
     </ClInclude>
+    <ClInclude Include="CElfilisD_Resist.h">
+      <Filter>State\ElfilisState\Demo_Death\0. Resist</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisD_ResistFail.h">
+      <Filter>State\ElfilisState\Demo_Death\1. ResistFail</Filter>
+    </ClInclude>
+    <ClInclude Include="CElfilisD_ResistSuccess.h">
+      <Filter>State\ElfilisState\Demo_Death\1. ResistSuccess</Filter>
+    </ClInclude>
+    <ClInclude Include="CBossDropStarScript.h">
+      <Filter>Scripts\Gimmik\BossDropStar</Filter>
+    </ClInclude>
     <ClInclude Include="CKirbyFireBullet.h">
       <Filter>Scripts\Projectile</Filter>
     </ClInclude>
@@ -1358,9 +1367,6 @@
     </ClCompile>
     <ClCompile Include="CCanJuice.cpp">
       <Filter>Scripts\Projectile</Filter>
-    </ClCompile>
-    <ClCompile Include="CMonsterTest.cpp">
-      <Filter>Scripts</Filter>
     </ClCompile>
     <ClCompile Include="CMomentaryObjScript.cpp">
       <Filter>Scripts\Gimmik\MomentaryObj</Filter>
@@ -1880,6 +1886,18 @@
     </ClCompile>
     <ClCompile Include="CKirbyCantEat.cpp">
       <Filter>Scripts\Character\Kirby\KirbyCantEat</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisD_Resist.cpp">
+      <Filter>State\ElfilisState\Demo_Death\0. Resist</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisD_ResistFail.cpp">
+      <Filter>State\ElfilisState\Demo_Death\1. ResistFail</Filter>
+    </ClCompile>
+    <ClCompile Include="CElfilisD_ResistSuccess.cpp">
+      <Filter>State\ElfilisState\Demo_Death\1. ResistSuccess</Filter>
+    </ClCompile>
+    <ClCompile Include="CBossDropStarScript.cpp">
+      <Filter>Scripts\Gimmik\BossDropStar</Filter>
     </ClCompile>
     <ClCompile Include="CKirbyFireBullet.cpp">
       <Filter>Scripts\Projectile</Filter>
@@ -2968,6 +2986,21 @@
     </Filter>
     <Filter Include="Scripts\Character\Kirby\KirbyCantEat">
       <UniqueIdentifier>{797d4877-0eba-42ad-953b-5a7bdde5eb4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Demo_Death">
+      <UniqueIdentifier>{8fa0939b-9d01-48b8-9fdc-24dca9342778}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Demo_Death\0. Resist">
+      <UniqueIdentifier>{a1c38931-93c1-40b1-ba78-60ec0d87e574}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Demo_Death\1. ResistSuccess">
+      <UniqueIdentifier>{ce405617-ef62-4864-83eb-9ffcf83a9ffb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\ElfilisState\Demo_Death\1. ResistFail">
+      <UniqueIdentifier>{5c1b69cf-cc80-4c9b-a518-837ddd0a5c00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\BossDropStar">
+      <UniqueIdentifier>{b4e00075-1777-4b85-a3a2-76c54ae2eabf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

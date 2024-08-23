@@ -120,4 +120,5 @@ private:
 
 private:
     void BeginCall(CGameObject* _pObject);
+    void RespawnPhysicsEvent(CGameObject* _pObject);
 };

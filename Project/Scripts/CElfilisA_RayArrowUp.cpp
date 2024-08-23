@@ -6,53 +6,16 @@
 #include <Engine\CPrefab.h>
 
 CElfilisA_RayArrowUp::CElfilisA_RayArrowUp()
-    : m_Arrow{}
-    , m_ArrowScript{}
+    : m_ArrowScript{nullptr,}
     , m_AccTime(0.f)
-    , m_ArrowGroup(0)
+    , m_bSpawn{false,}
     , m_bReady(false)
 {
-    Ptr<CPrefab> ArrowPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\ElfilisAirArrow.pref", L"prefab\\ElfilisAirArrow.pref");
-
-    if (ArrowPref != nullptr)
-    {
-        for (int j = 0; j < 2; j++)
-        {
-            for (int i = 0; i < 7; i++)
-            {
-                m_bSpawn[j][i] = -1;
-                m_Arrow[j][i] = ArrowPref->Instantiate();
-                CElfilisAirArrow* Script = m_Arrow[j][i]->GetScript<CElfilisAirArrow>();
-
-                if (Script)
-                {
-                    m_ArrowScript[j][i] = Script;
-                }
-                else
-                {
-                    delete m_Arrow[j][i];
-                    m_Arrow[j][i] = nullptr;
-                    m_ArrowScript[j][i] = nullptr;
-                }
-            }
-        }
-    }
+    m_ArrowPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\ElfilisAirArrow.pref");
 }
 
 CElfilisA_RayArrowUp::~CElfilisA_RayArrowUp()
 {
-    for (int j = 0; j < 2; j++)
-    {
-        for (int i = 0; i < 7; ++i)
-        {
-            // if (m_Arrow[i] && m_Arrow[i]->GetLayerIdx() == -1)
-            if (m_Arrow[j][i] && (m_bSpawn[j][i] == -1 || m_Arrow[j][i]->GetLayerIdx() == -1))
-            {
-                delete m_Arrow[j][i];
-                m_Arrow[j][i] = nullptr;
-            }
-        }
-    }
 }
 
 void CElfilisA_RayArrowUp::tick()
@@ -85,55 +48,38 @@ void CElfilisA_RayArrowUp::Enter_Step()
     case StateStep::Start: {
         GetOwner()->Animator()->Play(ANIMPREFIX("RayArrowReadyAir"), false);
 
-        // check spawn activation
-        m_ArrowGroup = 0;
-
-        for (int i = 0; i < 7; i++)
-        {
-            bool ret = false;
-
-            if (m_ArrowScript[0][i]->IsPlaying())
-            {
-                ret = true;
-            }
-
-            if (ret)
-            {
-                m_ArrowGroup = 1;
-                break;
-            }
-        }
-
         // spawn arrow
-        for (int i = 0; i < 7; ++i)
+        if (m_ArrowPref != nullptr)
         {
-            if (m_ArrowScript[m_ArrowGroup][i] != nullptr)
+            for (int i = 0; i < 7; ++i)
             {
+                CGameObject* NewArrow = m_ArrowPref->Instantiate();
+                m_ArrowScript[i] = NewArrow->GetScript<CElfilisAirArrow>();
+
                 Vec3 Pos = GetOwner()->Transform()->GetWorldPos();
                 Pos.y += 150.f;
                 Vec3 Front = GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT);
                 Vec3 Up = GetOwner()->Transform()->GetWorldDir(DIR_TYPE::UP);
                 Vec3 Right = GetOwner()->Transform()->GetWorldDir(DIR_TYPE::RIGHT);
 
-                m_ArrowScript[m_ArrowGroup][i]->SetTarget(PLAYER);
-                m_ArrowScript[m_ArrowGroup][i]->SetInitPos(Pos);
-                m_ArrowScript[m_ArrowGroup][i]->SetInitDir(Front, Up, Right);
-                m_ArrowScript[m_ArrowGroup][i]->SetType(ArrowType::UP);
-                m_ArrowScript[m_ArrowGroup][i]->SetArrowIdx(i);
+                m_ArrowScript[i]->SetTarget(PLAYER);
+                m_ArrowScript[i]->SetInitPos(Pos);
+                m_ArrowScript[i]->SetInitDir(Front, Up, Right);
+                m_ArrowScript[i]->SetType(ArrowType::UP);
+                m_ArrowScript[i]->SetArrowIdx(i);
 
-                GamePlayStatic::SpawnGameObject(m_Arrow[m_ArrowGroup][i], LAYER_MONSTERATK);
+                GamePlayStatic::SpawnGameObject(NewArrow, LAYER_MONSTERATK);
             }
         }
     }
     break;
     case StateStep::Progress: {
         GetOwner()->Animator()->Play(ANIMPREFIX("RayArrowStartAir"), false);
-
         m_AccTime = 0.f;
         m_bReady = false;
         for (int i = 0; i < 7; ++i)
         {
-            m_bSpawn[m_ArrowGroup][i] = false;
+            m_bSpawn[i] = false;
         }
     }
     break;
@@ -173,38 +119,10 @@ void CElfilisA_RayArrowUp::Start()
 
 void CElfilisA_RayArrowUp::Progress()
 {
-    static float SpawnTime = 0.2f;
     m_AccTime += DT;
 
-    if (!m_bSpawn[m_ArrowGroup][0])
-    {
-        // Arrow Spawn
-        for (int i = 0; i < 7; ++i)
-        {
-            int idx = (i <= 3) ? i + 3 : 6 - i;
-
-            if (!m_bSpawn[m_ArrowGroup][idx] && m_ArrowScript[m_ArrowGroup][idx])
-            {
-                if (m_AccTime >= SpawnTime * i)
-                {
-                    m_ArrowScript[m_ArrowGroup][idx]->StartSpawn();
-                    m_bSpawn[m_ArrowGroup][idx] = true;
-                }
-            }
-        }
-    }
-    else
-    {
-        // Arrow Ready
-        if (m_ArrowScript[m_ArrowGroup][0]->IsSpawnFinished() && !m_bReady)
-        {
-            for (int i = 0; i < 7; ++i)
-            {
-                m_ArrowScript[m_ArrowGroup][i]->StartReady();
-            }
-            m_bReady = true;
-        }
-    }
+    // Arrow Spawn
+    CastArrow();
 
     if (GetOwner()->Animator()->IsFinish())
     {
@@ -214,38 +132,10 @@ void CElfilisA_RayArrowUp::Progress()
 
 void CElfilisA_RayArrowUp::Wait()
 {
-    static float SpawnTime = 0.2f;
     m_AccTime += DT;
 
-    if (!m_bSpawn[m_ArrowGroup][0])
-    {
-        // Arrow Spawn
-        for (int i = 0; i < 7; ++i)
-        {
-            int idx = (i <= 3) ? i + 3 : 6 - i;
-
-            if (!m_bSpawn[m_ArrowGroup][idx] && m_ArrowScript[m_ArrowGroup][idx])
-            {
-                if (m_AccTime >= SpawnTime * i)
-                {
-                    m_ArrowScript[m_ArrowGroup][idx]->StartSpawn();
-                    m_bSpawn[m_ArrowGroup][idx] = true;
-                }
-            }
-        }
-    }
-    else
-    {
-        // Arrow Ready
-        if (m_ArrowScript[m_ArrowGroup][0]->IsSpawnFinished() && !m_bReady)
-        {
-            for (int i = 0; i < 7; ++i)
-            {
-                m_ArrowScript[m_ArrowGroup][i]->StartReady();
-            }
-            m_bReady = true;
-        }
-    }
+    // 이전 Step에서 처리완료되지 않은 Arrows 처리
+    CastArrow();
 
     if (m_bReady)
     {
@@ -266,6 +156,42 @@ void CElfilisA_RayArrowUp::End()
         else
         {
             ELFFSM->ChangeStateGroup(NextState);
+        }
+    }
+}
+
+void CElfilisA_RayArrowUp::CastArrow()
+{
+    float SpawnTime = 0.2f;
+
+    // Arrow Spawn
+    if (!m_bSpawn[0])
+    {
+        for (int i = 0; i < 7; ++i)
+        {
+            int idx = (i <= 3) ? i + 3 : 6 - i;
+
+            if (!m_bSpawn[idx] && m_ArrowScript[idx])
+            {
+                if (m_AccTime >= SpawnTime * i)
+                {
+                    m_ArrowScript[idx]->StartSpawn();
+                    m_bSpawn[idx] = true;
+                }
+            }
+        }
+    }
+
+    // Arrow Ready
+    else
+    {
+        if (m_ArrowScript[0]->IsSpawnFinished() && !m_bReady)
+        {
+            for (int i = 0; i < 7; ++i)
+            {
+                m_ArrowScript[i]->StartReady();
+            }
+            m_bReady = true;
         }
     }
 }

@@ -29,6 +29,13 @@ void CElfilisG_NormalAtkFinishL::tick()
     }
 }
 
+void CElfilisG_NormalAtkFinishL::Exit()
+{
+    Exit_Step();
+    ELFFSM->OffWeaponTrigger();
+    ELFFSM->ClearComboLevel();
+}
+
 void CElfilisG_NormalAtkFinishL::Enter_Step()
 {
     switch (m_Step)
@@ -58,11 +65,9 @@ void CElfilisG_NormalAtkFinishL::Exit_Step()
     case StateStep::Progress: {
         ELFFSM->OffWeaponTrigger();
     }
-        break;
-    case StateStep::End: {
-        ELFFSM->ClearComboLevel();
-    }
     break;
+    case StateStep::End:
+        break;
     }
 }
 

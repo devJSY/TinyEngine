@@ -10,7 +10,7 @@
 
 float4 main(PS_IN _in) : SV_Target0
 {
-    float3 OutColor = MtrlAlbedo;
+    float3 OutColor = MtrlAlbedo.rgb;
     float Alpha = 1.f;
     
     // emissive noise

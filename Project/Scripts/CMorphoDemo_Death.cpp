@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "CMorphoDemo_Death.h"
 #include "CMorphoFSM.h"
-
+#include "CFlowMgr_BossMorpho.h"
 #include "CCameraController.h"
 
 CMorphoDemo_Death::CMorphoDemo_Death()
@@ -52,20 +52,23 @@ void CMorphoDemo_Death::Enter_Step()
         m_AccTime = 0.f;
         //@CAMERA Àá±ñ¸ØÃã
         CAMERACTRL->SetLock(true, 0.5f);
-
     }
     break;
     case StateStep::Start: {
         GetOwner()->Animator()->SetPlay(true);
         GetOwner()->Transform()->SetWorldPos(Vec3(0.f, 0.f, -300.f));
         GetOwner()->Transform()->SetWorldRotation(Vec3());
-        //@CAMERA lengthº¯ÇÔ
 
+        //@CAMERA lengthº¯ÇÔ
         CAMERACTRL->FixedView(true, Vec3(1.33f, 31.13f, -201.47f));
         CAMERACTRL->SetImmediate(true);
         CAMERACTRL->SetMainTarget(BOSS->GetChildObject(L"CameraTarget"));
         CAMERACTRL->SetRotationSpeed(30.f);
 
+        if (CBossMgr::GetMorphoFlowMgr())
+        {
+            CBossMgr::GetMorphoFlowMgr()->ChangeFlowDeath();
+        }
     }
     break;
     case StateStep::Wait: {
@@ -89,15 +92,10 @@ void CMorphoDemo_Death::Exit_Step()
         break;
     case StateStep::Wait:
         break;
-    case StateStep::End:
-    {
-        CAMERACTRL->SetMainTarget(PLAYER);
-        CAMERACTRL->Normal(true);
-        CAMERACTRL->SetImmediate(false);
-        PLAYERFSM->ChangeState(L"STAGE_CLEAR");
+    case StateStep::End: {
+        MRPFSM->ResetEmissive();
     }
-
-        break;
+    break;
     }
 }
 
@@ -142,7 +140,11 @@ void CMorphoDemo_Death::End()
     if (GetOwner()->Animator()->IsFinish())
     {
         //@EFFECT ÅÍÁö´Â ÆÄÆ¼Å¬
-        MRPFSM->ResetEmissive();
         GetOwner()->SetActive(false);
+
+        if (CBossMgr::GetMorphoFlowMgr())
+        {
+            CBossMgr::GetMorphoFlowMgr()->ChangeFlowClear();
+        }
     }
 }

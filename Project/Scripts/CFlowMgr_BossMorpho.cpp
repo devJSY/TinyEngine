@@ -3,6 +3,7 @@
 #include "CBossMgr.h"
 #include "CMorphoFSM.h"
 #include "CPlayerMgr.h"
+#include "CKirbyFSM.h"
 #include "CKirbyMoveController.h"
 #include "CCameraController.h"
 
@@ -30,15 +31,16 @@ void CFlowMgr_BossMorpho::begin()
 {
     CLevelFlowMgr::begin();
 
+    // start level
     SetStartLevel(true);
-
     LevelStart();
-
     SetEnterTime(6.8f);
 
+    // set effect
     SetToneMappingParam(true, 1, 0.85f, 0.27f, 1.3f, 1.26f, 1.963f);
     SetFadeEffectColor(Vec3(255.f, 150.f, 100.f));
 
+    // find object
     m_SpawnButterfly = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Morpho_SpawnButterfly");
     m_Barricade = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Barricade");
 }
@@ -71,6 +73,10 @@ void CFlowMgr_BossMorpho::tick()
         break;
     case BossLevelFlow::Fight:
         break;
+    case BossLevelFlow::Death:
+        break;
+    case BossLevelFlow::Clear:
+        break;
     }
 }
 
@@ -90,16 +96,32 @@ void CFlowMgr_BossMorpho::LevelStart()
     }
 }
 
-void CFlowMgr_BossMorpho::SetFight()
+void CFlowMgr_BossMorpho::ChangeFlowFight()
 {
-    if (m_FlowState != BossLevelFlow::WaitBoss)
-        return;
+    if (m_FlowState == BossLevelFlow::WaitBoss)
+    {
+        TurnOnPlayerHP();
+        TurnOnBossHP();
+    }
 
-    // 연출 끝나고 PlayerHP TrunOn
-    TurnOnPlayerHP();
-    TurnOnBossHP();
     PLAYERCTRL->UnlockInput();
     m_FlowState = BossLevelFlow::Fight;
+}
+
+void CFlowMgr_BossMorpho::ChangeFlowDeath()
+{
+    TurnOffPlayerHP();
+    TurnOffBossHP();
+
+    m_FlowState = BossLevelFlow::Death;
+}
+
+void CFlowMgr_BossMorpho::ChangeFlowClear()
+{
+    CAMERACTRL->SetMainTarget(PLAYER);
+    CAMERACTRL->Normal(true);
+    CAMERACTRL->SetImmediate(false);
+    PLAYERFSM->ChangeState(L"STAGE_CLEAR");
 }
 
 void CFlowMgr_BossMorpho::TriggerEvent(UINT _Idx)

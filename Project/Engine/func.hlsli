@@ -110,6 +110,45 @@ float2 NDCToUV(float3 _NDC)
     return UV;
 }
 
+// X축 기준 회전 행렬 
+float3x3 RotationMatrixX(float angle)
+{
+    float cosA = cos(angle);
+    float sinA = sin(angle);
+
+    return float3x3(
+        1.0f, 0.0f, 0.0f,
+        0.0f, cosA, -sinA,
+        0.0f, sinA, cosA
+    );
+}
+
+// Y축 기준 회전 행렬 
+float3x3 RotationMatrixY(float angle)
+{
+    float cosA = cos(angle);
+    float sinA = sin(angle);
+
+    return float3x3(
+        cosA, 0.0f, sinA,
+        0.0f, 1.0f, 0.0f,
+        -sinA, 0.0f, cosA
+    );
+}
+
+// Z축 기준 회전 행렬 
+float3x3 RotationMatrixZ(float angle)
+{
+    float cosA = cos(angle);
+    float sinA = sin(angle);
+
+    return float3x3(
+        cosA, -sinA, 0.0f,
+        sinA, cosA, 0.0f,
+        0.0f, 0.0f, 1.0f
+    );
+}
+
 // ======
 // Random
 // ======

@@ -18,7 +18,7 @@ void CKirbyDropAbility::tick()
     if (m_FrmEnter && CHECK_ANIMFRM(GetOwner(), 11))
     {
         // spawn ability bubble
-        if (nullptr != m_Bubble && PLAYERFSM->GetCurAbilityIdx() != AbilityCopyType::SLEEP)
+        if (nullptr != m_Bubble && PLAYERFSM->GetPrevAbilityIdx() != AbilityCopyType::SLEEP)
         {
             CGameObject* pBubble = m_Bubble->Instantiate();
 
@@ -31,7 +31,7 @@ void CKirbyDropAbility::tick()
             pBubble->Transform()->SetLocalRotation(InitRot);
 
             CKirbyCopyAbilityScript* pAbility = (CKirbyCopyAbilityScript*)CScriptMgr::GetScript(KIRBYCOPYABILITYSCRIPT);
-            pAbility->SetAbilityType(PLAYERFSM->GetCurAbilityIdx());
+            pAbility->SetAbilityType(PLAYERFSM->GetPrevAbilityIdx());
             pBubble->AddComponent(pAbility);
 
             CGameObject* pMesh = new CGameObject;
@@ -90,6 +90,7 @@ void CKirbyDropAbility::Enter()
 {
     PLAYERFSM->SetGlobalState(true);
     PLAYERFSM->SetInvincible(true);
+    PLAYERFSM->ChangeAbilityCopy(AbilityCopyType::NORMAL);
 
     PLAYER->Animator()->Play(ANIMPREFIX("AbilityDump"), false, false, 1.f);
     CPlayerMgr::ClearBodyMtrl();
@@ -115,5 +116,4 @@ void CKirbyDropAbility::Exit()
 
     PLAYERFSM->SetInvincible(false);
     PLAYERFSM->ClearYPressedTime();
-    PLAYERFSM->ChangeAbilityCopy(AbilityCopyType::NORMAL);
 }

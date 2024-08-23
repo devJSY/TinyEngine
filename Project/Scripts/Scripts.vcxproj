@@ -117,6 +117,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CAttackAreaScript.h" />
     <ClInclude Include="CBladeKnightScript.h" />
     <ClInclude Include="CBladeKnightSwordScript.h" />
+    <ClInclude Include="CBossDropStarScript.h" />
     <ClInclude Include="CBossState.h" />
     <ClInclude Include="CBossHitbox.h" />
     <ClInclude Include="CCameraController.h" />
@@ -146,10 +147,19 @@ call CodeGen.exe</Command>
     <ClInclude Include="CElfilisBig_SwingFinishL.h" />
     <ClInclude Include="CElfilisBig_SwingL.h" />
     <ClInclude Include="CElfilisBig_SwingR.h" />
+    <ClInclude Include="CElfilisD_ResistSuccess.h" />
+    <ClInclude Include="CElfilisD_Resist.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="CElfilisDimensionLaser.h" />
     <ClInclude Include="CElfilisD_Appear.h" />
     <ClInclude Include="CElfilisD_Damage.h" />
     <ClInclude Include="CElfilisD_Jump.h" />
+    <ClInclude Include="CElfilisD_ResistFail.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="CElfilisD_Roar.h" />
     <ClInclude Include="CElfilisFSM.h" />
     <ClInclude Include="CElfilisG_BackStep.h" />
@@ -234,7 +244,6 @@ call CodeGen.exe</Command>
     <ClInclude Include="CLightBulbGimmickScript.h" />
     <ClInclude Include="CMomentaryObjScript.h" />
     <ClInclude Include="CMonsterATKScript.h" />
-    <ClInclude Include="CMonsterTest.h" />
     <ClInclude Include="CElevatorScript.h" />
     <ClInclude Include="CMorphoAtkA_DoubleSword.h" />
     <ClInclude Include="CMorphoAtkA_DoubleSwordAtkL.h" />
@@ -446,6 +455,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CAttackAreaScript.cpp" />
     <ClCompile Include="CBladeKnightScript.cpp" />
     <ClCompile Include="CBladeKnightSwordScript.cpp" />
+    <ClCompile Include="CBossDropStarScript.cpp" />
     <ClCompile Include="CBossState.cpp" />
     <ClCompile Include="CBossHitbox.cpp" />
     <ClCompile Include="CCameraController.cpp" />
@@ -475,10 +485,19 @@ call CodeGen.exe</Command>
     <ClCompile Include="CElfilisBig_SwingFinishL.cpp" />
     <ClCompile Include="CElfilisBig_SwingL.cpp" />
     <ClCompile Include="CElfilisBig_SwingR.cpp" />
+    <ClCompile Include="CElfilisD_ResistSuccess.cpp" />
+    <ClCompile Include="CElfilisD_Resist.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="CElfilisDimensionLaser.cpp" />
     <ClCompile Include="CElfilisD_Appear.cpp" />
     <ClCompile Include="CElfilisD_Damage.cpp" />
     <ClCompile Include="CElfilisD_Jump.cpp" />
+    <ClCompile Include="CElfilisD_ResistFail.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="CElfilisD_Roar.cpp" />
     <ClCompile Include="CElfilisFSM.cpp" />
     <ClCompile Include="CElfilisG_BackStep.cpp" />
@@ -563,7 +582,6 @@ call CodeGen.exe</Command>
     <ClCompile Include="CLightBulbGimmickScript.cpp" />
     <ClCompile Include="CMomentaryObjScript.cpp" />
     <ClCompile Include="CMonsterATKScript.cpp" />
-    <ClCompile Include="CMonsterTest.cpp" />
     <ClCompile Include="CElevatorScript.cpp" />
     <ClCompile Include="CMorphoAtkA_DoubleSword.cpp" />
     <ClCompile Include="CMorphoAtkA_DoubleSwordAtkL.cpp" />

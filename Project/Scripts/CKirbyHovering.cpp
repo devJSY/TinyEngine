@@ -63,6 +63,7 @@ void CKirbyHovering::Enter()
     PLAYERCTRL->AddVelocity(Vec3(0.f, 7.f, 0.f));
 
     PLAYERFSM->SetDroppable(true);
+    PLAYERFSM->SetHovering(true);
     m_bFrmEnter = true;
 }
 
@@ -74,5 +75,7 @@ void CKirbyHovering::Exit()
 
     PLAYERCTRL->SetGravity(m_SavedGravity);
     PLAYERCTRL->SetSpeed(PLAYERUNIT->GetInitInfo().Speed);
+
     PLAYERFSM->SetDroppable(false);
+    PLAYERFSM->SetHovering(false);
 }

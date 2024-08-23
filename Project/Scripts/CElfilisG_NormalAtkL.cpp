@@ -30,6 +30,17 @@ void CElfilisG_NormalAtkL::tick()
     }
 }
 
+void CElfilisG_NormalAtkL::Exit()
+{
+    Exit_Step();
+
+    if (m_Step < StateStep::Progress)
+    {
+        ELFFSM->ClearComboLevel();
+        ELFFSM->OffWeaponTrigger();
+    }
+}
+
 void CElfilisG_NormalAtkL::Enter_Step()
 {
     switch (m_Step)
