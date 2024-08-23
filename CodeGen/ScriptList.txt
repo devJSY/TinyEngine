@@ -38,7 +38,6 @@ CDeformObjectScript
 CKirbyHatBlade
 CKirbyCutterBullet
 CCanJuice
-CMonsterTest
 CMomentaryObjScript
 CKirbyWeaponHitbox
 CCameraController
@@ -115,3 +114,4 @@ CEnterUIScript
 CKirbyDropOutUIScript
 CPlayerHitbox
 CKirbyCantEat
+CBossDropStarScript

@@ -5,6 +5,7 @@ class CElfilisA_SlashCombo : public CBossState
 {
 private:
     Ptr<CPrefab> m_StabRockPref;
+    Vec3 m_StartPos;
     Vec3 m_PrevPos;
     UINT m_ComboLevel;
     float m_SpawnDist;

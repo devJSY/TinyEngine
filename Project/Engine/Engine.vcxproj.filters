@@ -1530,5 +1530,8 @@
     <FxCompile Include="UIDefaultShaderNoTestPS.hlsl">
       <Filter>ShaderCode\Kirby\UIShader\UIDefaultUIShader</Filter>
     </FxCompile>
+    <FxCompile Include="RimOnlyPS.hlsl">
+      <Filter>ShaderCode\Kirby\Common</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

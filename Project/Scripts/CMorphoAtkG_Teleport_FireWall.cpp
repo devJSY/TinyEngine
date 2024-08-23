@@ -4,24 +4,14 @@
 
 CMorphoAtkG_Teleport_FireWall::CMorphoAtkG_Teleport_FireWall()
     : m_FireWall(nullptr)
-    , m_bWallSpawn(false)
     , m_WallSpeed(150.f)
+    , m_bFrmEnter(true)
 {
-    Ptr<CPrefab> Pref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\MorphoFireWall.pref", L"prefab\\MorphoFireWall.pref");
-
-    if (Pref != nullptr)
-    {
-        m_FireWall = Pref->Instantiate();
-    }
+    m_FireWallPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\MorphoFireWall.pref", L"prefab\\MorphoFireWall.pref");
 }
 
 CMorphoAtkG_Teleport_FireWall::~CMorphoAtkG_Teleport_FireWall()
 {
-    if (m_FireWall && (!m_bWallSpawn || m_FireWall->GetLayerIdx() == -1))
-    {
-        delete m_FireWall;
-        m_FireWall = nullptr;
-    }
 }
 
 void CMorphoAtkG_Teleport_FireWall::tick()
@@ -43,6 +33,17 @@ void CMorphoAtkG_Teleport_FireWall::tick()
     }
 }
 
+void CMorphoAtkG_Teleport_FireWall::Exit()
+{
+    Exit_Step();
+
+    if (m_Step == StateStep::Progress)
+    {
+        GamePlayStatic::DestroyGameObject(m_FireWall);
+        m_FireWall = nullptr;
+    }
+}
+
 void CMorphoAtkG_Teleport_FireWall::Enter_Step()
 {
     switch (m_Step)
@@ -54,6 +55,7 @@ void CMorphoAtkG_Teleport_FireWall::Enter_Step()
     case StateStep::Progress: {
         GetOwner()->Animator()->Play(ANIMPREFIX("GigaMoonShotComb1"), false, false, 2.f);
         MRPFSM->OnWeaponRTrigger();
+        m_bFrmEnter = true;
     }
     break;
     case StateStep::End: {
@@ -72,17 +74,19 @@ void CMorphoAtkG_Teleport_FireWall::Exit_Step()
     case StateStep::Progress: {
         MRPFSM->OffWeaponRTrigger();
     }
-        break;
-    case StateStep::End: {
-        m_bWallSpawn = false;
-        GamePlayStatic::DetachObject(m_FireWall);
-    }
     break;
+    case StateStep::End: {
+        GamePlayStatic::DestroyGameObject(m_FireWall);
+        m_FireWall = nullptr;
+    }
+        break;
     }
 }
 
 void CMorphoAtkG_Teleport_FireWall::Start()
 {
+    RotateToPlayer(DT * 0.75f);
+
     if (GetOwner()->Animator()->IsFinish())
     {
         ChangeStep(StateStep::Progress);
@@ -94,12 +98,14 @@ void CMorphoAtkG_Teleport_FireWall::Progress()
     MoveFireWall();
 
     // spawn Fire Wall
-    if (!m_bWallSpawn && CHECK_ANIMFRM(GetOwner(), 30))
+    if (m_bFrmEnter && CHECK_ANIMFRM(GetOwner(), 30))
     {
-        m_bWallSpawn = true;
+        m_bFrmEnter = false;
 
-        if (m_FireWall)
+        if (m_FireWallPref != nullptr)
         {
+            m_FireWall = m_FireWallPref->Instantiate();
+
             Vec3 Pos = GetOwner()->Transform()->GetWorldPos();
             Pos.y = 0.f;
             Vec3 Dir = GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT);
@@ -131,7 +137,7 @@ void CMorphoAtkG_Teleport_FireWall::End()
 
 void CMorphoAtkG_Teleport_FireWall::MoveFireWall()
 {
-    if (!m_bWallSpawn)
+    if (!m_FireWall)
         return;
 
     Vec3 NewPos = m_FireWall->Transform()->GetWorldPos();

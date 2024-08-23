@@ -5,11 +5,10 @@ class CElfilisAirArrow;
 class CElfilisA_RayArrowUp : public CBossState
 {
 private:
-    CGameObject* m_Arrow[2][7];
-    CElfilisAirArrow* m_ArrowScript[2][7];
-    int m_ArrowGroup;
+    Ptr<CPrefab> m_ArrowPref;
+    CElfilisAirArrow* m_ArrowScript[7];
     float m_AccTime;
-    int m_bSpawn[2][7];
+    bool m_bSpawn[7];
     bool m_bReady;
 
 public:
@@ -24,6 +23,8 @@ private:
     void Progress();
     void Wait();
     void End();
+
+    void CastArrow();
 
 public:
     CLONE(CElfilisA_RayArrowUp)

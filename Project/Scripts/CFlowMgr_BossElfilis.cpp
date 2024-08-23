@@ -4,6 +4,7 @@
 #include "CElfilisFSM.h"
 #include "CCameraController.h"
 #include "CPlayerMgr.h"
+#include "CKirbyFSM.h"
 #include "CKirbyMoveController.h"
 
 CFlowMgr_BossElfilis::CFlowMgr_BossElfilis()
@@ -28,15 +29,16 @@ void CFlowMgr_BossElfilis::begin()
 {
     CLevelFlowMgr::begin();
 
+    // start level
     SetStartLevel(true);
-
     LevelStart();
-
     SetEnterTime(6.8f);
 
+    // set effect
     SetToneMappingParam(true, true, 1.f, 1.88f, 0.3f);
     SetFadeEffectColor(Vec3(180.f, 140.f, 200.f));
 
+    // set camera
     CGameObject* Camera = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Main Camera");
     CCameraController* CameraController = Camera ? Camera->GetScript<CCameraController>() : nullptr;
 
@@ -47,6 +49,7 @@ void CFlowMgr_BossElfilis::begin()
         CameraController->SetLookDist(400.f);
     }
 
+    // find object
     m_LevelEnterWall = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"LevelEnterWall");
 }
 
@@ -58,6 +61,8 @@ void CFlowMgr_BossElfilis::tick()
     {
     case BossLevelFlow::LevelStart: {
         BOSS->SetActive(false);
+        ELFFSM->GetBigBoss()->SetActive(false);
+
         if (m_LevelEnterWall)
         {
             m_LevelEnterWall->SetActive(false);
@@ -66,10 +71,13 @@ void CFlowMgr_BossElfilis::tick()
         m_FlowState = BossLevelFlow::WaitBoss;
     }
     break;
-
     case BossLevelFlow::WaitBoss:
         break;
     case BossLevelFlow::Fight:
+        break;
+    case BossLevelFlow::DeathStart:
+        break;
+    case BossLevelFlow::Death:
         break;
     }
 }
@@ -82,15 +90,35 @@ void CFlowMgr_BossElfilis::TriggerEvent(UINT _Idx)
     }
 }
 
-void CFlowMgr_BossElfilis::SetFight()
+void CFlowMgr_BossElfilis::ChangeFlowFight()
 {
-    if (m_FlowState != BossLevelFlow::WaitBoss)
-        return;
+    if (m_FlowState == BossLevelFlow::WaitBoss)
+    {
+        TurnOnPlayerHP();
+        TurnOnBossHP();
+    }
 
-    TurnOnPlayerHP();
-    TurnOnBossHP();
     PLAYERCTRL->UnlockInput();
     m_FlowState = BossLevelFlow::Fight;
+}
+
+void CFlowMgr_BossElfilis::ChangeFlowResist()
+{
+    Vec3 NewPos{0.f, 0.f, 450.f};
+    PLAYER->Transform()->SetWorldPos(NewPos);
+    PLAYER->Transform()->Slerp(-NewPos.Normalize(), 1.f);
+    PLAYERFSM->ChangeState(L"IDLE");
+    PLAYERCTRL->LockInput();
+
+    m_FlowState = BossLevelFlow::DeathStart;
+}
+
+void CFlowMgr_BossElfilis::ChangeFlowDeath()
+{
+    TurnOffPlayerHP();
+    TurnOffBossHP();
+
+    m_FlowState = BossLevelFlow::Death;
 }
 
 void CFlowMgr_BossElfilis::LevelEnd()
@@ -101,15 +129,16 @@ void CFlowMgr_BossElfilis::LevelEnd()
 
 void CFlowMgr_BossElfilis::SpawnElfilis()
 {
+    PLAYERCTRL->LockInput();
     BOSS->SetActive(true);
     ELFFSM->ChangeStateGroup(ElfilisStateGroup::DEMO, L"DEMO_APPEAR1");
-    PLAYERCTRL->LockInput();
+
+    TurnOffPlayerHP();
 
     if (m_LevelEnterWall)
     {
         m_LevelEnterWall->SetActive(true);
     }
-    TurnOffPlayerHP();
 }
 
 UINT CFlowMgr_BossElfilis::SaveToLevelFile(FILE* _File)

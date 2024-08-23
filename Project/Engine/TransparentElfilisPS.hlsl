@@ -25,7 +25,7 @@ PS_OUT_FORWARD main(PS_IN input)
     float3 normalWorld = g_btex_2 ? NormalMapping(input, NormalTex, input.vUV0, g_LinearWrapSampler, InvertNormalMapY) : input.vNormalWorld;
   
     // 1. get Albedo
-    float3 albedo = g_btex_0 ? AlbedoTex.Sample(g_LinearClampSampler, input.vUV0) : MtrlAlbedo.rgb;
+    float3 albedo = g_btex_0 ? AlbedoTex.Sample(g_LinearClampSampler, input.vUV0).rgb : MtrlAlbedo.rgb;
     float alpha = 1.f;
     
     // alpha : 임계값보다 밝으면 투명하게 처리

@@ -12,7 +12,9 @@ public:
     virtual void tick() override;
     virtual void TriggerEvent(UINT _Idx);
 
-    void SetFight();
+    void ChangeFlowFight();
+    void ChangeFlowResist();
+    void ChangeFlowDeath();
 
     virtual void LevelEnd() override;
 

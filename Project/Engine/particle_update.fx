@@ -15,6 +15,15 @@ RWStructuredBuffer<int4> g_SpawnCount : register(u1);
 #define Module      g_Module[0]
 #define CenterPos   g_vec4_0.xyz
 
+#define SPAWN_MODULE 0
+#define DRAG_MODULE 1
+#define SCALE_MODULE 2
+#define ADD_VELOCITY_MODULE 3
+#define SPIRAL_VELOCITY_MODULE 4
+#define NOISE_FORCE_MODULE 5
+#define CALCULATE_FORCE_MODULE 6
+#define RENDER_MODULE 7
+
 [numthreads(32, 1, 1)]
 void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
 {
@@ -25,7 +34,7 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
     if (0 == Particle.Active)
     {
         // 스폰 모듈 활성화 체크
-        if (0 == Module.arrModuleCheck[0])
+        if (0 == Module.arrModuleCheck[SPAWN_MODULE])
             return;
         
         while (0 < SpawnCount)
@@ -92,8 +101,10 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
                 // 스폰 Mass 설정
                 Particle.Mass = (Module.MaxMass - Module.MinMass) * vRand1.b + Module.MinMass;
                               
+                Particle.Radius = Module.SpiralVelocityStartRadius;
+                
                 // Add VelocityModule
-                if (Module.arrModuleCheck[3])
+                if (Module.arrModuleCheck[ADD_VELOCITY_MODULE])
                 {
                     if (0 == Module.AddVelocityType)  // 0 : From Center
                     {
@@ -107,13 +118,13 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
                         Particle.vVelocity.xyz = vDir * ((Module.MaxSpeed - Module.MinSpeed) * vRand2.g + Module.MinSpeed);
                     }
                     else if (2 == Module.AddVelocityType)  // 2 : Fixed Angle
-                    {                       
+                    {
                         float randomRatio = Module.FixedAngle / 180.f;
                         
                         // 단위원 기준 범위 -1 ~ 1 에 비율값을 곱해서 랜덤값을 결정 한다.
                         float randomX = (vRand2.r * 2.f - 1.f) * randomRatio;
                         float randomY = (vRand2.g * 2.f - 1.f) * randomRatio;
-                        float randomZ = (vRand2.b * 2.f - 1.f) * randomRatio;                        
+                        float randomZ = (vRand2.b * 2.f - 1.f) * randomRatio;
                         
                         // 고정 방향 + 랜덤 범위 방향으로 방향으로 설정
                         Particle.vVelocity.xyz = normalize(Module.vFixedDirection.xyz + float3(randomX, randomY, randomZ)) * ((Module.MaxSpeed - Module.MinSpeed) * vRand0.r + Module.MinSpeed);
@@ -140,7 +151,7 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
         }
         
         // Add VelocityModule - To Center 타입 일경우
-        if (Module.arrModuleCheck[3] && 1 == Module.AddVelocityType)
+        if (Module.arrModuleCheck[ADD_VELOCITY_MODULE] && 1 == Module.AddVelocityType)
         {
             float len = length(CenterPos - Particle.vWorldPos.xyz);
             if (len < 10)
@@ -160,72 +171,111 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
         // Normalize Age 계산
         Particle.NormalizeAge = Particle.Age / Particle.Life;
         
-        // Scale 모듈
-        if (Module.arrModuleCheck[2])
+        // Spiral Velocity
+        if (Module.arrModuleCheck[SPIRAL_VELOCITY_MODULE])
         {
-            Particle.vWorldScale = Particle.vWorldInitScale * (1.f + (Module.vScaleRatio - 1.f) * Particle.NormalizeAge);
-        }
-        
-        // Noise Force
-        if (Module.arrModuleCheck[4])
-        {
-            if (Particle.NoiseForceTime == 0.f) // 초기 Force
-            {
-                Particle.vNoiseForce.xyz = normalize(Rand.xyz * 2.f - 1.f) * Module.NoiseForceScale;
-                Particle.NoiseForceTime = g_Time;
-            }
-            else if (Module.NoiseForceTerm < g_Time - Particle.NoiseForceTime) // Term 마다 Force 업데이트
-            {
-                Particle.vNoiseForce.xyz = normalize(Rand.xyz * 2.f - 1.f) * Module.NoiseForceScale;
-                Particle.NoiseForceTime = g_Time;
-            }
-        }
+            // 생명 주기에 비례하여 반경 설정
+            Particle.Radius = lerp(Module.SpiralVelocityStartRadius, Module.SpiralVelocityEndRadius, Particle.NormalizeAge);
                 
-        // Calculate Force
-        if (Module.arrModuleCheck[5])
+            // X
+            if (0 == Module.SpiralVelocityAxis)
+            {
+                // 반경에 따라 회전
+                Particle.vWorldPos.y += cos(Particle.vWorldPos.x * Module.SpiralVelocityRotateSpeed + g_DT) * Particle.Radius;
+                Particle.vWorldPos.z += sin(Particle.vWorldPos.x * Module.SpiralVelocityRotateSpeed + g_DT) * Particle.Radius;
+                
+                // 축 방향 이동
+                Particle.vWorldPos.x += g_DT * Module.SpiralVelocityAxisSpeed;
+            }
+            // Y
+            else if (1 == Module.SpiralVelocityAxis)
+            {
+                // 반경에 따라 회전
+                Particle.vWorldPos.x += cos(Particle.vWorldPos.y * Module.SpiralVelocityRotateSpeed + g_DT) * Particle.Radius;
+                Particle.vWorldPos.z += sin(Particle.vWorldPos.y * Module.SpiralVelocityRotateSpeed + g_DT) * Particle.Radius;
+                
+                // 축 방향 이동
+                Particle.vWorldPos.y += g_DT * Module.SpiralVelocityAxisSpeed;
+            }
+            // Z
+            else if (2 == Module.SpiralVelocityAxis)
+            {
+                // 반경에 따라 회전
+                Particle.vWorldPos.x += cos(Particle.vWorldPos.z * Module.SpiralVelocityRotateSpeed + g_DT) * Particle.Radius;
+                Particle.vWorldPos.y += sin(Particle.vWorldPos.z * Module.SpiralVelocityRotateSpeed + g_DT) * Particle.Radius;
+                
+                // 축 방향 이동
+                Particle.vWorldPos.z += g_DT * Module.SpiralVelocityAxisSpeed;
+            }
+        }
+        else
         {
-            Particle.vForce.xyz += Particle.vNoiseForce.xyz;
+            // Scale 모듈
+            if (Module.arrModuleCheck[SCALE_MODULE])
+            {
+                Particle.vWorldScale = Particle.vWorldInitScale * (1.f + (Module.vScaleRatio - 1.f) * Particle.NormalizeAge);
+            }
+        
+            // Noise Force
+            if (Module.arrModuleCheck[NOISE_FORCE_MODULE])
+            {
+                if (Particle.NoiseForceTime == 0.f) // 초기 Force
+                {
+                    Particle.vNoiseForce.xyz = normalize(Rand.xyz * 2.f - 1.f) * Module.NoiseForceScale;
+                    Particle.NoiseForceTime = g_Time;
+                }
+                else if (Module.NoiseForceTerm < g_Time - Particle.NoiseForceTime) // Term 마다 Force 업데이트
+                {
+                    Particle.vNoiseForce.xyz = normalize(Rand.xyz * 2.f - 1.f) * Module.NoiseForceScale;
+                    Particle.NoiseForceTime = g_Time;
+                }
+            }
+                
+            // Calculate Force
+            if (Module.arrModuleCheck[CALCULATE_FORCE_MODULE])
+            {
+                Particle.vForce.xyz += Particle.vNoiseForce.xyz;
             
-            // Force 연산
-            // F = M x A
-            float3 vAccel = Particle.vForce.xyz / Particle.Mass;
+                // Force 연산
+                // F = M x A
+                float3 vAccel = Particle.vForce.xyz / Particle.Mass;
                   
-            // Accel 연산
-            Particle.vVelocity.xyz += vAccel * g_DT;
+                // Accel 연산
+                Particle.vVelocity.xyz += vAccel * g_DT;
             
-            float4 DragForce = float4(0.f, 0.f, 0.f, 0.f);
-            // Drag 모듈
-            if (Module.arrModuleCheck[1])
-            {
-                float LimitTime = Module.DragTime - Particle.Age;
+                // Drag 모듈
+                if (Module.arrModuleCheck[DRAG_MODULE])
+                {
+                    float4 DragForce = float4(0.f, 0.f, 0.f, 0.f);
+                    float LimitTime = Module.DragTime - Particle.Age;
             
-                if (LimitTime <= 0.f)
-                {
-                    DragForce = float4(0.f, 0.f, 0.f, 0.f);
-                }
-                else
-                {
-                    float DT = g_DT / LimitTime;
-                    DragForce = Particle.vVelocity * DT;
-                }
-            }
+                    if (LimitTime <= 0.f)
+                    {
+                        DragForce = float4(0.f, 0.f, 0.f, 0.f);
+                    }
+                    else
+                    {
+                        float DT = g_DT / LimitTime;
+                        DragForce = Particle.vVelocity * DT;
+                    }
 
-            if (length(Particle.vVelocity) > length(DragForce))
-            {
-                Particle.vVelocity -= DragForce;
+                    if (length(Particle.vVelocity) > length(DragForce))
+                    {
+                    Particle.vVelocity -= DragForce;
+                    }
+                }
+              
+                // Velocity 연산
+                if (0 == Module.SpaceType) // Local
+                {
+                  Particle.vLocalPos.xyz += Particle.vVelocity.xyz * g_DT;
+                  Particle.vWorldPos.xyz = Particle.vLocalPos.xyz + CenterPos;
+                }
+                else if (1 == Module.SpaceType) // World
+                {
+                    Particle.vWorldPos.xyz += Particle.vVelocity.xyz * g_DT;
+                }
             }
-            
-            // Velocity 연산
-            if (0 == Module.SpaceType) // Local
-            {
-                Particle.vLocalPos.xyz += Particle.vVelocity.xyz * g_DT;
-                Particle.vWorldPos.xyz = Particle.vLocalPos.xyz + CenterPos;
-            }
-            else if (1 == Module.SpaceType) // World
-            {
-                Particle.vWorldPos.xyz += Particle.vVelocity.xyz * g_DT;
-            }
-            
         }
     }
 }

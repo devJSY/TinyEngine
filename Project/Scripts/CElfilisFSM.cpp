@@ -96,11 +96,34 @@ void CElfilisFSM::ChangeStateGroup_Random(ElfilisStateGroup _Group)
     if (m_CurStateGroup == _Group || m_StateGroup.find(_Group) == m_StateGroup.cend())
         return;
 
-    int Random = GetRandomInt(0, (int)m_StateGroup[_Group][0].size() - 1);
-    wstring RandState = m_StateGroup[_Group][0][Random];
+    // get min counted state
+    UINT MinCount = UINT_MAX;
+    vector<wstring> MinCountedStates;
+
+    for (pair<wstring, UINT> iter : m_StateSelectionCount[(int)_Group])
+    {
+        if (iter.second > MinCount)
+        {
+            continue;
+        }
+        else if (iter.second == MinCount)
+        {
+            MinCountedStates.push_back(iter.first);
+        }
+        else
+        {
+            MinCount = iter.second;
+            MinCountedStates.clear();
+            MinCountedStates.push_back(iter.first);
+        }
+    }
+
+    int Random = GetRandomInt(0, (int)MinCountedStates.size() - 1);
+    wstring RandState = MinCountedStates[Random];
 
     SetStateGroup(_Group);
     ChangeState(RandState);
+    m_StateSelectionCount[(int)_Group][RandState]++;
 }
 
 void CElfilisFSM::ChangeStateGroup_Set(ElfilisStateGroup _Group, const wstring& _State)
@@ -150,7 +173,7 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup() const
     case ElfilisStateGroup::GroundMoveAtk: {
         float Rand = GetRandomfloat(1, 100);
 
-        if (Rand <= 90.f)
+        if (Rand <= 90.f || m_BigElfilis->IsActive())
         {
             if (IsNearPlayer())
             {
@@ -181,7 +204,7 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup() const
             {
                 float Rand = GetRandomfloat(1, 100);
 
-                if (Rand <= 80.f)
+                if (Rand <= 80.f || m_BigElfilis->IsActive())
                 {
                     return ElfilisStateGroup::GroundMove;
                 }
@@ -201,19 +224,22 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup() const
         {
             float Rand = GetRandomfloat(1, 100);
 
-            if (Rand <= 50.f)
+            if (Rand <= 80.f || m_BigElfilis->IsActive())
             {
-                // 같은 Group State가 retrun되는 경우, 반복의 의미 (함수 호출한 쪽에서 직접 값 확인 후 처리)
-                return m_CurStateGroup;
+                if (Rand <= 50.f)
+                {
+                    // 같은 Group State가 retrun되는 경우, 반복의 의미 (함수 호출한 쪽에서 직접 값 확인 후 처리)
+                    return m_CurStateGroup;
+                }
+                else
+                {
+                    return ElfilisStateGroup::GroundMove;
+                }
+                // else if (Rand <= 80.f)
+                //{
+                //     return ElfilisStateGroup::GroundMoveAtk;
+                // }
             }
-            else if (Rand <= 80.f)
-            {
-                return ElfilisStateGroup::GroundMove;
-            }
-            // else if (Rand <= 80.f)
-            //{
-            //     return ElfilisStateGroup::GroundMoveAtk;
-            // }
             else
             {
                 return ElfilisStateGroup::GroundToAir;
@@ -305,6 +331,9 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup() const
 #include "CElfilisD_Damage.h"
 #include "CElfilisD_Jump.h"
 #include "CElfilisD_Roar.h"
+#include "CElfilisD_Resist.h"
+#include "CElfilisD_ResistFail.h"
+#include "CElfilisD_ResistSuccess.h"
 
 #include "CElfilisG_Idle.h"
 #include "CElfilisG_BackStep.h"
@@ -363,6 +392,9 @@ void CElfilisFSM::begin()
     AddGroupPrivateState(ElfilisStateGroup::DEMO, L"DEMO_APPEAR2_DAMAGE", new CElfilisD_Damage);
     AddGroupPrivateState(ElfilisStateGroup::DEMO, L"DEMO_APPEAR2_JUMP", new CElfilisD_Jump);
     AddGroupPrivateState(ElfilisStateGroup::DEMO, L"DEMO_APPEAR2_ROAR", new CElfilisD_Roar);
+    AddGroupPrivateState(ElfilisStateGroup::DEMO, L"DEMO_RESIST", new CElfilisD_Resist);
+    AddGroupPrivateState(ElfilisStateGroup::DEMO, L"DEMO_RESIST_FAIL", new CElfilisD_ResistFail);
+    AddGroupPrivateState(ElfilisStateGroup::DEMO, L"DEMO_RESIST_SUCCESS", new CElfilisD_ResistSuccess);
     AddGroupPrivateState(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMAL_L", new CElfilisG_NormalAtkL);
     AddGroupPrivateState(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMAL_R", new CElfilisG_NormalAtkR);
     AddGroupPrivateState(ElfilisStateGroup::GroundAtkNear, L"GROUND_ATK_NORMAL_FINISHL", new CElfilisG_NormalAtkFinishL);
@@ -401,11 +433,32 @@ void CElfilisFSM::begin()
 
     // get childs
     m_Weapon = GetOwner()->GetChildObject(L"Halberd");
-    m_Weapon->BoxCollider()->SetEnabled(false);
+
     CGameObject* Hitbox = GetOwner()->GetChildObject(L"Hitbox");
     if (Hitbox)
     {
         m_Hitbox = Hitbox->BoxCollider();
+        Hitbox->SetActive(false);
+    }
+
+    // get mtrl
+    for (int i = 0; i < (int)MeshRender()->GetMtrlCount(); ++i)
+    {
+        m_listBodyMtrl.push_back(MeshRender()->GetMaterial(i));
+        m_listBodyEmissive.push_back(MeshRender()->GetMaterial(i)->GetEmission());
+        m_listBodyEmissiveTex.push_back(MeshRender()->GetMaterial(i)->GetTexParam(TEX_PARAM::TEX_7));
+    }
+
+    if (m_Weapon)
+    {
+        for (int i = 0; i < (int)m_Weapon->MeshRender()->GetMtrlCount(); ++i)
+        {
+            m_listWeaponMtrl.push_back(m_Weapon->MeshRender()->GetMaterial(i));
+            m_listWeaponEmissive.push_back(m_Weapon->MeshRender()->GetMaterial(i)->GetEmission());
+            m_listBodyEmissiveTex.push_back(MeshRender()->GetMaterial(i)->GetTexParam(TEX_PARAM::TEX_7));
+        }
+
+        m_Weapon->BoxCollider()->SetEnabled(false);
     }
 
     // set map size
@@ -423,7 +476,7 @@ void CElfilisFSM::tick()
     {
         Rigidbody()->SetVelocity(Vec3());
         Rigidbody()->SetAngularVelocity(Vec3());
-        ChangeState(L"GROUND_ATK_SWORDWAVE_RL");
+        ChangeStateGroup(ElfilisStateGroup::GroundAtkFar, L"GROUND_ATK_RAYARROW");
     }
 }
 
@@ -507,7 +560,7 @@ void CElfilisFSM::ProcPatternStep()
         }
         else if (m_PatternStep == 1) // 진입 : 외부호출
         {
-            ChangeStateGroup_Set(ElfilisStateGroup::GroundToAir, L"GROUND_TOAIR");
+            ChangeStateGroup_Set(ElfilisStateGroup::GroundToAir, L"GROUND_TOAIR_TELEPORT");
         }
         else if (m_PatternStep == 2)
         {
@@ -557,6 +610,38 @@ void CElfilisFSM::ProcPatternStep()
     else
     {
         m_PatternStep++;
+    }
+}
+
+void CElfilisFSM::ResetEmissive()
+{
+    for (int i = 0; i < m_listBodyMtrl.size(); ++i)
+    {
+        m_listBodyMtrl[i]->SetEmission(Vec4(m_listBodyEmissive[i], 0.f));
+        m_listBodyMtrl[i]->SetTexParam(TEX_PARAM::TEX_7, m_listBodyEmissiveTex[i]);
+    }
+
+    for (int i = 0; i < m_listWeaponMtrl.size(); ++i)
+    {
+        m_listWeaponMtrl[i]->SetEmission(Vec4(m_listWeaponEmissive[i], 0.f));
+        m_listWeaponMtrl[i]->SetTexParam(TEX_PARAM::TEX_7, m_listWeaponEmissiveTex[i]);
+    }
+}
+
+void CElfilisFSM::AddEmissive(Vec3 _Color)
+{
+    for (int i = 0; i < m_listBodyMtrl.size(); ++i)
+    {
+        Vec4 Color = Vec4(m_listBodyEmissive[i] + _Color, 0.f);
+        m_listBodyMtrl[i]->SetEmission(Color);
+        m_listBodyMtrl[i]->SetTexParam(TEX_PARAM::TEX_7, nullptr);
+    }
+
+    for (int i = 0; i < m_listWeaponMtrl.size(); ++i)
+    {
+        Vec4 Color = Vec4(m_listWeaponEmissive[i] + _Color, 0.f);
+        m_listWeaponMtrl[i]->SetEmission(Color);
+        m_listWeaponMtrl[i]->SetTexParam(TEX_PARAM::TEX_7, nullptr);
     }
 }
 
@@ -659,6 +744,7 @@ void CElfilisFSM::AddGroupPublicState(ElfilisStateGroup _Group, const wstring& _
 
     CFSMScript::AddState(_StateName, _State);
     m_StateGroup[_Group][0].push_back(_StateName);
+    m_StateSelectionCount[(int)_Group][_StateName] = 0;
 }
 
 void CElfilisFSM::AddGroupPrivateState(ElfilisStateGroup _Group, const wstring& _StateName, CState* _State)

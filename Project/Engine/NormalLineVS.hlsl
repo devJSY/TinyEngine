@@ -1,10 +1,5 @@
-struct VS_Input
-{
-    float3 vPos : POSITION;
-    float3 vNormal : NORMAL;
-    float4 vColor : COLOR;
-    float2 vUV : TEXCOORD;
-};
+#include "global.hlsli"
+#include "func.hlsli"
 
 struct GS_Input
 {
@@ -12,10 +7,16 @@ struct GS_Input
     float3 normal : NORMAL;
 };
 
-GS_Input main(VS_Input input)
+GS_Input main(VS_IN input)
 {
     GS_Input output;
-
+    float3 PrevPos = input.vPos;
+    if (g_iAnim)
+    {
+        Skinning(input.vPos, PrevPos, input.vTangent, input.vBitangent, input.vNormal
+              , input.vWeights, input.vIndices, 0);
+    }
+    
     output.posModel = float4(input.vPos, 1.0);
     output.normal = input.vNormal;
 

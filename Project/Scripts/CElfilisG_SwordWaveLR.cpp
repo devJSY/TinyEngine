@@ -136,20 +136,13 @@ void CElfilisG_SwordWaveLR::Progress()
             CGameObject* pSlash = m_SwordSlash->Instantiate();
             CElfilisSwordSlashScript* pScript = pSlash->GetScript<CElfilisSwordSlashScript>();
 
-            if (pScript)
-            {
-                Vec3 InitPos = GetOwner()->Transform()->GetWorldPos();
-                InitPos += GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT) * 30.f;
+            Vec3 InitPos = GetOwner()->Transform()->GetWorldPos();
+            InitPos += GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT) * 30.f;
 
-                pSlash->Transform()->SetWorldPos(InitPos);
-                pScript->SetInitDir(GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT));
+            pSlash->Transform()->SetWorldPos(InitPos);
+            pScript->SetInitDir(GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT));
 
-                GamePlayStatic::SpawnGameObject(pSlash, LAYER_MONSTERATK);
-            }
-            else
-            {
-                delete pSlash;
-            }
+            GamePlayStatic::SpawnGameObject(pSlash, LAYER_MONSTERATK);
         }
 
         m_bFrmEnter = false;

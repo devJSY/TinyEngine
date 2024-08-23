@@ -5,11 +5,13 @@ class CMorphoAtkG_Teleport_FireWall : public CBossState
 {
 private:
     CGameObject* m_FireWall;
+    Ptr<CPrefab> m_FireWallPref;
     float m_WallSpeed;
-    bool m_bWallSpawn;
+    bool m_bFrmEnter;
 
 public:
     virtual void tick() override;
+    virtual void Exit() override;
 
 private:
     virtual void Enter_Step() override;

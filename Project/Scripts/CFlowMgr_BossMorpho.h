@@ -16,7 +16,9 @@ public:
     virtual void LevelStart() override;
     virtual void LevelEnd() override;
 
-    void SetFight();
+    void ChangeFlowFight();
+    void ChangeFlowDeath();
+    void ChangeFlowClear();
 
 private:
     void SpawnMorpho();

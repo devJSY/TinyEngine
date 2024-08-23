@@ -3,6 +3,9 @@
 
 class CKirbyHoveringSpit : public CState
 {
+private:
+    Ptr<CPrefab> m_SpitSmoke;
+
 public:
     virtual void tick();    
     virtual void Enter();
@@ -11,5 +14,6 @@ public:
 public:
     CLONE(CKirbyHoveringSpit)
     CKirbyHoveringSpit();
+    CKirbyHoveringSpit(const CKirbyHoveringSpit& _Origin);
     virtual ~CKirbyHoveringSpit();
 };

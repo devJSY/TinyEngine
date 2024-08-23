@@ -53,40 +53,10 @@ void CElfilisG_Teleport::Enter_Step()
 
         // teleport
         float MapSizeRadius = ELFFSM->GetMapSizeRadius();
-        Vec3 MapFloorOffset = ELFFSM->GetMapFloorOffset();
-        m_AfterPos = GetOwner()->Transform()->GetWorldPos();
-        m_AfterPos.x += GetRandomfloat(-MapSizeRadius * 2.f, MapSizeRadius * 2.f);
-        m_AfterPos.z += GetRandomfloat(-MapSizeRadius * 2.f, MapSizeRadius * 2.f);
-
-        if (m_AfterPos.x < 0)
-        {
-            if (m_AfterPos.x < MapSizeRadius * -1.f + MapFloorOffset.x)
-            {
-                m_AfterPos.x = MapSizeRadius * -1.f;
-            }
-        }
-        else
-        {
-            if (m_AfterPos.x > MapSizeRadius + MapFloorOffset.x)
-            {
-                m_AfterPos.x = MapSizeRadius;
-            }
-        }
-
-        if (m_AfterPos.z < 0)
-        {
-            if (m_AfterPos.z < MapSizeRadius * -1.f + MapFloorOffset.z)
-            {
-                m_AfterPos.z = MapSizeRadius * -1.f;
-            }
-        }
-        else
-        {
-            if (m_AfterPos.z > MapSizeRadius + MapFloorOffset.z)
-            {
-                m_AfterPos.z = MapSizeRadius;
-            }
-        }
+        m_AfterPos.x = GetRandomfloat(-MapSizeRadius, MapSizeRadius);
+        m_AfterPos.y = 0.f;
+        m_AfterPos.z = GetRandomfloat(-MapSizeRadius, MapSizeRadius);
+        m_AfterPos = ELFFSM->GetMapFloorOffset() + m_AfterPos.Normalize() * GetRandomfloat(0.f, MapSizeRadius);
 
         //@Effect 텔레포드 이펙트
         Vec3 Pos = GetOwner()->Transform()->GetWorldPos();

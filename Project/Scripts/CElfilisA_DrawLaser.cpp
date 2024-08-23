@@ -74,20 +74,13 @@ void CElfilisA_DrawLaser::Enter_Step()
             CGameObject* Laser = m_LaserPref->Instantiate();
             m_LaserScript = Laser->GetScript<CElfilisLaser>();
 
-            if (m_LaserScript)
-            {
-                Vec3 NewRot = GetOwner()->Transform()->GetWorldRotation();
-                NewRot.x += XMConvertToRadians(50.f);
-                Laser->Transform()->SetWorldPos(GetOwner()->Transform()->GetWorldPos());
-                Laser->Transform()->SetWorldRotation(NewRot);
+            Vec3 NewRot = GetOwner()->Transform()->GetWorldRotation();
+            NewRot.x += XMConvertToRadians(50.f);
+            Laser->Transform()->SetWorldPos(GetOwner()->Transform()->GetWorldPos());
+            Laser->Transform()->SetWorldRotation(NewRot);
 
-                m_LaserScript->SetAutoPlay(true);
-                GamePlayStatic::SpawnGameObject(Laser, LAYER_MONSTERATK_TRIGGER);
-            }
-            else
-            {
-                delete Laser;
-            }
+            m_LaserScript->SetAutoPlay(true);
+            GamePlayStatic::SpawnGameObject(Laser, LAYER_MONSTERATK_TRIGGER);
         }
     }
     break;

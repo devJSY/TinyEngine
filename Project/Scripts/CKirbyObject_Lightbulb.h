@@ -5,7 +5,6 @@ class CKirbyLightScript;
 class CKirbyObject_Lightbulb : public CKirbyObject
 {
 private:
-    CKirbyLightScript* m_PointLight;
     float m_Speed;
     float m_BrightSpeed;
 

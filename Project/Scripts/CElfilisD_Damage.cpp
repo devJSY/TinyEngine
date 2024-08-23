@@ -58,7 +58,6 @@ void CElfilisD_Damage::Enter_Step()
         CAMERACTRL->SetZoomMaxSpeed(500.f);
         CAMERACTRL->SetZoomThreshold(500.f);
         CAMERACTRL->SetTargetOffset(Vec3(0.f, 75.f, 0.f));
-
     }
     break;
     case StateStep::Progress: {
