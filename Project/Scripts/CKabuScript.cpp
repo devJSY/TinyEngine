@@ -23,7 +23,7 @@ CKabuScript::CKabuScript()
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_vDestPos, "DestPos");
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bCurved, "Curved");
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bHalfCurved, "Half Curved");
-    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bInverse, "Inverse");
+    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bInverse, "MoveZ");
 }
 
 CKabuScript::CKabuScript(const CKabuScript& Origin)
@@ -46,7 +46,7 @@ CKabuScript::CKabuScript(const CKabuScript& Origin)
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_vDestPos, "DestPos");
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bCurved, "Curved");
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bHalfCurved, "Half Curved");
-    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bInverse, "Inverse");
+    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bInverse, "MoveZ");
 }
 
 CKabuScript::~CKabuScript()
@@ -347,7 +347,7 @@ void CKabuScript::PatrolMove()
     }
     else
     {
-        LinearMove();
+        LinearMove(m_bInverse);
     }
 }
 
@@ -405,7 +405,7 @@ void CKabuScript::CircleMove()
     }
 }
 
-void CKabuScript::LinearMove()
+void CKabuScript::LinearMove(bool _moveZ)
 {
     Vec3 vPos = Transform()->GetLocalPos();
 
@@ -413,15 +413,31 @@ void CKabuScript::LinearMove()
 
     Rigidbody()->SetVelocity(m_vDir * GetCurInfo().Speed * DT + Vec3(0.f, -9.81f, 0.f));
 
-    if ((m_vDestPos.x - 10.f <= vPos.x && vPos.x <= m_vDestPos.x + 10.f) && (m_vDestPos.z - 5.f <= vPos.z && vPos.z <= m_vDestPos.z + 5.f))
+    if (_moveZ)
     {
-        Rigidbody()->SetVelocity(Vec3(0.f, -9.81f, 0.f));
-        Vec3 vTemp = m_vDestPos;
-        m_vDestPos = m_vOriginPos;
-        m_vOriginPos = vTemp;
-        m_vDestPos.y = 0.f;
-        m_vOriginPos.y = 0.f;
-        m_vDir = m_vDir * -1.f;
+        if ((m_vDestPos.z - 5.f <= vPos.z && vPos.z <= m_vDestPos.z + 5.f))
+        {
+            Rigidbody()->SetVelocity(Vec3(0.f, -9.81f, 0.f));
+            Vec3 vTemp = m_vDestPos;
+            m_vDestPos = m_vOriginPos;
+            m_vOriginPos = vTemp;
+            m_vDestPos.y = 0.f;
+            m_vOriginPos.y = 0.f;
+            m_vDir = m_vDir * -1.f;
+        }
+    }
+    else
+    {
+        if ((m_vDestPos.x - 5.f <= vPos.x && vPos.x <= m_vDestPos.x + 5.f))
+        {
+            Rigidbody()->SetVelocity(Vec3(0.f, -9.81f, 0.f));
+            Vec3 vTemp = m_vDestPos;
+            m_vDestPos = m_vOriginPos;
+            m_vOriginPos = vTemp;
+            m_vDestPos.y = 0.f;
+            m_vOriginPos.y = 0.f;
+            m_vDir = m_vDir * -1.f;
+        }
     }
 }
 

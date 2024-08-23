@@ -15,6 +15,7 @@ CSirKibbleScript::CSirKibbleScript()
     , m_bJump(false)
     , m_fAccTime(0.f)
     , m_bPatrol(false)
+    , m_bThrow(false)
 {
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_vDestPos, "Destination");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fAccTime, "AccTime");
@@ -31,6 +32,7 @@ CSirKibbleScript::CSirKibbleScript(const CSirKibbleScript& Origin)
     , m_bJump(false)
     , m_fAccTime(0.f)
     , m_bPatrol(false)
+    , m_bThrow(false)
 {
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_vDestPos, "Destination");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fAccTime, "AccTime");
@@ -193,8 +195,8 @@ void CSirKibbleScript::EnterState(SirKibbleState _state)
     break;
     case SirKibbleState::AirCutterThrow: {
         Rigidbody()->SetUseGravity(false);
+        m_bThrow = true;
         Animator()->Play(ANIMPREFIX("AirCutterThrow"), false, false, 1.5f);
-        ProjectileAttack(true);
     }
     break;
     case SirKibbleState::CutterThrowStart: {
@@ -206,8 +208,8 @@ void CSirKibbleScript::EnterState(SirKibbleState _state)
     }
     break;
     case SirKibbleState::CutterThrow: {
+        m_bThrow = true;
         Animator()->Play(ANIMPREFIX("CutterThrow"), false, false, 1.5f);
-        ProjectileAttack(false);
     }
     break;
     case SirKibbleState::CutterCatch: {
@@ -366,6 +368,7 @@ void CSirKibbleScript::ExitState(SirKibbleState _state)
     case SirKibbleState::AirCutterJump:
         break;
     case SirKibbleState::AirCutterThrow: {
+        m_bThrow = false;
         Rigidbody()->SetUseGravity(true);
     }
     break;
@@ -376,6 +379,7 @@ void CSirKibbleScript::ExitState(SirKibbleState _state)
     }
     break;
     case SirKibbleState::CutterThrow: {
+        m_bThrow = false;
     }
     break;
     case SirKibbleState::CutterCatch:
@@ -560,6 +564,12 @@ void CSirKibbleScript::AirCutterJump()
 #pragma region AIRCUTTERTHROW
 void CSirKibbleScript::AirCutterThrow()
 {
+    if (CHECK_ANIMFRM(GetOwner(), 13) && m_bThrow)
+    {
+        ProjectileAttack(false);
+        m_bThrow = false;
+    }
+
     Animator()->IsFinish() ? ChangeState(SirKibbleState::Fall) : void();
 }
 #pragma endregion
@@ -612,6 +622,12 @@ void CSirKibbleScript::CutterThrowStartWait()
 #pragma region CUTTERTHROW
 void CSirKibbleScript::CutterThrow()
 {
+    if (CHECK_ANIMFRM(GetOwner(), 13) && m_bThrow)
+    {
+        ProjectileAttack(false);
+        m_bThrow = false;
+    }
+
     Animator()->IsFinish() ? ChangeState(SirKibbleState::FindWait) : void();
 }
 #pragma endregion

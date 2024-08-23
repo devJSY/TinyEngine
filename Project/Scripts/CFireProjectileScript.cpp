@@ -94,7 +94,12 @@ void CFireProjectileScript::Attack()
 {
     m_fAccRadian += DT * m_fFallSpeed;
     Vec3 vDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
-    vDir.y = -2.f * cosf(m_fAccRadian) * DT;
+    if (m_fAccRadian >= 1.5f)
+    {
+        m_fAccRadian = 1.5f;
+    }
+    vDir.y = -39.5f * cosf(m_fAccRadian) * DT;
+
     Rigidbody()->SetVelocity(vDir * m_fSpeed);
 }
 

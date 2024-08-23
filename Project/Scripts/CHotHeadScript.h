@@ -8,9 +8,6 @@ enum class HotHeadState
     AttackShootStart,
     AttackShoot,
     AttackShootEnd,
-    AttackFlameStart,
-    AttackFlame,
-    AttackFlameEnd,
     AttackFlameRotStart,
     AttackFlameRot,
     AttackFlameRotEnd,
@@ -26,7 +23,6 @@ class CHotHeadScript : public CMonsterUnitScript
 {
 private:
     CGameObject* m_pFlameRotObject;
-    CCollider* m_pFlameCol;
     CCollider* m_pFlameRotCol;
 
     HotHeadState m_eState;

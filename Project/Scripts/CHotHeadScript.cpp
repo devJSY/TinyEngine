@@ -7,7 +7,6 @@
 CHotHeadScript::CHotHeadScript()
     : CMonsterUnitScript(HOTHEADSCRIPT)
     , m_pFlameRotObject(nullptr)
-    , m_pFlameCol(nullptr)
     , m_pFlameRotCol(nullptr)
     , m_eState(HotHeadState::Idle)
     , m_vDamageDir{}
@@ -28,7 +27,6 @@ CHotHeadScript::CHotHeadScript()
 CHotHeadScript::CHotHeadScript(const CHotHeadScript& _Origin)
     : CMonsterUnitScript(_Origin)
     , m_pFlameRotObject(nullptr)
-    , m_pFlameCol(nullptr)
     , m_pFlameRotCol(nullptr)
     , m_eState(HotHeadState::Idle)
     , m_vDamageDir{}
@@ -53,6 +51,8 @@ CHotHeadScript::~CHotHeadScript()
 void CHotHeadScript::begin()
 {
     CMonsterUnitScript::begin();
+
+    GetOwner()->MeshRender()->GetDynamicMaterial(0);
 
     InitSetting();
 
@@ -178,14 +178,7 @@ void CHotHeadScript::InitSetting()
         // TODO : 위치 정해지면 코드로 생성해주기
     }
 
-    m_pFlameCol = GetOwner()->GetChildObject(L"Flame Collider")->CapsuleCollider();
     m_pFlameRotCol = m_pFlameRotObject->GetChildObject(L"FlameRot Collider")->SphereCollider();
-
-    if (nullptr == m_pFlameCol)
-    {
-        MessageBox(nullptr, L"Flame Collider Does Not Exist", L"Flame Collider Issue", MB_OK);
-        // TODO : 위치 정해지면 코드로 생성해주기
-    }
 
     if (nullptr == m_pFlameRotCol)
     {
@@ -193,8 +186,9 @@ void CHotHeadScript::InitSetting()
         // TODO : 위치 정해지면 코드로 생성해주기
     }
 
-    m_pFlameCol->SetEnabled(false);
     m_pFlameRotCol->SetEnabled(false);
+
+    // GetOwner()->MeshRender()->GetDynamicMaterial(0)->
 }
 
 void CHotHeadScript::EnterState(HotHeadState _state)
@@ -202,6 +196,9 @@ void CHotHeadScript::EnterState(HotHeadState _state)
     switch (m_eState)
     {
     case HotHeadState::Idle: {
+        GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
+            TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\HotHead\\FaceTexturePattern.00.png",
+                                                        L"fbx\\Characters\\Monster\\HotHead\\FaceTexturePattern.00.png"));
         Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
         Animator()->Play(ANIMPREFIX("Wait"), true, false, 1.5f);
     }
@@ -211,6 +208,9 @@ void CHotHeadScript::EnterState(HotHeadState _state)
     }
     break;
     case HotHeadState::Aiming: {
+        GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
+            TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\HotHead\\FaceTexturePattern.05.png",
+                                                        L"fbx\\Characters\\Monster\\HotHead\\FaceTexturePattern.05.png"));
         Animator()->Play(ANIMPREFIX("Walk"), true, false, 1.5f);
     }
     break;
@@ -227,27 +227,14 @@ void CHotHeadScript::EnterState(HotHeadState _state)
         Animator()->Play(ANIMPREFIX("AttackShootEnd"), false, false, 1.5f);
     }
     break;
-    case HotHeadState::AttackFlameStart: {
-        Animator()->Play(ANIMPREFIX("AttackFlameStart"), false, false, 1.5f);
-    }
-    break;
-    case HotHeadState::AttackFlame: {
-        // TODO : 앞에 Attack Area 키기
-        m_pFlameCol->SetEnabled(true);
-        Animator()->Play(ANIMPREFIX("AttackFlame"), false, false, 1.5f);
-    }
-    break;
-    case HotHeadState::AttackFlameEnd: {
-        // TODO : 앞에 Attack Area 끄기
-        m_pFlameCol->SetEnabled(false);
-        Animator()->Play(ANIMPREFIX("AttackFlameEnd"), false, false, 1.5f);
-    }
-    break;
     case HotHeadState::AttackFlameRotStart: {
         Animator()->Play(ANIMPREFIX("AttackFlameRotStart"), false, false, 1.5f);
     }
     break;
     case HotHeadState::AttackFlameRot: {
+        GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
+            TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\HotHead\\FaceTexturePattern.00.png",
+                                                        L"fbx\\Characters\\Monster\\HotHead\\FaceTexturePattern.00.png"));
         // 현재 Radian 가져오기
         m_fRotRadian = m_pFlameRotObject->Transform()->GetLocalRotation().y;
         // TODO : 앞에 Attack Area 키기
@@ -262,15 +249,25 @@ void CHotHeadScript::EnterState(HotHeadState _state)
     }
     break;
     case HotHeadState::Fall: {
+        GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
+            TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\HotHead\\FaceTexturePattern.03.png",
+                                                        L"fbx\\Characters\\Monster\\HotHead\\FaceTexturePattern.03.png"));
         Animator()->Play(ANIMPREFIX("Fall"));
     }
     break;
     case HotHeadState::Landing: {
+        GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
+            TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\HotHead\\FaceTexturePattern.00.png",
+                                                        L"fbx\\Characters\\Monster\\HotHead\\FaceTexturePattern.00.png"));
         Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
         Animator()->Play(ANIMPREFIX("Landing"), false);
     }
     break;
     case HotHeadState::Damage: {
+        GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
+            TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\HotHead\\FaceTexturePattern.03.png",
+                                                        L"fbx\\Characters\\Monster\\HotHead\\FaceTexturePattern.03.png"));
+
         SetSparkle(true);
 
         Transform()->SetDirection((PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos()).Normalize());
@@ -299,10 +296,16 @@ void CHotHeadScript::EnterState(HotHeadState _state)
     }
     break;
     case HotHeadState::Eaten: {
+        GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
+            TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\HotHead\\FaceTexturePattern.03.png",
+                                                        L"fbx\\Characters\\Monster\\HotHead\\FaceTexturePattern.03.png"));
         Animator()->Play(ANIMPREFIX("Damage"));
     }
     break;
     case HotHeadState::Death: {
+        GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
+            TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\HotHead\\FaceTexturePattern.03.png",
+                                                        L"fbx\\Characters\\Monster\\HotHead\\FaceTexturePattern.03.png"));
         Animator()->Play(ANIMPREFIX("Damage"), false);
     }
     break;
@@ -337,15 +340,6 @@ void CHotHeadScript::FSM()
         AttackShoot();
     }
     break;
-
-    case HotHeadState::AttackFlameStart: {
-        AttackFlameStart();
-    }
-    break;
-    case HotHeadState::AttackFlame: {
-        AttackFlame();
-    }
-    break;
     case HotHeadState::AttackFlameRotStart: {
         AttackFlameRotStart();
     }
@@ -355,7 +349,6 @@ void CHotHeadScript::FSM()
     }
     break;
     case HotHeadState::AttackShootEnd:
-    case HotHeadState::AttackFlameEnd:
     case HotHeadState::AttackFlameRotEnd: {
         AttackEnd();
     }
@@ -370,7 +363,6 @@ void CHotHeadScript::FSM()
     break;
     case HotHeadState::Damage: {
         m_pFlameRotCol->SetEnabled(false);
-        m_pFlameCol->SetEnabled(false);
 
         Damage();
     }
@@ -410,14 +402,6 @@ void CHotHeadScript::ExitState(HotHeadState _state)
     case HotHeadState::AttackShoot:
         break;
     case HotHeadState::AttackShootEnd:
-        break;
-    case HotHeadState::AttackFlameStart:
-        break;
-    case HotHeadState::AttackFlame: {
-        m_fAccTime = 0.f;
-    }
-    break;
-    case HotHeadState::AttackFlameEnd:
         break;
     case HotHeadState::AttackFlameRotStart: {
     }
@@ -465,7 +449,7 @@ void CHotHeadScript::ProjectileAttack()
     if (nullptr != bulletPref)
     {
         CGameObject* pBullet = bulletPref->Instantiate();
-        pBullet->Transform()->SetLocalPos(Transform()->GetLocalPos() + Transform()->GetWorldDir(DIR_TYPE::FRONT) * 10.f + Vec3(0.f, 10.f, 0.f));
+        pBullet->Transform()->SetLocalPos(Transform()->GetLocalPos() + Transform()->GetWorldDir(DIR_TYPE::FRONT) * 10.f + Vec3(0.f, 30.f, 0.f));
         pBullet->Transform()->SetWorldRotation(Transform()->GetWorldQuaternion());
         GamePlayStatic::SpawnGameObject(pBullet, pBullet->GetLayerIdx());
     }
@@ -524,17 +508,11 @@ void CHotHeadScript::Aiming()
 
         if (fDistance <= m_fShotLength)
         {
-            state = HotHeadState::AttackShootStart;
-        }
-
-        if (fDistance <= m_fFlameLength)
-        {
-            state = HotHeadState::AttackFlameStart;
-        }
-
-        if (fDistance <= m_fFlameRotLength)
-        {
             state = HotHeadState::AttackFlameRotStart;
+        }
+        else
+        {
+            state = HotHeadState::AttackShootStart;
         }
 
         ChangeState(state);
@@ -558,27 +536,6 @@ void CHotHeadScript::AttackShoot()
     if (Animator()->IsFinish())
     {
         ChangeState(HotHeadState::AttackShootEnd);
-    }
-}
-#pragma endregion
-
-#pragma region ATTACKFLAMESTART
-void CHotHeadScript::AttackFlameStart()
-{
-    if (Animator()->IsFinish())
-    {
-        ChangeState(HotHeadState::AttackFlame);
-    }
-}
-#pragma endregion
-
-#pragma region ATTACKFLAME
-void CHotHeadScript::AttackFlame()
-{
-    m_fAccTime += DT;
-    if (Animator()->IsFinish() && m_fAccTime >= 3.f)
-    {
-        ChangeState(HotHeadState::AttackFlameEnd);
     }
 }
 #pragma endregion
