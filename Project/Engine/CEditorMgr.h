@@ -49,7 +49,7 @@ public:
     Vec2 GetViewportMousePos() const { return m_ViewportMousePos; }
 
     bool IsContentAutoLoad() const { return m_bContentAutoLoad; }
-    void SetContentAutoLoad(bool _bEnable);
+    void SetContentAutoLoad();
 
 public:
     CEditor* GetEditor(EDITOR_TYPE _Type) const { return m_arrEditor[(UINT)_Type]; }

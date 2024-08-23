@@ -223,7 +223,7 @@ void CPhysics2DMgr::OnPhysics2DStop()
 
 void CPhysics2DMgr::AddPhysicsObject(CGameObject* _GameObject)
 {
-    if (nullptr == m_PhysicsWorld || nullptr == _GameObject || !_GameObject->IsActive())
+    if (nullptr == m_PhysicsWorld || nullptr == _GameObject || !_GameObject->IsActive() || _GameObject->IsDead())
         return;
 
     CTransform* pTr = _GameObject->Transform();

@@ -157,9 +157,6 @@ void CEditorMgr::init()
     // Editor 용 카메라로서 렌더매니저에 등록
     CRenderMgr::GetInst()->RegisterEditorCamera(pEditorCam->Camera());
 
-    // Content Auto Loading
-    SetContentAutoLoad(m_bContentAutoLoad);
-
     // Content 폴더 변경사항 확인용 핸들 초기화
     wstring strContentPath = CPathMgr::GetContentPath();
     m_hObserver = FindFirstChangeNotification(strContentPath.c_str(), true,
@@ -235,9 +232,19 @@ void CEditorMgr::render()
     }
 }
 
-void CEditorMgr::SetContentAutoLoad(bool _bEnable)
+void CEditorMgr::SetContentAutoLoad()
 {
-    m_bContentAutoLoad = _bEnable;
+    int value = MessageBox(nullptr, L"Content Auto Loading을 활성화 하시겠습니까?", L"Content Auto Load", MB_YESNO | MB_ICONQUESTION);
+
+    if (value == IDYES)
+    {
+        m_bContentAutoLoad = true;
+    }
+    else
+    {
+        m_bContentAutoLoad = false;
+    }
+
     // 컨텐츠 폴더에 존재하는 모든 에셋 로딩
     if (m_bContentAutoLoad)
     {
