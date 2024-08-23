@@ -64,10 +64,10 @@ void CGhostGordoScript::OnTriggerEnter(CCollider* _OtherCollider)
 {
     CGameObject* pObj = _OtherCollider->GetOwner();
 
-    if (LAYER_PLAYER == pObj->GetLayerIdx() && L"Main Player" == pObj->GetName())
+    if (LAYER_PLAYER_TRIGGER == pObj->GetLayerIdx() && L"Body Collider" == pObj->GetName())
     {
         UnitHit hitInfo = {DAMAGE_TYPE::NORMAL, Transform()->GetWorldDir(DIR_TYPE::FRONT), m_CurInfo.ATK, 0.f, 0.f};
-        pObj->GetScript<CUnitScript>()->GetDamage(hitInfo);
+        pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo);
         ChangeState(GhostGordoState::TrackAfter2);
     }
 }

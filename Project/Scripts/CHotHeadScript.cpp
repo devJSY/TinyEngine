@@ -7,7 +7,6 @@
 CHotHeadScript::CHotHeadScript()
     : CMonsterUnitScript(HOTHEADSCRIPT)
     , m_pFlameRotObject(nullptr)
-    , m_pFlameRotCol(nullptr)
     , m_eState(HotHeadState::Idle)
     , m_vDamageDir{}
     , m_fAimingTime(0.f)
@@ -27,7 +26,6 @@ CHotHeadScript::CHotHeadScript()
 CHotHeadScript::CHotHeadScript(const CHotHeadScript& _Origin)
     : CMonsterUnitScript(_Origin)
     , m_pFlameRotObject(nullptr)
-    , m_pFlameRotCol(nullptr)
     , m_eState(HotHeadState::Idle)
     , m_vDamageDir{}
     , m_fAimingTime(_Origin.m_fAccTime)
@@ -178,17 +176,9 @@ void CHotHeadScript::InitSetting()
         // TODO : 위치 정해지면 코드로 생성해주기
     }
 
-    m_pFlameRotCol = m_pFlameRotObject->GetChildObject(L"FlameRot Collider")->SphereCollider();
+    m_pFlameRotObject->SetActive(false);
 
-    if (nullptr == m_pFlameRotCol)
-    {
-        MessageBox(nullptr, L"FlameRot Collider Does Not Exist", L"FlameRot Collider Issue", MB_OK);
-        // TODO : 위치 정해지면 코드로 생성해주기
-    }
-
-    m_pFlameRotCol->SetEnabled(false);
-
-    // GetOwner()->MeshRender()->GetDynamicMaterial(0)->
+    GetOwner()->MeshRender()->GetDynamicMaterial(0);
 }
 
 void CHotHeadScript::EnterState(HotHeadState _state)
@@ -238,13 +228,13 @@ void CHotHeadScript::EnterState(HotHeadState _state)
         // 현재 Radian 가져오기
         m_fRotRadian = m_pFlameRotObject->Transform()->GetLocalRotation().y;
         // TODO : 앞에 Attack Area 키기
-        m_pFlameRotCol->SetEnabled(true);
+        m_pFlameRotObject->SetActive(true);
         Animator()->Play(ANIMPREFIX("AttackFlameRot"), false, false, 1.5f);
     }
     break;
     case HotHeadState::AttackFlameRotEnd: {
         // TODO : 앞에 Attack Area 끄기
-        m_pFlameRotCol->SetEnabled(false);
+        m_pFlameRotObject->SetActive(false);
         Animator()->Play(ANIMPREFIX("AttackFlameRotEnd"), false);
     }
     break;
@@ -340,6 +330,14 @@ void CHotHeadScript::FSM()
         AttackShoot();
     }
     break;
+    case HotHeadState::AttackFlameStart: {
+        AttackFlameStart();
+    }
+    break;
+    case HotHeadState::AttackFlame: {
+        AttackFlame();
+    }
+    break;
     case HotHeadState::AttackFlameRotStart: {
         AttackFlameRotStart();
     }
@@ -349,6 +347,7 @@ void CHotHeadScript::FSM()
     }
     break;
     case HotHeadState::AttackShootEnd:
+    case HotHeadState::AttackFlameEnd:
     case HotHeadState::AttackFlameRotEnd: {
         AttackEnd();
     }
@@ -362,8 +361,7 @@ void CHotHeadScript::FSM()
     }
     break;
     case HotHeadState::Damage: {
-        m_pFlameRotCol->SetEnabled(false);
-
+        m_pFlameRotObject->SetActive(false);
         Damage();
     }
     break;
@@ -402,6 +400,14 @@ void CHotHeadScript::ExitState(HotHeadState _state)
     case HotHeadState::AttackShoot:
         break;
     case HotHeadState::AttackShootEnd:
+        break;
+    case HotHeadState::AttackFlameStart:
+        break;
+    case HotHeadState::AttackFlame: {
+        m_fAccTime = 0.f;
+    }
+    break;
+    case HotHeadState::AttackFlameEnd:
         break;
     case HotHeadState::AttackFlameRotStart: {
     }
@@ -536,6 +542,21 @@ void CHotHeadScript::AttackShoot()
     if (Animator()->IsFinish())
     {
         ChangeState(HotHeadState::AttackShootEnd);
+    }
+}
+void CHotHeadScript::AttackFlameStart()
+{
+    if (Animator()->IsFinish())
+    {
+        ChangeState(HotHeadState::AttackFlame);
+    }
+}
+void CHotHeadScript::AttackFlame()
+{
+    m_fAccTime += DT;
+    if (Animator()->IsFinish() && m_fAccTime >= 3.f)
+    {
+        ChangeState(HotHeadState::AttackFlameEnd);
     }
 }
 #pragma endregion

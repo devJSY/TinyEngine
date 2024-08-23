@@ -130,6 +130,7 @@ UINT CNormalEnemyScript::SaveToLevelFile(FILE* _File)
 
     MemoryByte += CMonsterUnitScript::SaveToLevelFile(_File);
 
+    fwrite(&m_bSleep, sizeof(bool), 1, _File);
     fwrite(&m_fMaxSpeed, sizeof(float), 1, _File);
     fwrite(&m_fSpeed, sizeof(float), 1, _File);
     fwrite(&m_fRushLerp, sizeof(float), 1, _File);
@@ -138,6 +139,7 @@ UINT CNormalEnemyScript::SaveToLevelFile(FILE* _File)
     fwrite(&m_bCirclePatrol, sizeof(bool), 1, _File);
     fwrite(&m_vCenterPoint, sizeof(Vec3), 1, _File);
 
+    MemoryByte += sizeof(bool);
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
@@ -155,6 +157,7 @@ UINT CNormalEnemyScript::LoadFromLevelFile(FILE* _File)
 
     MemoryByte += CMonsterUnitScript::LoadFromLevelFile(_File);
 
+    fread(&m_bSleep, sizeof(bool), 1, _File);
     fread(&m_fMaxSpeed, sizeof(float), 1, _File);
     fread(&m_fSpeed, sizeof(float), 1, _File);
     fread(&m_fRushLerp, sizeof(float), 1, _File);
@@ -163,6 +166,7 @@ UINT CNormalEnemyScript::LoadFromLevelFile(FILE* _File)
     fread(&m_bCirclePatrol, sizeof(bool), 1, _File);
     fread(&m_vCenterPoint, sizeof(Vec3), 1, _File);
 
+    MemoryByte += sizeof(bool);
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);

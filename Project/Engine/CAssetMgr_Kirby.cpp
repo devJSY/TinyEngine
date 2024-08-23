@@ -118,6 +118,9 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
         pShader->AddTexParam(TEX_2, "MRA Texture");
         pShader->AddTexParam(TEX_3, "Normal Texture");
 
+        pShader->AddScalarParam(VEC4_0, "Rim Color");
+        pShader->AddScalarParam(FLOAT_1, "Rim Power");
+
         pShader->SetName(L"NoddyShader");
         AddAsset(L"NoddyShader", pShader);
     }
@@ -141,6 +144,9 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
         pShader->AddTexParam(TEX_2, "Skin Normal Texture");
         pShader->AddTexParam(TEX_3, "Skin MRA Texture");
 
+        pShader->AddScalarParam(VEC4_0, "Rim Color");
+        pShader->AddScalarParam(FLOAT_1, "Rim Power");
+
         pShader->SetName(L"HotHeadShader");
         AddAsset(L"HotHeadShader", pShader);
     }
@@ -162,6 +168,9 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
         pShader->AddTexParam(TEX_0, "Skin Base Texture");
         pShader->AddTexParam(TEX_1, "Skin Normal Texture");
         pShader->AddTexParam(TEX_2, "Skin MRA Texture");
+
+        pShader->AddScalarParam(VEC4_0, "Rim Color");
+        pShader->AddScalarParam(FLOAT_1, "Rim Power");
 
         pShader->SetName(L"SirKibbleShader");
         AddAsset(L"SirKibbleShader", pShader);
@@ -186,6 +195,7 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
         pShader->AddTexParam(TEX_2, "Skin MRA Texture");
         pShader->AddTexParam(TEX_3, "Skin Emissive Texture");
 
+        pShader->AddScalarParam(INT_0, "Rim Inverse");
         pShader->AddScalarParam(VEC4_0, "Rim Color");
         pShader->AddScalarParam(FLOAT_1, "Rim Power");
 
