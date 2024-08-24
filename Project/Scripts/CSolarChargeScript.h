@@ -21,6 +21,9 @@ private:
     SolarChargeState m_eState;
     bool m_IsArea;
 
+    float m_fTermTime;
+    bool m_bOnOffFlag;
+
 public:
     virtual void begin() override;
     virtual void tick() override;

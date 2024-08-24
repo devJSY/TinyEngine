@@ -25,6 +25,8 @@ enum class ButtonTransition
 class CButtonScript : public CScript
 {
 private:
+    vector<Vector3> m_vNormalScales;
+
     ButtonState m_ePrevState;
     ButtonState m_eCurState;
 

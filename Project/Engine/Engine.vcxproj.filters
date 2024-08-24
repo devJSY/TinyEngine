@@ -1085,9 +1085,6 @@
     <Filter Include="ShaderCode\Kirby\Characters\Monster">
       <UniqueIdentifier>{4bb31100-7dd9-49a1-acda-b7805560ce2b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ShaderCode\Kirby\Characters\WaddleDee">
-      <UniqueIdentifier>{6722e1ac-3997-4a66-a35e-d0ffd8c157a4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Module\SimpleMath">
       <UniqueIdentifier>{5f743d3c-a978-4db5-9aa2-75e1bbf57044}</UniqueIdentifier>
     </Filter>
@@ -1105,15 +1102,6 @@
     </Filter>
     <Filter Include="ShaderCode\Kirby\UIShader">
       <UniqueIdentifier>{1c926a9d-cfd7-4188-ba29-125df5963738}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ShaderCode\Kirby\Map\1. Natural Plains">
-      <UniqueIdentifier>{e42ab017-37f0-4515-b1cf-456932d4675e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ShaderCode\Kirby\Map\0. Point of Arrival">
-      <UniqueIdentifier>{674671fc-f19e-42a8-a3e3-f64a28f14804}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ShaderCode\Kirby\Map\3. Invasion at the House of Horror">
-      <UniqueIdentifier>{421a40da-c45f-4cff-87f9-0051de4dd71d}</UniqueIdentifier>
     </Filter>
     <Filter Include="ShaderCode\Kirby\UIShader\UIHPShader">
       <UniqueIdentifier>{c63c5e1c-8daa-49bf-a891-a4976820dea8}</UniqueIdentifier>
@@ -1162,6 +1150,9 @@
     </Filter>
     <Filter Include="ShaderCode\Kirby\UIShader\UICircleProgressShader">
       <UniqueIdentifier>{6ddc372f-4b5e-424a-a1e4-45a921dec957}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\Kirby\Map\Invasion at the House of Horror">
+      <UniqueIdentifier>{421a40da-c45f-4cff-87f9-0051de4dd71d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1441,7 +1432,7 @@
       <Filter>ShaderCode\Kirby\Common</Filter>
     </FxCompile>
     <FxCompile Include="FunHouseMapPS.hlsl">
-      <Filter>ShaderCode\Kirby\Map\3. Invasion at the House of Horror</Filter>
+      <Filter>ShaderCode\Kirby\Map\Invasion at the House of Horror</Filter>
     </FxCompile>
     <FxCompile Include="UIHPShaderVS.hlsl">
       <Filter>ShaderCode\Kirby\UIShader\UIHPShader</Filter>

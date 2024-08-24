@@ -32,11 +32,13 @@ UINT CAttackAreaScript::LoadFromLevelFile(FILE* _File)
     return MemoryByte;
 }
 
-// Body Collider
-void CAttackAreaScript::OnTriggerEnter(CCollider* _OtherCollider)
+void CAttackAreaScript::OnTriggerStay(CCollider* _OtherCollider)
 {
-}
+    CGameObject* pObj = _OtherCollider->GetOwner();
 
-void CAttackAreaScript::OnTriggerExit(CCollider* _OtherCollider)
-{
+    if (pObj->GetLayerIdx() == LAYER_PLAYER && pObj->GetName() == L"Main Player")
+    {
+        UnitHit hitInfo = {DAMAGE_TYPE::NORMAL, Transform()->GetWorldDir(DIR_TYPE::FRONT), 8.f, 0.f, 0.f};
+        pObj->GetScript<CUnitScript>()->GetDamage(hitInfo);
+    }
 }

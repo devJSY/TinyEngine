@@ -34,6 +34,7 @@ private:
     float m_fAccTime;
     bool m_bJump;
     bool m_bPatrol;
+    bool m_bThrow;
 
 public:
     virtual void begin() override;

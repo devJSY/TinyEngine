@@ -26,8 +26,6 @@ class CHotHeadScript : public CMonsterUnitScript
 {
 private:
     CGameObject* m_pFlameRotObject;
-    CCollider* m_pFlameCol;
-    CCollider* m_pFlameRotCol;
 
     HotHeadState m_eState;
     Vec3 m_vDamageDir;
@@ -78,13 +76,6 @@ private:
     void Damage();
     void Eaten();
     void Death();
-
-private:
-
-
-private:
-    // Test Func 이후 PreFab으로 대체
-
 
 public:
     CLONE(CHotHeadScript)

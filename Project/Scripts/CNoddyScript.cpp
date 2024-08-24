@@ -146,11 +146,21 @@ void CNoddyScript::EnterState()
 
         // 피격 방향으로 Impulse
         Vec3 Impulse = GetHitDir();
-        Impulse.Normalize();
-        Impulse *= 5.f;
-        Rigidbody()->AddForce(Impulse, ForceMode::Impulse);
+        float fForce = 0.f;
+        if (GetCurInfo().HP <= 0.1f)
+        {
+            fForce = 8.f;
+            Impulse.y = 1.5f;
+        }
+        else
+        {
+            fForce = 5.f;
+            Impulse.y = 1.f;
+        }
 
-        Animator()->Play(ANIMPREFIX("Damage"), false);
+        Rigidbody()->AddForce(Impulse.Normalize() * fForce, ForceMode::Impulse);
+
+        Animator()->Play(ANIMPREFIX("Damage"), false, false, 1.5f);
 
         Ptr<CMaterial> pMtrl = MeshRender()->GetMaterial(0);
         pMtrl->SetTexParam(TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\Noddy\\ChNoddy.01.png",
@@ -418,7 +428,9 @@ void CNoddyScript::OnTriggerEnter(CCollider* _OtherCollider)
         return;
 
     CGameObject* pObj = _OtherCollider->GetOwner();
-    if (L"Body Collider" == pObj->GetName())
+    UINT Layer = _OtherCollider->GetOwner()->GetLayerIdx();
+
+    if (Layer == LAYER_PLAYER_TRIGGER && L"Body Collider" == pObj->GetName())
     {
         Vec3 vDir = PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos();
         UnitHit hitInfo = {DAMAGE_TYPE::NORMAL, vDir.Normalize(), GetCurInfo().ATK, 0.f, 0.f};

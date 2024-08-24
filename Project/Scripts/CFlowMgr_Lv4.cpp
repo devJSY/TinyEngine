@@ -32,7 +32,7 @@ void CFlowMgr_Lv4::begin()
     SetStartLevel(false);
 
     LevelStart();
-    SetToneMappingParam(true, true, 0.1f, 0.5f);
+    SetToneMappingParam(true, false, 0.1f, 0.f);
     for (int i = 0; i < 2; i++)
     {
         CGameObject* pObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Trigger Light" + std::to_wstring(i + 1));
@@ -43,6 +43,8 @@ void CFlowMgr_Lv4::begin()
                 m_pLight[i]->SetFallOffEnd(4000.f);
         }
     }
+
+    SetFadeEffectColor(Vec3(164.f, 44.f, 174.f));
 }
 
 void CFlowMgr_Lv4::tick()
@@ -83,6 +85,18 @@ void CFlowMgr_Lv4::TriggerEvent(UINT _Idx)
     default:
         break;
     }
+}
+
+void CFlowMgr_Lv4::LevelEnd()
+{
+    CLevelFlowMgr::LevelEnd();
+    SetFadeEffectColor(Vec3(180.f, 140.f, 200.f));
+}
+
+void CFlowMgr_Lv4::LevelRestart()
+{
+    CLevelFlowMgr::LevelRestart();
+    SetFadeEffectColor(Vec3(164.f, 44.f, 174.f));
 }
 
 void CFlowMgr_Lv4::Idle()

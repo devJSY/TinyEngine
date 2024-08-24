@@ -6,7 +6,7 @@
 CNormalEnemyScript::CNormalEnemyScript()
     : CMonsterUnitScript(NORMALENEMYSCRIPT)
     , m_eState(NormalEnemyState::Idle)
-    , m_ePrevState(NormalEnemyState::Idle)
+    , m_SnotBubble(nullptr)
     , m_vPatrolDir{}
     , m_vDamageDir{}
     , m_vCenterPoint{}
@@ -18,7 +18,9 @@ CNormalEnemyScript::CNormalEnemyScript()
     , m_bEnter(true)
     , m_bFirst(false)
     , m_bCirclePatrol(false)
+    , m_bSleep(false)
 {
+    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bSleep, "Start Sleep");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fMaxSpeed, "Rush Max Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fSpeed, "Rush Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fRushLerp, "Rush Lerp");
@@ -31,6 +33,7 @@ CNormalEnemyScript::CNormalEnemyScript()
 CNormalEnemyScript::CNormalEnemyScript(const CNormalEnemyScript& Origin)
     : CMonsterUnitScript(Origin)
     , m_eState(NormalEnemyState::Idle)
+    , m_SnotBubble(nullptr)
     , m_vPatrolDir{}
     , m_vDamageDir{}
     , m_vCenterPoint{}
@@ -42,7 +45,9 @@ CNormalEnemyScript::CNormalEnemyScript(const CNormalEnemyScript& Origin)
     , m_bEnter(true)
     , m_bFirst(false)
     , m_bCirclePatrol(false)
+    , m_bSleep(false)
 {
+    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bSleep, "Start Sleep");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fMaxSpeed, "Rush Max Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fSpeed, "Rush Speed");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fRushLerp, "Rush Lerp");
@@ -60,7 +65,13 @@ void CNormalEnemyScript::begin()
 {
     CMonsterUnitScript::begin();
 
-    m_bCirclePatrol == true ? ChangeState(NormalEnemyState::Patrol) : ChangeState(NormalEnemyState::Idle);
+    GetOwner()->MeshRender()->GetDynamicMaterial(0);
+
+    SetSnotBubble();
+
+    m_bSleep == true          ? ChangeState(NormalEnemyState::Sleep)
+    : m_bCirclePatrol == true ? ChangeState(NormalEnemyState::Patrol)
+                              : ChangeState(NormalEnemyState::Idle);
 
     SetInfo(UnitInfo{14.f, 14.f, 70.f, 7.f, 1.f, 5.f});
     m_fMaxSpeed = m_fSpeed = 12.f;
@@ -92,7 +103,12 @@ void CNormalEnemyScript::OnTriggerEnter(CCollider* _OtherCollider)
 
     Vec3 vDir = PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos();
     UnitHit hitInfo = {DAMAGE_TYPE::NORMAL, vDir.Normalize(), GetCurInfo().ATK, 0.f, 0.f};
-    L"Body Collider" == pObj->GetName() ? pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo) : void();
+    UINT Layer = _OtherCollider->GetOwner()->GetLayerIdx();
+
+    if (Layer == LAYER_PLAYER_TRIGGER && L"Body Collider" == pObj->GetName())
+    {
+        pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo);
+    }
 }
 
 void CNormalEnemyScript::OnTriggerExit(CCollider* _OtherCollider)
@@ -114,6 +130,7 @@ UINT CNormalEnemyScript::SaveToLevelFile(FILE* _File)
 
     MemoryByte += CMonsterUnitScript::SaveToLevelFile(_File);
 
+    fwrite(&m_bSleep, sizeof(bool), 1, _File);
     fwrite(&m_fMaxSpeed, sizeof(float), 1, _File);
     fwrite(&m_fSpeed, sizeof(float), 1, _File);
     fwrite(&m_fRushLerp, sizeof(float), 1, _File);
@@ -122,6 +139,7 @@ UINT CNormalEnemyScript::SaveToLevelFile(FILE* _File)
     fwrite(&m_bCirclePatrol, sizeof(bool), 1, _File);
     fwrite(&m_vCenterPoint, sizeof(Vec3), 1, _File);
 
+    MemoryByte += sizeof(bool);
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
@@ -139,6 +157,7 @@ UINT CNormalEnemyScript::LoadFromLevelFile(FILE* _File)
 
     MemoryByte += CMonsterUnitScript::LoadFromLevelFile(_File);
 
+    fread(&m_bSleep, sizeof(bool), 1, _File);
     fread(&m_fMaxSpeed, sizeof(float), 1, _File);
     fread(&m_fSpeed, sizeof(float), 1, _File);
     fread(&m_fRushLerp, sizeof(float), 1, _File);
@@ -147,6 +166,7 @@ UINT CNormalEnemyScript::LoadFromLevelFile(FILE* _File)
     fread(&m_bCirclePatrol, sizeof(bool), 1, _File);
     fread(&m_vCenterPoint, sizeof(Vec3), 1, _File);
 
+    MemoryByte += sizeof(bool);
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
@@ -169,48 +189,96 @@ UINT CNormalEnemyScript::LoadFromLevelFile(FILE* _File)
 // 8. ApplyDir
 // 9. PatrolMove
 
+void CNormalEnemyScript::SetSnotBubble()
+{
+    for (CGameObject* pChild : GetOwner()->GetChildObject())
+    {
+        if (L"SleepSnotBubble" == pChild->GetName())
+        {
+            m_SnotBubble = pChild;
+            break;
+        }
+    }
+}
+
 void CNormalEnemyScript::EnterState(NormalEnemyState _state)
 {
+    if (_state != NormalEnemyState::Sleep)
+    {
+        if (m_SnotBubble)
+            m_SnotBubble->SetActive(false);
+    }
+
     switch (_state)
     {
     case NormalEnemyState::Idle: {
+        GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
+            TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemyEye.00.png",
+                                                        L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemyEye.00.png"));
         Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
         Animator()->Play(ANIMPREFIX("Wait"), true, false, 1.5f);
     }
     break;
     case NormalEnemyState::Grooming: {
+        GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
+            TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemyEye.00.png",
+                                                        L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemyEye.00.png"));
         Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
         Animator()->Play(ANIMPREFIX("Grooming"), true, false, 1.5f);
     }
     break;
     case NormalEnemyState::Patrol: {
+        GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
+            TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemyEye.00.png",
+                                                        L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemyEye.00.png"));
         Animator()->Play(ANIMPREFIX("Walk"), true, false, 1.5f);
     }
     break;
     case NormalEnemyState::Sleep: {
+        GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
+            TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemyEye.02.png",
+                                                        L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemyEye.02.png"));
+
+        m_SnotBubble->SetActive(true);
+
         Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
         Animator()->Play(ANIMPREFIX("Sleep"), true, false, 1.5f);
     }
     break;
     case NormalEnemyState::Find: {
+        GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
+            TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemyEye.00.png",
+                                                        L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemyEye.00.png"));
         Animator()->Play(ANIMPREFIX("Find"), false, false, 1.5f);
     }
     break;
     case NormalEnemyState::Attack: {
+        GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
+            TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemyEye.04.png",
+                                                        L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemyEye.04.png"));
         Animator()->Play(ANIMPREFIX("Run"), true, false, 1.5f);
     }
     break;
     case NormalEnemyState::Brake: {
+        GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
+            TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemyEye.03.png",
+                                                        L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemyEye.03.png"));
         Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
         Animator()->Play(ANIMPREFIX("Brake"), false);
     }
     break;
     case NormalEnemyState::AfterAttack: {
+        GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
+            TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemyEye.00.png",
+                                                        L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemyEye.00.png"));
         Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
         Animator()->Play(ANIMPREFIX("LookAround"), false);
     }
     break;
     case NormalEnemyState::Damage: {
+        GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
+            TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemyEye.03.png",
+                                                        L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemyEye.03.png"));
         Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, false);
 
         SetSparkle(true);
@@ -220,24 +288,43 @@ void CNormalEnemyScript::EnterState(NormalEnemyState _state)
         Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
 
         Vec3 vHitDir = GetOwner()->GetScript<CUnitScript>()->GetHitDir();
-        vHitDir.y = 1.5f;
+        float fForce = 0.f;
+        if (GetCurInfo().HP <= 0.1f)
+        {
+            fForce = 14.f;
+            vHitDir.y = 1.5f;
+        }
+        else
+        {
+            fForce = 9.f;
+            vHitDir.y = 1.2f;
+        }
 
-        Rigidbody()->AddForce(vHitDir.Normalize() * 5.f, ForceMode::Impulse);
+        Rigidbody()->AddForce(vHitDir.Normalize() * fForce, ForceMode::Impulse);
 
-        Animator()->Play(ANIMPREFIX("Damage"), false, false, 1.5f);
+        Animator()->Play(ANIMPREFIX("Damage"), false, false, 2.f);
     }
     break;
     case NormalEnemyState::Fall: {
+        GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
+            TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemyEye.03.png",
+                                                        L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemyEye.03.png"));
         Animator()->Play(ANIMPREFIX("Fall"));
     }
     break;
     case NormalEnemyState::Land: {
+        GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
+            TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemyEye.00.png",
+                                                        L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemyEye.00.png"));
         Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
 
         Animator()->Play(ANIMPREFIX("Landing"), false);
     }
     break;
     case NormalEnemyState::Eaten: {
+        GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
+            TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemyEye.03.png",
+                                                        L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemyEye.03.png"));
         Animator()->Play(ANIMPREFIX("Damage"), true, false, 1.5f);
     }
     break;
@@ -254,6 +341,10 @@ void CNormalEnemyScript::FSM()
     {
     case NormalEnemyState::Idle: {
         Idle();
+    }
+    break;
+    case NormalEnemyState::Sleep: {
+        Sleep();
     }
     break;
     case NormalEnemyState::Grooming: {
@@ -315,6 +406,10 @@ void CNormalEnemyScript::ExitState(NormalEnemyState _state)
         Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, false);
     }
     break;
+    case NormalEnemyState::Sleep: {
+        m_SnotBubble->SetActive(false);
+    }
+    break;
     case NormalEnemyState::Brake: {
         m_fSpeed = m_fMaxSpeed;
         Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
@@ -334,8 +429,9 @@ void CNormalEnemyScript::ExitState(NormalEnemyState _state)
 
 void CNormalEnemyScript::ChangeState(NormalEnemyState _state)
 {
+    string iState = std::to_string((int)_state);
+    LOG(LOG_LEVEL::Log, (string("[Monster State Change] : ") + iState).c_str());
     ExitState(m_eState);
-    m_ePrevState = m_eState;
     m_eState = _state;
     EnterState(m_eState);
 }
@@ -412,7 +508,7 @@ void CNormalEnemyScript::PatrolMove()
 
     Transform()->SetWorldRotation(vPatrlQuat);
 
-    Rigidbody()->SetVelocity(vFront * GetCurInfo().Speed * DT + vTemp * 3.5f * DT);
+    Rigidbody()->SetVelocity(vFront * GetCurInfo().Speed * DT + vTemp * 3.5f * DT + Vec3(0.f, -9.81f, 0.f));
 }
 
 ///////////////////////////// FIND FSM ///////////////////////////////////////
@@ -460,9 +556,18 @@ void CNormalEnemyScript::Grooming()
     }
     else
     {
-        if (Animator()->IsFinish())
+        if (CHECK_ANIMFRM(GetOwner(), 132))
         {
-            ChangeState(RandomIdleState());
+            GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
+                TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemyEye.03.png",
+                                                            L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemyEye.03.png"));
+        }
+
+        if (CHECK_ANIMFRM(GetOwner(), 251))
+        {
+            GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
+                TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemyEye.00.png",
+                                                            L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemyEye.00.png"));
         }
     }
 }
@@ -491,7 +596,7 @@ void CNormalEnemyScript::Find()
     Vec3 vDir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
     Vec3 vTargetDir = PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos();
 
-    if (vDir.Dot(vTargetDir.Normalize()) >= cosf(0.f) - 0.1f)
+    if (vDir.Dot(vTargetDir.Normalize()) >= cosf(0.f) - 0.2f)
     {
         if (Animator()->IsFinish())
         {
@@ -560,6 +665,7 @@ void CNormalEnemyScript::AfterAttack()
         if (nullptr != GetTarget())
         {
             ChangeState(NormalEnemyState::Find);
+            m_bEnter = false;
         }
         else
         {
@@ -573,6 +679,12 @@ void CNormalEnemyScript::AfterAttack()
                 ChangeState(RandomIdleState());
             }
         }
+    }
+    else
+    {
+        GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
+            TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemyEye.00.png",
+                                                        L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemyEye.00.png"));
     }
 }
 
@@ -594,4 +706,12 @@ void CNormalEnemyScript::Death()
 {
     if (Animator()->IsFinish())
         GamePlayStatic::DestroyGameObject(GetOwner());
+}
+
+void CNormalEnemyScript::Sleep()
+{
+    /* if (IsGetDamage())
+     {
+         ChangeState(RandomIdleState());
+     }*/
 }

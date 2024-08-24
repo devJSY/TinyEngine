@@ -7,8 +7,7 @@ public:
     virtual UINT LoadFromLevelFile(FILE* _File) override;
 
 private:
-    void OnTriggerEnter(CCollider* _OtherCollider);
-    void OnTriggerExit(CCollider* _OtherCollider);
+    void OnTriggerStay(CCollider* _OtherCollider);
 
 public:
     CLONE(CAttackAreaScript);

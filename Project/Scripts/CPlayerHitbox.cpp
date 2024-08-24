@@ -92,7 +92,7 @@ void CPlayerHitbox::OnTriggerEnter(CCollider* _OtherCollider)
     }
     else if (Layer == LAYER_MONSTER_TRIGGER)
     {
-        if (Name == L"BodyCollider" || Name == L"AttackArea" || Name == L"Attack Area")
+        if (Name == L"Body Collider")
         {
             pMonster = _OtherCollider->GetOwner()->GetParent();
         }

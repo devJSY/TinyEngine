@@ -60,7 +60,7 @@ void CCrumbleScript::tick()
 void CCrumbleScript::PreDisappear()
 {
     m_fAccTime += DT;
-    if (m_fAccTime>=m_fWaitTime)
+    if (m_fAccTime >= m_fWaitTime)
     {
         ChangeState(CrumbleState::Disapper);
     }
@@ -126,8 +126,7 @@ void CCrumbleScript::ExitState(CrumbleState _state)
 {
     switch (_state)
     {
-    case CrumbleState::PreDisappear:
-    {
+    case CrumbleState::PreDisappear: {
         m_fAccTime = 0.f;
     }
     break;
@@ -144,8 +143,9 @@ void CCrumbleScript::ExitState(CrumbleState _state)
 
 void CCrumbleScript::OnTriggerEnter(CCollider* _OtherCollider)
 {
+    UINT Layer = _OtherCollider->GetOwner()->GetLayerIdx();
     CGameObject* Obj = _OtherCollider->GetOwner();
-    if (L"Body Collider" == Obj->GetName())
+    if (Layer == LAYER_PLAYER_TRIGGER && L"Body Collider" == Obj->GetName())
     {
         ChangeState(CrumbleState::PreDisappear);
     }
