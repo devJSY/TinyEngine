@@ -48,6 +48,7 @@ private:
     UINT m_ComboLevel;
     UINT m_PatternStep;
     bool m_bAttackRepeat;
+    bool m_bResist;
 
     // ground
     UINT m_GroundAttackCount;
@@ -83,6 +84,7 @@ public:
     virtual void tick() override;
     virtual void OnCollisionEnter(CCollider* _OtherCollider) override;
 
+    void ResetFSM();
     void ChangeStateGroup(ElfilisStateGroup _Group, const wstring& _State = L"");
     void RepeatState(wstring _State = L"");
     ElfilisStateGroup FindNextStateGroup() const;
@@ -94,6 +96,7 @@ public:
     void SetPattern(ElfilisPatternType _Pattern);
     void ProcPatternStep();
     void SetPhase(int _Phase) { m_Phase = _Phase; }
+    void SetResist(bool _bResist) { m_bResist = _bResist; }
     void ResetEmissive();
     void AddEmissive(Vec3 _Color);
     void OnWeaponTrigger();
@@ -104,6 +107,7 @@ public:
     bool IsPattern() const { return m_Pattern != ElfilisPatternType::NONE; }
     bool IsPattern(ElfilisPatternType _Pattern, UINT _Step) const { return m_Pattern == _Pattern && m_PatternStep == _Step; }
     UINT GetPhase() const { return m_Phase; }
+    bool IsResist() { return m_bResist; }
     UINT GetComboLevel() const { return m_ComboLevel; }
     UINT GetPatternStep() const { return m_PatternStep; }
     float GetNearDist() const { return m_NearDist; }

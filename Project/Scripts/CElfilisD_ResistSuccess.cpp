@@ -27,12 +27,19 @@ void CElfilisD_ResistSuccess::tick()
     }
 }
 
+void CElfilisD_ResistSuccess::Exit()
+{
+    Exit_Step();
+    ELFFSM->SetResist(false);
+}
+
 void CElfilisD_ResistSuccess::Enter_Step()
 {
     switch (m_Step)
     {
     case StateStep::Start: {
         GetOwner()->Animator()->Play(ANIMPREFIX("ResistSuccess"), false, false, 1.5f);
+        ELFFSM->SetResist(true);
         ((CElfilisUnit*)BOSSUNIT)->ResistSuccess();
         CBossMgr::GetElfilisFlowMgr()->ChangeFlowFight();
     }

@@ -12,6 +12,7 @@ CElfilisFSM::CElfilisFSM()
     , m_ComboLevel(0)
     , m_PatternStep(0)
     , m_bAttackRepeat(false)
+    , m_bResist(false)
     , m_GroundAttackCount(0)
     , m_NearDist(5.f)
     , m_AirPosition(Vec3(0.f, 600.f, 700.f))
@@ -40,6 +41,7 @@ CElfilisFSM::CElfilisFSM(const CElfilisFSM& _Origin)
     , m_ComboLevel(0)
     , m_PatternStep(0)
     , m_bAttackRepeat(false)
+    , m_bResist(false)
     , m_GroundAttackCount(0)
     , m_NearDist(_Origin.m_NearDist)
     , m_AirPosition(_Origin.m_NearDist)
@@ -62,6 +64,15 @@ CElfilisFSM::CElfilisFSM(const CElfilisFSM& _Origin)
 
 CElfilisFSM::~CElfilisFSM()
 {
+}
+
+void CElfilisFSM::ResetFSM()
+{
+    SetGlobalState(false);
+    SetPattern(ElfilisPatternType::NONE);
+    ClearComboLevel();
+    OffWeaponTrigger();
+    SetResist(false);
 }
 
 // USAGE : 안전하게 State Group을 변경

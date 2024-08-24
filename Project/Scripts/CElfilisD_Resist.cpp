@@ -38,8 +38,16 @@ void CElfilisD_Resist::tick()
 
 void CElfilisD_Resist::Enter()
 {
+    ELFFSM->SetResist(true);
+
     m_Step = StateStep::ReadyStart;
     Enter_Step();
+}
+
+void CElfilisD_Resist::Exit()
+{
+    ELFFSM->SetResist(false);
+    Exit_Step();
 }
 
 void CElfilisD_Resist::Enter_Step()

@@ -2,6 +2,7 @@
 #include "CElfilisUnit.h"
 #include "CBossMgr.h"
 #include "CElfilisFSM.h"
+#include "CState.h"
 
 CElfilisUnit::CElfilisUnit()
     : CUnitScript(ELFILISUNIT)
@@ -45,19 +46,41 @@ void CElfilisUnit::tick()
     // Check Phase
     if (ELFFSM->GetPhase() == 1)
     {
-        ElfilisStateGroup CurState = ELFFSM->GetCurStateGroup();
+        ElfilisStateGroup CurStateGroup = ELFFSM->GetCurStateGroup();
 
-        if ((CurState >= ElfilisStateGroup::GroundIdle || CurState <= ElfilisStateGroup::GroundAtkFar)
-            && GetCurInfo().HP <= GetCurInfo().MAXHP * 0.4f)
+        if ((CurStateGroup >= ElfilisStateGroup::GroundIdle || CurStateGroup <= ElfilisStateGroup::GroundAtkFar) &&
+            GetCurInfo().HP <= GetCurInfo().MAXHP * 0.4f)
         {
             ELFFSM->SetPhase(2);
+            ELFFSM->ResetFSM();
             ELFFSM->ChangeStateGroup(ElfilisStateGroup::DEMO, L"DEMO_APPEAR2_DAMAGE");
+        }
+    }
+    else
+    {
+        // Death
+        if (GetCurInfo().HP <= 0.f)
+        {
+        }
+        // Resist
+        else if (GetCurInfo().HP <= 50.f && !ELFFSM->IsResist())
+        {
+            ElfilisStateGroup CurStateGroup = ELFFSM->GetCurStateGroup();
+            if ((CurStateGroup >= ElfilisStateGroup::GroundIdle || CurStateGroup <= ElfilisStateGroup::GroundAtkFar))
+            {
+                ELFFSM->ResetFSM();
+                ELFFSM->ChangeStateGroup(ElfilisStateGroup::DEMO, L"DEMO_RESIST");
+            }
         }
     }
 
     if (KEY_TAP(KEY::SPACE))
     {
-        m_CurInfo.HP = 100.f;
+        m_CurInfo.HP = 500.f;
+    }
+    if (KEY_TAP(KEY::ENTER))
+    {
+        m_CurInfo.HP = 10.f;
     }
 }
 
