@@ -3,7 +3,6 @@
 #include "CMorphoFSM.h"
 
 CMorphoAtkG_NormalNear_Atk2::CMorphoAtkG_NormalNear_Atk2()
-    : m_PrevDrag(0.f)
 {
 }
 
@@ -60,7 +59,6 @@ void CMorphoAtkG_NormalNear_Atk2::Exit_Step()
     case StateStep::Progress: {
         GetOwner()->Rigidbody()->SetVelocity(Vec3());
         GetOwner()->Rigidbody()->SetAngularVelocity(Vec3());
-        GetOwner()->Rigidbody()->SetDrag(m_PrevDrag);
         MRPFSM->OffWeaponRTrigger();
 
         if (MRPFSM->GetComboLevel() == 1)

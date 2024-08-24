@@ -176,6 +176,8 @@ void CMorphoAtkG_Teleport_Tornado::Exit_Step()
 
 void CMorphoAtkG_Teleport_Tornado::Charge()
 {
+    RotateToPlayer(DT * 0.75f);
+
     if (GetOwner()->Animator()->IsFinish())
     {
         ChangeStep(StateStep::ChargeWait);
@@ -185,6 +187,7 @@ void CMorphoAtkG_Teleport_Tornado::Charge()
 void CMorphoAtkG_Teleport_Tornado::ChargeWait()
 {
     m_AccTime += DT;
+    RotateToPlayer(DT * 0.75f);
 
     if (m_AccTime > m_ChargeTime)
     {
@@ -194,6 +197,8 @@ void CMorphoAtkG_Teleport_Tornado::ChargeWait()
 
 void CMorphoAtkG_Teleport_Tornado::Start()
 {
+    RotateToPlayer(DT * 0.75f);
+
     if (GetOwner()->Animator()->IsFinish())
     {
         ChangeStep(StateStep::Progress);

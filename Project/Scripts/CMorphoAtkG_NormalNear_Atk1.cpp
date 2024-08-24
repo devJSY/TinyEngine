@@ -4,7 +4,6 @@
 
 CMorphoAtkG_NormalNear_Atk1::CMorphoAtkG_NormalNear_Atk1()
     : m_ComboLevel(0)
-    , m_PrevDrag(0.f)
 {
 }
 
@@ -89,7 +88,6 @@ void CMorphoAtkG_NormalNear_Atk1::Exit_Step()
     case StateStep::Charge:
         break;
     case StateStep::Progress: {
-        GetOwner()->Rigidbody()->SetDrag(m_PrevDrag);
         GetOwner()->Rigidbody()->SetVelocity(Vec3());
         GetOwner()->Rigidbody()->SetAngularVelocity(Vec3());
 

@@ -5,7 +5,6 @@ class CMorphoAtkG_NormalNear_Atk2 : public CBossState
 {
 private:
     Vec3 m_ForceDir;
-    float m_PrevDrag;
 
 public:
     virtual void tick() override;
