@@ -55,23 +55,7 @@ void CBladeKnightScript::tick()
 
     if (IsGetDamage())
     {
-        // 공격 상태가 아닌 경우에만 Damage상태로 변경
-        switch (m_State)
-        {
-        case BLADEKNIGHT_STATE::Fall:
-        case BLADEKNIGHT_STATE::Find:
-        case BLADEKNIGHT_STATE::FindWait:
-        case BLADEKNIGHT_STATE::FindWaitSub:
-        case BLADEKNIGHT_STATE::Landing:
-        case BLADEKNIGHT_STATE::Move:
-        case BLADEKNIGHT_STATE::Retreat:
-        case BLADEKNIGHT_STATE::Wait: {
-            ChangeState(BLADEKNIGHT_STATE::Damage);
-        }
-        break;
-        default:
-            break;
-        }
+        ChangeState(BLADEKNIGHT_STATE::Damage);
     }
 
     // Sword
