@@ -75,7 +75,7 @@ void GamePlayStatic::AddChildObject(CGameObject* _ParentObject, CGameObject* _Ch
 
 void GamePlayStatic::DestroyGameObject(CGameObject* _Target)
 {
-    if (_Target->IsDead())
+    if (nullptr == _Target || _Target->IsDead())
         return;
 
     tTask task = {};

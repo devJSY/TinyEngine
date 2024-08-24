@@ -47,7 +47,7 @@ void CElfilisBig_Roar::tick()
 void CElfilisBig_Roar::Enter()
 {
     GetOwner()->SetActive(true);
-    GetOwner()->Animator()->Play(ANIMPREFIX("BigRoar"), false);
+    GetOwner()->Animator()->Play(ANIMPREFIX("BigRoar"), false, false, 2.5f, 0.f);
 
     //@ Effect 나타나는 Burning 효과
     m_AccTime = 0.f;
