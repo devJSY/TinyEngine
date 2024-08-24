@@ -137,7 +137,7 @@ void CParticleSystem::finaltick()
 {
     CRenderComponent::finaltick();
 
-    m_AccTime += DT;
+    m_AccTime += DT_ENGINE;
 
     if ((1.f / m_Module.SpawnRate) < m_AccTime)
     {

@@ -859,4 +859,30 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
         pShader->SetName(L"EffectShader");
         AddAsset(L"EffectShader", pShader);
     }
+
+    // =================================
+    // Barricade Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\UnrealPBRVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\BarricadePS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_FRONT);
+        pShader->SetDSType(DS_TYPE::NO_WRITE);
+        pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
+
+        pShader->AddTexParam(TEX_0, "Texture 0");
+        pShader->AddTexParam(TEX_1, "Texture 1");
+
+        pShader->AddScalarParam(FLOAT_0, "Speed", 1e-3f);
+        pShader->AddScalarParam(FLOAT_1, "Alpha", 1e-3f);
+        pShader->AddScalarParam(VEC2_0, "UV Scale", 1e-3f);
+        pShader->AddScalarParam(VEC4_0, "Color", 1e-3f);
+
+        pShader->SetName(L"BarricadeShader");
+        AddAsset(L"BarricadeShader", pShader);
+    }
 }
