@@ -32,6 +32,8 @@ void CMorphoMoveA_Teleport::Exit()
 {
     Exit_Step();
 
+    MRPFSM->EnableRender();
+    GetOwner()->Animator()->SetPlay(true);
     GetOwner()->Rigidbody()->SetUseGravity(true);
 }
 
@@ -74,12 +76,8 @@ void CMorphoMoveA_Teleport::Exit_Step()
         MRPFSM->ResetEmissive();
     }
     break;
-    case StateStep::End: {
-        MRPFSM->EnableRender();
-        GetOwner()->Animator()->SetPlay(true);
-        GetOwner()->Rigidbody()->SetUseGravity(true);
-    }
-    break;
+    case StateStep::End:
+        break;
     }
 }
 

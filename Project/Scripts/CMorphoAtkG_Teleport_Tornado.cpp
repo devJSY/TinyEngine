@@ -8,7 +8,7 @@ CMorphoAtkG_Teleport_Tornado::CMorphoAtkG_Teleport_Tornado()
     , m_ChargeTime(1.f)
     , m_TornadoTime(5.f)
     , m_Tornado{false,}
-    , m_TornadoSpeed(120.f)
+    , m_TornadoSpeed(5.f)
 {
     m_ChargeEffect = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Effect_MorphoTornadoCharging.pref", L"prefab\\Effect_MorphoTornadoCharging.pref");
     m_TornadoPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\MorphoTornado.pref", L"prefab\\MorphoTornado.pref");
@@ -130,7 +130,7 @@ void CMorphoAtkG_Teleport_Tornado::Enter_Step()
 
                 // Tornado idx 회전 반영
                 Vec3 DeltaRot = m_Tornado[i]->Transform()->GetWorldRotation();
-                DeltaRot.y += XMConvertToRadians(-45.f + (90.f / 5.f) * i);
+                DeltaRot.y += XMConvertToRadians(-60.f + (120.f / 5.f) * i);
                 m_Tornado[i]->Transform()->SetWorldRotation(DeltaRot);
 
                 Dir = m_Tornado[i]->Transform()->GetWorldDir(DIR_TYPE::FRONT);
@@ -164,7 +164,7 @@ void CMorphoAtkG_Teleport_Tornado::Exit_Step()
     case StateStep::Start: {
         MRPFSM->OffWeaponRTrigger();
     }
-        break;
+    break;
     case StateStep::Progress:
         break;
     case StateStep::Wait:
@@ -219,6 +219,15 @@ void CMorphoAtkG_Teleport_Tornado::Progress()
     }
     else
     {
+        for (int i = 0; i < 6; ++i)
+        {
+            if (m_Tornado[i])
+            {
+                float t = m_AccTime / AppearTime;
+                m_Tornado[i]->GetChildObject()[0]->Transform()->SetLocalScale(Vec3(1.f));
+            }
+        }
+
         ChangeStep(StateStep::Wait);
     }
 }
@@ -232,17 +241,10 @@ void CMorphoAtkG_Teleport_Tornado::Wait()
     {
         if (m_Tornado[i])
         {
-            Vec3 Veloc = m_Tornado[i]->Rigidbody()->GetVelocity();
-
-            if (Veloc.Length() >= m_TornadoSpeed)
-            {
-                m_Tornado[i]->Rigidbody()->SetVelocity(Veloc.Normalize() * m_TornadoSpeed);
-            }
-            else
-            {
-                Veloc = m_Tornado[i]->Transform()->GetWorldDir(DIR_TYPE::FRONT) * m_TornadoSpeed;
-                m_Tornado[i]->Rigidbody()->AddForce(Veloc);
-            }
+            float t = m_AccTime / m_TornadoTime;
+            float NewSpeed = 10.f * sinf(t * XM_PI);
+            Vec3 NewVeloc = m_Tornado[i]->Transform()->GetWorldDir(DIR_TYPE::FRONT) * NewSpeed;
+            m_Tornado[i]->Rigidbody()->SetVelocity(NewVeloc);
         }
     }
 
@@ -252,15 +254,26 @@ void CMorphoAtkG_Teleport_Tornado::Wait()
     {
         for (int i = 0; i < 6; ++i)
         {
-            float t = (m_TornadoTime - m_AccTime) / DisappearTime;
-            Vec3 NewScale = Vec3(t, 1.f, t);
-            m_Tornado[i]->GetChildObject()[0]->Transform()->SetLocalScale(NewScale);
+            if (m_Tornado[i])
+            {
+                float t = clamp((m_TornadoTime - m_AccTime) / DisappearTime, 0.f, 1.f);
+                Vec3 NewScale = Vec3(t, 1.f, t);
+                m_Tornado[i]->GetChildObject()[0]->Transform()->SetLocalScale(NewScale);
+            }
         }
     }
 
     // change state
     if (m_AccTime > m_TornadoTime)
     {
+        for (int i = 0; i < 6; ++i)
+        {
+            if (m_Tornado[i])
+            {
+                m_Tornado[i]->GetChildObject()[0]->Transform()->SetLocalScale(Vec3(0.f, 1.f, 0.f));
+            }
+        }
+
         ChangeStep(StateStep::End);
     }
 }

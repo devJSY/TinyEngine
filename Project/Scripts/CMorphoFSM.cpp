@@ -155,7 +155,7 @@ void CMorphoFSM::tick()
 
     if (KEY_TAP(KEY::ENTER))
     {
-        ChangeStateGroup(MorphoStateGroup::AtkGroundNormalNear, L"ATKG_NORMALNEAR_ATK1");
+        ChangeStateGroup(MorphoStateGroup::MoveToGround, L"MOVEG_JUMP");
     }
 
     // Emissive

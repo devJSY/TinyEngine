@@ -42,6 +42,12 @@ void CMorphoDemo_Death::Enter()
     Enter_Step();
 }
 
+void CMorphoDemo_Death::Exit()
+{
+    Exit_Step();
+    MRPFSM->ResetEmissive();
+}
+
 void CMorphoDemo_Death::Enter_Step()
 {
     switch (m_Step)
@@ -50,7 +56,8 @@ void CMorphoDemo_Death::Enter_Step()
         GetOwner()->Animator()->Play(ANIMPREFIX("DamageDead"), false, false, 1.5f);
         GetOwner()->Animator()->SetPlay(false);
         m_AccTime = 0.f;
-        //@CAMERA Àá±ñ¸ØÃã
+
+        //Camera : Àá±ñ¸ØÃã
         CAMERACTRL->SetLock(true, 0.5f);
     }
     break;
@@ -59,7 +66,7 @@ void CMorphoDemo_Death::Enter_Step()
         GetOwner()->Transform()->SetWorldPos(Vec3(0.f, 0.f, -300.f));
         GetOwner()->Transform()->SetWorldRotation(Vec3());
 
-        //@CAMERA lengthº¯ÇÔ
+        //CAMERA : lengthº¯ÇÔ
         CAMERACTRL->FixedView(true, Vec3(1.33f, 31.13f, -201.47f));
         CAMERACTRL->SetImmediate(true);
         CAMERACTRL->SetMainTarget(BOSS->GetChildObject(L"CameraTarget"));
@@ -92,9 +99,7 @@ void CMorphoDemo_Death::Exit_Step()
         break;
     case StateStep::Wait:
         break;
-    case StateStep::End: {
-        MRPFSM->ResetEmissive();
-    }
+    case StateStep::End:
     break;
     }
 }

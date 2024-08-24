@@ -97,6 +97,11 @@ void CMorphoAtkG_Teleport_FireWall::Progress()
 {
     MoveFireWall();
 
+    if (m_bFrmEnter)
+    {
+        RotateToPlayer(DT * 0.75f);
+    }
+
     // spawn Fire Wall
     if (m_bFrmEnter && CHECK_ANIMFRM(GetOwner(), 30))
     {

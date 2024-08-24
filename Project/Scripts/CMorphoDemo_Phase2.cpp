@@ -51,7 +51,7 @@ void CMorphoDemo_Phase2::Enter_Step()
     case StateStep::Progress: {
         GetOwner()->Animator()->Play(ANIMPREFIX("Appeal"), false, false, 1.5f, 0.3f);
 
-        // Ä«¸Þ¶ó ¸ôÆ÷ Å¸°Ù Distortion
+        // Camera : ¸ôÆ÷ Å¸°Ù Distortion
         CAMERACTRL->SetMainTarget(BOSS);
         CAMERACTRL->Normal(false);
 
@@ -61,7 +61,7 @@ void CMorphoDemo_Phase2::Enter_Step()
 
         CAMERACTRL->SetLookDist(100.f);
         CAMERACTRL->SetLookDir(-Dir);
-        CAMERACTRL->SetOffset(Vec3(0.f,10.f,0.f));
+        CAMERACTRL->SetOffset(Vec3(0.f, 10.f, 0.f));
 
         CAMERACTRL->SetMinSpeed(500.f);
         CAMERACTRL->SetMaxSpeed(1000.f);
@@ -71,7 +71,6 @@ void CMorphoDemo_Phase2::Enter_Step()
         CAMERACTRL->SetZoomMinSpeed(500.f);
         CAMERACTRL->SetZoomMaxSpeed(1000.f);
         CAMERACTRL->SetZoomThreshold(500.f);
-
     }
     break;
     }
@@ -85,12 +84,12 @@ void CMorphoDemo_Phase2::Exit_Step()
         break;
     case StateStep::StartEnd:
         break;
-    case StateStep::Progress:
-        // Ä«¸Þ¶ó º¹±¸
+    case StateStep::Progress: {
+        // Camera : º¹±¸
         CAMERACTRL->LoadInitSetting();
         CAMERACTRL->SetMorphoTwoTarget();
-
-        break;
+    }
+    break;
     }
 }
 
