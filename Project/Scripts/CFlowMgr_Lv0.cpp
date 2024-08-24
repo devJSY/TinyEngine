@@ -33,6 +33,8 @@ void CFlowMgr_Lv0::begin()
 
     SetEnterTime(6.8f);
 
+    SetFadeEffectColor(Vec3(115.f, 156.f, 28.f));
+
     // Fog Setting
     m_PostEffectMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"PostEffectMtrl");
     m_PostEffectMtrl->SetScalarParam(FLOAT_0, 250.f);                    // Fog Min
@@ -134,12 +136,25 @@ void CFlowMgr_Lv0::TriggerEvent(UINT _Idx)
     }
 }
 
+void CFlowMgr_Lv0::LevelEnd()
+{
+    CLevelFlowMgr::LevelEnd();
+
+    SetFadeEffectColor(Vec3(115.f, 156.f, 28.f));
+}
+
 void CFlowMgr_Lv0::LevelExit()
 {
     CLevelFlowMgr::LevelExit();
 
     m_PostEffectMtrl->SetScalarParam(FLOAT_2, 0.f); // Fog Strength
     SetToneMappingParam(false);                     // Bloom Off
+}
+
+void CFlowMgr_Lv0::LevelRestart()
+{
+    CLevelFlowMgr::LevelRestart();
+    SetFadeEffectColor(Vec3(115.f, 156.f, 28.f));
 }
 
 UINT CFlowMgr_Lv0::SaveToLevelFile(FILE* _File)

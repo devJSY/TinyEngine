@@ -44,8 +44,16 @@ private:
     bool m_bIsHealedScaling;
 
     int m_iEnterTickCount;
+
+    // Sparkle
+    float m_fSparkleAccTime;
+    float m_fSparkleTermTime;
+    bool m_bIsAlreadyFlag;
+    bool m_bSparkle;
+    bool m_bHPCurrentSparkleFlag;
+    bool m_bEmissionFlag;
+
 public:
-    virtual void begin() override;
     virtual void tick() override;
 
 public:
@@ -65,6 +73,9 @@ private:
 
     void HPDamageTask();
     void HPHealTask();
+
+    void Sparkle();
+    void SparKleReset();
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

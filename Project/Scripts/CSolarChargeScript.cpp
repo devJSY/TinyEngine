@@ -12,6 +12,8 @@ CSolarChargeScript::CSolarChargeScript()
     , m_MovingObjName{}
     , m_eState(SolarChargeState::OffWaitStart)
     , m_IsArea(false)
+    , m_fTermTime(0.f)
+    , m_bOnOffFlag(false)
 {
     AddScriptParam(SCRIPT_PARAM::STRING, &m_MovingObjName, "Moving Object Name");
 }
@@ -22,6 +24,8 @@ CSolarChargeScript::CSolarChargeScript(const CSolarChargeScript& Origin)
     , m_MovingObjName{}
     , m_eState(SolarChargeState::OffWaitStart)
     , m_IsArea(false)
+    , m_fTermTime(0.f)
+    , m_bOnOffFlag(false)
 {
     AddScriptParam(SCRIPT_PARAM::STRING, &m_MovingObjName, "Moving Object Name");
 }
@@ -34,6 +38,13 @@ void CSolarChargeScript::begin()
 {
     m_pObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(ToWstring(m_MovingObjName));
     ChangeState(SolarChargeState::OffWaitStart);
+
+    GetOwner()->MeshRender()->GetDynamicMaterial(1);
+    GetOwner()->MeshRender()->GetDynamicMaterial(6);
+    GetOwner()->MeshRender()->GetDynamicMaterial(7);
+    GetOwner()->MeshRender()->GetDynamicMaterial(8);
+    GetOwner()->MeshRender()->GetDynamicMaterial(12);
+    GetOwner()->MeshRender()->GetDynamicMaterial(13);
 }
 
 void CSolarChargeScript::tick()
@@ -45,6 +56,12 @@ void CSolarChargeScript::tick()
     }
     break;
     case SolarChargeState::ChargeOn: {
+        GetOwner()->MeshRender()->GetMaterial(1)->SetEmission(Vec4(0.f, 1.f, 0.f, 1.f));
+        GetOwner()->MeshRender()->GetMaterial(6)->SetEmission(Vec4(0.f, 1.f, 0.f, 1.f));
+        GetOwner()->MeshRender()->GetMaterial(7)->SetEmission(Vec4(0.f, 1.f, 0.f, 1.f));
+        GetOwner()->MeshRender()->GetMaterial(8)->SetEmission(Vec4(0.f, 1.f, 0.f, 1.f));
+        GetOwner()->MeshRender()->GetMaterial(12)->SetEmission(Vec4(0.f, 1.f, 0.f, 1.f));
+        GetOwner()->MeshRender()->GetMaterial(13)->SetEmission(Vec4(0.f, 1.f, 0.f, 1.f));
         ChargeOn();
     }
     break;
@@ -53,6 +70,12 @@ void CSolarChargeScript::tick()
     }
     break;
     case SolarChargeState::ChargedStart: {
+        GetOwner()->MeshRender()->GetMaterial(1)->SetEmission(Vec4(1.f, 1.f, 0.f, 1.f));
+        GetOwner()->MeshRender()->GetMaterial(6)->SetEmission(Vec4(1.f, 1.f, 0.f, 1.f));
+        GetOwner()->MeshRender()->GetMaterial(7)->SetEmission(Vec4(1.f, 1.f, 0.f, 1.f));
+        GetOwner()->MeshRender()->GetMaterial(8)->SetEmission(Vec4(1.f, 1.f, 0.f, 1.f));
+        GetOwner()->MeshRender()->GetMaterial(12)->SetEmission(Vec4(1.f, 1.f, 0.f, 1.f));
+        GetOwner()->MeshRender()->GetMaterial(13)->SetEmission(Vec4(1.f, 1.f, 0.f, 1.f));
         ChargedStart();
     }
     break;
@@ -63,6 +86,12 @@ void CSolarChargeScript::tick()
     }
     break;
     case SolarChargeState::OffWaitStart: {
+        GetOwner()->MeshRender()->GetMaterial(1)->SetEmission(Vec4(1.f, 0.f, 0.f, 1.f));
+        GetOwner()->MeshRender()->GetMaterial(6)->SetEmission(Vec4(1.f, 0.f, 0.f, 1.f));
+        GetOwner()->MeshRender()->GetMaterial(7)->SetEmission(Vec4(1.f, 0.f, 0.f, 1.f));
+        GetOwner()->MeshRender()->GetMaterial(8)->SetEmission(Vec4(1.f, 0.f, 0.f, 1.f));
+        GetOwner()->MeshRender()->GetMaterial(12)->SetEmission(Vec4(1.f, 0.f, 0.f, 1.f));
+        GetOwner()->MeshRender()->GetMaterial(13)->SetEmission(Vec4(1.f, 0.f, 0.f, 1.f));
         OffWaitStart();
     }
     break;
@@ -123,12 +152,14 @@ void CSolarChargeScript::ExitState()
     {
     case SolarChargeState::OffWait:
         break;
-    case SolarChargeState::ChargeOn:
-        break;
+    case SolarChargeState::ChargeOn: {
+        m_fTermTime = 0.f;
+        m_bOnOffFlag = false;
+    }
+    break;
     case SolarChargeState::ChargeOff:
         break;
-    case SolarChargeState::ChargedStart:
-    {
+    case SolarChargeState::ChargedStart: {
         if (nullptr != m_pObj)
         {
             CPushOutScript* Script = m_pObj->GetScript<CPushOutScript>();
@@ -138,7 +169,7 @@ void CSolarChargeScript::ExitState()
             }
         }
     }
-        break;
+    break;
     case SolarChargeState::ChargedWait:
         break;
     case SolarChargeState::Decreases:
@@ -165,6 +196,34 @@ void CSolarChargeScript::ChargeOn()
     if (!m_IsArea || !PLAYERFSM->IsAttackEvent())
     {
         ChangeState(SolarChargeState::ChargeOff);
+    }
+    else
+    {
+        m_fTermTime += DT;
+        if (m_bOnOffFlag)
+        {
+            if (m_fTermTime >= 1.f)
+            {
+                m_bOnOffFlag = false;
+                m_fTermTime = 0.f;
+            }
+            else
+            {
+                GetOwner()->MeshRender()->GetMaterial(1)->SetEmission(Vec4(m_fTermTime, m_fTermTime, 0.f, 1.f));
+            }
+        }
+        else
+        {
+            if (m_fTermTime >= 1.f)
+            {
+                m_bOnOffFlag = true;
+                m_fTermTime = 0.f;
+            }
+            else
+            {
+                GetOwner()->MeshRender()->GetMaterial(1)->SetEmission(Vec4((1.f - m_fTermTime), (1.f - m_fTermTime), 0.f, 1.f));
+            }
+        }
     }
 
     if (Animator()->IsFinish())

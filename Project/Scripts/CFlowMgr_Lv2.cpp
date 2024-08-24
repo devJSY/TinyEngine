@@ -24,6 +24,8 @@ void CFlowMgr_Lv2::begin()
     LevelStart();
 
     SetEnterTime(6.8f);
+
+    SetFadeEffectColor(Vec3(164.f, 44.f, 174.f));
 }
 
 void CFlowMgr_Lv2::tick()
@@ -41,7 +43,19 @@ void CFlowMgr_Lv2::LevelStart()
 
     // UI (Fade In)
     // Center Mode ¼³Á¤
-    SetFadeEffect(Vec3(255.f, 0.f, 255.f), true, 1.f, 1.25f, true);
+    SetFadeEffect(Vec3(164.f, 44.f, 174.f), true, 1.f, 1.25f, true);
+}
+
+void CFlowMgr_Lv2::LevelEnd()
+{
+    CLevelFlowMgr::LevelEnd();
+    SetFadeEffectColor(Vec3(164.f, 44.f, 174.f));
+}
+
+void CFlowMgr_Lv2::LevelRestart()
+{
+    CLevelFlowMgr::LevelRestart();
+    SetFadeEffectColor(Vec3(164.f, 44.f, 174.f));
 }
 
 UINT CFlowMgr_Lv2::SaveToLevelFile(FILE* _File)

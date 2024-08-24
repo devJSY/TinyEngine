@@ -2,6 +2,7 @@
 #include "global.hlsli"
 #include "func.hlsli"
 #include "UnrealPBRCommon.hlsli"
+#include "Light.hlsli"
 
 /*********************
 |   Tex0 : EyeBase

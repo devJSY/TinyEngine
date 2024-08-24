@@ -26,11 +26,15 @@ CUIHPScript::CUIHPScript()
     , m_fCurHP(0.f)
     , m_fPrevHP(0.f)
     , m_fCurPrevHP(0.f)
+    , m_fSparkleAccTime(0.f)
     , m_pFSMScript(nullptr)
     , m_iEnterTickCount(0)
     , m_bDamaged(false)
     , m_bHpHealed(false)
     , m_bIsHealedScaling(false)
+    , m_bSparkle(false)
+    , m_bEmissionFlag(false)
+    , m_bHPCurrentSparkleFlag(false)
 {
     AddScriptParam(SCRIPT_PARAM::STRING, &m_TargetName, "TargetName");
     AddScriptParam(SCRIPT_PARAM::VEC4, &m_vBasicColor, "Basic Color");
@@ -58,11 +62,15 @@ CUIHPScript::CUIHPScript(const CUIHPScript& Origin)
     , m_fCurHP(0.f)
     , m_fPrevHP(0.f)
     , m_fCurPrevHP(0.f)
+    , m_fSparkleAccTime(0.f)
     , m_pFSMScript(nullptr)
     , m_iEnterTickCount(0)
     , m_bDamaged(false)
     , m_bHpHealed(false)
     , m_bIsHealedScaling(false)
+    , m_bSparkle(false)
+    , m_bEmissionFlag(false)
+    , m_bHPCurrentSparkleFlag(false)
 {
     AddScriptParam(SCRIPT_PARAM::STRING, &m_TargetName, "TargetName");
     AddScriptParam(SCRIPT_PARAM::VEC4, &m_vBasicColor, "Basic Color");
@@ -73,11 +81,6 @@ CUIHPScript::CUIHPScript(const CUIHPScript& Origin)
 
 CUIHPScript::~CUIHPScript()
 {
-}
-
-void CUIHPScript::begin()
-{
-    // m_fMaxHP = m_fCurHP = m_fPrevH = TargetObject의 MaxHP!
 }
 
 void CUIHPScript::SetPlayer()
@@ -106,6 +109,16 @@ void CUIHPScript::tick()
     float fCheckHP = m_fCurHP;
     m_fCurHP = m_pUnitScript->GetCurInfo().HP;
 
+    // 현재 체력 상태에 따른 Flag 점화
+    if (m_fCurHP / m_fMaxHP <= 0.15f)
+    {
+        m_bHPCurrentSparkleFlag = true;
+    }
+    else
+    {
+        m_bHPCurrentSparkleFlag = false;
+    }
+
     // 뭐든 현재 체력의 변화가 생김
     if (abs(fCheckHP - m_fCurHP) >= 0.1f)
     {
@@ -115,12 +128,26 @@ void CUIHPScript::tick()
         {
             m_vDamageTask.push_back({m_fCurHP, fCheckHP});
             m_bDamaged = true;
+            m_bSparkle = true;
+
+            if (m_bHpHealed)
+            {
+                m_bHpHealed = false;
+                m_fCurPrevHP = m_fPrevHP = m_fCurHP;
+            }
         }
         // 체력을 회복함
-        else
+        else if (fCheckHP - m_fCurHP < 0.f)
         {
             m_vHealTask.push_back({m_fCurHP, fCheckHP});
             m_bHpHealed = true;
+
+            if (m_bDamaged)
+            {
+                m_bSparkle = true;
+                m_bDamaged = false;
+                m_fCurPrevHP = m_fPrevHP = m_fCurHP;
+            }
         }
     }
 
@@ -146,6 +173,7 @@ void CUIHPScript::tick()
     }
 
     SwitchKirbyName();
+    Sparkle();
 }
 
 void CUIHPScript::SetInitInfo()
@@ -166,6 +194,12 @@ void CUIHPScript::SetInitInfo()
     m_pRenderer->GetMaterial(0)->SetScalarParam(FLOAT_1, m_fPrevHP / m_fMaxHP);
     m_pRenderer->GetMaterial(0)->SetScalarParam(VEC4_0, m_vBasicColor);
     m_pRenderer->GetMaterial(0)->SetScalarParam(VEC4_1, m_vDecreaseColor);
+    m_pRenderer->GetMaterial(0)->SetScalarParam(VEC4_3, Vec4(1.f, 1.f, 1.f, 1.f));
+
+    m_bSparkle = false;
+    m_bHPCurrentSparkleFlag = false;
+    m_bDamaged = false;
+    m_bHpHealed = false;
 }
 
 void CUIHPScript::CaculateShading()
@@ -322,13 +356,16 @@ void CUIHPScript::HPDamageTask()
 {
     for (size_t i = 0; i < m_vDamageTask.size(); ++i)
     {
-        // m_fPrevHP는 시작 할 때 현재 HP를 복사한다.
+        // 계속해서 데미지가 들어오는지 확인
+        // 둘의 차이가 있다는 것은 곧 데미지가 들어왔다는 의미
+        // Scaling() 시간 초기화
         if (m_fCurPrevHP > m_vDamageTask[i].fCurHP)
         {
             m_fAccTime = 0.f;
             m_fCurPrevHP = m_vDamageTask[i].fCurHP;
         }
 
+        // 가장 큰 전 HP 구하기
         if (m_fPrevHP < m_vDamageTask[i].fPrevHP)
         {
             m_fPrevHP = m_vDamageTask[i].fPrevHP;
@@ -351,7 +388,9 @@ void CUIHPScript::HPHealTask()
 {
     for (size_t i = 0; i < m_vHealTask.size(); ++i)
     {
-        // m_fPrevHP는 시작 할 때 현재 HP를 복사한다.
+        // 계속해서 흡혈이 들어오는지 확인
+        // 둘의 차이가 있다는 것은 곧 흡혈 했다는 의미
+        // Scaling() 시간 초기화
         if (m_fCurPrevHP < m_vHealTask[i].fCurHP)
         {
             m_fAccTime = 0.f;
@@ -368,6 +407,46 @@ void CUIHPScript::HPHealTask()
         m_bIsHealedScaling = true;
         m_vHealTask.clear();
     }
+}
+
+void CUIHPScript::Sparkle()
+{
+    Vec4 vEmissionColor = {};
+    if (m_bSparkle || m_bHPCurrentSparkleFlag)
+    {
+        m_fSparkleAccTime += DT;
+        m_fSparkleTermTime += DT;
+
+        if (0.08f <= m_fSparkleTermTime)
+        {
+            if (m_bEmissionFlag)
+            {
+                vEmissionColor = Vec4(1.4f, 1.4f, 1.4f, 1.f);
+            }
+            else
+            {
+                vEmissionColor = Vec4(1.f, 1.f, 1.f, 1.f);
+            }
+            m_fSparkleTermTime = 0.f;
+            m_bEmissionFlag = !m_bEmissionFlag;
+
+            GetOwner()->MeshRender()->GetMaterial(0)->SetScalarParam(VEC4_3, vEmissionColor);
+        }
+
+        if (2.5f <= m_fSparkleAccTime)
+        {
+            SparKleReset();
+        }
+    }
+}
+
+void CUIHPScript::SparKleReset()
+{
+    m_fSparkleAccTime = 0.f;
+    m_bSparkle = false;
+    m_bEmissionFlag = true;
+    m_bIsAlreadyFlag = false;
+    GetOwner()->MeshRender()->GetMaterial(0)->SetScalarParam(VEC4_3, Vec4(1.f, 1.f, 1.f, 1.f));
 }
 
 UINT CUIHPScript::SaveToLevelFile(FILE* _File)
