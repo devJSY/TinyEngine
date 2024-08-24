@@ -26,6 +26,8 @@ void CKirbyStuffedLanding::Enter()
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyBig));
 
     PLAYERCTRL->LockJump();
+
+    PLAYERFSM->SetUnstuffReverse(false);
 }
 
 void CKirbyStuffedLanding::Exit()
@@ -34,4 +36,6 @@ void CKirbyStuffedLanding::Exit()
     CPlayerMgr::ClearBodyMtrl();
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyNormal));
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));
+
+    PLAYERFSM->SetUnstuffReverse(true);
 }

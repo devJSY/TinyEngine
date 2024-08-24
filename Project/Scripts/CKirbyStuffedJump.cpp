@@ -49,7 +49,9 @@ void CKirbyStuffedJump::Enter()
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyBig));
 
     PLAYERCTRL->Jump();
+
     PLAYERFSM->SetLastJump(LastJumpType::LOW);
+    PLAYERFSM->SetUnstuffReverse(false);
 
     m_JumpAccTime = 0.f;
     m_bVelocityCut = false;
@@ -60,4 +62,6 @@ void CKirbyStuffedJump::Exit()
     CPlayerMgr::ClearBodyMtrl();
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyNormal));
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));
+
+    PLAYERFSM->SetUnstuffReverse(true);
 }
