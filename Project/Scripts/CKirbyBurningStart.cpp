@@ -61,6 +61,15 @@ void CKirbyBurningStart::tick()
 
 void CKirbyBurningStart::Enter()
 {
+    // Wing Fire Particle ½ºÆù
+    Ptr<CPrefab> WingFireParticle = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbyFireWingParticle.pref");
+    if (WingFireParticle.Get())
+    {
+        CGameObject* WingFireParticleObj = WingFireParticle->Instantiate();
+        WingFireParticleObj->Transform()->SetLocalPos(Vec3(0.f, 10.f, 0.f));
+        GamePlayStatic::AddChildObject(GetOwner(), WingFireParticleObj);
+    }
+
     CGameObject* Wing = PLAYER->GetChildObject(L"KirbyDragon");
 
     if (Wing != nullptr)
@@ -93,6 +102,13 @@ void CKirbyBurningStart::Enter()
 
 void CKirbyBurningStart::Exit()
 {
+    CGameObject* WingFireParticleObj = GetOwner()->GetChildObject(L"KirbyFireWingParticle");
+
+    if (WingFireParticleObj != nullptr)
+    {
+        GamePlayStatic::DestroyGameObject(WingFireParticleObj);
+    }
+
     CGameObject* Wing = PLAYER->GetChildObject(L"KirbyDragon");
 
     if (Wing != nullptr)

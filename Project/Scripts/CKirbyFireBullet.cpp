@@ -34,7 +34,7 @@ CKirbyFireBullet::~CKirbyFireBullet()
 void CKirbyFireBullet::begin()
 {
     m_Acc = 0.f;
-    m_AccFireNumber = 0.f;
+    m_AccFireNumber = 0;
     m_DestroyDuration = 0.1f;
     m_bDestroy = false;
 

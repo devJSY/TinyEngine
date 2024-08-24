@@ -327,8 +327,13 @@ float4 PS_ParticleRender_Fire(GS_Output _in) : SV_Target
         {
             //float WhiteRatio = length(vSampleColor);
             float WhiteRatio = dot(vSampleColor.rgb, float3(1.f, 1.f, 1.f)) / 3.f;
-            //WhiteRatio = pow(WhiteRatio,10);
             vSampleColor = vSampleColor * (WhiteRatio) + MtrlAlbedo * (1.f - WhiteRatio);
+            
+            if (vOutColor.a != 0.f)
+            {
+                vOutColor.a = vOutColor.a * WhiteRatio + MtrlAlbedo.a * (1.f - WhiteRatio);
+            }
+            
         }
         
         vOutColor.rgb *= vSampleColor.rgb;

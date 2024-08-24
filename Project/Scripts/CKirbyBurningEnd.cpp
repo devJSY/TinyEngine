@@ -34,6 +34,7 @@ void CKirbyBurningEnd::tick()
 
 void CKirbyBurningEnd::Enter()
 {
+
     CGameObject* Wing = PLAYER->GetChildObject(L"KirbyDragon");
 
     if (Wing != nullptr)

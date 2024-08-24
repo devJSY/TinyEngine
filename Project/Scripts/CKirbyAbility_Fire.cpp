@@ -60,7 +60,7 @@ void CKirbyAbility_Fire::AttackCharge1StartEnter()
     m_SavedSpeed = PLAYERCTRL->GetSpeed();
 
     // 속도 변경
-    PLAYERCTRL->SetSpeed(2.f);
+    PLAYERCTRL->SetSpeed(m_SavedSpeed/2.f);
 }
 
 void CKirbyAbility_Fire::AttackCharge1StartExit()
