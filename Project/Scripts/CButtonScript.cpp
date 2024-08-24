@@ -107,6 +107,14 @@ void CButtonScript::Func()
 void CButtonScript::begin()
 {
     m_vNormalScale = GetOwner()->GetComponent<CTransform>()->GetWorldScale();
+
+    vector<CGameObject*> vChilids = GetOwner()->GetChildObject();
+    for (size_t i = 0; i < vChilids.size(); ++i)
+    {
+        if (vChilids[i]->Transform())
+            m_vNormalScales.push_back(vChilids[i]->Transform()->GetLocalScale());
+    }
+
     ChangeState(ButtonState::NORMAL);
 }
 
@@ -115,14 +123,16 @@ void CButtonScript::tick()
     CTransform* _pTr = GetOwner()->GetComponent<CTransform>();
     assert(_pTr);
 
+    ChangeState(ButtonState::NORMAL);
+
     if (m_eCurState == ButtonState::DISABLED)
         return;
 
-    if (IsMouseHovered() && m_IsIsolated)
+    if (IsMouseHovered())
     {
         ChangeState(ButtonState::SELECTED);
 
-        if (KEY_TAP(LBTN))
+        if (KEY_PRESSED(LBTN) || KEY_TAP(LBTN))
         {
             ChangeState(ButtonState::PRESSED);
         }
@@ -216,6 +226,38 @@ void CButtonScript::ButtonUpdate()
     }
     break;
     case ButtonTransition::CUSTOM1: {
+
+        vector<CGameObject*> pChildObj = GetOwner()->GetChildObject();
+
+        for (size_t i = 0; i < pChildObj.size(); i++)
+        {
+            if (nullptr != pChildObj[i])
+            {
+                pChildObj[i]->SetActive(true);
+            }
+        }
+
+        CTransform* _pTr = GetOwner()->GetComponent<CTransform>();
+
+        if (_pTr)
+        {
+            Vec3 vTransScale = m_vNormalScale * m_vButtonScale[(UINT)m_eCurState];
+            _pTr->SetWorldScale(Vec3(vTransScale.x, vTransScale.y, m_vNormalScale.z));
+        }
+
+        vector<CGameObject*> vChilids = GetOwner()->GetChildObject();
+        for (size_t i = 0; i < vChilids.size(); ++i)
+        {
+            if (vChilids[i]->Transform())
+            {
+                Vec3 vTransScale = m_vNormalScales[i] * m_vButtonScale[(UINT)m_eCurState];
+
+                vChilids[i]->Transform()->SetLocalScale(Vec3(vTransScale.x, vTransScale.y, m_vNormalScales[i].z));
+            }
+        }
+    }
+    break;
+    case ButtonTransition::CUSTOM2: {
         if (ButtonState::NORMAL == m_eCurState)
         {
             vector<CGameObject*> pChildObj = GetOwner()->GetChildObject();
@@ -224,10 +266,10 @@ void CButtonScript::ButtonUpdate()
             {
                 if (nullptr != pChildObj[i])
                 {
-                    if (pChildObj[i]->GetName() == L"UI_FontTexture")
-                        continue;
-
-                    pChildObj[i]->SetActive(false);
+                    if (pChildObj[i]->GetName() != L"UI_FontTexture")
+                    {
+                        pChildObj[i]->SetActive(false);
+                    }
                 }
             }
         }
@@ -243,34 +285,12 @@ void CButtonScript::ButtonUpdate()
         }
         else if (ButtonState::PRESSED == m_eCurState)
         {
-            //
-        }
-    }
-    break;
-    case ButtonTransition::CUSTOM2: {
-        if (ButtonState::NORMAL == m_eCurState)
-        {
             vector<CGameObject*> pChildObj = GetOwner()->GetChildObject();
-
             for (size_t i = 0; i < pChildObj.size(); i++)
             {
                 if (nullptr != pChildObj[i])
                     pChildObj[i]->SetActive(true);
             }
-        }
-        else if (ButtonState::SELECTED == m_eCurState)
-        {
-            vector<CGameObject*> pChildObj = GetOwner()->GetChildObject();
-
-            for (size_t i = 0; i < pChildObj.size(); i++)
-            {
-                if (nullptr != pChildObj[i])
-                    pChildObj[i]->SetActive(true);
-            }
-        }
-        else if (ButtonState::PRESSED == m_eCurState)
-        {
-            //
         }
         else if (ButtonState::DISABLED == m_eCurState)
         {
@@ -288,6 +308,17 @@ void CButtonScript::ButtonUpdate()
         {
             Vec3 vTransScale = m_vNormalScale * m_vButtonScale[(UINT)m_eCurState];
             _pTr->SetWorldScale(Vec3(vTransScale.x, vTransScale.y, m_vNormalScale.z));
+        }
+
+        vector<CGameObject*> vChilids = GetOwner()->GetChildObject();
+        for (size_t i = 0; i < vChilids.size(); ++i)
+        {
+            if (vChilids[i]->Transform())
+            {
+                Vec3 vTransScale = m_vNormalScales[i] * m_vButtonScale[(UINT)m_eCurState];
+
+                vChilids[i]->Transform()->SetLocalScale(Vec3(vTransScale.x, vTransScale.y, m_vNormalScales[i].z));
+            }
         }
     }
     break;
