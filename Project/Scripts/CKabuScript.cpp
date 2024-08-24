@@ -107,15 +107,6 @@ void CKabuScript::OnTriggerEnter(CCollider* _OtherCollider)
             return;
         }
     }
-
-    Vec3 vDir = PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos();
-    UnitHit hitInfo = {DAMAGE_TYPE::NORMAL, vDir.Normalize(), GetCurInfo().ATK, 0.f, 0.f};
-    UINT Layer = _OtherCollider->GetOwner()->GetLayerIdx();
-
-    if (Layer == LAYER_PLAYER_TRIGGER && L"Body Collider" == pObj->GetName())
-    {
-        pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo);
-    }
 }
 
 void CKabuScript::OnTriggerStay(CCollider* _OtherCollider)
@@ -415,28 +406,40 @@ void CKabuScript::LinearMove(bool _moveZ)
 
     if (_moveZ)
     {
-        if ((m_vDestPos.z - 5.f <= vPos.z && vPos.z <= m_vDestPos.z + 5.f))
+        if (m_vDir.z <= -0.8f)
         {
-            Rigidbody()->SetVelocity(Vec3(0.f, -9.81f, 0.f));
-            Vec3 vTemp = m_vDestPos;
-            m_vDestPos = m_vOriginPos;
-            m_vOriginPos = vTemp;
-            m_vDestPos.y = 0.f;
-            m_vOriginPos.y = 0.f;
-            m_vDir = m_vDir * -1.f;
+            if (m_vOriginPos.z >= vPos.z)
+            {
+                m_vDir = Vec3(0.f, 0.f, 1.f);
+                Rigidbody()->SetVelocity(Vec3(0.f, -9.81f, 0.f));
+            }
+        }
+        else
+        {
+            if (m_vDestPos.z <= vPos.z)
+            {
+                m_vDir = Vec3(0.f, 0.f, -1.f);
+                Rigidbody()->SetVelocity(Vec3(0.f, -9.81f, 0.f));
+            }
         }
     }
     else
     {
-        if ((m_vDestPos.x - 5.f <= vPos.x && vPos.x <= m_vDestPos.x + 5.f))
+        if (m_vDir.x <= -0.8f)
         {
-            Rigidbody()->SetVelocity(Vec3(0.f, -9.81f, 0.f));
-            Vec3 vTemp = m_vDestPos;
-            m_vDestPos = m_vOriginPos;
-            m_vOriginPos = vTemp;
-            m_vDestPos.y = 0.f;
-            m_vOriginPos.y = 0.f;
-            m_vDir = m_vDir * -1.f;
+            if (m_vOriginPos.x >= vPos.x)
+            {
+                m_vDir = Vec3(1.f, 0.f, 0.f);
+                Rigidbody()->SetVelocity(Vec3(0.f, -9.81f, 0.f));
+            }
+        }
+        else
+        {
+            if (m_vDestPos.x <= vPos.x)
+            {
+                m_vDir = Vec3(-1.f, 0.f, 0.f);
+                Rigidbody()->SetVelocity(Vec3(0.f, -9.81f, 0.f));
+            }
         }
     }
 }
@@ -522,7 +525,7 @@ void CKabuScript::Return()
 
     Rigidbody()->SetVelocity(m_vDir * GetCurInfo().Speed * DT);
 
-    if ((m_vDestPos.x - 5.f <= vPos.x && vPos.x <= m_vDestPos.x + 5.f) && (m_vDestPos.z - 5.f <= vPos.z && vPos.z <= m_vDestPos.z + 5.f))
+    if ((m_vDestPos.x - 10.f <= vPos.x && vPos.x <= m_vDestPos.x + 5.f) && (m_vDestPos.z - 5.f <= vPos.z && vPos.z <= m_vDestPos.z + 5.f))
     {
         Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
         Vec3 vTemp = m_vDestPos;

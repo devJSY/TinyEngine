@@ -415,7 +415,7 @@ void CHotHeadScript::ExitState(HotHeadState _state)
     case HotHeadState::AttackFlameRot: {
         // 원래 Rotation으로 초기화
         m_fRotRadian = 0.f;
-        m_pFlameRotObject->Transform()->SetWorldRotation(GetOwner()->Transform()->GetWorldQuaternion());
+        m_pFlameRotObject->Transform()->SetLocalRotation(Vec3(0.f, 0.f, 0.f));
     }
     break;
     case HotHeadState::AttackFlameRotEnd:
@@ -455,7 +455,7 @@ void CHotHeadScript::ProjectileAttack()
     if (nullptr != bulletPref)
     {
         CGameObject* pBullet = bulletPref->Instantiate();
-        pBullet->Transform()->SetLocalPos(Transform()->GetLocalPos() + Transform()->GetWorldDir(DIR_TYPE::FRONT) * 10.f + Vec3(0.f, 30.f, 0.f));
+        pBullet->Transform()->SetLocalPos(Transform()->GetWorldPos() + Transform()->GetWorldDir(DIR_TYPE::FRONT) * 10.f + Vec3(0.f, 40.f, 0.f));
         pBullet->Transform()->SetWorldRotation(Transform()->GetWorldQuaternion());
         GamePlayStatic::SpawnGameObject(pBullet, pBullet->GetLayerIdx());
     }
