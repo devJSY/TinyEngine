@@ -40,7 +40,7 @@ void CElfilisD_Jump::Enter_Step()
         GetOwner()->Animator()->Play(ANIMPREFIX("JumpReady"), false, false, 2.5f, 0.3f);
         m_PrevDrag = GetOwner()->Rigidbody()->GetDrag();
 
-        // 뒤로
+        // Camera : 뒤로
         CAMERACTRL->FixedView(false, Vec3(-78.53f, 131.92f, -91.44f));
 
     }
@@ -54,11 +54,10 @@ void CElfilisD_Jump::Enter_Step()
         Vec3 JumpDir = m_TargetPos - m_StartPos;
         JumpDir.Normalize();
 
-        GetOwner()->Rigidbody()->AddForce(JumpDir * 3000.f, ForceMode::Impulse);
+        GetOwner()->Rigidbody()->SetDrag(3.f);
+        GetOwner()->Rigidbody()->AddForce(JumpDir * 3800.f, ForceMode::Impulse);
 
-
-
-        // 카메라 잠깐고정
+        // Camera : 잠깐고정
         CAMERACTRL->Normal(false);
 
         CAMERACTRL->SetLookDir(Vec3(0.f, 0.f, -1.f));
@@ -111,14 +110,9 @@ void CElfilisD_Jump::Start()
 
 void CElfilisD_Jump::Progress()
 {
-    // Add drag
-    Vec3 NewPos = GetOwner()->Transform()->GetWorldPos();
-    float CurDist = (NewPos - m_StartPos).Length();
-    float Ratio = clamp((CurDist / (m_TargetPos - m_StartPos).Length()), 0.f, 1.f) * XM_PI;
-    float NewDrag = 4.f - 4.f * sinf(Ratio);
-    GetOwner()->Rigidbody()->SetDrag(NewDrag);
-
     // Change Step
+    Vec3 NewPos = GetOwner()->Transform()->GetWorldPos();
+    
     if ((NewPos - m_StartPos).Length() >= (m_TargetPos - m_StartPos).Length())
     {
         ChangeStep(StateStep::End);

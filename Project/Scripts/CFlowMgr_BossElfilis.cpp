@@ -75,7 +75,7 @@ void CFlowMgr_BossElfilis::tick()
         break;
     case BossLevelFlow::Fight:
         break;
-    case BossLevelFlow::DeathStart:
+    case BossLevelFlow::DemoPlay:
         break;
     case BossLevelFlow::Death:
         break;
@@ -110,7 +110,7 @@ void CFlowMgr_BossElfilis::ChangeFlowResist()
     PLAYERFSM->ChangeState(L"IDLE");
     PLAYERCTRL->LockInput();
 
-    m_FlowState = BossLevelFlow::DeathStart;
+    m_FlowState = BossLevelFlow::DemoPlay;
 }
 
 void CFlowMgr_BossElfilis::ChangeFlowDeath()

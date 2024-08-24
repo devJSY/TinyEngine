@@ -40,7 +40,7 @@ void CElfilisG_GroundToAir::Enter_Step()
         GetOwner()->Animator()->Play(ANIMPREFIX("AwayFastReady"), false);
         m_PrevDrag = GetOwner()->Rigidbody()->GetDrag();
 
-        // ÇÏ´Ã ºä
+        // Camera : ÇÏ´Ã ºä
         CAMERACTRL->SetElfilisSky();
     }
     break;
@@ -50,10 +50,8 @@ void CElfilisG_GroundToAir::Enter_Step()
         // Jump
         m_StartPos = GetOwner()->Transform()->GetWorldPos();
         m_TargetPos = -GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT) * ELFFSM->GetAirPos().z + Vec3(0.f, ELFFSM->GetAirPos().y, 0.f);
-        Vec3 JumpDir = m_TargetPos - m_StartPos;
-        JumpDir.Normalize();
-
-        GetOwner()->Rigidbody()->AddForce(JumpDir * 3000.f, ForceMode::Impulse);
+        m_ForceDir = m_TargetPos - m_StartPos;
+        m_ForceDir.Normalize();
     }
     break;
     case StateStep::End: {
@@ -92,12 +90,35 @@ void CElfilisG_GroundToAir::Start()
 
 void CElfilisG_GroundToAir::Progress()
 {
-    // Add drag
     Vec3 NewPos = GetOwner()->Transform()->GetWorldPos();
     float CurDist = (NewPos - m_StartPos).Length();
-    float Ratio = clamp((CurDist / (m_TargetPos - m_StartPos).Length()), 0.f, 1.f) * XM_PI;
-    float NewDrag = 4.f - 4.f * sinf(Ratio);
-    GetOwner()->Rigidbody()->SetDrag(NewDrag);
+    float Ratio = CurDist / (m_TargetPos - m_StartPos).Length();
+
+    // Ratio = Ratio * 0.98f + 0.01f;
+    // Ratio = clamp(sinf(Ratio * XM_PI) * 1.5f, 0.f, 1.f);
+    // float NewSpeed = 100.f * Ratio;
+    // GetOwner()->Rigidbody()->SetVelocity(m_ForceDir * NewSpeed);
+
+    //// move
+    float EndRatio = 0.3f;
+
+    if (Ratio < EndRatio)
+    {
+        Ratio = (Ratio / EndRatio) * 0.98f + 0.01f;
+        Ratio = clamp(sinf(Ratio * XM_PI / 2.f) * 2.f, 0.f, 1.f);
+        float NewSpeed = 130.f * Ratio;
+        GetOwner()->Rigidbody()->SetVelocity(m_ForceDir * NewSpeed);
+    }
+
+    // move end
+    else
+    {
+        Ratio = (Ratio - EndRatio) / (1.f - EndRatio);
+        Ratio = Ratio * 0.8f + 0.1f;
+        Ratio = clamp(cosf(Ratio * XM_PI / 2.f), 0.f, 1.f);
+        float NewSpeed = 130.f * Ratio;
+        GetOwner()->Rigidbody()->SetVelocity(m_ForceDir * NewSpeed);
+    }
 
     // Change Step
     if ((NewPos - m_StartPos).Length() >= (m_TargetPos - m_StartPos).Length())

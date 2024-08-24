@@ -41,6 +41,19 @@ void CElfilisA_RayArrowUp::tick()
     }
 }
 
+void CElfilisA_RayArrowUp::Exit()
+{
+    Exit_Step();
+
+    for (int i = 0; i < 7; ++i)
+    {
+        if (m_ArrowScript[i] && !m_bReady)
+        {
+           GamePlayStatic::DestroyGameObject(m_ArrowScript[i]->GetOwner());
+        }
+    }
+}
+
 void CElfilisA_RayArrowUp::Enter_Step()
 {
     switch (m_Step)

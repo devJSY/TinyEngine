@@ -61,6 +61,11 @@ void CElfilisUnit::tick()
     }
 }
 
+void CElfilisUnit::ResistSuccess()
+{
+    m_CurInfo.HP += m_CurInfo.MAXHP * 0.1f;
+}
+
 UINT CElfilisUnit::SaveToLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;

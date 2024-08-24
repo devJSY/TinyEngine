@@ -16,6 +16,7 @@ private:
     UINT m_Step;
     int m_ArrowIdx;
     float m_AccTime;
+    bool m_bFrmEnter;
 
     // Init
     Vec3 m_InitPos;

@@ -5,6 +5,7 @@ class CElfilisD_Damage : public CBossState
 {
 private:
     Vec3 m_TargetPos;
+    Vec3 m_ForceDir;
     float m_PrevDrag;
 
 public:

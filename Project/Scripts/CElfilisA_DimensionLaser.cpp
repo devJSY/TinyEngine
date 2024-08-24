@@ -64,6 +64,12 @@ void CElfilisA_DimensionLaser::Exit()
             m_DimensionScript[i] = nullptr;
         }
     }
+
+    if (m_DimensionStart)
+    {
+        GamePlayStatic::DestroyGameObject(m_DimensionStart->GetOwner());
+        m_DimensionStart = nullptr;
+    }
 }
 
 void CElfilisA_DimensionLaser::Enter_Step()
@@ -74,7 +80,7 @@ void CElfilisA_DimensionLaser::Enter_Step()
         GetOwner()->Animator()->Play(ANIMPREFIX("DimensionLaserReady"), false);
         //@Effect Â÷Â¡ ÆÄÆ¼Å¬
 
-        // ¶¥ ºä
+        // Camera : ¶¥ ºä
         CAMERACTRL->SetElfilisGround();
     }
     break;
@@ -122,7 +128,7 @@ void CElfilisA_DimensionLaser::Exit_Step()
     case StateStep::Progress:
         break;
     case StateStep::End: {
-        // Åõ Å¸°Ù
+        // Camera : Åõ Å¸°Ù
         CAMERACTRL->SetElfilisTwoTarget();
     }
     break;
