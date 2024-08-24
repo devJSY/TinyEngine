@@ -232,6 +232,10 @@ UINT CKirbyFireBullet::SaveToLevelFile(FILE* _File)
     fwrite(&m_RequiredFireNumber, sizeof(int), 1, _File);
     fwrite(&m_Duration, sizeof(float), 1, _File);
 
+    MemoryByte += sizeof(UINT);
+    MemoryByte += sizeof(int);
+    MemoryByte += sizeof(float);
+
     return MemoryByte;
 }
 
@@ -242,6 +246,10 @@ UINT CKirbyFireBullet::LoadFromLevelFile(FILE* _File)
     fread(&m_Step, sizeof(UINT), 1, _File);
     fread(&m_RequiredFireNumber, sizeof(int), 1, _File);
     fread(&m_Duration, sizeof(float), 1, _File);
+
+    MemoryByte += sizeof(UINT);
+    MemoryByte += sizeof(int);
+    MemoryByte += sizeof(float);
 
     return MemoryByte;
 }

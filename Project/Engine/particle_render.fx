@@ -320,15 +320,19 @@ float4 PS_ParticleRender_Fire(GS_Output _in) : SV_Target
         }
         
         float4 vSampleColor = g_tex_0.Sample(g_LinearWrapSampler, _in.vUV);
+        vOutColor.a = vSampleColor.a;
+        
         // base color의 검은부분 색 변경
         if (MaskColor)
         {
-            float WhiteRatio = length(vSampleColor);
+            //float WhiteRatio = length(vSampleColor);
+            float WhiteRatio = dot(vSampleColor.rgb, float3(1.f, 1.f, 1.f)) / 3.f;
+            //WhiteRatio = pow(WhiteRatio,10);
             vSampleColor = vSampleColor * (WhiteRatio) + MtrlAlbedo * (1.f - WhiteRatio);
         }
         
         vOutColor.rgb *= vSampleColor.rgb;
-        vOutColor.a = vSampleColor.a;
+
     }
 
     // 렌더모듈이 켜져 있으면
