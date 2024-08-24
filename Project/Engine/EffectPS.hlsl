@@ -23,7 +23,6 @@ float4 main(PS_IN input) : SV_Target
         vOutColor.rgb = lerp(Color1.rgb, Color2.rgb, input.vUV0.x);
         vOutColor.rgb *= SampleColor.rgb;
         vOutColor.a = SampleColor.a;
-
     }
     
     return vOutColor;
