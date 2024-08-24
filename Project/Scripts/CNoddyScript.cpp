@@ -25,14 +25,13 @@ CNoddyScript::~CNoddyScript()
 
 void CNoddyScript::begin()
 {
-    SetSnotBubble();
-
-    ChangeState(NODDY_STATE::Sleep);
-
     if (nullptr != MeshRender())
     {
         MeshRender()->GetDynamicMaterial(0);
     }
+
+    SetSnotBubble();
+    ChangeState(NODDY_STATE::Sleep);
 }
 
 void CNoddyScript::tick()
