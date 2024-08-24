@@ -27,6 +27,7 @@ public:
 
 public:
     virtual void LevelEnd() override;
+    virtual void LevelRestart() override;
 
 private:
     void Idle();

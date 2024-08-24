@@ -135,9 +135,21 @@ void CLevelFlowMgr::begin()
 
 void CLevelFlowMgr::tick()
 {
+    // 다음 레벨로 이동
     if (KEY_TAP(KEY::N) && KEY_PRESSED(KEY::LCTRL))
     {
         LevelEnd();
+    }
+
+    // 레벨 재 시작
+    if (KEY_TAP(KEY::R) && KEY_PRESSED(KEY::LCTRL))
+    {
+        LevelRestart();
+    }
+
+    // 로비 레벨로 이동
+    if (KEY_TAP(KEY::P) && KEY_PRESSED(KEY::LCTRL))
+    {
     }
 
     // 스타트 레벨 UI 시작!
@@ -344,7 +356,7 @@ void CLevelFlowMgr::LevelEnd()
     else if (m_CurLevelPath == L"Level1-1-2.tLevel")
         SetFadeEffect(Vec3(164.f, 44.f, 174.f), false, 1.f, 1.25f, false);
 
-    if (!m_pClearUI)
+    if (m_pClearUI)
         TrunOffStageClearUI();
 
     // HP UI Turn Off
@@ -378,8 +390,7 @@ void CLevelFlowMgr::LevelExit()
                 GamePlayStatic::DeleteAsset(ASSET_TYPE::PREFAB, CurKirbyPref.Get());
             }
 
-            
-            //CAssetMgr::GetInst()->ReplacePrefab(MainPlayerPref, L"prefab\\Main Player.pref");
+            // CAssetMgr::GetInst()->ReplacePrefab(MainPlayerPref, L"prefab\\Main Player.pref");
         }
     }
 
@@ -394,19 +405,14 @@ void CLevelFlowMgr::LevelRestart()
         return;
 
     // UI (Fade Out)
-    SetFadeEffect(Vec3(255.f, 0.f, 255.f), false, 1.f, 1.25f, false);
-
     TurnOffPlayerHP();
+    TurnOffBossHP();
+
+    SetFadeEffect(Vec3(255.f, 0.f, 255.f), false, 1.f, 1.25f, false);
 
     m_bIsChangedLevel = true;
     m_bFadeEffect = true;
     m_FadeEffectAcc = 0.f;
-
-    // Fade In UI 초기화
-    m_bEnterLevel = true;
-    m_bLoadingUIWait = false;
-    m_fFadeInAccTime = 0.f;
-    m_fFadeInWaitTime = 0.7f;
 
     // 현재 레벨을 다시 시작하기 위해 NextLevelPath 를 현재레벨의 Path로 바꿔준다.
     m_NextLevelPath = ToString(m_CurLevelPath);
@@ -641,6 +647,7 @@ void CLevelFlowMgr::LevelLoading()
 
 void CLevelFlowMgr::SetUIDOFEffect()
 {
+    CRenderMgr::GetInst()->SetEnableDOF(false);
     static Ptr<CMaterial> pDOFMtrl = CAssetMgr::GetInst()->Load<CMaterial>(L"DOFMtrl");
 
     pDOFMtrl->SetScalarParam(VEC2_0, Vec2(-0.5f, -0.5f));

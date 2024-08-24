@@ -151,6 +151,12 @@ void CFlowMgr_Lv0::LevelExit()
     SetToneMappingParam(false);                     // Bloom Off
 }
 
+void CFlowMgr_Lv0::LevelRestart()
+{
+    CLevelFlowMgr::LevelRestart();
+    SetFadeEffectColor(Vec3(115.f, 156.f, 28.f));
+}
+
 UINT CFlowMgr_Lv0::SaveToLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;

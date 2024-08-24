@@ -49,6 +49,19 @@ void CFlowMgr_Lv1::LevelEnd()
     }
 }
 
+void CFlowMgr_Lv1::LevelRestart()
+{
+    CLevelFlowMgr::LevelRestart();
+    if (L"Level1-1-2.tLevel" == GetCurrentLevel())
+    {
+        SetFadeEffectColor(Vec3(115.f, 156.f, 28.f));
+    }
+    else
+    {
+        SetFadeEffectColor(Vec3(115.f, 156.f, 28.f));
+    }
+}
+
 UINT CFlowMgr_Lv1::SaveToLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;

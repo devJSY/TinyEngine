@@ -52,6 +52,12 @@ void CFlowMgr_Lv2::LevelEnd()
     SetFadeEffectColor(Vec3(164.f, 44.f, 174.f));
 }
 
+void CFlowMgr_Lv2::LevelRestart()
+{
+    CLevelFlowMgr::LevelRestart();
+    SetFadeEffectColor(Vec3(164.f, 44.f, 174.f));
+}
+
 UINT CFlowMgr_Lv2::SaveToLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;

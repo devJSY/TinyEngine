@@ -33,6 +33,12 @@ void CFlowMgr_Lv3::LevelEnd()
     SetFadeEffectColor(Vec3(164.f, 44.f, 174.f));
 }
 
+void CFlowMgr_Lv3::LevelRestart()
+{
+    CLevelFlowMgr::LevelRestart();
+    SetFadeEffectColor(Vec3(164.f, 44.f, 174.f));
+}
+
 void CFlowMgr_Lv3::tick()
 {
     CLevelFlowMgr::tick();

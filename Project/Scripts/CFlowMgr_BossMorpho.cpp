@@ -114,6 +114,12 @@ void CFlowMgr_BossMorpho::LevelEnd()
     SetFadeEffectColor(Vec3(164.f, 44.f, 174.f));
 }
 
+void CFlowMgr_BossMorpho::LevelRestart()
+{
+    CLevelFlowMgr::LevelRestart();
+    SetFadeEffectColor(Vec3(255.f, 150.f, 100.f));
+}
+
 void CFlowMgr_BossMorpho::ChangeFlowDeath()
 {
     TurnOffPlayerHP();

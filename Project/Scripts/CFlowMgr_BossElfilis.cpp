@@ -127,6 +127,12 @@ void CFlowMgr_BossElfilis::LevelEnd()
     SetFadeEffectColor(Vec3(252.f, 75.f, 129.f));
 }
 
+void CFlowMgr_BossElfilis::LevelRestart()
+{
+    CLevelFlowMgr::LevelRestart();
+    SetFadeEffectColor(Vec3(180.f, 140.f, 200.f));
+}
+
 void CFlowMgr_BossElfilis::SpawnElfilis()
 {
     PLAYERCTRL->LockInput();

@@ -93,6 +93,12 @@ void CFlowMgr_Lv4::LevelEnd()
     SetFadeEffectColor(Vec3(180.f, 140.f, 200.f));
 }
 
+void CFlowMgr_Lv4::LevelRestart()
+{
+    CLevelFlowMgr::LevelRestart();
+    SetFadeEffectColor(Vec3(164.f, 44.f, 174.f));
+}
+
 void CFlowMgr_Lv4::Idle()
 {
 }

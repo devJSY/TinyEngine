@@ -13,6 +13,7 @@ public:
 
 public:
     virtual void LevelEnd() override;
+    virtual void LevelRestart() override;
 
 public:
     CLONE(CFlowMgr_Lv3);

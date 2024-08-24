@@ -51,6 +51,7 @@ public:
 public:
     virtual void LevelStart() override;
     virtual void LevelEnd() override;
+    virtual void LevelRestart() override;
 
 private:
     void EnterZoomState();

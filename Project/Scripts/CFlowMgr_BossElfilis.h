@@ -17,6 +17,7 @@ public:
     void ChangeFlowDeath();
 
     virtual void LevelEnd() override;
+    virtual void LevelRestart() override;
 
 private:
     void SpawnElfilis();
