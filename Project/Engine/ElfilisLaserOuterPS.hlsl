@@ -36,7 +36,7 @@ float4 main(PS_IN _in) : SV_Target0
     {
         float2 MoveUV = _in.vUV0 * 1.f + g_EngineTime * 9.f;
         float Black = BlackNosieTex.Sample(g_LinearWrapSampler, MoveUV).r;
-        Black = pow(Black, 0.1f);
+        Black = pow(abs(Black), 0.1f);
         
         if (Black > 0.9f)
         {

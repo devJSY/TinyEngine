@@ -2,6 +2,7 @@
 #include "global.hlsli"
 #include "UnrealPBRCommon.hlsli"
 #include "func.hlsli"
+#include "Light.hlsli"
 
 /*********************
 |   Tex0 : SkinBase
@@ -26,6 +27,20 @@
 #define MtrlEmission g_vEmission
 
 #define sparklyEffect g_float_0
+
+#define RimColor g_vec4_0
+#define RimPower g_float_1
+
+#define RimInverse g_int_0
+
+float3 RimLightInverse(float3 NormalWorld, float3 toEye, float3 rimColor, float rimPower)
+{
+    float rim = dot(NormalWorld, toEye); // Fresnel's formulas
+    rim = saturate(smoothstep(0.0, 1.0, rim)); // saturate() 0 ~ 1 Climp 
+    rim = pow(abs(rim), rimPower);
+    float3 strength = float3(1, 1, 1); // strength option
+    return rim * rimColor * strength;
+}
 
 struct PS_OUT
 {
@@ -66,7 +81,7 @@ PS_OUT main(PS_IN input)
     output.vPosition = float4(input.vPosWorld, 1.f);
     output.vTangent = float4(input.vTangentWorld, 1.f);
     output.vBitangent = float4(normalize(cross(input.vNormalWorld.xyz, input.vTangentWorld.xyz)), 1.f);
-    output.vEmissive = float4(emission, 1.f);
+    output.vEmissive = MtrlEmission + g_int_0 ? float4(RimLightInverse(output.vNormal.xyz, g_eyeWorld, RimColor.rgb, RimPower), 0.f) : float4(RimLight(output.vNormal.xyz, g_eyeWorld, RimColor.rgb, RimPower), 0.f);
     output.vMRA = float4(metallic, roughness, ao, 1.f);
    
     return output;

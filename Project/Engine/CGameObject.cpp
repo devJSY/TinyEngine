@@ -343,9 +343,6 @@ bool CGameObject::IsActive() const
 
 void CGameObject::SetActive(bool _bActive)
 {
-    if (m_bActive == _bActive)
-        return;
-
     tTask task = {};
     task.Type = TASK_TYPE::ACTIVE_OBJECT;
     task.Param_1 = (DWORD_PTR)this;

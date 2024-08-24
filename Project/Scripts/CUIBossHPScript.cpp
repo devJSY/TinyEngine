@@ -92,8 +92,8 @@ void CUIBossHPScript::tick()
 
 void CUIBossHPScript::ChangeState(HPState _state)
 {
-    EnterState();
     m_eState = _state;
+    EnterState();
 }
 
 void CUIBossHPScript::EnterState()
@@ -124,6 +124,7 @@ void CUIBossHPScript::EnterState()
         m_pRenderer->GetMaterial(0)->SetScalarParam(FLOAT_1, m_fPrevHP / m_fMaxHP);
         m_pRenderer->GetMaterial(0)->SetScalarParam(VEC4_0, m_vBasicColor);
         m_pRenderer->GetMaterial(0)->SetScalarParam(VEC4_1, m_vDecreaseColor);
+        m_pRenderer->GetMaterial(0)->SetScalarParam(VEC4_3, Vec4(1.f, 1.f, 1.f, 1.f));
 
         m_pNameObj = GetOwner()->GetChildObject(L"UI_BossName1");
         m_pNameObj2 = GetOwner()->GetChildObject(L"UI_BossName2");
@@ -182,12 +183,24 @@ void CUIBossHPScript::HPTick()
         {
             m_vDamageTask.push_back({m_fCurHP, fCheckHP});
             m_bDamaged = true;
+
+            if (m_bHpHealed)
+            {
+                m_bHpHealed = false;
+                m_fCurPrevHP = m_fPrevHP = m_fCurHP;
+            }
         }
         // 체력을 회복함
-        else
+        else if (fCheckHP - m_fCurHP < 0.f)
         {
             m_vHealTask.push_back({m_fCurHP, fCheckHP});
             m_bHpHealed = true;
+
+            if (m_bDamaged)
+            {
+                m_bDamaged = false;
+                m_fCurPrevHP = m_fPrevHP = m_fCurHP;
+            }
         }
     }
 

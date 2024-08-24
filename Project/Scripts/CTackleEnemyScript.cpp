@@ -47,9 +47,11 @@ void CTackleEnemyScript::begin()
 {
     CMonsterUnitScript::begin();
 
+    GetOwner()->MeshRender()->GetDynamicMaterial(0);
+
     ChangeState(TackleEnemyState::Idle);
 
-    SetInfo(UnitInfo{14.f, 14.f, 70.f, 7.f, 1.f, 5.f});
+    SetInfo(UnitInfo{67.f, 67.f, 70.f, 7.f, 1.f, 5.f});
     m_fMaxSpeed = m_fSpeed = 16.f;
     m_fRushLerp = 0.8f;
     m_fRushSpeedLerp = 0.2f;
@@ -62,9 +64,9 @@ void CTackleEnemyScript::tick()
 {
     CMonsterUnitScript::tick();
 
-    CheckDamage();
-
     FSM();
+
+    CheckDamage();
 
     if (TackleEnemyState::Eaten != m_eState && GetResistState())
     {
@@ -121,7 +123,12 @@ void CTackleEnemyScript::OnTriggerEnter(CCollider* _OtherCollider)
 
     Vec3 vDir = PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos();
     UnitHit hitInfo = {DAMAGE_TYPE::NORMAL, vDir.Normalize(), GetCurInfo().ATK, 0.f, 0.f};
-    L"Body Collider" == pObj->GetName() ? pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo) : void();
+    UINT Layer = _OtherCollider->GetOwner()->GetLayerIdx();
+
+    if (Layer == LAYER_PLAYER_TRIGGER && L"Body Collider" == pObj->GetName())
+    {
+        pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo);
+    }
 }
 
 /////////////////////////// FUNC //////////////////////////////////
@@ -138,6 +145,10 @@ void CTackleEnemyScript::EnterState(TackleEnemyState _state)
     switch (_state)
     {
     case TackleEnemyState::Idle: {
+        GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
+            TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\TackleEnemy\\TackleEnemyEye.00.png",
+                                                        L"fbx\\Characters\\Monster\\TackleEnemy\\TackleEnemyEye.00.png"));
+
         Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
         Animator()->Play(ANIMPREFIX("Wait"), true, false, 1.5f);
     }
@@ -147,6 +158,10 @@ void CTackleEnemyScript::EnterState(TackleEnemyState _state)
     }
     break;
     case TackleEnemyState::AttackPrev: {
+        GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
+            TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\TackleEnemy\\TackleEnemyEye.01.png",
+                                                        L"fbx\\Characters\\Monster\\TackleEnemy\\TackleEnemyEye.01.png"));
+
         Animator()->Play(ANIMPREFIX("RunStart"), false, false, 1.5f);
     }
     break;
@@ -166,19 +181,35 @@ void CTackleEnemyScript::EnterState(TackleEnemyState _state)
     }
     break;
     case TackleEnemyState::Fall: {
+        GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
+            TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\TackleEnemy\\TackleEnemyEye.02.png",
+                                                        L"fbx\\Characters\\Monster\\TackleEnemy\\TackleEnemyEye.02.png"));
+
         Animator()->Play(ANIMPREFIX("Fall"));
     }
     break;
     case TackleEnemyState::Landing: {
+
+        GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
+            TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\TackleEnemy\\TackleEnemyEye.00.png",
+                                                        L"fbx\\Characters\\Monster\\TackleEnemy\\TackleEnemyEye.00.png"));
         Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
         Animator()->Play(ANIMPREFIX("Landing"), false);
     }
     break;
     case TackleEnemyState::Wait: {
+
+        GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
+            TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\TackleEnemy\\TackleEnemyEye.00.png",
+                                                        L"fbx\\Characters\\Monster\\TackleEnemy\\TackleEnemyEye.00.png"));
         Animator()->Play(ANIMPREFIX("Wait"), true, false, 1.5f);
     }
     break;
     case TackleEnemyState::Damage: {
+
+        GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
+            TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\TackleEnemy\\TackleEnemyEye.02.png",
+                                                        L"fbx\\Characters\\Monster\\TackleEnemy\\TackleEnemyEye.02.png"));
         Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, false);
 
         SetSparkle(true);
@@ -188,13 +219,31 @@ void CTackleEnemyScript::EnterState(TackleEnemyState _state)
         Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
 
         Vec3 vHitDir = GetOwner()->GetScript<CUnitScript>()->GetHitDir();
-        vHitDir.y = 1.5f;
+        float fForceX = 0.f;
+        float fForceY = 0.f;
+        if (GetCurInfo().HP <= 0.1f)
+        {
+            fForceX = 110.f;
+            fForceY = 500.f;
+            vHitDir.y = 1.5f;
+        }
+        else
+        {
+            fForceX = 100.f;
+            fForceY = 200.f;
+            vHitDir.y = 1.f;
+        }
 
-        Rigidbody()->AddForce(vHitDir.Normalize() * 3.f, ForceMode::Impulse);
-        Animator()->Play(ANIMPREFIX("Damage"), false);
+        Rigidbody()->AddForce(vHitDir.Normalize() * Vec2(fForceX, fForceY), ForceMode::Impulse);
+
+        Animator()->Play(ANIMPREFIX("Damage"), false, false, 2.f);
     }
     break;
     case TackleEnemyState::Eaten: {
+
+        GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
+            TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\TackleEnemy\\TackleEnemyEye.02.png",
+                                                        L"fbx\\Characters\\Monster\\TackleEnemy\\TackleEnemyEye.02.png"));
         Animator()->Play(ANIMPREFIX("Damage"));
     }
     break;
@@ -290,7 +339,6 @@ void CTackleEnemyScript::ExitState(TackleEnemyState _state)
     }
     break;
     case TackleEnemyState::Damage: {
-        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
     }
     break;
     case TackleEnemyState::Death:
@@ -404,7 +452,7 @@ void CTackleEnemyScript::Attack()
     m_fSpeed = Lerp(m_fSpeed, 0.f, m_fRushSpeedLerp * DT);
     Rigidbody()->SetVelocity(vDir * m_fSpeed + Vec3(0.f, -9.8f, 0.f));
 
-    if (m_fSpeed <= 3.f)
+    if (m_fSpeed <= 6.f)
     {
         ChangeState(TackleEnemyState::AttackAfter);
     }

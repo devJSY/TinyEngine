@@ -53,10 +53,11 @@ private:
 
     void PatrolMove();
     void CircleMove();
-    void LinearMove();
+    void LinearMove(bool _moveZ);
 
 private:
     void OnTriggerEnter(CCollider* _OtherCollider);
+    void OnTriggerStay(CCollider* _OtherCollider);
     void OnTriggerExit(CCollider* _OtherCollider);
 
 private:
