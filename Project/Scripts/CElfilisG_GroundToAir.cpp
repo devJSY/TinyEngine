@@ -5,7 +5,6 @@
 #include "CCameraController.h"
 
 CElfilisG_GroundToAir::CElfilisG_GroundToAir()
-    : m_PrevDrag(0.f)
 {
 }
 
@@ -38,7 +37,6 @@ void CElfilisG_GroundToAir::Enter_Step()
     {
     case StateStep::Start: {
         GetOwner()->Animator()->Play(ANIMPREFIX("AwayFastReady"), false);
-        m_PrevDrag = GetOwner()->Rigidbody()->GetDrag();
 
         // Camera : ÇÏ´Ã ºä
         CAMERACTRL->SetElfilisSky();
@@ -69,7 +67,6 @@ void CElfilisG_GroundToAir::Exit_Step()
         break;
     case StateStep::Progress: {
         GetOwner()->Rigidbody()->SetVelocity(Vec3());
-        GetOwner()->Rigidbody()->SetDrag(m_PrevDrag);
     }
     break;
     case StateStep::End:
@@ -94,19 +91,14 @@ void CElfilisG_GroundToAir::Progress()
     float CurDist = (NewPos - m_StartPos).Length();
     float Ratio = CurDist / (m_TargetPos - m_StartPos).Length();
 
-    // Ratio = Ratio * 0.98f + 0.01f;
-    // Ratio = clamp(sinf(Ratio * XM_PI) * 1.5f, 0.f, 1.f);
-    // float NewSpeed = 100.f * Ratio;
-    // GetOwner()->Rigidbody()->SetVelocity(m_ForceDir * NewSpeed);
-
-    //// move
+    // move
     float EndRatio = 0.3f;
 
     if (Ratio < EndRatio)
     {
         Ratio = (Ratio / EndRatio) * 0.98f + 0.01f;
         Ratio = clamp(sinf(Ratio * XM_PI / 2.f) * 2.f, 0.f, 1.f);
-        float NewSpeed = 130.f * Ratio;
+        float NewSpeed = 100.f * Ratio;
         GetOwner()->Rigidbody()->SetVelocity(m_ForceDir * NewSpeed);
     }
 
@@ -116,7 +108,7 @@ void CElfilisG_GroundToAir::Progress()
         Ratio = (Ratio - EndRatio) / (1.f - EndRatio);
         Ratio = Ratio * 0.8f + 0.1f;
         Ratio = clamp(cosf(Ratio * XM_PI / 2.f), 0.f, 1.f);
-        float NewSpeed = 130.f * Ratio;
+        float NewSpeed = 100.f * Ratio;
         GetOwner()->Rigidbody()->SetVelocity(m_ForceDir * NewSpeed);
     }
 
