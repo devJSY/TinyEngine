@@ -54,7 +54,7 @@ void CKirbyBodyCollider::OnTriggerEnter(CCollider* _OtherCollider)
         // 경직 효과가 있는 스테이트
         if (PLAYERFSM->GetCurState()->GetName() == L"BURNING" || PLAYERFSM->GetCurState()->GetName() == L"BURNING_START")
         {
-            CTimeMgr::GetInst()->SetTimeScale(0.05f, 0.f);
+            CTimeMgr::GetInst()->SetTimeScale(0.1f, 0.f);
         }
 
         Vec3 HitDir = (_OtherCollider->Transform()->GetWorldPos() - Transform()->GetWorldPos()).Normalize();
