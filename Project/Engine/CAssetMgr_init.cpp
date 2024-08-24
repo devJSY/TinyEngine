@@ -566,6 +566,30 @@ void CAssetMgr::CreateDefaultGraphicsShader()
     }
 
     // =================================
+    // ParticleRender Distortion
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\particle_render.fx", "VS_ParticleRender");
+        pShader->CreateGeometryShader(L"shader\\particle_render.fx", "GS_ParticleRender");
+        pShader->CreatePixelShader(L"shader\\particle_render.fx", "PS_ParticleRender_Distortion");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::NO_WRITE); // 깊이 테스트는 진행, 깊이는 기록 X
+        pShader->SetBSType(BS_TYPE::DEFAULT);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
+
+        pShader->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+
+        pShader->AddTexParam(TEX_0, "Noise Texture");
+
+        pShader->SetName(L"ParticleRenderDistortionShader");
+        AddAsset(L"ParticleRenderDistortionShader", pShader);
+    }
+
+    // =================================
     // GrayFilter Shader
     // =================================
     {
