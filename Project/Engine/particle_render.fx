@@ -348,4 +348,48 @@ float4 PS_ParticleRender_Fire(GS_Output _in) : SV_Target
     return vOutColor;
 }
 
+float4 PS_ParticleRender_Distortion(GS_Output _in) : SV_Target
+{
+    tParticle particle = g_ParticleBuffer[_in.iInstID];
+    tParticleModule module = g_ParticleModule[0];
+    
+    float4 vColor = (float4) 0.f;
+    vColor.a = 1.f;
+        
+    // 픽셀쉐이더에 SV_Position 으로 입력된 값은 픽셀 쉐이더를 호출한 해당 픽셀의 좌표가 들어있다.
+    float2 vScreenUV = _in.vPosition.xy / g_RenderResolution;
+    
+    //vScreenUV.y += cos((vScreenUV.x + (g_time * (속도) )) * (주파수)) * (진폭);
+    //vScreenUV.y += cos((vScreenUV.x + (g_time *  0.1f))   *   40.f)  *  0.1f;
+    
+    if (g_btex_0)
+    {
+        float2 vUV = _in.vUV;
+        vUV.x += g_Time * 0.1f;
+        
+        float2 vNoise = g_tex_0.Sample(g_LinearWrapSampler, vUV).rg;
+        vNoise = (vNoise.xy - 0.5f) * 0.1f;
+        
+        vScreenUV += vNoise;
+    }
+        
+    vColor = g_postprocess_Tex.Sample(g_LinearClampSampler, vScreenUV);
+    
+    // 렌더모듈이 켜져 있으면
+    if (module.arrModuleCheck[RENDER_MODULE])
+    {
+        if (1 == module.AlphaBasedLife) // Normalize Age
+        {
+            vColor.a *= saturate(1.f - clamp(particle.NormalizeAge, 0.f, 1.f));
+        }
+        else if (2 == module.AlphaBasedLife) // Max Age
+        {
+            float fRatio = particle.Age / module.AlphaMaxAge;
+            vColor.a *= saturate(1.f - clamp(fRatio, 0.f, 1.f));
+        }
+    }
+    
+    return vColor;
+}
+
 #endif
