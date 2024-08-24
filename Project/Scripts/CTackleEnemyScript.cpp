@@ -51,7 +51,7 @@ void CTackleEnemyScript::begin()
 
     ChangeState(TackleEnemyState::Idle);
 
-    SetInfo(UnitInfo{67.f, 67.f, 70.f, 7.f, 1.f, 5.f});
+    SetInfo(UnitInfo{67.f, 67.f, 70.f, 8.f, 1.f, 5.f});
     m_fMaxSpeed = m_fSpeed = 16.f;
     m_fRushLerp = 0.8f;
     m_fRushSpeedLerp = 0.2f;
