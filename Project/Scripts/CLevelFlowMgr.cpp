@@ -148,8 +148,9 @@ void CLevelFlowMgr::tick()
     }
 
     // 로비 레벨로 이동
-    if (KEY_TAP(KEY::P) && KEY_PRESSED(KEY::LCTRL))
+    if (KEY_TAP(KEY::M) && KEY_PRESSED(KEY::LCTRL))
     {
+        RobbyLevel();
     }
 
     // 스타트 레벨 UI 시작!
@@ -420,6 +421,28 @@ void CLevelFlowMgr::LevelRestart()
     // @TODO BGM 종료
 }
 
+void CLevelFlowMgr::RobbyLevel()
+{
+    // 이미 레벨 전환중일 경우 처리하지 않는다.
+    if (m_bIsChangedLevel == true)
+        return;
+
+    // UI (Fade Out)s
+    TurnOffPlayerHP();
+    TurnOffBossHP();
+
+    SetFadeEffect(Vec3(252.f, 75.f, 129.f), false, 1.f, 1.25f, false);
+
+    m_bIsChangedLevel = true;
+    m_bFadeEffect = true;
+    m_FadeEffectAcc = 0.f;
+
+    // 현재 레벨을 다시 시작하기 위해 NextLevelPath 를 현재레벨의 Path로 바꿔준다.
+    m_NextLevelPath = "Robby Level.tLevel";
+
+    // @TODO BGM 종료s
+}
+
 void CLevelFlowMgr::MtrlParamUpdate()
 {
     // DOF Focus Player 위치 설정
@@ -465,6 +488,7 @@ void CLevelFlowMgr::TurnOnBossHP()
         if (nullptr != pScript)
         {
             pScript->GetOwner()->SetActive(true);
+            pScript->ChangeState(HPState::Enter);
         }
     }
 }

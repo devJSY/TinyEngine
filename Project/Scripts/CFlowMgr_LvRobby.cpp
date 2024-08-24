@@ -193,7 +193,7 @@ void CFlowMgr_LvRobby::LevelEnd()
     }
     else if (3 == m_iCurStage)
     {
-        SetFadeEffect(Vec3(87.f, 0.f, 150.f), false, 1.f, 1.25f, true);
+        SetFadeEffect(Vec3(255.f, 150.f, 100.f), false, 1.f, 1.25f, true);
     }
     else
     {
@@ -205,6 +205,11 @@ void CFlowMgr_LvRobby::LevelRestart()
 {
     CLevelFlowMgr::LevelRestart();
     SetFadeEffectColor(Vec3(252.f, 75.f, 129.f));
+}
+
+void CFlowMgr_LvRobby::RobbyLevel()
+{
+    return;
 }
 
 void CFlowMgr_LvRobby::EnterZoomState()

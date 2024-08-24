@@ -275,7 +275,7 @@ void CHotHeadScript::EnterState(HotHeadState _state)
         }
         else
         {
-            fForce = 14.f;
+            fForce = 9.f;
             vHitDir.y = 1.2f;
             fDamageTime = 2.f;
         }
@@ -507,7 +507,7 @@ void CHotHeadScript::Aiming()
 
     float fDot = vFront.Dot(vTargetDir.Normalize());
 
-    if (fDot >= 0.999f)
+    if (fDot >= cosf(0) - 0.02f)
     {
         float fDistance = (PLAYER->GetComponent<CTransform>()->GetLocalPos() - Transform()->GetLocalPos()).Length();
         HotHeadState state = {};

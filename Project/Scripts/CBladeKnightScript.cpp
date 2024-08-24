@@ -44,6 +44,8 @@ void CBladeKnightScript::begin()
 
     SetSword();
 
+    m_StepPower = 5.f;
+
     ChangeState(m_State);
 }
 

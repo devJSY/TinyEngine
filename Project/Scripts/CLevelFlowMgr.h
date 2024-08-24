@@ -89,6 +89,7 @@ public:
     virtual void LevelStart();
     virtual void LevelEnd();
     virtual void LevelRestart();
+    virtual void RobbyLevel();
 
 protected:
     virtual void LevelExit();

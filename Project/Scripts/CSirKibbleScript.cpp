@@ -611,7 +611,7 @@ void CSirKibbleScript::CutterThrowStartWait()
     }
     else
     {
-        if (vDot >= cosf(0.f) - 0.001f)
+        if (vDot >= cosf(0.f) - 0.02f)
         {
             ChangeState(SirKibbleState::CutterThrow);
         }
