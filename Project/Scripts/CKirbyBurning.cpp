@@ -33,20 +33,6 @@ void CKirbyBurning::tick()
     {
         if (KEY_RELEASED(KEY_ATK))
         {
-            // MeshData 돌려주기
-            PLAYER->MeshRender()->SetMeshData(CAssetMgr::GetInst()->Load<CMeshData>(L"meshdata\\Kirby.mdat", L"meshdata\\Kirby.mdat"));
-
-            PLAYER->MeshRender()->SetMaterial(nullptr, 0);
-            PLAYER->MeshRender()->SetMaterial(nullptr, 2);
-            PLAYER->MeshRender()->SetMaterial(nullptr, 4);
-            PLAYER->MeshRender()->SetMaterial(nullptr, 6);
-            PLAYER->MeshRender()->SetMaterial(nullptr, 7);
-            PLAYER->MeshRender()->SetMaterial(nullptr, 8);
-
-            // 모자 다시 보이게하기
-            Ptr<CMaterial> HatMat =
-                CAssetMgr::GetInst()->Load<CMaterial>(L"material\\KiryDragonHat_DragonFireC.mtrl", L"material\\KiryDragonHat_DragonFireC.mtrl");
-            PLAYERFSM->GetCurHat()->MeshRender()->SetMaterial(HatMat, 0);
             ChangeState(L"JUMP_FALL");
         }
         else
@@ -58,6 +44,14 @@ void CKirbyBurning::tick()
 
 void CKirbyBurning::Enter()
 {
+    CGameObject* Wing = PLAYER->GetChildObject(L"KirbyDragon");
+
+    if (Wing != nullptr)
+    {
+        Wing->SetActive(true);
+    }
+
+    Wing->Animator()->Play(ANIMPREFIX("Burning"), false, false, 1.5f);
     m_Acc = 0.f;
 
     // 애니메이션 재생
@@ -78,6 +72,13 @@ void CKirbyBurning::Enter()
 
 void CKirbyBurning::Exit()
 {
+    CGameObject* Wing = PLAYER->GetChildObject(L"KirbyDragon");
+
+    if (Wing != nullptr)
+    {
+        Wing->SetActive(false);
+    }
+
     // Movement
     PLAYERCTRL->UnlockJump();
     PLAYERCTRL->SetForwardMode(false);

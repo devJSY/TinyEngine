@@ -15,7 +15,7 @@ CKirbyBurningPre::~CKirbyBurningPre()
 
 void CKirbyBurningPre::tick()
 {
-    if (PLAYER->Animator()->IsFinish())
+    if (PLAYER->GetChildObject(L"KirbyDragon")->Animator()->IsFinish())
     {
         ChangeState(L"BURNING_START");
     }
@@ -23,22 +23,19 @@ void CKirbyBurningPre::tick()
 
 void CKirbyBurningPre::Enter()
 {
-    // Mesh Data 바꿔주기
-    PLAYER->MeshRender()->SetMeshData(CAssetMgr::GetInst()->Load<CMeshData>(L"meshdata\\KiryDragon.mdat", L"meshdata\\KiryDragon.mdat"));
+    CGameObject* Wing = PLAYER->GetChildObject(L"KirbyDragon"); 
 
-    // Kirby 표정 바꿔주기
-    Ptr<CMaterial> KirbyBody = CAssetMgr::GetInst()->Load<CMaterial>(L"material\\KiryDragon_BurningBodyC.mtrl", L"material\\KiryDragon_BurningBodyC.mtrl");
+    if (Wing != nullptr)
+    {
+        Wing->SetActive(true);
+    }
 
-    wstring filepath = L"fbx\\Characters\\Kirby\\Base\\";
-    wstring albedo = filepath + L"KirbyEye.0" + to_wstring((UINT)FaceType::UpTail) + L".png";
-    wstring mask = filepath + L"KirbyEyeMask.0" + to_wstring((UINT)FaceType::UpTail) + L".png";
-    wstring normal = filepath + L"KirbyEyeNormal.0" + to_wstring((UINT)FaceType::UpTail) + L".png";
-    KirbyBody->SetTexParam(TEX_0, CAssetMgr::GetInst()->Load<CTexture>(albedo, albedo));
-    KirbyBody->SetTexParam(TEX_1, CAssetMgr::GetInst()->Load<CTexture>(mask, mask));
-    KirbyBody->SetTexParam(TEX_2, CAssetMgr::GetInst()->Load<CTexture>(normal, normal));
+    Wing->Animator()->Play(ANIMPREFIX("BurningPre"), false, false, 1.5f);
+
+    CPlayerMgr::SetPlayerFace(FaceType::UpTail);
 
     // 애니메이션 재생
-    PLAYER->Animator()->Play(ANIMPREFIX("BurningStart"), false, false, 1.5f);
+    PLAYER->Animator()->Play(ANIMPREFIX("BurningPre"), false, false, 1.5f);
     
     // Movement
     Vec3 Input = PLAYERCTRL->GetMoveDir();
@@ -55,8 +52,6 @@ void CKirbyBurningPre::Enter()
     m_SaveGravity = PLAYERCTRL->GetGravity();
     PLAYERCTRL->SetGravity(0.f);
 
-    // 모자 안보이게 하기
-    PLAYERFSM->GetCurHat()->MeshRender()->SetMaterial(nullptr,0);
 
     //  무적 상태
     PLAYERFSM->SetInvincible(true);
@@ -64,6 +59,13 @@ void CKirbyBurningPre::Enter()
 
 void CKirbyBurningPre::Exit()
 {
+    CGameObject* Wing = PLAYER->GetChildObject(L"KirbyDragon");
+
+    if (Wing != nullptr)
+    {
+        Wing->SetActive(false);
+    }
+
     PLAYERCTRL->UnlockMove();
     PLAYERCTRL->UnlockDirection();
     PLAYERCTRL->UnlockJump();

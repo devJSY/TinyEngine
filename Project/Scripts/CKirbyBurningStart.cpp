@@ -26,7 +26,7 @@ void CKirbyBurningStart::tick()
     }
 
 
-    if (PLAYER->Animator()->IsFinish())
+    if (PLAYER->GetChildObject(L"KirbyDragon")->Animator()->IsFinish())
     {
         ChangeState(L"BURNING");
     }
@@ -34,6 +34,15 @@ void CKirbyBurningStart::tick()
 
 void CKirbyBurningStart::Enter()
 {
+    CGameObject* Wing = PLAYER->GetChildObject(L"KirbyDragon");
+
+    if (Wing != nullptr)
+    {
+        Wing->SetActive(true);
+    }
+
+    Wing->Animator()->Play(ANIMPREFIX("BurningStart"), false, false, 1.5f);
+
     // 애니메이션 재생
     PLAYER->Animator()->Play(ANIMPREFIX("BurningStart"), false, false, 1.5f);
 
@@ -57,6 +66,13 @@ void CKirbyBurningStart::Enter()
 
 void CKirbyBurningStart::Exit()
 {
+    CGameObject* Wing = PLAYER->GetChildObject(L"KirbyDragon");
+
+    if (Wing != nullptr)
+    {
+        Wing->SetActive(false);
+    }
+
     PLAYERCTRL->UnlockJump();
     PLAYERCTRL->SetForwardMode(false);
     PLAYERCTRL->SetRotSpeed(m_SaveRotSpeed);

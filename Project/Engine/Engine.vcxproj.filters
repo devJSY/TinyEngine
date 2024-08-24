@@ -1542,5 +1542,8 @@
     <FxCompile Include="RimOnlyPS.hlsl">
       <Filter>ShaderCode\Kirby\Common</Filter>
     </FxCompile>
+    <FxCompile Include="KirbyDragonWingPS.hlsl">
+      <Filter>ShaderCode\Kirby\Characters\Kirby</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

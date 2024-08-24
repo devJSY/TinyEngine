@@ -333,6 +333,15 @@ void CKirbyFSM::begin()
         }
     }
 
+    CGameObject* Wing = GetOwner()->GetChildObject(L"KirbyDragon");
+    if (Wing)
+    {
+        GamePlayStatic::AddChildObject(GetOwner(), Wing, L"Wing");
+    }
+
+
+
+
     // begin시에 ObjectCopy상태는 항상 None으로 바꿔준다.
     PLAYER->MeshRender()->SetMeshData(CPlayerMgr::GetPlayerMeshData());
     CPlayerMgr::ClearBodyMtrl();
