@@ -25,10 +25,15 @@ void CKirbyChangeAbilityWait::Enter()
 
     // 애니메이션 재생
     PLAYER->Animator()->Play(ANIMPREFIX("EvolutionCopyWait"), true, false, 1.5f);
-
+    CPlayerMgr::ClearMouthMtrl();
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthSmileOpen));
+    CPlayerMgr::SetPlayerFace(FaceType::Frown);
 }
 
 void CKirbyChangeAbilityWait::Exit()
 {
+    CPlayerMgr::ClearMouthMtrl();
+    CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));
+    CPlayerMgr::SetPlayerFace(FaceType::Normal);
     PLAYERFSM->SetInvincible(false);
 }
