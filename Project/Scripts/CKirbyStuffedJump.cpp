@@ -21,10 +21,10 @@ void CKirbyStuffedJump::tick()
     {
         ChangeState(L"ATTACK");
     }
-    else if (PLAYERCTRL->IsGround())
+    /*else if (PLAYERCTRL->IsGround())
     {
         ChangeState(L"STUFFED_LANDING");
-    }
+    }*/
     else if (m_JumpAccTime > m_MaxJumpTime)
     {
         if (KEY_RELEASED(KEY_JUMP) || KEY_NONE(KEY_JUMP))
