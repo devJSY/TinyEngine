@@ -35,7 +35,7 @@ void CKirbyBurningPre::Enter()
     CPlayerMgr::SetPlayerFace(FaceType::UpTail);
 
     // 애니메이션 재생
-    PLAYER->Animator()->Play(ANIMPREFIX("BurningPre"), false, false, 1.5f);
+    PLAYER->Animator()->Play(ANIMPREFIX("BurningStart"), false, false, 1.f);
     
     // Movement
     Vec3 Input = PLAYERCTRL->GetMoveDir();

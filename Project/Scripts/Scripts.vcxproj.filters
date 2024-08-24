@@ -946,6 +946,9 @@
     <ClInclude Include="CKirbyFireBullet.h">
       <Filter>Scripts\Projectile</Filter>
     </ClInclude>
+    <ClInclude Include="CKirbyBurningWallEnd.h">
+      <Filter>State\KirbyState\Burning\BurningWallEnd</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1901,6 +1904,9 @@
     </ClCompile>
     <ClCompile Include="CKirbyFireBullet.cpp">
       <Filter>Scripts\Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyBurningWallEnd.cpp">
+      <Filter>State\KirbyState\Burning\BurningWallEnd</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -3001,6 +3007,9 @@
     </Filter>
     <Filter Include="Scripts\Gimmik\BossDropStar">
       <UniqueIdentifier>{b4e00075-1777-4b85-a3a2-76c54ae2eabf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Burning\BurningWallEnd">
+      <UniqueIdentifier>{9748a399-b31b-44df-98d5-9da3dfcf244f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

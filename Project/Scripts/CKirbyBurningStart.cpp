@@ -30,6 +30,33 @@ void CKirbyBurningStart::tick()
     {
         ChangeState(L"BURNING");
     }
+
+    Vec3 Raystart = GetOwner()->Transform()->GetWorldPos();
+    Raystart.y += 20.f;
+
+    Vec3 RayDir = GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+
+    float RayLength = GetOwner()->CharacterController()->GetRadius() * 20.f + 5.f;
+
+    static vector<wstring> FireWallCollision{L"World Static"};
+    RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(Raystart, RayDir, RayLength, FireWallCollision);
+
+    if (Hit.pCollisionObj != nullptr)
+    {
+        Vec3 Normal = Hit.Normal;
+        Normal.y = 0.f;
+
+        if (Normal.Length() == 0.f)
+            return;
+
+        Normal.Normalize();
+
+        // 벽과 날아가는 각도가 45도 이하일 경우 WallEnd상태로 이동
+        if (Normal.Dot(-RayDir) >= cosf(XM_PI / 4.f))
+        {
+            ChangeState(L"BURNING_WALL_END");
+        }
+    }
 }
 
 void CKirbyBurningStart::Enter()
@@ -44,7 +71,7 @@ void CKirbyBurningStart::Enter()
     Wing->Animator()->Play(ANIMPREFIX("BurningStart"), false, false, 1.5f);
 
     // 애니메이션 재생
-    PLAYER->Animator()->Play(ANIMPREFIX("BurningStart"), false, false, 1.5f);
+    PLAYER->Animator()->Play(ANIMPREFIX("Burning"), true, false, 1.5f);
 
     // 글라이딩 시간 초기화
     PLAYERFSM->ClearGlidingTime();

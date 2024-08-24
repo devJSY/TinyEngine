@@ -255,6 +255,7 @@ CKirbyFSM::~CKirbyFSM()
 #include "CKirbyBurningStart.h"
 #include "CKirbyBurning.h"
 #include "CKirbyBurningEnd.h"
+#include "CKirbyBurningWallEnd.h"
 #include "CKirbyFinalCutterRise.h"
 #include "CKirbyFinalCutterDrop.h"
 #include "CKirbyFinalCutterEnd.h"
@@ -470,6 +471,7 @@ void CKirbyFSM::begin()
     AddState(L"BURNING_START", new CKirbyBurningStart);
     AddState(L"BURNING", new CKirbyBurning);
     AddState(L"BURNING_END", new CKirbyBurningEnd);
+    AddState(L"BURNING_WALL_END", new CKirbyBurningWallEnd);
 
     // Cutter
     AddState(L"FINALCUTTERRISE", new CKirbyFinalCutterRise);

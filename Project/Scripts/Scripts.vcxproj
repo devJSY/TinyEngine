@@ -206,6 +206,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CFlowTriggerScript.h" />
     <ClInclude Include="CFollowPlayerScript.h" />
     <ClInclude Include="CKirbyBulletSize.h" />
+    <ClInclude Include="CKirbyBurningWallEnd.h" />
     <ClInclude Include="CKirbyDropOutUIScript.h" />
     <ClInclude Include="CKirbyFireBullet.h" />
     <ClInclude Include="CKirbyLightScript.h" />
@@ -544,6 +545,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CFlowTriggerScript.cpp" />
     <ClCompile Include="CFollowPlayerScript.cpp" />
     <ClCompile Include="CKirbyBulletSize.cpp" />
+    <ClCompile Include="CKirbyBurningWallEnd.cpp" />
     <ClCompile Include="CKirbyDropOutUIScript.cpp" />
     <ClCompile Include="CKirbyFireBullet.cpp" />
     <ClCompile Include="CKirbyLightScript.cpp" />

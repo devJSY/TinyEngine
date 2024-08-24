@@ -72,7 +72,7 @@ void CKirbyBurningEnd::Exit()
     PLAYERCTRL->SetForwardMode(false);
     PLAYERCTRL->SetRotSpeed(m_SaveRotSpeed);
 
-    PLAYERCTRL->SetGravity(-20.f);
+    PLAYERCTRL->SetGravity(PLAYERCTRL->GetInitGravity());
     PLAYERCTRL->SetSpeed(m_SaveSpeed);
 
     //  무적 상태

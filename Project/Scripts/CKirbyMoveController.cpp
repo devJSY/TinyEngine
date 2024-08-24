@@ -60,6 +60,7 @@ void CKirbyMoveController::begin()
     m_RotSpeed = PLAYERUNIT->GetInitInfo().RotationSpeed;
     m_JumpPower = PLAYERUNIT->GetInitInfo().JumpPower;
     m_Gravity = -20.f;
+    m_InitGravity = m_Gravity;
     m_bGround = false;
     m_bLimitFallSpeed = false;
     m_CheckPointPos = Transform()->GetWorldPos();
