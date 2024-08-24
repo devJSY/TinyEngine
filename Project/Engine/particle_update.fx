@@ -55,9 +55,9 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
                 // 랜덤
                 float2 vUV = float2((1.f / (MAX_COUNT - 1)) * id.x, 0.f);
                 
-                vUV.x += g_Time * 0.2f;
+                vUV.x += g_EngineTime * 0.2f;
                 //                 ( 주파수 )    (진폭)  (V 축 offset)
-                vUV.y = sin(vUV.x * 20.f * PI) * 0.2f + g_Time * 0.1f;
+                vUV.y = sin(vUV.x * 20.f * PI) * 0.2f + g_EngineTime * 0.1f;
                                 
                 float4 vRand0 = g_NoiseTex.SampleLevel(g_PointSampler, vUV, 0);
                 float4 vRand1 = g_NoiseTex.SampleLevel(g_PointSampler, vUV - float2(0.1f, 0.1f), 0);
@@ -143,7 +143,7 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
     // 파티클이 활성화 상태라면
     else
     {
-        Particle.Age += g_DT;
+        Particle.Age += g_EngineDT;
         if (Particle.Life < Particle.Age)
         {
             Particle.Active = 0;
@@ -181,31 +181,31 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
             if (0 == Module.SpiralVelocityAxis)
             {
                 // 반경에 따라 회전
-                Particle.vWorldPos.y += cos(Particle.vWorldPos.x * Module.SpiralVelocityRotateSpeed + g_DT) * Particle.Radius;
-                Particle.vWorldPos.z += sin(Particle.vWorldPos.x * Module.SpiralVelocityRotateSpeed + g_DT) * Particle.Radius;
+                Particle.vWorldPos.y += cos(Particle.vWorldPos.x * Module.SpiralVelocityRotateSpeed + g_EngineDT) * Particle.Radius;
+                Particle.vWorldPos.z += sin(Particle.vWorldPos.x * Module.SpiralVelocityRotateSpeed + g_EngineDT) * Particle.Radius;
                 
                 // 축 방향 이동
-                Particle.vWorldPos.x += g_DT * Module.SpiralVelocityAxisSpeed;
+                Particle.vWorldPos.x += g_EngineDT * Module.SpiralVelocityAxisSpeed;
             }
             // Y
             else if (1 == Module.SpiralVelocityAxis)
             {
                 // 반경에 따라 회전
-                Particle.vWorldPos.x += cos(Particle.vWorldPos.y * Module.SpiralVelocityRotateSpeed + g_DT) * Particle.Radius;
-                Particle.vWorldPos.z += sin(Particle.vWorldPos.y * Module.SpiralVelocityRotateSpeed + g_DT) * Particle.Radius;
+                Particle.vWorldPos.x += cos(Particle.vWorldPos.y * Module.SpiralVelocityRotateSpeed + g_EngineDT) * Particle.Radius;
+                Particle.vWorldPos.z += sin(Particle.vWorldPos.y * Module.SpiralVelocityRotateSpeed + g_EngineDT) * Particle.Radius;
                 
                 // 축 방향 이동
-                Particle.vWorldPos.y += g_DT * Module.SpiralVelocityAxisSpeed;
+                Particle.vWorldPos.y += g_EngineDT * Module.SpiralVelocityAxisSpeed;
             }
             // Z
             else if (2 == Module.SpiralVelocityAxis)
             {
                 // 반경에 따라 회전
-                Particle.vWorldPos.x += cos(Particle.vWorldPos.z * Module.SpiralVelocityRotateSpeed + g_DT) * Particle.Radius;
-                Particle.vWorldPos.y += sin(Particle.vWorldPos.z * Module.SpiralVelocityRotateSpeed + g_DT) * Particle.Radius;
+                Particle.vWorldPos.x += cos(Particle.vWorldPos.z * Module.SpiralVelocityRotateSpeed + g_EngineDT) * Particle.Radius;
+                Particle.vWorldPos.y += sin(Particle.vWorldPos.z * Module.SpiralVelocityRotateSpeed + g_EngineDT) * Particle.Radius;
                 
                 // 축 방향 이동
-                Particle.vWorldPos.z += g_DT * Module.SpiralVelocityAxisSpeed;
+                Particle.vWorldPos.z += g_EngineDT * Module.SpiralVelocityAxisSpeed;
             }
         }
         else
@@ -222,12 +222,12 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
                 if (Particle.NoiseForceTime == 0.f) // 초기 Force
                 {
                     Particle.vNoiseForce.xyz = normalize(Rand.xyz * 2.f - 1.f) * Module.NoiseForceScale;
-                    Particle.NoiseForceTime = g_Time;
+                    Particle.NoiseForceTime = g_EngineTime;
                 }
-                else if (Module.NoiseForceTerm < g_Time - Particle.NoiseForceTime) // Term 마다 Force 업데이트
+                else if (Module.NoiseForceTerm < g_EngineTime - Particle.NoiseForceTime) // Term 마다 Force 업데이트
                 {
                     Particle.vNoiseForce.xyz = normalize(Rand.xyz * 2.f - 1.f) * Module.NoiseForceScale;
-                    Particle.NoiseForceTime = g_Time;
+                    Particle.NoiseForceTime = g_EngineTime;
                 }
             }
                 
@@ -241,7 +241,7 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
                 float3 vAccel = Particle.vForce.xyz / Particle.Mass;
                   
                 // Accel 연산
-                Particle.vVelocity.xyz += vAccel * g_DT;
+                Particle.vVelocity.xyz += vAccel * g_EngineDT;
             
                 // Drag 모듈
                 if (Module.arrModuleCheck[DRAG_MODULE])
@@ -255,7 +255,7 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
                     }
                     else
                     {
-                        float DT = g_DT / LimitTime;
+                        float DT = g_EngineDT / LimitTime;
                         DragForce = Particle.vVelocity * DT;
                     }
 
@@ -268,12 +268,12 @@ void CS_ParticleUpdate(int3 id : SV_DispatchThreadID)
                 // Velocity 연산
                 if (0 == Module.SpaceType) // Local
                 {
-                  Particle.vLocalPos.xyz += Particle.vVelocity.xyz * g_DT;
+                  Particle.vLocalPos.xyz += Particle.vVelocity.xyz * g_EngineDT;
                   Particle.vWorldPos.xyz = Particle.vLocalPos.xyz + CenterPos;
                 }
                 else if (1 == Module.SpaceType) // World
                 {
-                    Particle.vWorldPos.xyz += Particle.vVelocity.xyz * g_DT;
+                    Particle.vWorldPos.xyz += Particle.vVelocity.xyz * g_EngineDT;
                 }
             }
         }
