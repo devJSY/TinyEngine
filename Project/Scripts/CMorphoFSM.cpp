@@ -116,16 +116,18 @@ void CMorphoFSM::begin()
     // get mtrl
     for (int i = 0; i < (int)MeshRender()->GetMtrlCount(); ++i)
     {
-        m_listBodyMtrl.push_back(MeshRender()->GetMaterial(i));
-        m_listBodyEmissive.push_back(MeshRender()->GetMaterial(i)->GetEmission());
+        Ptr<CMaterial> Mtrl = MeshRender()->GetDynamicMaterial(i);
+        m_listBodyMtrl.push_back(Mtrl);
+        m_listBodyEmissive.push_back(Mtrl->GetEmission());
     }
 
     if (m_WeaponL)
     {
         for (int i = 0; i < (int)m_WeaponL->MeshRender()->GetMtrlCount(); ++i)
         {
-            m_listWeaponMtrl.push_back(m_WeaponL->MeshRender()->GetMaterial(i));
-            m_listWeaponEmissive.push_back(m_WeaponL->MeshRender()->GetMaterial(i)->GetEmission());
+            Ptr<CMaterial> Mtrl = m_WeaponL->MeshRender()->GetDynamicMaterial(i);
+            m_listWeaponMtrl.push_back(Mtrl);
+            m_listWeaponEmissive.push_back(Mtrl->GetEmission());
         }
 
         if (m_WeaponL->BoxCollider())
@@ -138,8 +140,9 @@ void CMorphoFSM::begin()
     {
         for (int i = 0; i < (int)m_WeaponR->MeshRender()->GetMtrlCount(); ++i)
         {
-            m_listWeaponMtrl.push_back(m_WeaponR->MeshRender()->GetMaterial(i));
-            m_listWeaponEmissive.push_back(m_WeaponR->MeshRender()->GetMaterial(i)->GetEmission());
+            Ptr<CMaterial> Mtrl = m_WeaponR->MeshRender()->GetDynamicMaterial(i);
+            m_listWeaponMtrl.push_back(Mtrl);
+            m_listWeaponEmissive.push_back(Mtrl->GetEmission());
         }
 
         if (m_WeaponR->BoxCollider())
@@ -153,10 +156,10 @@ void CMorphoFSM::tick()
 {
     CFSMScript::tick();
 
-    //if (KEY_TAP(KEY::ENTER))
-    //{
-    //    ChangeStateGroup(MorphoStateGroup::AtkGroundTeleport1, L"ATKG_TELEPORT_TORNADO");
-    //}
+    if (KEY_TAP(KEY::ENTER))
+    {
+        ChangeStateGroup(MorphoStateGroup::DEMO, L"DEMO_DEATH");
+    }
 
     // Emissive
     if (m_TeleportAppearTime > 0.f)

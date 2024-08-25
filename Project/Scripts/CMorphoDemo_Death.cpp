@@ -145,7 +145,6 @@ void CMorphoDemo_Death::End()
     if (GetOwner()->Animator()->IsFinish())
     {
         //@EFFECT 터지는 파티클
-        GetOwner()->SetActive(false);
 
         if (CBossMgr::GetMorphoFlowMgr())
         {
