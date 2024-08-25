@@ -36,6 +36,7 @@ private:
     CGameObject* m_pLoadingUI;
     CGameObject* m_pPlayerHP;
     CGameObject* m_pBossHP;
+    CGameObject* m_pDropUI;
     CEnterUIScript* m_pEnterUIScript;
     CGameObject* m_pClearUI;
 
@@ -108,6 +109,9 @@ public:
     void SetEnterTime(const float _fTime) { m_fFadeInWaitTime = _fTime; }
 
     void SetUIDOFEffect();
+
+    void TurnOffDropUI();
+    void TrunOnDropUI();
 
 public:
     void ResetFadeEffectTimer();

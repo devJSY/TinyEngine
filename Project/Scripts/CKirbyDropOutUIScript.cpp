@@ -18,6 +18,7 @@ CKirbyDropOutUIScript::CKirbyDropOutUIScript()
     , m_fAppearTime(0.f)
     , m_fWaitTime(1.5f)
     , m_fDisappearTime(0.f)
+    , m_bInterAppear(false)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fAppearTime, "Appear Time");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fDisappearTime, "Disappear Time");
@@ -35,6 +36,7 @@ CKirbyDropOutUIScript::CKirbyDropOutUIScript(const CKirbyDropOutUIScript& Origin
     , m_fWaitTime(1.5f)
     , m_fAppearTime(Origin.m_fAppearTime)
     , m_fDisappearTime(Origin.m_fDisappearTime)
+    , m_bInterAppear(false)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fAppearTime, "Appear Time");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fDisappearTime, "Disappear Time");
@@ -100,7 +102,7 @@ void CKirbyDropOutUIScript::tick()
 
 void CKirbyDropOutUIScript::Idle()
 {
-    if (PLAYERFSM->GetYPressedTime() >= 0.2f)
+    if (PLAYERFSM->GetYPressedTime() >= 0.2f || (m_bInterAppear && PLAYERFSM->GetCurObjectIdx() != ObjectCopyType::NONE))
     {
         ChangeState(DropOutUIState::Appear);
     }
@@ -126,7 +128,7 @@ void CKirbyDropOutUIScript::Appear()
     FadeFunc(true);
 
     float fRatio = PLAYERFSM->GetYPressedTime() / PLAYERFSM->GetDropCopyTime();
-    if (PLAYERFSM->GetYPressedTime() <= 0.f)
+    if (PLAYERFSM->GetYPressedTime() <= 0.f && (m_bInterAppear || PLAYERFSM->GetCurObjectIdx() != ObjectCopyType::NONE))
     {
         ChangeState(DropOutUIState::Disappear);
         m_bFailed = true;
@@ -144,7 +146,7 @@ void CKirbyDropOutUIScript::Disappear()
 
     float fRatio = PLAYERFSM->GetYPressedTime() / PLAYERFSM->GetDropCopyTime();
 
-    if (PLAYERFSM->GetYPressedTime() >= 0.2f)
+    if (PLAYERFSM->GetYPressedTime() >= 0.2f || (m_bInterAppear && PLAYERFSM->GetCurObjectIdx() != ObjectCopyType::NONE))
     {
         ChangeState(DropOutUIState::Appear);
     }

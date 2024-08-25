@@ -26,6 +26,10 @@ private:
     float m_fWaitTime;
 
     bool m_bFailed;
+    bool m_bInterAppear;
+
+public:
+    void SetInteraction(const bool _bFlag) { m_bInterAppear = _bFlag; }
 
 public:
     virtual void begin() override;

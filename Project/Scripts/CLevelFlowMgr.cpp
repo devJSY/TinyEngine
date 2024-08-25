@@ -16,6 +16,7 @@
 #include "CUIFlowScript.h"
 
 #include "CUIHPScript.h"
+#include "CKirbyDropOutUIScript.h"
 
 CLevelFlowMgr::CLevelFlowMgr(UINT _Type)
     : CScript(_Type)
@@ -29,6 +30,7 @@ CLevelFlowMgr::CLevelFlowMgr(UINT _Type)
     , m_pLoadingUI(nullptr)
     , m_pPlayerHP(nullptr)
     , m_pBossHP(nullptr)
+    , m_pDropUI(nullptr)
     , m_pEnterUIScript(nullptr)
     , m_pClearUI(nullptr)
     , m_bStartLevel(false)
@@ -55,6 +57,7 @@ CLevelFlowMgr::CLevelFlowMgr(const CLevelFlowMgr& _Origin)
     , m_pPlayerHP(nullptr)
     , m_pClearUI(nullptr)
     , m_pBossHP(nullptr)
+    , m_pDropUI(nullptr)
     , m_bStartLevel(false)
     , m_bStartLevelDurationValue(true)
     , m_bEnterLevel(true)
@@ -116,6 +119,8 @@ void CLevelFlowMgr::begin()
         m_pBossHP = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"UI_BossHP");
         if (nullptr != m_pBossHP)
             m_pBossHP->SetActive(false);
+
+        m_pDropUI = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"UI_PlayerDropProgressBarUI");
 
         // Start Level Duration Value
         m_bStartLevelDurationValue = true;
@@ -409,7 +414,8 @@ void CLevelFlowMgr::LevelRestart()
     TurnOffPlayerHP();
     TurnOffBossHP();
 
-    SetFadeEffect(Vec3(255.f, 0.f, 255.f), false, 1.f, 1.25f, false);
+    if (L"Start Level" != m_CurLevelPath)
+        SetFadeEffect(Vec3(255.f, 0.f, 255.f), false, 1.f, 1.25f, false);
 
     m_bIsChangedLevel = true;
     m_bFadeEffect = true;
@@ -690,6 +696,30 @@ void CLevelFlowMgr::SetUIDOFEffect()
 
     pDOFMtrl->SetScalarParam(FLOAT_0, 1.f);
     pDOFMtrl->SetScalarParam(FLOAT_0, 3000.f);
+}
+
+void CLevelFlowMgr::TrunOnDropUI()
+{
+    if (nullptr != m_pDropUI)
+    {
+        CKirbyDropOutUIScript* pScript = m_pDropUI->GetScript<CKirbyDropOutUIScript>();
+        if (pScript)
+        {
+            pScript->SetInteraction(true);
+        }
+    }
+}
+
+void CLevelFlowMgr::TurnOffDropUI()
+{
+    if (nullptr != m_pDropUI)
+    {
+        CKirbyDropOutUIScript* pScript = m_pDropUI->GetScript<CKirbyDropOutUIScript>();
+        if (pScript)
+        {
+            pScript->SetInteraction(false);
+        }
+    }
 }
 
 void CLevelFlowMgr::ResetFadeEffectTimer()

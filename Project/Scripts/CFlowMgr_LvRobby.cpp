@@ -181,7 +181,7 @@ void CFlowMgr_LvRobby::LevelEnd()
 
     if (0 == m_iCurStage)
     {
-        //SetLoadingUIColor(Vec3(164.f, 222.f, 40.f));
+        // SetLoadingUIColor(Vec3(164.f, 222.f, 40.f));
         SetFadeEffect(Vec3(115.f, 156.f, 28.f), false, 1.f, 1.25f, true);
     }
     else if (1 == m_iCurStage)
@@ -205,7 +205,7 @@ void CFlowMgr_LvRobby::LevelEnd()
 void CFlowMgr_LvRobby::LevelRestart()
 {
     CLevelFlowMgr::LevelRestart();
-    SetFadeEffectColor(Vec3(252.f, 75.f, 129.f));
+    SetFadeEffect(Vec3(252.f, 75.f, 129.f), false, 1.f, 1.25f, true);
 }
 
 void CFlowMgr_LvRobby::RobbyLevel()
