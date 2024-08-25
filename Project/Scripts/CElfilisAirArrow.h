@@ -43,6 +43,7 @@ public:
 public:
     bool IsSpawnFinished() { return m_Step != 1; }
     bool IsPlaying() { return m_Step != 0; }
+    bool IsAttack() { return m_Step == 5; }
 
     void SetTarget(CGameObject* _Target) { m_Target = _Target; }
     void SetInitPos(Vec3 _Pos) { m_InitPos = _Pos; }

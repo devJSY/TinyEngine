@@ -10,6 +10,8 @@ CElfilisA_RayArrowUp::CElfilisA_RayArrowUp()
     , m_AccTime(0.f)
     , m_bSpawn{false,}
     , m_bReady(false)
+    , m_bStateExit(false)
+    , m_NextStateGroup(ElfilisStateGroup::AirIdle)
 {
     m_ArrowPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\ElfilisAirArrow.pref");
 }
@@ -102,6 +104,10 @@ void CElfilisA_RayArrowUp::Enter_Step()
     break;
     case StateStep::End: {
         GetOwner()->Animator()->Play(ANIMPREFIX("RayArrowEndAir"), false);
+
+        // next state group 미리 결정
+        m_NextStateGroup = ELFFSM->FindNextStateGroup();
+        m_bStateExit = false;
     }
     break;
     }
@@ -158,17 +164,24 @@ void CElfilisA_RayArrowUp::Wait()
 
 void CElfilisA_RayArrowUp::End()
 {
-    if (GetOwner()->Animator()->IsFinish())
+    if (m_NextStateGroup == ELFFSM->GetCurStateGroup())
     {
-        ElfilisStateGroup NextState = ELFFSM->FindNextStateGroup();
-
-        if (NextState == ELFFSM->GetCurStateGroup())
+        if (GetOwner()->Animator()->IsFinish())
         {
             ELFFSM->RepeatState();
         }
-        else
+    }
+    else
+    {
+        if (m_bStateExit || m_ArrowScript[3]->IsAttack())
         {
-            ELFFSM->ChangeStateGroup(NextState);
+            m_bStateExit = true;
+            m_AccTime += DT;
+
+            if (m_AccTime > 1.5f)
+            {
+                ELFFSM->ChangeStateGroup(m_NextStateGroup);
+            }
         }
     }
 }

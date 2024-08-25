@@ -73,15 +73,6 @@ void CElfilisUnit::tick()
             }
         }
     }
-
-    if (KEY_TAP(KEY::SPACE))
-    {
-        m_CurInfo.HP = 500.f;
-    }
-    if (KEY_TAP(KEY::ENTER))
-    {
-        m_CurInfo.HP = 10.f;
-    }
 }
 
 void CElfilisUnit::ResistSuccess()
