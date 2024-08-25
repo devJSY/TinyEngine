@@ -949,6 +949,9 @@
     <ClInclude Include="CKirbyBurningWallEnd.h">
       <Filter>State\KirbyState\Burning\BurningWallEnd</Filter>
     </ClInclude>
+    <ClInclude Include="CFireOnHitEffect.h">
+      <Filter>Scripts\Gimmik\FireOnHitEffect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1907,6 +1910,9 @@
     </ClCompile>
     <ClCompile Include="CKirbyBurningWallEnd.cpp">
       <Filter>State\KirbyState\Burning\BurningWallEnd</Filter>
+    </ClCompile>
+    <ClCompile Include="CFireOnHitEffect.cpp">
+      <Filter>Scripts\Gimmik\FireOnHitEffect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -3010,6 +3016,9 @@
     </Filter>
     <Filter Include="State\KirbyState\Burning\BurningWallEnd">
       <UniqueIdentifier>{9748a399-b31b-44df-98d5-9da3dfcf244f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\FireOnHitEffect">
+      <UniqueIdentifier>{c065a48f-6c41-4365-bb77-feed1904fd2c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

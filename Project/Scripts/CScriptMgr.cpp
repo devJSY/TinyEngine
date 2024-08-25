@@ -119,6 +119,7 @@
 #include "CKirbyCantEat.h"
 #include "CBossDropStarScript.h"
 #include "CKirbyFireBullet.h"
+#include "CFireOnHitEffect.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -240,6 +241,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CKirbyCantEat");
 	_vec.push_back(L"CBossDropStarScript");
 	_vec.push_back(L"CKirbyFireBullet");
+	_vec.push_back(L"CFireOnHitEffect");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -480,6 +482,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CBossDropStarScript;
 	if (L"CKirbyFireBullet" == _strScriptName)
 		return new CKirbyFireBullet;
+	if (L"CFireOnHitEffect" == _strScriptName)
+		return new CFireOnHitEffect;
 	return nullptr;
 }
 
@@ -723,6 +727,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CBossDropStarScript;
 	case (UINT)SCRIPT_TYPE::KIRBYFIREBULLET:
 		return new CKirbyFireBullet;
+	case (UINT)SCRIPT_TYPE::FIREONHITEFFECT:
+		return new CFireOnHitEffect;
 	}
 	return nullptr;
 }
@@ -967,6 +973,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CBossDropStarScript";
 	case SCRIPT_TYPE::KIRBYFIREBULLET:
 		return L"CKirbyFireBullet";
+	case SCRIPT_TYPE::FIREONHITEFFECT:
+		return L"CFireOnHitEffect";
 	}
 	return nullptr;
 }

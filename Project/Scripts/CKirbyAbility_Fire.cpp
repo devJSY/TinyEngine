@@ -4,6 +4,7 @@
 #include "CPlayerMgr.h"
 #include "CKirbyMoveController.h"
 #include "CKirbyFSM.h"
+#include "CKirbyFireBullet.h"
 
 #include <Engine/CMesh.h>
 
@@ -100,6 +101,7 @@ void CKirbyAbility_Fire::AttackCharge1()
 
         FireProjectileObj->Transform()->SetWorldPos(KirbyPos + Offset);
         FireProjectileObj->Transform()->SetDirection(KirbyFront);
+        FireProjectileObj->GetScript<CKirbyFireBullet>()->SetFirst();
 
         GamePlayStatic::SpawnGameObject(FireProjectileObj, FireProjectileObj->GetLayerIdx());
 
@@ -189,6 +191,7 @@ void CKirbyAbility_Fire::AttackCharge1Run()
 
         FireProjectileObj->Transform()->SetWorldPos(KirbyPos + Offset);
         FireProjectileObj->Transform()->SetDirection(KirbyFront);
+        FireProjectileObj->GetScript<CKirbyFireBullet>()->SetFirst();
 
         GamePlayStatic::SpawnGameObject(FireProjectileObj, FireProjectileObj->GetLayerIdx());
 

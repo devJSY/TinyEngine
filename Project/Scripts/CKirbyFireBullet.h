@@ -20,6 +20,7 @@ private:
     
     bool m_bIsFreeze;
     bool m_bDestroy;
+    bool m_bFirstTime;  
 
     int m_AccFireNumber;                // Fire가 누적된 개수
     int m_RequiredFireNumber;           // 다음 단계로 가기 위한 누적 불의 개수
@@ -34,6 +35,7 @@ private:
 public:
     float GetAcc() { return m_Acc; }
     UINT GetSetp() { return m_Step; }
+    void SetFirst() { m_bFirstTime = true; }
 
 private:
     void StepUp();

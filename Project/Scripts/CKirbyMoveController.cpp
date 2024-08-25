@@ -175,14 +175,14 @@ void CKirbyMoveController::RayGround()
         {
             if (arrRay[i].pCollisionObj != nullptr)
             {
-                if (i != 0)
+                if (i != 0 && m_MoveVelocity.y <= 0.f)
                 {
                     IsColision = true;
                     break;
                 }
 
                 // Áß¾Ó ·¹ÀÌ
-                if (i == 0 && arrRay[i].Distance < 10.f)
+                if (i == 0 && arrRay[i].Distance < 10.f && m_MoveVelocity.y <= 0.f)
                 {
                     IsColision = true;
                     break;
@@ -213,7 +213,8 @@ void CKirbyMoveController::RayGround()
                 // Áß¾Ó ·¹ÀÌ
                 if (i == 0 && arrRay[i].Distance < 10.f && m_MoveVelocity.y <= 0.f)
                 {
-                    IsColision = false;
+                    IsColision = true;
+                    break;
                 }
             }
         }

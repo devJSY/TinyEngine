@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "CKirbyFireBullet.h"
 
+#include "CMonsterUnitScript.h"
+
 CKirbyFireBullet::CKirbyFireBullet()
     : CScript(KIRBYFIREBULLET)
     , m_Step((UINT)Fire_Step::LV0)
@@ -8,6 +10,7 @@ CKirbyFireBullet::CKirbyFireBullet()
     , m_RequiredFireNumber(10)
     , m_Acc(0.f)
     , m_Duration(4.f)
+    , m_bFirstTime(false)
 {
     AddScriptParam(SCRIPT_PARAM::INT, &m_Step, "Fire Level(0~2)");
     AddScriptParam(SCRIPT_PARAM::INT, &m_RequiredFireNumber, "Required Fire Number");
@@ -21,6 +24,7 @@ CKirbyFireBullet::CKirbyFireBullet(const CKirbyFireBullet& _Origin)
     , m_RequiredFireNumber(_Origin.m_RequiredFireNumber)
     , m_Acc(_Origin.m_Acc)
     , m_Duration(_Origin.m_Duration)
+    , m_bFirstTime(false)
 {
     AddScriptParam(SCRIPT_PARAM::INT, &m_Step, "Fire Level(0~2)");
     AddScriptParam(SCRIPT_PARAM::INT, &m_RequiredFireNumber, "Required Fire Number");
@@ -44,9 +48,13 @@ void CKirbyFireBullet::begin()
         GetOwner()->AddComponent(new CRigidbody);
         Rigidbody()->SetUseGravity(true);
     }
-
-    m_Dir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
-    Rigidbody()->AddForce(m_Dir * 20.f, ForceMode::Impulse);
+    // Kirby에게서 나온것이라면 날라가게 한다.
+    if (m_bFirstTime)
+    {
+        m_Dir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
+        Rigidbody()->AddForce(m_Dir * 20.f, ForceMode::Impulse);
+        m_bFirstTime = false;
+    }
 }
 
 void CKirbyFireBullet::tick()
@@ -222,6 +230,34 @@ void CKirbyFireBullet::OnCollisionEnter(CCollider* _OtherCollider)
 void CKirbyFireBullet::OnTriggerEnter(CCollider* _OtherCollider)
 {
     // Monster와 충돌
+ 
+    UINT LayerIdx = _OtherCollider->GetOwner()->GetLayerIdx();
+
+    if (LayerIdx == LAYER_MONSTER_TRIGGER && _OtherCollider->GetOwner()->GetName() == L"Body Collider")
+    {
+        float Damage = 1.5f;
+
+        if (m_Step == 1)
+        {
+            Damage = 3.f;
+        }
+        else if (m_Step == 2)
+        {
+            Damage = 4.5f;
+        }
+
+
+        CMonsterUnitScript* Monster = _OtherCollider->GetOwner()->GetParent()->GetScript<CMonsterUnitScript>();
+        if (nullptr != Monster)
+        {
+            Vec3 HitDir = _OtherCollider->Transform()->GetWorldPos() - Transform()->GetWorldPos();
+            HitDir.Normalize();
+            UnitHit HitInfo = {DAMAGE_TYPE::DOT, HitDir, Damage, 3.f, 0.f};
+
+            Monster->GetDamage(HitInfo);
+        }
+    }
+
 }
 
 UINT CKirbyFireBullet::SaveToLevelFile(FILE* _File)
