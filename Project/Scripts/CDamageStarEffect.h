@@ -32,6 +32,7 @@ private:
     DamageStarState m_eState;
 
     // Common Value
+    bool m_bUseGravity;
     float m_fScaling;
     float m_fMaxScale;
 

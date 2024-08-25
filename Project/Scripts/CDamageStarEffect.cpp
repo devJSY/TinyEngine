@@ -3,6 +3,7 @@
 
 CDamageStarEffect::CDamageStarEffect()
     : CScript(DAMAGESTAREFFECT)
+    , m_bUseGravity(false)
     , m_eTickType(DamageStarTickType::Velocity)
     , m_eSpawnType(DamageStarSpawnType::StaticPos)
     , m_eState(DamageStarState::Enter)
@@ -13,26 +14,55 @@ CDamageStarEffect::CDamageStarEffect()
     , m_fRadomMizeMinScale(10.f)
     , m_fRadomMizeMaxScale(15.f)
     , m_fRandomMizeMinPower(1.f)
-    , m_fRadomMizeMaxPower(5.f)
+    , m_fRandomMizeMaxPower(5.f)
 {
+    // Common Value
     AddScriptParam(SCRIPT_PARAM::INT, &m_eTickType, "Tick Type", 1.f);
     AddScriptParam(SCRIPT_PARAM::INT, &m_eSpawnType, "Spawn Type", 1.f);
+    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bUseGravity, "Use Gravity", 1.f);
+
+    // Static Value
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fMaxScale, "Max Scaling", 1.f);
+    AddScriptParam(SCRIPT_PARAM::VEC3, &m_vDir, "Static Direction", 1.f);
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fPower, "Static Power", 1.f);
+
+    // Radnom Value
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fRadomMizeMinScale, "Random Min Scale", 1.f);
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fRadomMizeMaxScale, "Random Max Scale", 1.f);
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fRandomMizeMinPower, "Random Min Power", 1.f);
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fRandomMizeMaxPower, "Random Max Power", 1.f);
 }
 
 CDamageStarEffect::CDamageStarEffect(const CDamageStarEffect& Origin)
     : CScript(Origin)
-    , m_eTickType(DamageStarTickType::Velocity)
-    , m_eSpawnType(DamageStarSpawnType::StaticPos)
+    , m_bUseGravity(Origin.m_bUseGravity)
+    , m_eTickType(Origin.m_eTickType)
+    , m_eSpawnType(Origin.m_eSpawnType)
     , m_eState(DamageStarState::Enter)
-    , m_fMaxScale(0.f)
-    , m_fScaling(0.f)
-    , m_fPower(0.f)
+    , m_fMaxScale(Origin.m_fMaxScale)
+    , m_fScaling(Origin.m_fScaling)
+    , m_fPower(Origin.m_fPower)
     , m_fThreshHoldValue(0.f)
-    , m_fRadomMizeMinScale(10.f)
-    , m_fRadomMizeMaxScale(15.f)
+    , m_fRadomMizeMinScale(Origin.m_fRadomMizeMinScale)
+    , m_fRadomMizeMaxScale(Origin.m_fRadomMizeMaxScale)
+    , m_fRandomMizeMinPower(Origin.m_fRandomMizeMinPower)
+    , m_fRandomMizeMaxPower(Origin.m_fRandomMizeMaxPower)
 {
+    // Common Value
     AddScriptParam(SCRIPT_PARAM::INT, &m_eTickType, "Tick Type", 1.f);
     AddScriptParam(SCRIPT_PARAM::INT, &m_eSpawnType, "Spawn Type", 1.f);
+    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bUseGravity, "Use Gravity", 1.f);
+
+    // Static Value
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fMaxScale, "Max Scaling", 1.f);
+    AddScriptParam(SCRIPT_PARAM::VEC3, &m_vDir, "Static Direction", 1.f);
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fPower, "Static Power", 1.f);
+
+    // Radnom Value
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fRadomMizeMinScale, "Random Min Scale", 1.f);
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fRadomMizeMaxScale, "Random Max Scale", 1.f);
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fRandomMizeMinPower, "Random Min Power", 1.f);
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fRandomMizeMaxPower, "Random Max Power", 1.f);
 }
 
 CDamageStarEffect::~CDamageStarEffect()
@@ -41,7 +71,7 @@ CDamageStarEffect::~CDamageStarEffect()
 
 void CDamageStarEffect::begin()
 {
-    if (m_eTickType == DamageStarTickType::Velocity)
+    if (m_bUseGravity)
     {
         Rigidbody()->SetUseGravity(true);
     }
@@ -82,7 +112,6 @@ void CDamageStarEffect::tick()
 
 void CDamageStarEffect::Enter()
 {
-    // »˚¡÷±‚
     if (m_eTickType == DamageStarTickType::Velocity)
     {
         Vec3 vRandomDir = RadomizeDir();
@@ -95,7 +124,7 @@ void CDamageStarEffect::Enter()
         }
     }
 
-    if (m_eTickType == DamageStarTickType::Velocity)
+    if (m_eTickType == DamageStarTickType::Direction)
     {
         if (Rigidbody())
         {
