@@ -8,8 +8,8 @@ CMorphoUnit::CMorphoUnit()
     : CUnitScript(MORPHOUNIT)
 {
     UnitInfo MorphoInfo = {
-        1000.f, // HP
-        1000.f, // MaxHP
+        700.f, // HP
+        700.f, // MaxHP
         10.f,   // Speed
         10.f,   // Rotation Speed
         10.f,   // JumpPower

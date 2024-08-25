@@ -152,6 +152,8 @@ void CElfilisG_RayArrow::End()
 
             ELFFSM->SetPattern(ElfilisPatternType::BigCombo);
             ELFFSM->ProcPatternStep();
+
+            //@Camera : ¹Ì¸® ÇÏ´Ãºä
         }
     }
 }
