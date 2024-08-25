@@ -69,6 +69,18 @@ void CStageClear::OnTriggerEnter(CCollider* _OtherCollider)
     // PLAYER와 충돌한 경우
     if (_OtherCollider->GetOwner()->GetLayerIdx() == LAYER_PLAYER)
     {
+        if (PLAYERFSM->GetCurObjectIdx() != ObjectCopyType::NONE)
+        {
+            CGameObject* ManagerObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager");
+
+            CLevelFlowMgr* FlowMgrScript = ManagerObj->GetScript<CLevelFlowMgr>();
+
+            //FlowMgrScript->TrunOnDropUI();
+
+            return;
+        }
+
+
         if (m_bKirbyDance)
         {
             m_KirbyDir.y = 0.f;
@@ -111,4 +123,22 @@ void CStageClear::OnTriggerStay(CCollider* _OtherCollider)
 
 void CStageClear::OnTriggerExit(CCollider* _OtherCollider)
 {
+    // PLAYER와 충돌한 경우
+    if (_OtherCollider->GetOwner()->GetLayerIdx() == LAYER_PLAYER)
+    {
+        // Object상태가 None이 아니라면 DropUI를 띄운다.
+        if (PLAYERFSM->GetCurObjectIdx() != ObjectCopyType::NONE)
+        {
+            CGameObject* ManagerObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager");
+
+            CLevelFlowMgr* FlowMgrScript = ManagerObj->GetScript<CLevelFlowMgr>();
+
+            // FlowMgrScript->TurnOffDropUI();
+
+            return;
+        }
+    }
+
+
+
 }
