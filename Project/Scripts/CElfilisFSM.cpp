@@ -495,7 +495,7 @@ void CElfilisFSM::tick()
     //{
     //    Rigidbody()->SetVelocity(Vec3());
     //    Rigidbody()->SetAngularVelocity(Vec3());
-    //    ChangeStateGroup(ElfilisStateGroup::GroundToAir, L"GROUND_TOAIR");
+    //    ChangeStateGroup(ElfilisStateGroup::GroundAtkFar, L"GROUND_ATK_SWORDWAVE_RL");
     //}
 }
 

@@ -5,7 +5,7 @@
 
 CMorphoAtkG_NormalFar_SwordSlash::CMorphoAtkG_NormalFar_SwordSlash()
     : m_SwordSlash{nullptr,}
-    , m_SlashSpeed(150.f)
+    , m_SlashSpeed(750.f)
     , m_bFrmEnter(true)
 {
     m_SwordSlashPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\MorphoSwordSlash.pref", L"prefab\\MorphoSwordSlash.pref");

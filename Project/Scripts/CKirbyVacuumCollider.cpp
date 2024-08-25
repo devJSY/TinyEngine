@@ -67,6 +67,9 @@ void CKirbyVacuumCollider::tick()
 
 void CKirbyVacuumCollider::OnTriggerEnter(CCollider* _OtherCollider)
 {
+    if (m_bDrawing || m_FindTarget)
+        return;
+
     // 흡수할 수 있는 물체라면
     int i = _OtherCollider->GetOwner()->GetLayerIdx();
     if (_OtherCollider->GetOwner()->GetLayerIdx() != LAYER_DYNAMIC && _OtherCollider->GetOwner()->GetLayerIdx() != LAYER_MONSTER)
