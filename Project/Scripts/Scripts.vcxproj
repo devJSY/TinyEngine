@@ -124,6 +124,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CBossMgr.h" />
     <ClInclude Include="CCanJuice.h" />
     <ClInclude Include="CCutterProjectileScript.h" />
+    <ClInclude Include="CDamageStarEffect.h" />
     <ClInclude Include="CElfilisAirArrow.h" />
     <ClInclude Include="CElfilisArrowScript.h" />
     <ClInclude Include="CElfilisArrowSetScript.h" />
@@ -461,6 +462,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CBossMgr.cpp" />
     <ClCompile Include="CCanJuice.cpp" />
     <ClCompile Include="CCutterProjectileScript.cpp" />
+    <ClCompile Include="CDamageStarEffect.cpp" />
     <ClCompile Include="CElfilisAirArrow.cpp" />
     <ClCompile Include="CElfilisArrowScript.cpp" />
     <ClCompile Include="CElfilisArrowSetScript.cpp" />

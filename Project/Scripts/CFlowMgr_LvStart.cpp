@@ -32,6 +32,8 @@ void CFlowMgr_LvStart::begin()
     OffDimensionFade();
     SetToneMappingParam(false);
     SetUIDOFEffect();
+
+    //SetLoadingUIColor(Vec3(255.f, 100.f, 129.f));
 }
 
 void CFlowMgr_LvStart::LevelStart()
@@ -53,8 +55,6 @@ void CFlowMgr_LvStart::LevelStart()
     {
         KirbyPref->Save(L"prefab\\Main Player.pref");
     }
-
-
 }
 
 void CFlowMgr_LvStart::LevelEnd()

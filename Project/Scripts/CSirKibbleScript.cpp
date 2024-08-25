@@ -223,7 +223,10 @@ void CSirKibbleScript::EnterState(SirKibbleState _state)
 
         SetSparkle(true);
 
-        Transform()->SetDirection((PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos()).Normalize());
+        Vec3 vFollowDir = (PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos()).Normalize();
+        vFollowDir.y = 0.f;
+
+        Transform()->SetDirection(vFollowDir);
 
         Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
 

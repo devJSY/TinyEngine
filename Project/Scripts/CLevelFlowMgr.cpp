@@ -539,7 +539,19 @@ void CLevelFlowMgr::SetLoadingUIColor(Vec3 _Color)
         return;
 
     Vec4 Color = Vec4(_Color.x, _Color.y, _Color.z, 255.f) / 255.f;
-    m_pLoadingUI->MeshRender()->GetMaterial(0)->SetAlbedo(Color);
+
+    vector<CGameObject*> vChilds = m_pLoadingUI->GetChildObject();
+
+    for (size_t i = 0; i < vChilds.size(); ++i)
+    {
+        if (nullptr != vChilds[i])
+        {
+            if (vChilds[i]->GetName() == L"CircleM" || vChilds[i]->GetName() == L"CircleL" || vChilds[i]->GetName() == L"BoldCircleL")
+            {
+                vChilds[i]->MeshRender()->GetMaterial(0)->SetAlbedo(Color);
+            }
+        }
+    }
 }
 
 void CLevelFlowMgr::OnDimensionFade(float _Coef)

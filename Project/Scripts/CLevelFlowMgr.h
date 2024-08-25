@@ -108,7 +108,7 @@ public:
     void SetEnterTime(const float _fTime) { m_fFadeInWaitTime = _fTime; }
 
     void SetUIDOFEffect();
-    
+
 public:
     void ResetFadeEffectTimer();
 
