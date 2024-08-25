@@ -6,7 +6,7 @@ class CElfilisG_GroundToAir : public CBossState
 private:
     Vec3 m_StartPos;
     Vec3 m_TargetPos;
-    float m_PrevDrag;
+    Vec3 m_ForceDir;
 
 public:
     virtual void tick();

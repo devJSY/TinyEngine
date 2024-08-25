@@ -43,7 +43,7 @@ private:
 
 private:
     void OnTriggerEnter(CCollider* _OtherCollider);
- 
+    
 private:
     void EyeCloseWait();
     void EyeOpenWait();

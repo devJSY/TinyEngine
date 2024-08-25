@@ -15,7 +15,9 @@ public:
     virtual void TriggerEvent(UINT _Idx) override;
 
 public:
+    virtual void LevelEnd() override;
     virtual void LevelExit() override;
+    virtual void LevelRestart() override;
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

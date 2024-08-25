@@ -13,6 +13,10 @@ public:
     virtual UINT LoadFromLevelFile(FILE* _File) override;
 
 public:
+    virtual void LevelEnd() override;
+    virtual void LevelRestart() override;
+
+public:
     CLONE(CFlowMgr_Lv1);
     CFlowMgr_Lv1();
     CFlowMgr_Lv1(const CFlowMgr_Lv1& _Origin);

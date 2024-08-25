@@ -14,6 +14,7 @@ CElfilisAirArrow::CElfilisAirArrow()
     , m_AttackSpeed(0.f)
     , m_TargetDist(0.f)
     , m_bGround(false)
+    , m_bFrmEnter(true)
 {
     m_CollisionEffect = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Effect_ElfilisArrowCol.pref", L"prefab\\Effect_ElfilisArrowCol.pref");
 }
@@ -109,9 +110,13 @@ void CElfilisAirArrow::StartAttack()
 
 void CElfilisAirArrow::OnCollisionEnter(CCollider* _OtherCollider)
 {
-    if (_OtherCollider->GetOwner()->GetLayerIdx() == LAYER_STATIC && m_Step == 5 && !m_bGround)
+    if (m_bGround)
+        return;
+
+    if (_OtherCollider->GetOwner()->GetLayerIdx() == LAYER_STATIC && m_Step == 5)
     {
         m_bGround = true;
+        m_bFrmEnter = true;
         m_AccTime = 0.f;
 
         // spawn effect
@@ -132,9 +137,13 @@ void CElfilisAirArrow::OnCollisionEnter(CCollider* _OtherCollider)
 
 void CElfilisAirArrow::OnCollisionStay(CCollider* _OtherCollider)
 {
-    if (_OtherCollider->GetOwner()->GetLayerIdx() == LAYER_STATIC && m_Step == 5 && !m_bGround)
+    if (m_bGround)
+        return;
+
+    if (_OtherCollider->GetOwner()->GetLayerIdx() == LAYER_STATIC && m_Step == 5)
     {
         m_bGround = true;
+        m_bFrmEnter = true;
         m_AccTime = 0.f;
 
         // spawn effect
@@ -329,8 +338,18 @@ void CElfilisAirArrow::Attack()
     }
     else if (m_bGround)
     {
-        Rigidbody()->SetVelocity(Vec3());
-        Rigidbody()->SetAngularVelocity(Vec3());
+        if (m_bFrmEnter)
+        {
+            m_bFrmEnter = false;
+
+            Rigidbody()->SetKinematic(true);
+            Vec3 NewPos = Transform()->GetWorldPos();
+            NewPos.y = 10.f;
+            Transform()->SetWorldPos(NewPos);
+
+            Rigidbody()->SetVelocity(Vec3());
+            Rigidbody()->SetAngularVelocity(Vec3());
+        }
 
         if (m_AccTime > 1.f)
         {

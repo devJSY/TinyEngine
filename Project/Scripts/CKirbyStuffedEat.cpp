@@ -28,6 +28,8 @@ void CKirbyStuffedEat::Enter()
     PLAYERCTRL->LockJump();
     PLAYERCTRL->LockMove();
     PLAYERCTRL->LockDirection();
+
+    PLAYERFSM->SetUnstuffReverse(false);
 }
 
 void CKirbyStuffedEat::Exit()
@@ -39,4 +41,6 @@ void CKirbyStuffedEat::Exit()
     PLAYERCTRL->UnlockJump();
     PLAYERCTRL->UnlockMove();
     PLAYERCTRL->UnlockDirection();
+
+    PLAYERFSM->SetUnstuffReverse(true);
 }

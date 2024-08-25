@@ -35,6 +35,8 @@ void CKirbyStuffed::Enter()
     PLAYERCTRL->LockDirection();
     PLAYERCTRL->LockJump();
     PLAYERCTRL->LockMove();
+
+    PLAYERFSM->SetUnstuffReverse(false);
 }
 
 void CKirbyStuffed::Exit()
@@ -46,4 +48,6 @@ void CKirbyStuffed::Exit()
     PLAYERCTRL->UnlockDirection();
     PLAYERCTRL->UnlockJump();
     PLAYERCTRL->UnlockMove();
+
+    PLAYERFSM->SetUnstuffReverse(true);
 }

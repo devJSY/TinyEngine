@@ -92,6 +92,9 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
         pShader->AddTexParam(TEX_2, "Skin Normal Texture");
         pShader->AddTexParam(TEX_3, "Skin MRA Texture");
 
+        pShader->AddScalarParam(VEC4_0, "Rim Color");
+        pShader->AddScalarParam(FLOAT_1, "Rim Power");
+
         pShader->SetName(L"NormalEnemyBodyShader");
         AddAsset(L"NormalEnemyBodyShader", pShader);
     }
@@ -114,6 +117,9 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
         pShader->AddTexParam(TEX_1, "Skin Texture");
         pShader->AddTexParam(TEX_2, "MRA Texture");
         pShader->AddTexParam(TEX_3, "Normal Texture");
+
+        pShader->AddScalarParam(VEC4_0, "Rim Color");
+        pShader->AddScalarParam(FLOAT_1, "Rim Power");
 
         pShader->SetName(L"NoddyShader");
         AddAsset(L"NoddyShader", pShader);
@@ -138,6 +144,9 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
         pShader->AddTexParam(TEX_2, "Skin Normal Texture");
         pShader->AddTexParam(TEX_3, "Skin MRA Texture");
 
+        pShader->AddScalarParam(VEC4_0, "Rim Color");
+        pShader->AddScalarParam(FLOAT_1, "Rim Power");
+
         pShader->SetName(L"HotHeadShader");
         AddAsset(L"HotHeadShader", pShader);
     }
@@ -159,6 +168,9 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
         pShader->AddTexParam(TEX_0, "Skin Base Texture");
         pShader->AddTexParam(TEX_1, "Skin Normal Texture");
         pShader->AddTexParam(TEX_2, "Skin MRA Texture");
+
+        pShader->AddScalarParam(VEC4_0, "Rim Color");
+        pShader->AddScalarParam(FLOAT_1, "Rim Power");
 
         pShader->SetName(L"SirKibbleShader");
         AddAsset(L"SirKibbleShader", pShader);
@@ -182,6 +194,10 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
         pShader->AddTexParam(TEX_1, "Skin Normal Texture");
         pShader->AddTexParam(TEX_2, "Skin MRA Texture");
         pShader->AddTexParam(TEX_3, "Skin Emissive Texture");
+
+        pShader->AddScalarParam(INT_0, "Rim Inverse");
+        pShader->AddScalarParam(VEC4_0, "Rim Color");
+        pShader->AddScalarParam(FLOAT_1, "Rim Power");
 
         pShader->SetName(L"GhostGordoShader");
         AddAsset(L"GhostGordoShader", pShader);
@@ -501,9 +517,9 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
 
         pShader->SetRSType(RS_TYPE::CULL_NONE);
         pShader->SetDSType(DS_TYPE::NO_TEST);
-        pShader->SetBSType(BS_TYPE::DEFAULT);
+        pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
 
-        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_OPAQUE);
 
         pShader->AddTexParam(TEX_0, "Texture");
         pShader->AddScalarParam(FLOAT_0, "ALPHATHRESHHOLD");
@@ -867,5 +883,31 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
 
         pShader->SetName(L"EffectShader");
         AddAsset(L"EffectShader", pShader);
+    }
+
+    // =================================
+    // Barricade Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\UnrealPBRVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\BarricadePS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_FRONT);
+        pShader->SetDSType(DS_TYPE::NO_WRITE);
+        pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
+
+        pShader->AddTexParam(TEX_0, "Texture 0");
+        pShader->AddTexParam(TEX_1, "Texture 1");
+
+        pShader->AddScalarParam(FLOAT_0, "Speed", 1e-3f);
+        pShader->AddScalarParam(FLOAT_1, "Alpha", 1e-3f);
+        pShader->AddScalarParam(VEC2_0, "UV Scale", 1e-3f);
+        pShader->AddScalarParam(VEC4_0, "Color", 1e-3f);
+
+        pShader->SetName(L"BarricadeShader");
+        AddAsset(L"BarricadeShader", pShader);
     }
 }

@@ -39,11 +39,11 @@ CKirbyUnitScript::CKirbyUnitScript(const CKirbyUnitScript& _Origin)
 {
     UnitInfo KirbyInfo = {
         _Origin.m_InitInfo.HP, // HP
-        100.f, // MaxHP
-        10.f,  // Speed
-        10.f,  // Rotation Speed
-        11.f,  // JumpPower
-        0.f,   // ATK
+        100.f,                 // MaxHP
+        10.f,                  // Speed
+        10.f,                  // Rotation Speed
+        11.f,                  // JumpPower
+        0.f,                   // ATK
     };
     SetInitInfo(KirbyInfo);
 
@@ -79,13 +79,15 @@ void CKirbyUnitScript::tick()
     // update damage
     float NewDamage = DamageProc();
     wstring State = PLAYERFSM->GetCurState()->GetName();
+    AbilityCopyType CurAbility = PLAYERFSM->GetCurAbilityIdx();
+    ObjectCopyType CurObject = PLAYERFSM->GetCurObjectIdx();
 
     if (NewDamage > 0.f)
     {
         if (State == L"DODGE_START" || State == L"DODGE1" || State == L"DODGE2")
         {
             CTimeMgr::GetInst()->SetTimeScale(1.f, 0.5f);
-            
+
             CGameObject* ManagerObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager");
 
             if (ManagerObj)
@@ -96,8 +98,6 @@ void CKirbyUnitScript::tick()
                     FlowMgr->OnRadialBlurEffect(1.f);
                 }
             }
-
-            
         }
         else if (PLAYERFSM->IsInvincible())
         {
@@ -107,7 +107,8 @@ void CKirbyUnitScript::tick()
         {
             m_CurInfo.HP -= NewDamage * 0.25f;
         }
-        else if (State == L"FALL" || PLAYERFSM->IsDrawing())
+        else if (State == L"FALL" || PLAYERFSM->IsDrawing() ||
+                 (CurObject == ObjectCopyType::NONE && CurAbility == AbilityCopyType::SLEEP && State.find(L"ATTACK") != wstring::npos))
         {
             m_CurInfo.HP -= NewDamage;
         }
@@ -192,8 +193,8 @@ void CKirbyUnitScript::OnControllerColliderHit(ControllerColliderHit Hit)
     if (Hit.Collider->GetOwner()->GetLayerIdx() == LAYER_DYNAMIC && Hit.Collider->Rigidbody())
     {
         Vec3 Force = Hit.Collider->Transform()->GetWorldPos() - PLAYER->Transform()->GetWorldPos();
-        Force.y = 0.f;     
-        Force.Normalize(); 
+        Force.y = 0.f;
+        Force.Normalize();
 
         Vec3 ForceApplied = Force * 10.f;
 
@@ -270,7 +271,6 @@ UINT CKirbyUnitScript::SaveToLevelFile(FILE* _File)
     fwrite(&m_CurInfo.HP, sizeof(float), 1, _File);
 
     MemoryByte += sizeof(float);
-
 
     return MemoryByte;
 }

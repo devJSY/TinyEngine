@@ -5,7 +5,6 @@
 CMorphoMoveG_Jump::CMorphoMoveG_Jump()
     : m_StartHeight(0.f)
     , m_JumpHeight(80.f)
-    , m_PrevDrag(0.f)
 {
 }
 
@@ -42,7 +41,6 @@ void CMorphoMoveG_Jump::Enter_Step()
         // Jump
         GetOwner()->Rigidbody()->AddForce(Vec3(0.f, 25.f, 0.f), ForceMode::Impulse);
         m_StartHeight = GetOwner()->Transform()->GetWorldPos().y;
-        m_PrevDrag = GetOwner()->Rigidbody()->GetDrag();
     }
     break;
     }
@@ -55,7 +53,6 @@ void CMorphoMoveG_Jump::Exit_Step()
     case StateStep::Start:
         break;
     case StateStep::End: {
-        GetOwner()->Rigidbody()->SetDrag(m_PrevDrag);
         GetOwner()->Rigidbody()->SetVelocity(Vec3());
     }
         break;
@@ -72,12 +69,7 @@ void CMorphoMoveG_Jump::Start()
 
 void CMorphoMoveG_Jump::End()
 {
-    // Add drag
     float NewHeight = GetOwner()->Transform()->GetWorldPos().y;
-    float CurDist = NewHeight - m_StartHeight;
-    float Ratio = clamp((CurDist / (m_JumpHeight - m_StartHeight)), 0.f, 1.f) * XM_PI;
-    float NewDrag = 4.f - 4.f * sinf(Ratio);
-    GetOwner()->Rigidbody()->SetDrag(NewDrag);
 
     if (NewHeight >= m_JumpHeight)
     {

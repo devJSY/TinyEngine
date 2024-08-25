@@ -51,16 +51,6 @@ CMonsterUnitScript::CMonsterUnitScript(const CMonsterUnitScript& _Origin)
     , m_fTermTime(0.f)
     , m_fResistTime(0.f)
 {
-    UnitInfo MonsterInfo = {
-        100.f, // HP
-        100.f, // MaxHP
-        1.f,   // Speed
-        3.f,   // Rotation Speed
-        1.f,   // JumpPower
-        10.f,  // ATK
-    };
-    SetInitInfo(MonsterInfo);
-
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_InitInfo.HP, "[Init] HP");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_InitInfo.MAXHP, "[Init] HP max");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_InitInfo.Speed, "[Init] Speed");

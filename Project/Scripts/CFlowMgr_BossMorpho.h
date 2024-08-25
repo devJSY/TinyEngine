@@ -14,10 +14,15 @@ public:
     virtual void TriggerEvent(UINT _Idx);
 
     virtual void LevelStart() override;
+    virtual void LevelEnd() override;
+    virtual void LevelRestart() override;
 
     void ChangeFlowFight();
     void ChangeFlowDeath();
     void ChangeFlowClear();
+
+public:
+    BossLevelFlow GetFlowState() { return m_FlowState; }
 
 private:
     void SpawnMorpho();

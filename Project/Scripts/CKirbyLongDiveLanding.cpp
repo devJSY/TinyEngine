@@ -74,6 +74,7 @@ void CKirbyLongDiveLanding::tick()
         {
             if (PLAYERCTRL->IsGround())
             {
+                ChangeState(L"LONGDIVE_BOUND");
             }
             else if ((KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK)) && PLAYERFSM->GetSlideComboLevel() == 1)
             {

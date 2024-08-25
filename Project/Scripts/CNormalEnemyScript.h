@@ -24,11 +24,12 @@ enum class NormalEnemyState
 class CNormalEnemyScript : public CMonsterUnitScript
 {
 private:
+    CGameObject* m_SnotBubble;
+
     Vec3 m_vPatrolDir;
     Vec3 m_vDamageDir;
     Vec3 m_vCenterPoint;
 
-    NormalEnemyState m_ePrevState;
     NormalEnemyState m_eState;
 
     float m_fMaxSpeed;
@@ -38,6 +39,7 @@ private:
     float m_fThreshHoldRushSpeedLerp;
 
     bool m_bEnter;
+    bool m_bSleep;
     bool m_bFirst;
     bool m_bCirclePatrol;
 
@@ -59,6 +61,7 @@ private:
     Vec3 TrackDir(Vec3 _vPos);
     void ApplyDir(Vec3 _vFront, bool _flag);
     void PatrolMove();
+    void SetSnotBubble();
 
 private:
     void Idle();
@@ -73,6 +76,7 @@ private:
     void Eaten();
     void Damage();
     void Death();
+    void Sleep();
 
 private:
     void OnTriggerEnter(CCollider* _OtherCollider);

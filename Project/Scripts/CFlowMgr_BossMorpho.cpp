@@ -108,6 +108,18 @@ void CFlowMgr_BossMorpho::ChangeFlowFight()
     m_FlowState = BossLevelFlow::Fight;
 }
 
+void CFlowMgr_BossMorpho::LevelEnd()
+{
+    CLevelFlowMgr::LevelEnd();
+    SetFadeEffectColor(Vec3(164.f, 44.f, 174.f));
+}
+
+void CFlowMgr_BossMorpho::LevelRestart()
+{
+    CLevelFlowMgr::LevelRestart();
+    SetFadeEffectColor(Vec3(255.f, 150.f, 100.f));
+}
+
 void CFlowMgr_BossMorpho::ChangeFlowDeath()
 {
     TurnOffPlayerHP();
@@ -118,10 +130,16 @@ void CFlowMgr_BossMorpho::ChangeFlowDeath()
 
 void CFlowMgr_BossMorpho::ChangeFlowClear()
 {
+    MRPFSM->ChangeStateGroup(MorphoStateGroup::Idle, L"IDLE");
+    BOSS->SetActive(false);
+
     CAMERACTRL->SetMainTarget(PLAYER);
     CAMERACTRL->Normal(true);
     CAMERACTRL->SetImmediate(false);
+    
     PLAYERFSM->ChangeState(L"STAGE_CLEAR");
+
+    m_FlowState = BossLevelFlow::Clear;
 }
 
 void CFlowMgr_BossMorpho::TriggerEvent(UINT _Idx)

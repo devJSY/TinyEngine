@@ -25,6 +25,10 @@ public:
 public:
     virtual void TriggerEvent(UINT _Idx);
 
+public:
+    virtual void LevelEnd() override;
+    virtual void LevelRestart() override;
+
 private:
     void Idle();
     void LightOut();

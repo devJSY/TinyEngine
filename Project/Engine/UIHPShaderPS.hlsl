@@ -1,6 +1,9 @@
 
 #include "struct.hlsli"
 #include "global.hlsli"
+#include "func.hlsli"
+
+#define EmissionColor g_vec4_3
 
 float4 main(PS_IN _in) : SV_Target
 {
@@ -21,6 +24,8 @@ float4 main(PS_IN _in) : SV_Target
         if (texColor.a <= 0.1f)
             discard;
     }
+    
+    output *= EmissionColor;
     
     return output;
 }

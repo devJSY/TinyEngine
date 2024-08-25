@@ -45,6 +45,7 @@ void CKirbyStuffedDamage::Enter()
     PLAYERFSM->SetGlobalState(true);
     PLAYERFSM->SetInvincible(true, 3.f);
     PLAYERFSM->SetEmissive(true, 3.f);
+    PLAYERFSM->SetUnstuffReverse(false);
 
     m_AccTime = 0.f;
 }
@@ -63,4 +64,5 @@ void CKirbyStuffedDamage::Exit()
     PLAYERCTRL->SetFriction(1.f);
     PLAYERCTRL->SetFrictionMode(false);
     PLAYERCTRL->SetGravity(-20.f);
+    PLAYERFSM->SetUnstuffReverse(true);
 }

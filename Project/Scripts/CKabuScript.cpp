@@ -23,7 +23,7 @@ CKabuScript::CKabuScript()
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_vDestPos, "DestPos");
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bCurved, "Curved");
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bHalfCurved, "Half Curved");
-    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bInverse, "Inverse");
+    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bInverse, "MoveZ");
 }
 
 CKabuScript::CKabuScript(const CKabuScript& Origin)
@@ -46,7 +46,7 @@ CKabuScript::CKabuScript(const CKabuScript& Origin)
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_vDestPos, "DestPos");
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bCurved, "Curved");
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bHalfCurved, "Half Curved");
-    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bInverse, "Inverse");
+    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bInverse, "MoveZ");
 }
 
 CKabuScript::~CKabuScript()
@@ -107,10 +107,23 @@ void CKabuScript::OnTriggerEnter(CCollider* _OtherCollider)
             return;
         }
     }
+}
+
+void CKabuScript::OnTriggerStay(CCollider* _OtherCollider)
+{
+    if (KabuState::Eaten == m_eState)
+        return;
+
+    CGameObject* pObj = _OtherCollider->GetOwner();
 
     Vec3 vDir = PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos();
     UnitHit hitInfo = {DAMAGE_TYPE::NORMAL, vDir.Normalize(), GetCurInfo().ATK, 0.f, 0.f};
-    L"Body Collider" == pObj->GetName() ? pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo) : void();
+    UINT Layer = _OtherCollider->GetOwner()->GetLayerIdx();
+
+    if (Layer == LAYER_PLAYER_TRIGGER && L"Body Collider" == pObj->GetName())
+    {
+        pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo);
+    }
 }
 
 void CKabuScript::OnTriggerExit(CCollider* _OtherCollider)
@@ -221,9 +234,19 @@ void CKabuScript::EnterState(KabuState _state)
         Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
 
         Vec3 vHitDir = GetOwner()->GetScript<CUnitScript>()->GetHitDir();
-        vHitDir.y = 1.5f;
+        float fForce = 0.f;
+        if (GetCurInfo().HP <= 0.1f)
+        {
+            fForce = 200.f;
+            vHitDir.y = 1.5f;
+        }
+        else
+        {
+            fForce = 140.f;
+            vHitDir.y = 1.f;
+        }
 
-        Rigidbody()->AddForce(vHitDir.Normalize() * 5.f, ForceMode::Impulse);
+        Rigidbody()->AddForce(vHitDir.Normalize() * fForce, ForceMode::Impulse);
 
         Animator()->Play(ANIMPREFIX("Damage"), false, false, 1.5f);
     }
@@ -315,7 +338,7 @@ void CKabuScript::PatrolMove()
     }
     else
     {
-        LinearMove();
+        LinearMove(m_bInverse);
     }
 }
 
@@ -373,23 +396,51 @@ void CKabuScript::CircleMove()
     }
 }
 
-void CKabuScript::LinearMove()
+void CKabuScript::LinearMove(bool _moveZ)
 {
     Vec3 vPos = Transform()->GetLocalPos();
 
     m_vDir.y = 0.f;
 
-    Rigidbody()->SetVelocity(m_vDir * GetCurInfo().Speed * DT);
+    Rigidbody()->SetVelocity(m_vDir * GetCurInfo().Speed * DT + Vec3(0.f, -9.81f, 0.f));
 
-    if ((m_vDestPos.x - 10.f <= vPos.x && vPos.x <= m_vDestPos.x + 10.f) && (m_vDestPos.z - 5.f <= vPos.z && vPos.z <= m_vDestPos.z + 5.f))
+    if (_moveZ)
     {
-        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
-        Vec3 vTemp = m_vDestPos;
-        m_vDestPos = m_vOriginPos;
-        m_vOriginPos = vTemp;
-        m_vDestPos.y = 0.f;
-        m_vOriginPos.y = 0.f;
-        m_vDir = m_vDir * -1.f;
+        if (m_vDir.z <= -0.8f)
+        {
+            if (m_vOriginPos.z >= vPos.z)
+            {
+                m_vDir = Vec3(0.f, 0.f, 1.f);
+                Rigidbody()->SetVelocity(Vec3(0.f, -9.81f, 0.f));
+            }
+        }
+        else
+        {
+            if (m_vDestPos.z <= vPos.z)
+            {
+                m_vDir = Vec3(0.f, 0.f, -1.f);
+                Rigidbody()->SetVelocity(Vec3(0.f, -9.81f, 0.f));
+            }
+        }
+    }
+    else
+    {
+        if (m_vDir.x <= -0.8f)
+        {
+            if (m_vOriginPos.x >= vPos.x)
+            {
+                m_vDir = Vec3(1.f, 0.f, 0.f);
+                Rigidbody()->SetVelocity(Vec3(0.f, -9.81f, 0.f));
+            }
+        }
+        else
+        {
+            if (m_vDestPos.x <= vPos.x)
+            {
+                m_vDir = Vec3(-1.f, 0.f, 0.f);
+                Rigidbody()->SetVelocity(Vec3(0.f, -9.81f, 0.f));
+            }
+        }
     }
 }
 
@@ -440,19 +491,9 @@ void CKabuScript::Damage()
     }
     else
     {
-        if (!m_bFlag)
-        {
-            Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
-
-            m_vDamageDir.Normalize();
-            m_vDamageDir.y = 1.5f;
-            Rigidbody()->AddForce(m_vDamageDir * 50.f, ForceMode::Impulse);
-            m_bFlag = true;
-        }
-
         if (Animator()->IsFinish())
         {
-            ChangeState(KabuState::Patrol);
+            ChangeState(KabuState::Fall);
         }
     }
 }
@@ -484,7 +525,7 @@ void CKabuScript::Return()
 
     Rigidbody()->SetVelocity(m_vDir * GetCurInfo().Speed * DT);
 
-    if ((m_vDestPos.x - 5.f <= vPos.x && vPos.x <= m_vDestPos.x + 5.f) && (m_vDestPos.z - 5.f <= vPos.z && vPos.z <= m_vDestPos.z + 5.f))
+    if ((m_vDestPos.x - 10.f <= vPos.x && vPos.x <= m_vDestPos.x + 5.f) && (m_vDestPos.z - 5.f <= vPos.z && vPos.z <= m_vDestPos.z + 5.f))
     {
         Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
         Vec3 vTemp = m_vDestPos;

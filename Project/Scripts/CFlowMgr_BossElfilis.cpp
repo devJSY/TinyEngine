@@ -75,7 +75,7 @@ void CFlowMgr_BossElfilis::tick()
         break;
     case BossLevelFlow::Fight:
         break;
-    case BossLevelFlow::DeathStart:
+    case BossLevelFlow::DemoPlay:
         break;
     case BossLevelFlow::Death:
         break;
@@ -110,7 +110,7 @@ void CFlowMgr_BossElfilis::ChangeFlowResist()
     PLAYERFSM->ChangeState(L"IDLE");
     PLAYERCTRL->LockInput();
 
-    m_FlowState = BossLevelFlow::DeathStart;
+    m_FlowState = BossLevelFlow::DemoPlay;
 }
 
 void CFlowMgr_BossElfilis::ChangeFlowDeath()
@@ -119,6 +119,18 @@ void CFlowMgr_BossElfilis::ChangeFlowDeath()
     TurnOffBossHP();
 
     m_FlowState = BossLevelFlow::Death;
+}
+
+void CFlowMgr_BossElfilis::LevelEnd()
+{
+    CLevelFlowMgr::LevelEnd();
+    SetFadeEffectColor(Vec3(252.f, 75.f, 129.f));
+}
+
+void CFlowMgr_BossElfilis::LevelRestart()
+{
+    CLevelFlowMgr::LevelRestart();
+    SetFadeEffectColor(Vec3(180.f, 140.f, 200.f));
 }
 
 void CFlowMgr_BossElfilis::SpawnElfilis()

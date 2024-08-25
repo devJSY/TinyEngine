@@ -44,7 +44,7 @@ void CFlowMgr_LvStart::LevelStart()
     }
     else
     {
-        SetFadeEffect(Vec3(255.f, 0.f, 255.f), true, 1.f, 1.25f, true);
+        SetFadeEffect(Vec3(252.f, 75.f, 129.f), true, 1.f, 1.25f, true);
     }
 
     Ptr<CPrefab> KirbyPref =  CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Kirby.pref");
@@ -67,7 +67,18 @@ void CFlowMgr_LvStart::LevelEnd()
     CLevelFlowMgr::LevelEnd();
 
     ActiveFadeEffect(true);
-    SetFadeEffect(Vec3(255.f, 0.f, 255.f), false, 1.f, 1.25f, true);
+    SetFadeEffect(Vec3(252.f, 75.f, 129.f), false, 1.f, 1.25f, true);
+}
+
+void CFlowMgr_LvStart::LevelRestart()
+{
+    CLevelFlowMgr::LevelRestart();
+    SetFadeEffectColor(Vec3(252.f, 75.f, 129.f));
+}
+
+void CFlowMgr_LvStart::RobbyLevel()
+{
+    return;
 }
 
 UINT CFlowMgr_LvStart::SaveToLevelFile(FILE* _File)

@@ -67,7 +67,12 @@ void CSpookStepScript::OnTriggerEnter(CCollider* _OtherCollider)
 
     Vec3 vDir = PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos();
     UnitHit hitInfo = {DAMAGE_TYPE::NORMAL, vDir.Normalize(), GetCurInfo().ATK, 0.f, 0.f};
-    L"Body Collider" == pObj->GetName() ? pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo) : void();
+    UINT Layer = _OtherCollider->GetOwner()->GetLayerIdx();
+
+    if (Layer == LAYER_PLAYER_TRIGGER && L"Body Collider" == pObj->GetName())
+    {
+        pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo);
+    }
 }
 
 void CSpookStepScript::OnTriggerExit(CCollider* _OtherCollider)
@@ -118,11 +123,21 @@ void CSpookStepScript::EnterState()
         Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
 
         Vec3 vHitDir = GetOwner()->GetScript<CUnitScript>()->GetHitDir();
-        vHitDir.y = 1.5f;
+        float fForce = 0.f;
+        if (GetCurInfo().HP <= 0.1f)
+        {
+            fForce = 9.f;
+            vHitDir.y = 1.5f;
+        }
+        else
+        {
+            fForce = 6.f;
+            vHitDir.y = 1.f;
+        }
 
-        Rigidbody()->AddForce(vHitDir.Normalize() * 5.f, ForceMode::Impulse);
+        Rigidbody()->AddForce(vHitDir.Normalize() * fForce, ForceMode::Impulse);
 
-        Animator()->Play(ANIMPREFIX("Damage"), false);
+        Animator()->Play(ANIMPREFIX("Damage"), false, false, 1.f);
     }
     break;
     case SpookStepState::Eaten: {

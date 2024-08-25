@@ -2,11 +2,15 @@
 #include "global.hlsli"
 #include "func.hlsli"
 #include "UnrealPBRCommon.hlsli"
+#include "Light.hlsli"
 
 #define MtrlAlbedo g_vAlbedo
 #define MtrlMetallic g_vMetallic
 #define MtrlRoughness g_vRoughness
 #define MtrlEmission g_vEmission
+
+#define RimColor g_vec4_0
+#define RimPower g_float_1
 
 PS_OUT_DEFERRED main(PS_IN input)
 {

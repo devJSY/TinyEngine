@@ -6,10 +6,14 @@ class CElfilisG_BackStep : public CBossState
 private:
     Vec3 m_StartPos;
     Vec3 m_TargetPos;
+    Vec3 m_ForceDir;
     float m_PrevDrag;
+    bool m_bFinishMove;
+    bool m_bWall;
 
 public:
-    virtual void tick();
+    virtual void tick() override;
+    virtual void Exit() override;
 
 private:
     void Enter_Step();
@@ -19,6 +23,8 @@ private:
     void Start();
     void Progress();
     void End();
+
+    void MoveBack();
 
 public:
     CLONE(CElfilisG_BackStep)
