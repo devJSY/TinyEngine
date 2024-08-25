@@ -16,6 +16,8 @@ CPlayerHitbox::CPlayerHitbox()
     , m_bRepeatDamage(true)
     , m_bRepeatEnter(false)
     , m_bRepeat(false)
+    , m_CoolTime(0.3f)
+    , m_PrevAttackTime(0.f)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Damage, "Damage");
     AddScriptParam(SCRIPT_PARAM::INT, &m_DamageTypeIdx, "Damage Type");
@@ -38,6 +40,8 @@ CPlayerHitbox::CPlayerHitbox(const CPlayerHitbox& _Origin)
     , m_bRepeatDamage(_Origin.m_bRepeatDamage)
     , m_bRepeatEnter(false)
     , m_bRepeat(false)
+    , m_CoolTime(_Origin.m_CoolTime)
+    , m_PrevAttackTime(0.f)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Damage, "Damage");
     AddScriptParam(SCRIPT_PARAM::INT, &m_DamageTypeIdx, "Damage Type");
@@ -82,6 +86,12 @@ void CPlayerHitbox::tick()
 
 void CPlayerHitbox::OnTriggerEnter(CCollider* _OtherCollider)
 {
+    if (DT_ENGINE - m_PrevAttackTime < m_CoolTime)
+    {
+        return;
+    }
+    m_PrevAttackTime = DT_ENGINE;
+
     UINT Layer = _OtherCollider->GetOwner()->GetLayerIdx();
     wstring Name = _OtherCollider->GetOwner()->GetName();
     CGameObject* pMonster = nullptr;
