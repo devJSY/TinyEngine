@@ -264,7 +264,11 @@ int CDevice::CreateSwapChain()
     tDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
     tDesc.SampleDesc.Count = 1;
     tDesc.SampleDesc.Quality = 0;
-    tDesc.Windowed = true;             // 창모드
+#ifdef DISTRIBUTE
+    tDesc.Windowed = false; // 전체 모드
+#else
+    tDesc.Windowed = true; // 창 모드
+#endif
     tDesc.OutputWindow = m_hRenderWnd; // SwapChain 의 출력 윈도우 지정
 
     // 스왚체인 생성기능을 가지고 있는 Factory 에 접근한다.
