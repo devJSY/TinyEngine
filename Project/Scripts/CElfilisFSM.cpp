@@ -491,12 +491,12 @@ void CElfilisFSM::tick()
     //    Rigidbody()->SetAngularVelocity(Vec3());
     //    ChangeStateGroup(ElfilisStateGroup::AirSmallAtk1, L"AIR_ATKS_RAYARROW_UP");
     //}
-    //if (KEY_TAP(KEY::ENTER))
-    //{
-    //    Rigidbody()->SetVelocity(Vec3());
-    //    Rigidbody()->SetAngularVelocity(Vec3());
-    //    ChangeStateGroup(ElfilisStateGroup::GroundAtkFar, L"GROUND_ATK_SWORDWAVE_RL");
-    //}
+    if (KEY_TAP(KEY::ENTER))
+    {
+        Rigidbody()->SetVelocity(Vec3());
+        Rigidbody()->SetAngularVelocity(Vec3());
+        ChangeStateGroup(ElfilisStateGroup::GroundAtkNear);
+    }
 }
 
 void CElfilisFSM::OnCollisionEnter(CCollider* _OtherCollider)

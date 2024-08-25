@@ -32,10 +32,10 @@ void CElfilisUnit::tick()
 {
     CUnitScript::tick();
 
-    if (KEY_TAP(KEY::ENTER))
-    {
-        m_CurInfo.HP = 10.f;
-    }
+    //if (KEY_TAP(KEY::ENTER))
+    //{
+    //    m_CurInfo.HP = 10.f;
+    //}
 
     // Death & Resist
     if (GetCurInfo().HP <= 50.f && !ELFFSM->IsResist())
