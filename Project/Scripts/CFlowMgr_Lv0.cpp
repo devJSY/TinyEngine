@@ -131,6 +131,24 @@ void CFlowMgr_Lv0::TriggerEvent(UINT _Idx)
         }
     }
     break;
+    // LensFlare Enter Trigger
+    case 5: {
+        CGameObject* pLensFlareObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"LensFlare");
+        if (nullptr != pLensFlareObj)
+        {
+            pLensFlareObj->SetActive(true);
+        }
+    }
+    break;
+    // LensFlare Exit Trigger
+    case 6: {
+        CGameObject* pLensFlareObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"LensFlare");
+        if (nullptr != pLensFlareObj)
+        {
+            pLensFlareObj->SetActive(false);
+        }
+    }
+    break;
     default:
         break;
     }
