@@ -946,6 +946,9 @@
     <ClInclude Include="CDamageStarEffect.h">
       <Filter>Scripts\UI\UIEffect</Filter>
     </ClInclude>
+    <ClInclude Include="CMonsterDeadEffectSpawnScript.h">
+      <Filter>Scripts\UI\UIEffect\UIDamageStarSpawnEffect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1901,6 +1904,9 @@
     </ClCompile>
     <ClCompile Include="CDamageStarEffect.cpp">
       <Filter>Scripts\UI\UIEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="CMonsterDeadEffectSpawnScript.cpp">
+      <Filter>Scripts\UI\UIEffect\UIDamageStarSpawnEffect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

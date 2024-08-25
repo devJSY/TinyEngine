@@ -73,6 +73,32 @@ CMonsterUnitScript::~CMonsterUnitScript()
 {
 }
 
+void CMonsterUnitScript::SpawnDeadEffect(int _iSize)
+{
+    CGameObject* pSpawnEffect = nullptr;
+    if (0 == _iSize)
+    {
+        pSpawnEffect = CAssetMgr::GetInst()
+                           ->Load<CPrefab>(L"prefab\\(L)Effect_MonsterDieEffect.pref", L"prefab\\(L)Effect_MonsterDieEffect.pref")
+                           ->Instantiate();
+    }
+    else if (1 == _iSize)
+    {
+        pSpawnEffect = CAssetMgr::GetInst()
+                           ->Load<CPrefab>(L"prefab\\(M)Effect_MonsterDieEffect.pref", L"prefab\\(M)Effect_MonsterDieEffect.pref")
+                           ->Instantiate();
+    }
+    else
+    {
+        pSpawnEffect = CAssetMgr::GetInst()
+                           ->Load<CPrefab>(L"prefab\\(M)Effect_MonsterDieEffect.pref", L"prefab\\(M)Effect_MonsterDieEffect.pref")
+                           ->Instantiate();
+    }
+
+    pSpawnEffect->Transform()->SetWorldPos(GetOwner()->Transform()->GetWorldPos());
+    GamePlayStatic::SpawnGameObject(pSpawnEffect, pSpawnEffect->GetLayerIdx());
+}
+
 void CMonsterUnitScript::begin()
 {
     CUnitScript::begin();

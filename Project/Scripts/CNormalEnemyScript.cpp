@@ -708,7 +708,10 @@ void CNormalEnemyScript::Damage()
 void CNormalEnemyScript::Death()
 {
     if (Animator()->IsFinish())
+    {
+        SpawnDeadEffect(2);
         GamePlayStatic::DestroyGameObject(GetOwner());
+    }
 }
 
 void CNormalEnemyScript::Sleep()

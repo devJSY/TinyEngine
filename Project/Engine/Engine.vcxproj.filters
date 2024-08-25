@@ -1154,6 +1154,9 @@
     <Filter Include="ShaderCode\Kirby\Map\Invasion at the House of Horror">
       <UniqueIdentifier>{421a40da-c45f-4cff-87f9-0051de4dd71d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ShaderCode\Kirby\UIShader\EffectMaskingShader">
+      <UniqueIdentifier>{64fd1e64-cb64-451b-b37d-5c33e8301cbd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="global.hlsli">
@@ -1532,6 +1535,9 @@
     </FxCompile>
     <FxCompile Include="RimOnlyPS.hlsl">
       <Filter>ShaderCode\Kirby\Common</Filter>
+    </FxCompile>
+    <FxCompile Include="EffectMaskingPS.hlsl">
+      <Filter>ShaderCode\Kirby\UIShader\EffectMaskingShader</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

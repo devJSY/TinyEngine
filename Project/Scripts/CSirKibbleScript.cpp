@@ -687,6 +687,10 @@ void CSirKibbleScript::Fall()
 #pragma region DEATH
 void CSirKibbleScript::Death()
 {
-    Animator()->IsFinish() ? GamePlayStatic::DestroyGameObject(GetOwner()) : void();
+    if (Animator()->IsFinish())
+    {
+        SpawnDeadEffect(2);
+        GamePlayStatic::DestroyGameObject(GetOwner());
+    }
 }
 #pragma endregion

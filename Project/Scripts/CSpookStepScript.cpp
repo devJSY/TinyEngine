@@ -361,7 +361,11 @@ void CSpookStepScript::Damage()
 #pragma region DISAPPEAR
 void CSpookStepScript::Disappear()
 {
-    Animator()->IsFinish() ? GamePlayStatic::DestroyGameObject(GetOwner()) : void();
+    if (Animator()->IsFinish())
+    {
+        SpawnDeadEffect(2);
+        GamePlayStatic::DestroyGameObject(GetOwner());
+    }
 }
 #pragma endregion
 

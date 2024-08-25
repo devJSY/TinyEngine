@@ -642,6 +642,10 @@ void CHotHeadScript::Eaten()
 #pragma region DEATH
 void CHotHeadScript::Death()
 {
-    Animator()->IsFinish() ? GamePlayStatic::DestroyGameObject(GetOwner()) : void();
+    if (Animator()->IsFinish())
+    {
+        SpawnDeadEffect(2);
+        GamePlayStatic::DestroyGameObject(GetOwner());
+    }
 }
 #pragma endregion

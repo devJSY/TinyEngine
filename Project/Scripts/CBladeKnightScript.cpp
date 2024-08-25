@@ -219,12 +219,12 @@ void CBladeKnightScript::EnterState()
         float fForce = 0.f;
         if (GetCurInfo().HP <= 0.1f)
         {
-            fForce = 8.f;
+            fForce = 6.f;
             Impulse.y = 1.5f;
         }
         else
         {
-            fForce = 5.f;
+            fForce = 3.5f;
             Impulse.y = 1.f;
         }
 
@@ -368,6 +368,7 @@ void CBladeKnightScript::ExitState()
         if (m_CurInfo.HP <= 0.f)
         {
             GamePlayStatic::DestroyGameObject(GetOwner());
+            SpawnDeadEffect(2);
         }
         Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
         Rigidbody()->SetAngularVelocity(Vec3(0.f, 0.f, 0.f));

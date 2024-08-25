@@ -545,6 +545,10 @@ void CTackleEnemyScript::Wait()
 #pragma region DEATH
 void CTackleEnemyScript::Death()
 {
-    Animator()->IsFinish() ? GamePlayStatic::DestroyGameObject(GetOwner()) : void();
+    if (Animator()->IsFinish())
+    {
+        SpawnDeadEffect(0);
+        GamePlayStatic::DestroyGameObject(GetOwner());
+    }
 }
 #pragma endregion

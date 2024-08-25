@@ -227,11 +227,53 @@ float CDamageStarEffect::RandomizePow()
 UINT CDamageStarEffect::SaveToLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;
+
+    fwrite(&m_bUseGravity, sizeof(bool), 1, _File);
+    fwrite(&m_eTickType, sizeof(UINT), 1, _File);
+    fwrite(&m_eSpawnType, sizeof(UINT), 1, _File);
+    fwrite(&m_fMaxScale, sizeof(float), 1, _File);
+    fwrite(&m_fPower, sizeof(float), 1, _File);
+    fwrite(&m_fRadomMizeMinScale, sizeof(float), 1, _File);
+    fwrite(&m_fRadomMizeMaxScale, sizeof(float), 1, _File);
+    fwrite(&m_fRandomMizeMinPower, sizeof(float), 1, _File);
+    fwrite(&m_fRandomMizeMaxPower, sizeof(float), 1, _File);
+
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(UINT);
+    MemoryByte += sizeof(UINT);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+
     return MemoryByte;
 }
 
 UINT CDamageStarEffect::LoadFromLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;
+
+    fread(&m_bUseGravity, sizeof(bool), 1, _File);
+    fread(&m_eTickType, sizeof(UINT), 1, _File);
+    fread(&m_eSpawnType, sizeof(UINT), 1, _File);
+    fread(&m_fMaxScale, sizeof(float), 1, _File);
+    fread(&m_fPower, sizeof(float), 1, _File);
+    fread(&m_fRadomMizeMinScale, sizeof(float), 1, _File);
+    fread(&m_fRadomMizeMaxScale, sizeof(float), 1, _File);
+    fread(&m_fRandomMizeMinPower, sizeof(float), 1, _File);
+    fread(&m_fRandomMizeMaxPower, sizeof(float), 1, _File);
+
+    MemoryByte += sizeof(bool);
+    MemoryByte += sizeof(UINT);
+    MemoryByte += sizeof(UINT);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+    MemoryByte += sizeof(float);
+
     return MemoryByte;
 }

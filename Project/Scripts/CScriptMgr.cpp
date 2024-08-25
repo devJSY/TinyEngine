@@ -119,6 +119,7 @@
 #include "CKirbyCantEat.h"
 #include "CBossDropStarScript.h"
 #include "CDamageStarEffect.h"
+#include "CMonsterDeadEffectSpawnScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -240,6 +241,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CKirbyCantEat");
 	_vec.push_back(L"CBossDropStarScript");
 	_vec.push_back(L"CDamageStarEffect");
+	_vec.push_back(L"CMonsterDeadEffectSpawnScript");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -480,6 +482,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CBossDropStarScript;
 	if (L"CDamageStarEffect" == _strScriptName)
 		return new CDamageStarEffect;
+	if (L"CMonsterDeadEffectSpawnScript" == _strScriptName)
+		return new CMonsterDeadEffectSpawnScript;
 	return nullptr;
 }
 
@@ -723,6 +727,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CBossDropStarScript;
 	case (UINT)SCRIPT_TYPE::DAMAGESTAREFFECT:
 		return new CDamageStarEffect;
+	case (UINT)SCRIPT_TYPE::MONSTERDEADEFFECTSPAWNSCRIPT:
+		return new CMonsterDeadEffectSpawnScript;
 	}
 	return nullptr;
 }
@@ -967,6 +973,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CBossDropStarScript";
 	case SCRIPT_TYPE::DAMAGESTAREFFECT:
 		return L"CDamageStarEffect";
+	case SCRIPT_TYPE::MONSTERDEADEFFECTSPAWNSCRIPT:
+		return L"CMonsterDeadEffectSpawnScript";
 	}
 	return nullptr;
 }

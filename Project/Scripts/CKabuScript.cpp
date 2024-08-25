@@ -517,6 +517,7 @@ void CKabuScript::Death()
 {
     if (Animator()->IsFinish())
     {
+        SpawnDeadEffect(1);
         GamePlayStatic::DestroyGameObject(GetOwner());
     }
 }
