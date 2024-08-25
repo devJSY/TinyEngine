@@ -12,7 +12,7 @@ CKirbyStuffedJumpFall::~CKirbyStuffedJumpFall()
 void CKirbyStuffedJumpFall::tick()
 {
     // Change State
-    if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
+    if (KEY_TAP(KEY_ATK))
     {
         ChangeState(L"ATTACK");
     }
