@@ -57,8 +57,15 @@ void CMorphoDemo_Death::Enter_Step()
         GetOwner()->Animator()->SetPlay(false);
         m_AccTime = 0.f;
 
+        MRPFSM->SetGlobalState(true);
+
         //Camera : Àá±ñ¸ØÃã
         CAMERACTRL->SetLock(true, 0.5f);
+
+        if (CBossMgr::GetMorphoFlowMgr())
+        {
+            CBossMgr::GetMorphoFlowMgr()->ChangeFlowDeath();
+        }
     }
     break;
     case StateStep::Start: {
@@ -71,11 +78,6 @@ void CMorphoDemo_Death::Enter_Step()
         CAMERACTRL->SetImmediate(true);
         CAMERACTRL->SetMainTarget(BOSS->GetChildObject(L"CameraTarget"));
         CAMERACTRL->SetRotationSpeed(30.f);
-
-        if (CBossMgr::GetMorphoFlowMgr())
-        {
-            CBossMgr::GetMorphoFlowMgr()->ChangeFlowDeath();
-        }
     }
     break;
     case StateStep::Wait: {
@@ -86,7 +88,6 @@ void CMorphoDemo_Death::Enter_Step()
     break;
     case StateStep::End: {
         GetOwner()->Animator()->Play(ANIMPREFIX("DeathFloatAll"), false, false, 1.5f);
-        MRPFSM->SetGlobalState(false);
     }
     break;
     }
@@ -149,6 +150,7 @@ void CMorphoDemo_Death::End()
 
         if (CBossMgr::GetMorphoFlowMgr())
         {
+            MRPFSM->SetGlobalState(false);
             CBossMgr::GetMorphoFlowMgr()->ChangeFlowClear();
         }
     }

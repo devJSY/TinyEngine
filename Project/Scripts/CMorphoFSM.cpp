@@ -156,10 +156,10 @@ void CMorphoFSM::tick()
 {
     CFSMScript::tick();
 
-    if (KEY_TAP(KEY::ENTER))
-    {
-        ChangeStateGroup(MorphoStateGroup::DEMO, L"DEMO_DEATH");
-    }
+    //if (KEY_TAP(KEY::ENTER))
+    //{
+    //    ChangeStateGroup(MorphoStateGroup::DEMO, L"DEMO_DEATH");
+    //}
 
     // Emissive
     if (m_TeleportAppearTime > 0.f)
@@ -598,6 +598,17 @@ void CMorphoFSM::OffWeaponRTrigger()
         return;
 
     m_WeaponR->BoxCollider()->SetEnabled(false);
+}
+
+void CMorphoFSM::ResetFSM()
+{
+    SetGlobalState(false);
+    SetPattern(MorphoPatternType::NONE);
+    ClearComboLevel();
+    OffWeaponLTrigger();
+    OffWeaponRTrigger();
+    EnableRender();
+    ResetEmissive();
 }
 
 void CMorphoFSM::ResetEmissive()
