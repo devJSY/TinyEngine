@@ -39,8 +39,8 @@ void CElfilisStormScript::tick()
 {
     m_AccTime += DT;
 
-    // Scaling
-    static float SpawnTime = 0.2f;
+    // Spawn
+    float SpawnTime = 0.3f;
 
     if (m_AccTime <= SpawnTime)
     {
@@ -52,11 +52,11 @@ void CElfilisStormScript::tick()
     if (m_StormRed && m_StormWhite)
     {
         Vec3 NewRot = m_StormRed->Transform()->GetLocalRotation();
-        NewRot.y -= XMConvertToRadians(360.f * 4.f * DT);
+        NewRot.y -= XMConvertToRadians(360.f * 2.f * DT);
         m_StormRed->Transform()->SetLocalRotation(NewRot);
         
         NewRot = m_StormWhite->Transform()->GetLocalRotation();
-        NewRot.y -= XMConvertToRadians(360.f * 8.f * DT);
+        NewRot.y -= XMConvertToRadians(360.f * 4.f * DT);
         m_StormWhite->Transform()->SetLocalRotation(NewRot);
     }
 
@@ -68,9 +68,19 @@ void CElfilisStormScript::tick()
     float Delta1 = sinf(Angle) * (150.f * m_AccTime);
     Transform()->SetWorldPos(m_CenterPosition + Vec3(Delta0, 0.f, Delta1));
 
+    // End
+    float EndTime = 0.3f;
+
+    if (m_AccTime > m_PlayTime - EndTime)
+    {
+        float t = clamp(1.f - (m_AccTime - (m_PlayTime - EndTime)) / EndTime, 0.f, 1.f);
+        Transform()->SetLocalScale(m_OriginScale * Vec3(t, 1.f, t));
+    }
+    
     // Destroy
     if (m_AccTime > m_PlayTime)
     {
+        Transform()->SetLocalScale(m_OriginScale * Vec3(0.f, 1.f, 0.f));
         GamePlayStatic::DestroyGameObject(GetOwner());
     }
 }

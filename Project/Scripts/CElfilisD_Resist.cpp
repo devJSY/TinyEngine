@@ -38,8 +38,16 @@ void CElfilisD_Resist::tick()
 
 void CElfilisD_Resist::Enter()
 {
+    ELFFSM->SetResist(true);
+
     m_Step = StateStep::ReadyStart;
     Enter_Step();
+}
+
+void CElfilisD_Resist::Exit()
+{
+    ELFFSM->SetResist(false);
+    Exit_Step();
 }
 
 void CElfilisD_Resist::Enter_Step()
@@ -49,21 +57,36 @@ void CElfilisD_Resist::Enter_Step()
     case StateStep::ReadyStart: {
         GetOwner()->Animator()->Play(ANIMPREFIX("LastDamageStart"), false, false, 1.5f, 0.f);
         GetOwner()->Transform()->SetWorldPos(ELFFSM->GetMapFloorOffset());
+        GetOwner()->Transform()->SetWorldRotation(Vec3());
         CBossMgr::GetElfilisFlowMgr()->ChangeFlowResist();
-        //@CAMERA 에피리스 타겟 (진입위치, 각도 등 항상 같음)
+
+        // Camera : 에피리스 타겟 (진입위치, 각도 등 항상 같음)
+        CAMERACTRL->SetMainTarget(BOSS);
+        CAMERACTRL->SetOffset(Vec3(0.f, 0.f, 0.f));
+        CAMERACTRL->SetTargetOffset(Vec3(0.f, 50.f, 0.f));
+        CAMERACTRL->SetSubTargetOffset(Vec3(0.f, 0.f, 0.f));
+        CAMERACTRL->SetLookDir(Vec3(0.2f, -0.3f, -1.f).Normalize());
+        CAMERACTRL->SetLookDist(400.f);
+        CAMERACTRL->Normal(true);
     }
     break;
     case StateStep::Ready: {
         GetOwner()->Animator()->Play(ANIMPREFIX("LastDamageWait"), false, false, 1.5f);
         m_AccTime = 0.f;
 
-        //@CAMERA 줌인
+        // Camera : 줌인
+        CAMERACTRL->SetLookDir(Vec3(-0.8f, -0.1f, -0.9f).Normalize());
+        CAMERACTRL->SetLookDist(150.f);
     }
     break;
     case StateStep::Start: {
-        GetOwner()->Animator()->Play(ANIMPREFIX("ResistStart"), false, false, 1.5f);
+        //GetOwner()->Animator()->Play(ANIMPREFIX("ResistStart"), false, false, 1.5f);
+        CBossMgr::GetElfilisFlowMgr()->ChangeFlowFight();
+        m_AccTime = 0.f;
 
-        //@CAMERA 투타겟
+        // Camera : 투타겟
+        CAMERACTRL->LoadInitSetting();
+        CAMERACTRL->SetElfilisTwoTarget();
     }
     break;
     case StateStep::Progress: {
@@ -104,7 +127,7 @@ void CElfilisD_Resist::Ready()
 {
     m_AccTime += DT;
 
-    if (m_AccTime > 1.f)
+    if (m_AccTime > 1.75f)
     {
         ChangeStep(StateStep::Start);
     }
@@ -125,18 +148,20 @@ void CElfilisD_Resist::Progress()
 
     // Move
     float Speed = 0.5f;
+    float RotSpeed = 0.5f;
     Vec3 Force = GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT) * -1.f;
     Force.y = 0.f;
     Force.Normalize();
+    Force = (GetOwner()->Rigidbody()->GetVelocity() + Force * RotSpeed * DT).Normalize() * Speed;
 
-    if (GetOwner()->Rigidbody()->GetVelocity().Length() >= Speed)
+    if (m_AccTime <= 1.f)
     {
-        Force *= Speed;
-        GetOwner()->Rigidbody()->SetVelocity(Force);
+        float t = m_AccTime / 1.f;
+        float Delta = sinf(XM_PI / 2.f * t);
+        GetOwner()->Rigidbody()->SetVelocity(Force * Delta);
     }
     else
     {
-        Force *= (Speed * DT + GetOwner()->Rigidbody()->GetVelocity().Length());
         GetOwner()->Rigidbody()->SetVelocity(Force);
     }
 

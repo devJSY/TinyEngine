@@ -47,6 +47,9 @@ void CElfilisA_SlashCombo::Enter()
 void CElfilisA_SlashCombo::Exit()
 {
     Exit_Step();
+
+    GetOwner()->Rigidbody()->SetVelocity(Vec3());
+    GetOwner()->Rigidbody()->SetAngularVelocity(Vec3());
     ELFFSM->OffWeaponTrigger();
 }
 
@@ -74,6 +77,7 @@ void CElfilisA_SlashCombo::Enter_Step()
     break;
     case StateStep::Start: {
         GetOwner()->Animator()->Play(ANIMPREFIX("SlashStart"), false);
+        GetOwner()->Rigidbody()->AddForce(Vec3(0.f, -1200.f, 1.f), ForceMode::Impulse);
         //@Effect Halberd 트레일 이펙트
     }
     break;
@@ -144,7 +148,6 @@ void CElfilisA_SlashCombo::Ready()
 void CElfilisA_SlashCombo::Start()
 {
     RotateToPlayer();
-    GetOwner()->Rigidbody()->AddForce(Vec3(0.f, -1500.f, 1.f), ForceMode::Force);
 
     if (GetOwner()->Transform()->GetWorldPos().y <= 100.f)
     {

@@ -157,8 +157,6 @@ void CMorphoAtkA_ShockWave::End()
     if (GetOwner()->Animator()->IsFinish())
     {
         MRPFSM->ChangeStateGroup(MorphoStateGroup::MoveToGround, L"MOVEG_JUMPFALL");
-        //@TODO StateÀüÈ¯
-        //MRPFSM->Move();
     }
 }
 

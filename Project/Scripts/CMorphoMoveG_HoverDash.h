@@ -5,11 +5,13 @@ class CMorphoMoveG_HoverDash : public CBossState
 {
 private:
     float m_Speed;
+    float m_RotSpeed;
     float m_PrevDrag;
-    float m_NewDrag;
+    float m_AccTime;
 
 public:
     virtual void tick() override;
+    virtual void Exit() override;
 
 private:
     void Enter_Step();

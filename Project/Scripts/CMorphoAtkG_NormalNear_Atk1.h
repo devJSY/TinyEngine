@@ -4,7 +4,7 @@
 class CMorphoAtkG_NormalNear_Atk1 : public CBossState
 {
 private:
-    float m_PrevDrag;
+    Vec3 m_ForceDir;
     UINT m_ComboLevel;
 
 public:

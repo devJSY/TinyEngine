@@ -82,9 +82,27 @@ void CKirbyAttackEnd::tick()
         }
         break;
         case AbilityCopyType::SLEEP: {
-            if (PLAYER->Animator()->IsFinish())
+            if (GetOwner()->Animator()->IsFinish())
             {
-                ChangeState(L"DROP_ABILITY");
+                // claer hat
+                if (PLAYERFSM->GetCurHat())
+                {
+                    PLAYERFSM->GetCurHat()->MeshRender()->SetEnabled(false);
+                    PLAYERFSM->ClearCurHatWeapon();
+                }
+
+                // release global state (ability drop)
+                PLAYERFSM->SetGlobalState(false);
+
+                // change state
+                if (PLAYERCTRL->IsGround())
+                {
+                    ChangeState(L"IDLE");
+                }
+                else
+                {
+                    ChangeState(L"JUMP_FALL");
+                }
             }
         }
         break;

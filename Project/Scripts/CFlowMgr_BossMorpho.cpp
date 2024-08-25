@@ -130,10 +130,16 @@ void CFlowMgr_BossMorpho::ChangeFlowDeath()
 
 void CFlowMgr_BossMorpho::ChangeFlowClear()
 {
+    MRPFSM->ChangeStateGroup(MorphoStateGroup::Idle, L"IDLE");
+    BOSS->SetActive(false);
+
     CAMERACTRL->SetMainTarget(PLAYER);
     CAMERACTRL->Normal(true);
     CAMERACTRL->SetImmediate(false);
+    
     PLAYERFSM->ChangeState(L"STAGE_CLEAR");
+
+    m_FlowState = BossLevelFlow::Clear;
 }
 
 void CFlowMgr_BossMorpho::TriggerEvent(UINT _Idx)

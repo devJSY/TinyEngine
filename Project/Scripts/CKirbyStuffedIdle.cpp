@@ -36,6 +36,8 @@ void CKirbyStuffedIdle::Enter()
     CPlayerMgr::ClearBodyMtrl();
     CPlayerMgr::ClearMouthMtrl();
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyBig));
+
+    PLAYERFSM->SetUnstuffReverse(false);
 }
 
 void CKirbyStuffedIdle::Exit()
@@ -43,4 +45,6 @@ void CKirbyStuffedIdle::Exit()
     CPlayerMgr::ClearBodyMtrl();
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyNormal));
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));
+
+    PLAYERFSM->SetUnstuffReverse(true);
 }

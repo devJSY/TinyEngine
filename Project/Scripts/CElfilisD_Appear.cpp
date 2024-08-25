@@ -10,7 +10,6 @@
 CElfilisD_Appear::CElfilisD_Appear()
     : m_BossName(nullptr)
     , m_StartPos(Vec3(0.f, 800.f, 0.f))
-    , m_PrevDrag(0.f)
     , m_DownSpeed(200.f)
     , m_AccTime(0.f)
     , m_bFrmEnter(false)
@@ -57,22 +56,20 @@ void CElfilisD_Appear::Enter_Step()
         GetOwner()->Transform()->SetWorldRotation(Vec3(0.f, 0.f, 0.f));
         m_bFrmEnter = true;
 
-        // 에피리스 가까이, 등장 바라보며 고정
+        // Camera : 에피리스 가까이, 등장 바라보며 고정
         CAMERACTRL->SetMainTarget(BOSS);
-
         CAMERACTRL->FixedView(true, Vec3(0.f, 83.65f, 147.6f));
 
-        CAMERACTRL->SetOffset(Vec3(0.f,0.f,0.f));
+        CAMERACTRL->SetOffset(Vec3(0.f, 0.f, 0.f));
         CAMERACTRL->SetMinSpeed(200.f);
         CAMERACTRL->SetMaxSpeed(500.f);
         CAMERACTRL->SetThresholdDistance(50.f);
         CAMERACTRL->SetRotationSpeed(150.f);
         CAMERACTRL->SetZoomMinSpeed(50.f);
         CAMERACTRL->SetZoomMaxSpeed(360.f);
-        CAMERACTRL->SetZoomThreshold(50.f);    
+        CAMERACTRL->SetZoomThreshold(50.f);
         CAMERACTRL->SetTargetOffset(Vec3(0.f, 75.f, 0.f));
 
-        // 설정으로 카메라 즉시이동
         CAMERACTRL->ResetCamera();
     }
     break;
@@ -92,7 +89,7 @@ void CElfilisD_Appear::Enter_Step()
             GamePlayStatic::SpawnGameObject(m_BossName, LAYER_STATIC);
         }
 
-        // 뒤로 이동
+        // Camera : 뒤로 이동
         CAMERACTRL->Normal(false);
         CAMERACTRL->SetLookDist(300.f);
         CAMERACTRL->SetLookDir(Vec3(0.f, 0.024f, -0.971f));
@@ -117,7 +114,6 @@ void CElfilisD_Appear::Exit_Step()
     {
     case StateStep::Start: {
         GetOwner()->Rigidbody()->SetVelocity(Vec3());
-        GetOwner()->Rigidbody()->SetDrag(m_PrevDrag);
     }
     break;
     case StateStep::Progress: {
@@ -128,9 +124,8 @@ void CElfilisD_Appear::Exit_Step()
             m_BossName = nullptr;
         }
 
-        // 투타겟
+        // Camera : 투타겟
         CAMERACTRL->LoadInitSetting();
-
         CAMERACTRL->SetElfilisTwoTarget();
     }
     break;
@@ -143,24 +138,10 @@ void CElfilisD_Appear::Start()
     float AppearTime = 4.f;
 
     // down
-    if (m_bFrmEnter)
-    {
-        m_bFrmEnter = false;
-
-        GetOwner()->Rigidbody()->AddForce(Vec3(0.f, -2000.f, 0.f), ForceMode::Impulse);
-        m_PrevDrag = GetOwner()->Rigidbody()->GetDrag();
-        m_AccTime = 0.f;
-    }
-
-    // Add drag
-    else
-    {
-        float CurDist = (GetOwner()->Transform()->GetWorldPos() - m_StartPos).Length();
-        float t = CurDist / m_StartPos.Length();
-        float Ratio = clamp(t, 0.f, 1.f) * XM_PI;
-        float NewDrag = 4.f - 4.f * sinf(Ratio);
-        GetOwner()->Rigidbody()->SetDrag(NewDrag);
-    }
+    float CurDist = (GetOwner()->Transform()->GetWorldPos() - m_StartPos).Length();
+    float t = CurDist / m_StartPos.Length();
+    float NewSpeed = 57.5f * cosf(t * XM_PI / 2.f);
+    GetOwner()->Rigidbody()->SetVelocity(Vec3(0.f, -NewSpeed, 0.f));
 
     if (m_AccTime > AppearTime)
     {

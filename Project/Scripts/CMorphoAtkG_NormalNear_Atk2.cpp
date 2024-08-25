@@ -3,7 +3,6 @@
 #include "CMorphoFSM.h"
 
 CMorphoAtkG_NormalNear_Atk2::CMorphoAtkG_NormalNear_Atk2()
-    : m_PrevDrag(0.f)
 {
 }
 
@@ -40,13 +39,10 @@ void CMorphoAtkG_NormalNear_Atk2::Enter_Step()
         GetOwner()->Animator()->Play(ANIMPREFIX("Attack2"), false, false, 1.5f);
         MRPFSM->OnWeaponRTrigger();
 
-        // move
-        Vec3 Dir = PLAYER->Transform()->GetWorldPos() - GetOwner()->Transform()->GetWorldPos();
-        Dir.y = 0.f;
-        Dir.Normalize();
-
-        m_PrevDrag = GetOwner()->Rigidbody()->GetDrag();
-        GetOwner()->Rigidbody()->AddForce(Dir * 15.f, ForceMode::Impulse);
+        // move dir
+        m_ForceDir = PLAYER->Transform()->GetWorldPos() - GetOwner()->Transform()->GetWorldPos();
+        m_ForceDir.y = 0.f;
+        m_ForceDir.Normalize();
     }
     break;
     case StateStep::End: {
@@ -63,7 +59,6 @@ void CMorphoAtkG_NormalNear_Atk2::Exit_Step()
     case StateStep::Progress: {
         GetOwner()->Rigidbody()->SetVelocity(Vec3());
         GetOwner()->Rigidbody()->SetAngularVelocity(Vec3());
-        GetOwner()->Rigidbody()->SetDrag(m_PrevDrag);
         MRPFSM->OffWeaponRTrigger();
 
         if (MRPFSM->GetComboLevel() == 1)
@@ -87,11 +82,11 @@ void CMorphoAtkG_NormalNear_Atk2::Progress()
 {
     RotateToPlayer();
 
-    // Add drag
+    // move
     float t = GetOwner()->Animator()->GetClipPlayRatio();
-    float Ratio = t * XM_PI / 2.f;
-    float NewDrag = 5.f * sinf(Ratio);
-    GetOwner()->Rigidbody()->SetDrag(NewDrag);
+    float NewSpeed = 15.f * sinf(t * XM_PI / 2.f);
+    Vec3 NewVeloc = m_ForceDir * NewSpeed;
+    GetOwner()->Rigidbody()->SetVelocity(NewVeloc);
 
     // Change Step
     if (GetOwner()->Animator()->IsFinish())

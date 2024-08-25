@@ -16,6 +16,12 @@ CElfilisD_ResistFail::~CElfilisD_ResistFail()
 {
 }
 
+void CElfilisD_ResistFail::Exit()
+{
+    Exit_Step();
+    ELFFSM->SetResist(false);
+}
+
 void CElfilisD_ResistFail::tick()
 {
     switch (m_Step)
@@ -38,6 +44,8 @@ void CElfilisD_ResistFail::Enter_Step()
     case StateStep::Start: {
         GetOwner()->Animator()->Play(ANIMPREFIX("ResistFail"), false);
         m_AccTime = 0.f;
+
+        ELFFSM->SetResist(true);
 
         // TimeScale & Camera Àá±ñ ¸ØÃã
         CTimeMgr::GetInst()->SetTimeScale(0.5f, 0.f);

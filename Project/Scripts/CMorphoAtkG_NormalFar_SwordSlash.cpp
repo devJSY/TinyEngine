@@ -50,7 +50,7 @@ void CMorphoAtkG_NormalFar_SwordSlash::Exit()
 
     for (int i = 0; i < 3; ++i)
     {
-        m_SwordSlash[0] = nullptr;
+        m_SwordSlash[i] = nullptr;
     }
 }
 
@@ -244,27 +244,19 @@ CGameObject* CMorphoAtkG_NormalFar_SwordSlash::CreateSwordSlash(Vec3 _PosOffset,
         pSlash = m_SwordSlashPref->Instantiate();
         CMomentaryObjScript* pScript = pSlash->GetScript<CMomentaryObjScript>();
 
-        if (pScript)
-        {
-            Vec3 Pos = GetOwner()->Transform()->GetWorldPos();
-            Pos += GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT) * _PosOffset.z;
-            Pos += GetOwner()->Transform()->GetWorldDir(DIR_TYPE::RIGHT) * _PosOffset.x;
-            Pos.y += _PosOffset.y;
-            pSlash->Transform()->SetWorldPos(Pos);
+        Vec3 Pos = GetOwner()->Transform()->GetWorldPos();
+        Pos += GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT) * _PosOffset.z;
+        Pos += GetOwner()->Transform()->GetWorldDir(DIR_TYPE::RIGHT) * _PosOffset.x;
+        Pos.y += _PosOffset.y;
+        pSlash->Transform()->SetWorldPos(Pos);
 
-            pSlash->Transform()->Slerp(GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT), 1.f);
-            Vec3 Rot = pSlash->Transform()->GetWorldRotation();
-            Rot.z -= XMConvertToRadians(_RotZ);
-            pSlash->Transform()->SetWorldRotation(Rot);
+        pSlash->Transform()->Slerp(GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT), 1.f);
+        Vec3 Rot = pSlash->Transform()->GetWorldRotation();
+        Rot.z -= XMConvertToRadians(_RotZ);
+        pSlash->Transform()->SetWorldRotation(Rot);
 
-            pScript->SetPlayTime(3.f);
-            pScript->SetScaling(Vec3(1.f), 0.2f);
-        }
-        else
-        {
-            delete pSlash;
-            pSlash = nullptr;
-        }
+        pScript->SetPlayTime(3.f);
+        pScript->SetScaling(Vec3(1.f), 0.2f);
     }
 
     return pSlash;

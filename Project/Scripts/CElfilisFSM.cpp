@@ -12,6 +12,7 @@ CElfilisFSM::CElfilisFSM()
     , m_ComboLevel(0)
     , m_PatternStep(0)
     , m_bAttackRepeat(false)
+    , m_bResist(false)
     , m_GroundAttackCount(0)
     , m_NearDist(5.f)
     , m_AirPosition(Vec3(0.f, 600.f, 700.f))
@@ -28,6 +29,8 @@ CElfilisFSM::CElfilisFSM()
         m_StateGroup[(ElfilisStateGroup)i][0] = vector<wstring>();
         m_StateGroup[(ElfilisStateGroup)i][1] = vector<wstring>();
     }
+
+    m_DropStarPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\BossDropStar.pref");
 }
 
 CElfilisFSM::CElfilisFSM(const CElfilisFSM& _Origin)
@@ -38,6 +41,7 @@ CElfilisFSM::CElfilisFSM(const CElfilisFSM& _Origin)
     , m_ComboLevel(0)
     , m_PatternStep(0)
     , m_bAttackRepeat(false)
+    , m_bResist(false)
     , m_GroundAttackCount(0)
     , m_NearDist(_Origin.m_NearDist)
     , m_AirPosition(_Origin.m_NearDist)
@@ -55,21 +59,20 @@ CElfilisFSM::CElfilisFSM(const CElfilisFSM& _Origin)
         m_StateGroup[(ElfilisStateGroup)it.first][1] = vector<wstring>();
     }
 
-    // for (auto it : m_StateGroup)
-    //{
-    //     for (auto state : it.second[0])
-    //     {
-    //         m_StateGroup[it.first][0].push_back(state);
-    //     }
-    //     for (auto state : it.second[1])
-    //     {
-    //         m_StateGroup[it.first][1].push_back(state);
-    //     }
-    // }
+    m_DropStarPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\BossDropStar.pref");
 }
 
 CElfilisFSM::~CElfilisFSM()
 {
+}
+
+void CElfilisFSM::ResetFSM()
+{
+    SetGlobalState(false);
+    SetPattern(ElfilisPatternType::NONE);
+    ClearComboLevel();
+    OffWeaponTrigger();
+    SetResist(false);
 }
 
 // USAGE : 안전하게 State Group을 변경
@@ -327,6 +330,16 @@ ElfilisStateGroup CElfilisFSM::FindNextStateGroup() const
     return ElfilisStateGroup::END;
 }
 
+void CElfilisFSM::SpawnDropStar(Vec3 _Pos)
+{
+    if (m_DropStarPref == nullptr)
+        return;
+
+    CGameObject* pDropStar = m_DropStarPref->Instantiate();
+    pDropStar->Transform()->SetWorldPos(_Pos);
+    GamePlayStatic::SpawnGameObject(pDropStar, LAYER_DYNAMIC);
+}
+
 #include "CElfilisD_Appear.h"
 #include "CElfilisD_Damage.h"
 #include "CElfilisD_Jump.h"
@@ -472,11 +485,17 @@ void CElfilisFSM::tick()
 {
     CFSMScript::tick();
 
+    if (KEY_TAP(KEY::_0))
+    {
+        Rigidbody()->SetVelocity(Vec3());
+        Rigidbody()->SetAngularVelocity(Vec3());
+        ChangeStateGroup(ElfilisStateGroup::AirSmallAtk1, L"AIR_ATKS_RAYARROW_UP");
+    }
     if (KEY_TAP(KEY::ENTER))
     {
         Rigidbody()->SetVelocity(Vec3());
         Rigidbody()->SetAngularVelocity(Vec3());
-        ChangeStateGroup(ElfilisStateGroup::GroundAtkFar, L"GROUND_ATK_RAYARROW");
+        ChangeStateGroup(ElfilisStateGroup::GroundToAir, L"GROUND_TOAIR");
     }
 }
 

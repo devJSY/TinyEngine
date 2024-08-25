@@ -56,6 +56,7 @@ private:
     LastJumpType            m_LastJump;
     DodgeType               m_DodgeType;
     bool                    m_bStuffed;
+    bool                    m_bUnstuffReverse;
 
     Vec3                    m_KnockbackDir;
     float                   m_YPressedTime;
@@ -126,7 +127,8 @@ public:
     void SetLadderBottom(Vec3 _Bottom) { m_LadderBottom = _Bottom; }
     void SetEscapeLadder(bool _b) { m_bEscapeLadder = _b; }
     void SetSkrr(bool _Skrr) { m_bIsSkrr = _Skrr; }    
-
+    
+    void SetUnstuffReverse(bool _Unstuffed) { m_bUnstuffReverse = _Unstuffed; }
     void ClearCurHatWeapon();
     void ClearChargeAccTime() { m_ChargeAccTime = 0.f; }
     void ClearHoveringAccTime() { m_HoveringAccTime = 0.f; }

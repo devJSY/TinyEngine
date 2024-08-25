@@ -7,6 +7,8 @@ class CKirbyObject_Lightbulb : public CKirbyObject
 private:
     float m_Speed;
     float m_BrightSpeed;
+    Ptr<CGraphicsShader> m_LightShader;
+    Ptr<CGraphicsShader> m_PrevShader;
 
 public:
     // 기본 상태들 (Idle, Run, Jump)

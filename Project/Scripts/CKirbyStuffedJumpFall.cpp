@@ -30,6 +30,8 @@ void CKirbyStuffedJumpFall::Enter()
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyBig));
 
     PLAYERCTRL->LockJump();
+
+    PLAYERFSM->SetUnstuffReverse(false);
 }
 
 void CKirbyStuffedJumpFall::Exit()
@@ -37,5 +39,8 @@ void CKirbyStuffedJumpFall::Exit()
     CPlayerMgr::ClearBodyMtrl();
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyNormal));
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));
+
     PLAYERCTRL->UnlockJump();
+
+    PLAYERFSM->SetUnstuffReverse(true);
 }
