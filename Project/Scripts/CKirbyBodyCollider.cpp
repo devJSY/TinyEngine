@@ -33,13 +33,6 @@ void CKirbyBodyCollider::OnTriggerEnter(CCollider* _OtherCollider)
 {
     int LayerIdx = _OtherCollider->GetOwner()->GetLayerIdx();
 
-    // 흡입을 시작한 상태(타겟을 결정해 빨아들이기 시작한 상태)에서 충돌한 경우
-    if (PLAYERFSM->IsDrawing())
-    {
-        PLAYERFSM->DrawingCollisionEnter(_OtherCollider->GetOwner());
-        return;
-    }
-
     // monster : 데미지 가함
     if (LayerIdx == LAYER_MONSTER)
     {
@@ -59,16 +52,6 @@ void CKirbyBodyCollider::OnTriggerEnter(CCollider* _OtherCollider)
         ((CUnitScript*)PLAYERUNIT)->AttackReward();
     }
 }
-
-void CKirbyBodyCollider::OnTriggerStay(CCollider* _OtherCollider)
-{
-    if (PLAYERFSM->IsDrawing())
-    {
-        PLAYERFSM->DrawingCollisionEnter(_OtherCollider->GetOwner());
-        return;
-    }
-}
-
 float CKirbyBodyCollider::FindDamage()
 {
     float Damage = 5.f;

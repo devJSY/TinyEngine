@@ -18,7 +18,9 @@ public:
     virtual UINT LoadFromLevelFile(FILE* _File) override;
 
 private:
-    virtual void OnControllerColliderHit(struct ControllerColliderHit Hit);
+    virtual void OnControllerColliderHit(struct ControllerColliderHit Hit) override;
+    virtual void OnTriggerEnter(CCollider* _OtherCollider) override;
+    virtual void OnTriggerStay(CCollider* _OtherCollider) override;
     void DropAbility();
 
 public:
