@@ -7,6 +7,8 @@ private:
     BossLevelFlow m_FlowState;
     CGameObject* m_SpawnButterfly;
     CGameObject* m_Barricade;
+    Vec3 m_BarricadeScale;
+    float m_AccTime;
 
 public:
     virtual void begin() override;

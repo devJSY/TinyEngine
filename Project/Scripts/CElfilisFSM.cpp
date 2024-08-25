@@ -485,18 +485,12 @@ void CElfilisFSM::tick()
 {
     CFSMScript::tick();
 
-    //if (KEY_TAP(KEY::_0))
+    //if (KEY_TAP(KEY::ENTER))
     //{
     //    Rigidbody()->SetVelocity(Vec3());
     //    Rigidbody()->SetAngularVelocity(Vec3());
-    //    ChangeStateGroup(ElfilisStateGroup::AirSmallAtk1, L"AIR_ATKS_RAYARROW_UP");
+    //    ChangeStateGroup(ElfilisStateGroup::GroundAtkNear);
     //}
-    if (KEY_TAP(KEY::ENTER))
-    {
-        Rigidbody()->SetVelocity(Vec3());
-        Rigidbody()->SetAngularVelocity(Vec3());
-        ChangeStateGroup(ElfilisStateGroup::GroundAtkNear);
-    }
 }
 
 void CElfilisFSM::OnCollisionEnter(CCollider* _OtherCollider)

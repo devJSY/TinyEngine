@@ -6,7 +6,7 @@
 #include "CCameraController.h"
 
 CMorphoDemo_Appear::CMorphoDemo_Appear()
-    : m_StartPos(Vec3(0.f, 0.f, -300.f))
+    : m_StartPos(Vec3(0.f, 0.f, -100.f))
     , m_DownSpeed(80.f)
     , m_AccTime(0.f)
     , m_BossName(nullptr)
@@ -130,7 +130,7 @@ void CMorphoDemo_Appear::Start()
             m_BossName = m_BossNamePref->Instantiate();
             CChangeAlphaScript* Script = m_BossName->GetScript<CChangeAlphaScript>();
 
-            m_BossName->Transform()->SetWorldPos(Vec3(0.f, 155.f, -430.f));
+            m_BossName->Transform()->SetWorldPos(Vec3(0.f, 155.f, -230.f));
             m_BossName->Transform()->SetWorldRotation(Vec3());
             m_BossName->Transform()->SetWorldScale(Vec3(5.f));
             Script->FadeIn(0.5f);

@@ -12,6 +12,7 @@ CFlowMgr_BossMorpho::CFlowMgr_BossMorpho()
     , m_FlowState(BossLevelFlow::LevelStart)
     , m_SpawnButterfly(nullptr)
     , m_Barricade(nullptr)
+    , m_AccTime(0.f)
 {
 }
 
@@ -20,6 +21,8 @@ CFlowMgr_BossMorpho::CFlowMgr_BossMorpho(const CFlowMgr_BossMorpho& _Origin)
     , m_FlowState(BossLevelFlow::LevelStart)
     , m_SpawnButterfly(nullptr)
     , m_Barricade(nullptr)
+    , m_BarricadeScale(_Origin.m_BarricadeScale)
+    , m_AccTime(0.f)
 {
 }
 
@@ -42,7 +45,8 @@ void CFlowMgr_BossMorpho::begin()
 
     // find object
     m_SpawnButterfly = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Morpho_SpawnButterfly");
-    m_Barricade = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Barricade");
+    m_Barricade = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"MorphoBarricade");
+    m_BarricadeScale = (m_Barricade) ? m_Barricade->Transform()->GetLocalScale() : Vec3();
 }
 
 void CFlowMgr_BossMorpho::tick()
@@ -63,13 +67,29 @@ void CFlowMgr_BossMorpho::tick()
         if (m_Barricade)
         {
             m_Barricade->SetActive(false);
+            m_Barricade->Transform()->SetLocalScale(Vec3());
         }
 
         m_FlowState = BossLevelFlow::WaitBoss;
+        m_AccTime = 0.f;
     }
     break;
 
     case BossLevelFlow::WaitBoss:
+    {
+        float SpawnBarricadeTime = 3.f;
+
+        if (m_Barricade && m_Barricade->IsActive() && m_AccTime < SpawnBarricadeTime)
+        {
+            m_AccTime += DT;
+
+            float t = m_AccTime / SpawnBarricadeTime;
+            Vec3 NewScale = m_BarricadeScale;
+            NewScale.y *= t;
+
+            m_Barricade->Transform()->SetWorldScale(NewScale);
+        }
+    }
         break;
     case BossLevelFlow::Fight:
         break;
@@ -105,6 +125,12 @@ void CFlowMgr_BossMorpho::ChangeFlowFight()
     }
 
     PLAYERCTRL->UnlockInput();
+    
+    if (m_Barricade)
+    {
+        m_Barricade->Transform()->SetWorldScale(m_BarricadeScale);
+    }
+
     m_FlowState = BossLevelFlow::Fight;
 }
 
