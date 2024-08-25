@@ -383,19 +383,23 @@ int CAnimator::FindClipIndex(const wstring& _strClipName)
 
 void CAnimator::Play(const wstring& _strClipName, bool _bRepeat, bool _bReverse, float _PlaySpeed, double _ChangeDuration)
 {
-    int ClipIndex = FindClipIndex(_strClipName);
-    if (-1 == ClipIndex)
+    Play(FindClipIndex(_strClipName), _bRepeat, _bReverse, _PlaySpeed, _ChangeDuration);
+}
+
+void CAnimator::Play(int _ClipIndex, bool _bRepeat, bool _bReverse, float _PlaySpeed, double _ChangeDuration)
+{
+    if (-1 == _ClipIndex)
         return;
 
     // Change Duration이 0이면 애니메이션 즉시 전환
-    if (_ChangeDuration <= 0.f)
+    if (_ChangeDuration <= 0.)
     {
         // 애니메이션 재생 설정
         m_bRepeat = _bRepeat;
         m_bReverse = _bReverse;
         m_PlaySpeed = _PlaySpeed;
 
-        SetCurClipIdx(ClipIndex);
+        SetCurClipIdx(_ClipIndex);
 
         // 초기화
         m_bChanging = false;
@@ -428,7 +432,7 @@ void CAnimator::Play(const wstring& _strClipName, bool _bRepeat, bool _bReverse,
     m_bChanging = true;
     m_CurChangeTime = 0.;
     m_ChangeDuration = _ChangeDuration;
-    m_NextClipIdx = ClipIndex;
+    m_NextClipIdx = _ClipIndex;
     m_bNextRepeat = _bRepeat;
     m_bNextReverse = _bReverse;
     m_NextPlaySpeed = _PlaySpeed;
@@ -479,7 +483,7 @@ float CAnimator::GetClipPlayTime()
 float CAnimator::GetClipPlayRatio()
 {
     int Len = m_SkeletalMesh->GetAnimClip()->at(m_CurClipIdx).iFrameLength;
-    return GetClipFrameIndex()/(float)Len;
+    return GetClipFrameIndex() / (float)Len;
 }
 
 void CAnimator::CheckBoneMatBuffer()
@@ -513,12 +517,14 @@ UINT CAnimator::SaveToLevelFile(FILE* _File)
     fwrite(&m_bRepeat, 1, sizeof(bool), _File);
     fwrite(&m_bReverse, 1, sizeof(bool), _File);
     fwrite(&m_PlaySpeed, 1, sizeof(float), _File);
+    fwrite(&m_CurClipIdx, 1, sizeof(int), _File);
 
     MemoryByte += sizeof(AnimatorUpdateMode);
     MemoryByte += sizeof(bool);
     MemoryByte += sizeof(bool);
     MemoryByte += sizeof(bool);
     MemoryByte += sizeof(float);
+    MemoryByte += sizeof(int);
 
     return MemoryByte;
 }
@@ -535,12 +541,16 @@ UINT CAnimator::LoadFromLevelFile(FILE* _File)
     fread(&m_bRepeat, 1, sizeof(bool), _File);
     fread(&m_bReverse, 1, sizeof(bool), _File);
     fread(&m_PlaySpeed, 1, sizeof(float), _File);
+    fread(&m_CurClipIdx, 1, sizeof(int), _File);
 
     MemoryByte += sizeof(AnimatorUpdateMode);
     MemoryByte += sizeof(bool);
     MemoryByte += sizeof(bool);
     MemoryByte += sizeof(bool);
     MemoryByte += sizeof(float);
+    MemoryByte += sizeof(int);
+
+    Play(m_CurClipIdx, m_bRepeat, m_bReverse, m_PlaySpeed, 0.);
 
     return MemoryByte;
 }

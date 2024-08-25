@@ -410,20 +410,6 @@ CGameObject* CLevelSaveLoad::LoadGameObject(CGameObject* _ParentObj, FILE* _File
         PaddingMemoryBlock(MemoryByte, _File, true);
     }
 
-    // 컴포넌트 매쉬 설정
-    if (nullptr != pObject->MeshRender())
-    {
-        if (nullptr != pObject->Animator())
-        {
-            pObject->Animator()->SetSkeletalMesh(pObject->MeshRender()->GetMesh());
-        }
-
-        if (nullptr != pObject->MeshCollider())
-        {
-            pObject->MeshCollider()->SetMesh(pObject->MeshRender()->GetMesh());
-        }
-    }
-
     // 스크립트 개수 읽기
     size_t ScriptCount = 0;
     fread(&ScriptCount, sizeof(size_t), 1, _File);
