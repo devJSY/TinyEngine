@@ -468,7 +468,7 @@ void CElfilisFSM::begin()
         {
             m_listWeaponMtrl.push_back(m_Weapon->MeshRender()->GetMaterial(i));
             m_listWeaponEmissive.push_back(m_Weapon->MeshRender()->GetMaterial(i)->GetEmission());
-            m_listBodyEmissiveTex.push_back(MeshRender()->GetMaterial(i)->GetTexParam(TEX_PARAM::TEX_7));
+            m_listWeaponEmissiveTex.push_back(MeshRender()->GetMaterial(i)->GetTexParam(TEX_PARAM::TEX_7));
         }
 
         m_Weapon->BoxCollider()->SetEnabled(false);

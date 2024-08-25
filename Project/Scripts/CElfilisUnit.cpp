@@ -32,8 +32,24 @@ void CElfilisUnit::tick()
 {
     CUnitScript::tick();
 
-    // Check Phase
-    if (ELFFSM->GetPhase() == 1)
+    if (KEY_TAP(KEY::ENTER))
+    {
+        m_CurInfo.HP = 10.f;
+    }
+
+    // Death & Resist
+    if (GetCurInfo().HP <= 50.f && !ELFFSM->IsResist())
+    {
+        ElfilisStateGroup CurStateGroup = ELFFSM->GetCurStateGroup();
+        if ((CurStateGroup >= ElfilisStateGroup::GroundIdle || CurStateGroup <= ElfilisStateGroup::GroundAtkFar))
+        {
+            ELFFSM->ResetFSM();
+            ELFFSM->ChangeStateGroup(ElfilisStateGroup::DEMO, L"DEMO_RESIST");
+        }
+    }
+
+    // Phase 1
+    else if (ELFFSM->GetPhase() == 1)
     {
         ElfilisStateGroup CurStateGroup = ELFFSM->GetCurStateGroup();
 
@@ -45,23 +61,8 @@ void CElfilisUnit::tick()
             ELFFSM->ChangeStateGroup(ElfilisStateGroup::DEMO, L"DEMO_APPEAR2_DAMAGE");
         }
     }
-    else
-    {
-        // Death
-        if (GetCurInfo().HP <= 0.f)
-        {
-        }
-        // Resist
-        else if (GetCurInfo().HP <= 50.f && !ELFFSM->IsResist())
-        {
-            ElfilisStateGroup CurStateGroup = ELFFSM->GetCurStateGroup();
-            if ((CurStateGroup >= ElfilisStateGroup::GroundIdle || CurStateGroup <= ElfilisStateGroup::GroundAtkFar))
-            {
-                ELFFSM->ResetFSM();
-                ELFFSM->ChangeStateGroup(ElfilisStateGroup::DEMO, L"DEMO_RESIST");
-            }
-        }
-    }
+
+    // Phase 2
 }
 
 void CElfilisUnit::ResistSuccess()

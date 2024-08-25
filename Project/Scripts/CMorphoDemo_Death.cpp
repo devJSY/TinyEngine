@@ -59,7 +59,7 @@ void CMorphoDemo_Death::Enter_Step()
 
         MRPFSM->SetGlobalState(true);
 
-        //Camera : Àá±ñ¸ØÃã
+        // Camera : Àá±ñ¸ØÃã
         CAMERACTRL->SetLock(true, 0.5f);
 
         if (CBossMgr::GetMorphoFlowMgr())
@@ -73,11 +73,12 @@ void CMorphoDemo_Death::Enter_Step()
         GetOwner()->Transform()->SetWorldPos(Vec3(0.f, 0.f, -300.f));
         GetOwner()->Transform()->SetWorldRotation(Vec3());
 
-        //CAMERA : lengthº¯ÇÔ
+        // CAMERA : lengthº¯ÇÔ
         CAMERACTRL->FixedView(true, Vec3(1.33f, 31.13f, -201.47f));
         CAMERACTRL->SetImmediate(true);
         CAMERACTRL->SetMainTarget(BOSS->GetChildObject(L"CameraTarget"));
         CAMERACTRL->SetRotationSpeed(30.f);
+        CAMERACTRL->SetTargetOffset(Vec3(0.f, 10.f, 0.f));
     }
     break;
     case StateStep::Wait: {
@@ -102,7 +103,7 @@ void CMorphoDemo_Death::Exit_Step()
     case StateStep::Wait:
         break;
     case StateStep::End:
-    break;
+        break;
     }
 }
 

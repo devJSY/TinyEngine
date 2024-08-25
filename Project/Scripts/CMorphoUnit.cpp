@@ -10,10 +10,10 @@ CMorphoUnit::CMorphoUnit()
     UnitInfo MorphoInfo = {
         700.f, // HP
         700.f, // MaxHP
-        10.f,   // Speed
-        10.f,   // Rotation Speed
-        10.f,   // JumpPower
-        0.f,    // ATK
+        10.f,  // Speed
+        10.f,  // Rotation Speed
+        10.f,  // JumpPower
+        0.f,   // ATK
     };
     SetInitInfo(MorphoInfo);
 }
@@ -26,6 +26,11 @@ void CMorphoUnit::tick()
 {
     CUnitScript::tick();
     CFlowMgr_BossMorpho* FlowMgr = CBossMgr::GetMorphoFlowMgr();
+
+    //if (KEY_TAP(KEY::SPACE))
+    //{
+    //    m_CurInfo.HP = 10.f;
+    //}
 
     // Death
     if (m_CurInfo.HP <= 0.f && FlowMgr && FlowMgr->GetFlowState() < BossLevelFlow::Death)

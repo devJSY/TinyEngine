@@ -4,7 +4,6 @@
 class CElfilisD_ResistFail : public CBossState
 {
 private:
-    Ptr<CPrefab> m_StageClearPref;
     float m_AccTime;
     bool m_bFrmEnter;
 

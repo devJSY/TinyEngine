@@ -58,7 +58,7 @@ void CElfilisD_Resist::Enter_Step()
         GetOwner()->Animator()->Play(ANIMPREFIX("LastDamageStart"), false, false, 1.5f, 0.f);
         GetOwner()->Transform()->SetWorldPos(ELFFSM->GetMapFloorOffset());
         GetOwner()->Transform()->SetWorldRotation(Vec3());
-        CBossMgr::GetElfilisFlowMgr()->ChangeFlowResist();
+        CBossMgr::GetElfilisFlowMgr()->ChangeFlowDemo();
 
         // Camera : 에피리스 타겟 (진입위치, 각도 등 항상 같음)
         CAMERACTRL->SetMainTarget(BOSS);

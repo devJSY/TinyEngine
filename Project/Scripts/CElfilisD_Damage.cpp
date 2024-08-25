@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CElfilisD_Damage.h"
 #include "CElfilisFSM.h"
+#include "CFlowMgr_BossElfilis.h"
 
 #include "CCameraController.h"
 
@@ -39,7 +40,10 @@ void CElfilisD_Damage::Enter_Step()
 
         GetOwner()->Animator()->Play(ANIMPREFIX("Damage"), false, false, 2.5f, 0.f);
         GetOwner()->Transform()->SetWorldPos(Vec3());
+        GetOwner()->Transform()->SetWorldRotation(Vec3());
         GetOwner()->Transform()->Slerp(Dir, 1.f);
+
+        CBossMgr::GetElfilisFlowMgr()->ChangeFlowDemo();
 
         // Camera : Fixed View
         CAMERACTRL->SetMainTarget(BOSS);

@@ -3,6 +3,7 @@
 #include "CBossMgr.h"
 #include "CElfilisFSM.h"
 #include "CElfilisBigFSM.h"
+#include "CFlowMgr_BossElfilis.h"
 
 #include "CCameraController.h"
 
@@ -24,7 +25,7 @@ void CElfilisD_Roar::tick()
         ELFBIGFSM->Activate();
         ELFBIGFSM->ChangeState(L"ROAR");
 
-        // Ä«¸Þ¶ó Ãà¼Ò, ¼ÎÀÌÅ©
+        // Camera : Ãà¼Ò, ¼ÎÀÌÅ©
         CAMERACTRL->SetLookDist(1000.f);
 
         CAMERACTRL->SetZoomMinSpeed(0.f);
@@ -46,7 +47,7 @@ void CElfilisD_Roar::Enter()
     GetOwner()->Animator()->Play(ANIMPREFIX("Roar"), false);
     m_bFrmEnter = true;
 
-    //Ä«¸Þ¶ó È®´ë, ¼ÎÀÌÅ©
+    // Camera : È®´ë, ¼ÎÀÌÅ©
     CAMERACTRL->SetLock(false);
 
     CAMERACTRL->SetLookDist(150.f);
@@ -60,6 +61,8 @@ void CElfilisD_Roar::Enter()
 
 void CElfilisD_Roar::Exit()
 {
-    // ÇÏ´Ã ºä
+    CBossMgr::GetElfilisFlowMgr()->ChangeFlowFight();
+
+    // Camera : ÇÏ´Ã ºä
     CAMERACTRL->SetElfilisSky();
 }
