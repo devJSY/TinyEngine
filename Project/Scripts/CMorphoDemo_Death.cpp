@@ -86,6 +86,7 @@ void CMorphoDemo_Death::Enter_Step()
     break;
     case StateStep::End: {
         GetOwner()->Animator()->Play(ANIMPREFIX("DeathFloatAll"), false, false, 1.5f);
+        MRPFSM->SetGlobalState(false);
     }
     break;
     }
