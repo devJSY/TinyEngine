@@ -235,15 +235,15 @@ void CKirbyFireBullet::OnTriggerEnter(CCollider* _OtherCollider)
 
     if (LayerIdx == LAYER_MONSTER_TRIGGER && _OtherCollider->GetOwner()->GetName() == L"Body Collider")
     {
-        float Damage = 1.5f;
+        float Damage = 3.f;
 
         if (m_Step == 1)
         {
-            Damage = 3.f;
+            Damage = 6.f;
         }
         else if (m_Step == 2)
         {
-            Damage = 4.5f;
+            Damage = 9.f;
         }
 
 
@@ -252,7 +252,7 @@ void CKirbyFireBullet::OnTriggerEnter(CCollider* _OtherCollider)
         {
             Vec3 HitDir = _OtherCollider->Transform()->GetWorldPos() - Transform()->GetWorldPos();
             HitDir.Normalize();
-            UnitHit HitInfo = {DAMAGE_TYPE::DOT, HitDir, Damage, 3.f, 0.f};
+            UnitHit HitInfo = {DAMAGE_TYPE::NORMAL, HitDir, Damage, 0.f, 0.f};
 
             Monster->GetDamage(HitInfo);
         }

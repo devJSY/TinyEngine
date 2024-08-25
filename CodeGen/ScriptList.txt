@@ -116,3 +116,4 @@ CPlayerHitbox
 CKirbyCantEat
 CBossDropStarScript
 CKirbyFireBullet
+CFireOnHitEffect
