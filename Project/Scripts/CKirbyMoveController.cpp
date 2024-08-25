@@ -388,6 +388,17 @@ void CKirbyMoveController::Move()
     // =========================
     // 움직임 적용
     // =========================
+
+    // 강제로 호출한 Move
+    list<Vec3>::iterator iter = m_AddMoveList.begin();
+    for (;iter != m_AddMoveList.end(); ++iter)
+    {
+        CharacterController()->Move(*iter * DT);
+    }
+    
+    m_AddMoveList.clear();
+
+    // 현재 프레임에서 계산된 Velocity를 Move
     CharacterController()->Move(m_MoveVelocity * DT);
 
     // 땅에 닿은 상태면 Velocity Y값 초기화

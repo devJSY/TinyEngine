@@ -72,6 +72,9 @@ private:
 
     float                       m_InitGravity;
 
+    // 추가적으로 캐릭터 컨트롤러의 Move를 호출하기 위한 속도를 담아놓은 list
+    list<Vec3>                  m_AddMoveList;
+
 
 public:
     virtual void begin() override;
@@ -129,6 +132,8 @@ public:
     bool IsGround() const { return m_bGround; }
     float GetInitGravity() const { return m_InitGravity; }
     RaycastHit GetRay() const { return m_RayHit; }
+
+    void PushAddMove(Vec3 _Move) { m_AddMoveList.push_back(_Move); }
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;
