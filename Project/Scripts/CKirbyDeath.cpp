@@ -31,7 +31,7 @@ void CKirbyDeath::tick()
 
     if (m_Acc > m_FaceDuraion)
     {
-        CPlayerMgr::SetPlayerFace(FaceType::Close); 
+        CPlayerMgr::SetPlayerFace(FaceType::Close);
 
         // Camera 조작
         CCameraController* CamCtrl = CAMERACTRL;
@@ -43,7 +43,7 @@ void CKirbyDeath::tick()
         CamCtrl->SetZoomMaxSpeed(100.f);
         CamCtrl->SetZoomThreshold(500.f);
 
-        // 커비와 UI를 제외한 배경은 검은색으로 Fade Out 
+        // 커비와 UI를 제외한 배경은 검은색으로 Fade Out
         if (m_bFadeEffect == false)
         {
             CLevelFlowMgr* FlowMgr = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager")->GetScript<CLevelFlowMgr>();
@@ -51,7 +51,6 @@ void CKirbyDeath::tick()
 
             m_bFadeEffect = true;
         }
-
     }
 
     if (m_Acc > m_DeathDuraion)
@@ -86,7 +85,7 @@ void CKirbyDeath::Enter()
 
     // Camera Shake
     CamCtrl->Shake(0.5f, 50.f, 50.f);
-     
+
     Vec3 CamPos = CamCtrl->GetOwner()->Transform()->GetWorldPos();
 
     // @TODO 커비 방향 설정
@@ -95,7 +94,7 @@ void CKirbyDeath::Enter()
     Dir.y = 0.f;
     Dir.Normalize();
 
-    ForceDirInfo DirInfo = {ForceDirType::STAGEEVENT, Dir,true};
+    ForceDirInfo DirInfo = {ForceDirType::STAGEEVENT, Dir, true};
     PLAYERCTRL->ForceDir(DirInfo);
     PLAYERFSM->SetGlobalState(true);
     GetOwner()->Animator()->Play(ANIMPREFIX("Death"), false);
@@ -104,6 +103,13 @@ void CKirbyDeath::Enter()
     PLAYERCTRL->LockMove();
     PLAYERCTRL->LockJump();
 
+    // UI 끄기
+    {
+        CLevelFlowMgr* FlowMgr = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager")->GetScript<CLevelFlowMgr>();
+        FlowMgr->TurnOffBossHP();
+        FlowMgr->TurnOffPlayerHP();
+        FlowMgr->ActiveOffDropUI();
+    }
 }
 
 void CKirbyDeath::Exit()
