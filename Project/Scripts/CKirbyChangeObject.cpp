@@ -81,14 +81,6 @@ void CKirbyChangeObject::Enter()
     // 커비를 제외한 모든 오브젝트가 멈추도록 타임 스케일을 조절
     CTimeMgr::GetInst()->SetTimeScale(0.f);
     PLAYERCTRL->Animator()->SetAnimatorUpdateMode(AnimatorUpdateMode::UnscaledTime);
-
-    // UI 끄기
-    {
-        CLevelFlowMgr* FlowMgr = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager")->GetScript<CLevelFlowMgr>();
-        FlowMgr->TurnOffBossHP();
-        FlowMgr->TurnOffPlayerHP();
-        FlowMgr->ActiveOffDropUI();
-    }
 }
 
 void CKirbyChangeObject::Exit()
@@ -117,12 +109,4 @@ void CKirbyChangeObject::Exit()
     // Emissive를 다시 받도록 수정
     PLAYERFSM->SetSkrr(false);
     PLAYERFSM->SetInvincible(false);
-
-    // UI 키기
-    {
-        CLevelFlowMgr* FlowMgr = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager")->GetScript<CLevelFlowMgr>();
-        FlowMgr->TurnOnBossHP();
-        FlowMgr->TurnOnPlayerHP();
-        FlowMgr->ActiveOnDropUI();
-    }
 }
