@@ -102,7 +102,7 @@ public:
     void TurnOnPlayerHP();
     void TurnOffPlayerHP();
 
-    void TrunOffStageClearUI();
+    void TurnOffStageClearUI();
     void TurnOnStageclearUI();
 
     void LevelLoading();
@@ -111,7 +111,9 @@ public:
     void SetUIDOFEffect();
 
     void TurnOffDropUI();
-    void TrunOnDropUI();
+    void TurnOnDropUI();
+
+    void ActiveOffDropUI();
 
 public:
     void ResetFadeEffectTimer();

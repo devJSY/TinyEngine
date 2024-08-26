@@ -49,12 +49,8 @@ void CFlowMgr_LvStart::LevelStart()
         SetFadeEffect(Vec3(252.f, 75.f, 129.f), true, 1.f, 1.25f, true);
     }
 
-    Ptr<CPrefab> KirbyPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Kirby.pref");
+    Ptr<CPrefab> MainPlayerFreb = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Main Player.pref");
 
-    if (KirbyPref.Get())
-    {
-        KirbyPref->Save(L"prefab\\Main Player.pref");
-    }
     if (MainPlayerFreb.Get())
     {
         GamePlayStatic::DeleteAsset(ASSET_TYPE::PREFAB, MainPlayerFreb.Get());

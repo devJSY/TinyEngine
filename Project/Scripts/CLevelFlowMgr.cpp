@@ -120,7 +120,10 @@ void CLevelFlowMgr::begin()
         if (nullptr != m_pBossHP)
             m_pBossHP->SetActive(false);
 
+        // Drop UI
         m_pDropUI = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"UI_PlayerDropProgressBarUI");
+        if (nullptr != m_pDropUI)
+            m_pDropUI->SetActive(false);
 
         // Start Level Duration Value
         m_bStartLevelDurationValue = true;
@@ -134,7 +137,7 @@ void CLevelFlowMgr::begin()
 
         m_pClearUI = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"UI_LevelClear");
         if (nullptr != m_pClearUI)
-            TrunOffStageClearUI();
+            TurnOffStageClearUI();
     }
 }
 
@@ -347,6 +350,8 @@ void CLevelFlowMgr::LevelStart()
             SetFadeEffect(Vec3(255.f, 0.f, 255.f), true, 1.f, 1.25f, false);
     }
 
+    if (nullptr != m_pDropUI)
+        m_pDropUI->SetActive(true);
     // @TODO BGM Àç»ý
 }
 
@@ -363,11 +368,13 @@ void CLevelFlowMgr::LevelEnd()
         SetFadeEffect(Vec3(164.f, 44.f, 174.f), false, 1.f, 1.25f, false);
 
     if (m_pClearUI)
-        TrunOffStageClearUI();
+        TurnOffStageClearUI();
 
     // HP UI Turn Off
     TurnOffPlayerHP();
     TurnOffBossHP();
+    if (nullptr != m_pDropUI)
+        m_pDropUI->SetActive(false);
 
     m_bIsChangedLevel = true;
     m_bFadeEffect = true;
@@ -525,7 +532,7 @@ void CLevelFlowMgr::TurnOffPlayerHP()
     }
 }
 
-void CLevelFlowMgr::TrunOffStageClearUI()
+void CLevelFlowMgr::TurnOffStageClearUI()
 {
     if (nullptr != m_pClearUI)
     {
@@ -700,7 +707,7 @@ void CLevelFlowMgr::SetUIDOFEffect()
     pDOFMtrl->SetScalarParam(FLOAT_0, 3000.f);
 }
 
-void CLevelFlowMgr::TrunOnDropUI()
+void CLevelFlowMgr::TurnOnDropUI()
 {
     if (nullptr != m_pDropUI)
     {
@@ -710,6 +717,12 @@ void CLevelFlowMgr::TrunOnDropUI()
             pScript->SetInteraction(true);
         }
     }
+}
+
+void CLevelFlowMgr::ActiveOffDropUI()
+{
+    if (nullptr != m_pDropUI)
+        m_pDropUI->SetActive(false);
 }
 
 void CLevelFlowMgr::TurnOffDropUI()
