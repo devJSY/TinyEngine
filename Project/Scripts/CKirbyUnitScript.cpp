@@ -12,6 +12,8 @@
 #include <Engine/CSphereCollider.h>
 #include <Engine/CBoxCollider.h>
 
+#include "CCameraController.h"
+
 CKirbyUnitScript::CKirbyUnitScript()
     : CUnitScript(KIRBYUNITSCRIPT)
 {
@@ -122,9 +124,24 @@ void CKirbyUnitScript::tick()
             SetHitDirHorizen();
             PLAYERFSM->ChangeState(L"DAMAGE");
 
-            if (PLAYERFSM->GetCurObjectIdx() == ObjectCopyType::NONE && PLAYERFSM->GetCurAbilityIdx() != AbilityCopyType::NORMAL)
+            if (NewDamage >= 8.f)
             {
-                DropAbility();
+                if (PLAYERFSM->GetCurObjectIdx() == ObjectCopyType::NONE && PLAYERFSM->GetCurAbilityIdx() != AbilityCopyType::NORMAL)
+                {
+                    DropAbility();
+                }
+            }
+
+            NewDamage -= 5.f;
+            
+            if (NewDamage >= 0.f)
+            {
+                float Alpha = clamp((NewDamage / 5.f),0.f,1.f);
+
+                float CameraIntencity = Lerp(30.f, 60.f, Alpha);
+                float CameraDuration = Lerp(0.3f, 0.5f, Alpha);
+
+                CAMERACTRL->Shake(CameraDuration, 60.f, CameraIntencity);
             }
         }
     }
