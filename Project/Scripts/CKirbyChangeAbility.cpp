@@ -57,6 +57,8 @@ void CKirbyChangeAbility::tick()
 
 void CKirbyChangeAbility::Enter()
 {
+    CTimeMgr::GetInst()->SetTimeScale(0.f);
+
     m_bFrameEnter = false;
 
     PLAYERFSM->SetGlobalState(true);
@@ -134,6 +136,8 @@ void CKirbyChangeAbility::Enter()
 
 void CKirbyChangeAbility::Exit()
 {
+    CTimeMgr::GetInst()->SetTimeScale(1.f);
+
     // MoveController Lock
     PLAYERCTRL->UnlockInput();
     PLAYERCTRL->UnlockJump();
