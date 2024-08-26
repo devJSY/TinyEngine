@@ -76,12 +76,13 @@ void CKirbyAbility_Normal::AttackEnter()
     PLAYERCTRL->LockJump();
     PLAYERCTRL->LockDirection();
 
+    PLAYERFSM->SetUnstuffReverse(false);
+
     m_bFrmEnter = true;
 }
 
 void CKirbyAbility_Normal::AttackExit()
 {
-    PLAYERFSM->ClearStuff();
     CPlayerMgr::ClearBodyMtrl();
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyNormal));
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));
@@ -89,6 +90,8 @@ void CKirbyAbility_Normal::AttackExit()
     PLAYERCTRL->UnlockMove();
     PLAYERCTRL->UnlockJump();
     PLAYERCTRL->UnlockDirection();
+
+    PLAYERFSM->SetUnstuffReverse(true);
 }
 
 // ===============

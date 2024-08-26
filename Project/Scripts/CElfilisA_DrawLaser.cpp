@@ -47,6 +47,17 @@ void CElfilisA_DrawLaser::Enter()
     Enter_Step();
 }
 
+void CElfilisA_DrawLaser::Exit()
+{
+    Exit_Step();
+
+    if (m_LaserScript)
+    {
+        GamePlayStatic::DestroyGameObject(m_LaserScript->GetOwner());
+        m_LaserScript = nullptr;
+    }
+}
+
 void CElfilisA_DrawLaser::Enter_Step()
 {
     switch (m_Step)
@@ -109,13 +120,6 @@ void CElfilisA_DrawLaser::Exit_Step()
     case StateStep::Progress:
         break;
     case StateStep::End:
-    {
-        if (m_LaserScript)
-        {
-            GamePlayStatic::DestroyGameObject(m_LaserScript->GetOwner());
-            m_LaserScript = nullptr;
-        }
-    }
         break;
     }
 }
@@ -148,6 +152,7 @@ void CElfilisA_DrawLaser::Progress()
 {
     m_AccTime += DT;
 
+    // rotate laser
     if (m_LaserScript && m_LaserScript->GetStep() == StateStep::Progress)
     {
         CGameObject* Laser = m_LaserScript->GetOwner();

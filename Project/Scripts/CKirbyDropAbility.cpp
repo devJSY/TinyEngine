@@ -18,7 +18,7 @@ void CKirbyDropAbility::tick()
     if (m_FrmEnter && CHECK_ANIMFRM(GetOwner(), 11))
     {
         // spawn ability bubble
-        if (nullptr != m_Bubble && PLAYERFSM->GetPrevAbilityIdx() != AbilityCopyType::SLEEP)
+        if (nullptr != m_Bubble)
         {
             CGameObject* pBubble = m_Bubble->Instantiate();
 

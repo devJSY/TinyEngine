@@ -535,6 +535,7 @@ void CKirbyAbility_Sword::JumpAttackStartEnter()
     PLAYERCTRL->LockDirection();
 
     PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(true);
+    PLAYERFSM->SetInvincible(true);
 }
 
 void CKirbyAbility_Sword::JumpAttackStartExit()
@@ -542,6 +543,7 @@ void CKirbyAbility_Sword::JumpAttackStartExit()
     PLAYERCTRL->UnlockDirection();
 
     PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(false);
+    PLAYERFSM->SetInvincible(false);
 }
 
 // ===============
@@ -562,6 +564,7 @@ void CKirbyAbility_Sword::LandingEnter()
     if (PLAYERFSM->GetSlideComboLevel())
     {
         PLAYERFSM->SetKnockBackDir(-PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT));
+        PLAYERFSM->SetInvincible(true);
 
         //@Effect 내려찍는 충격효과, 나비
     }
@@ -573,6 +576,8 @@ void CKirbyAbility_Sword::LandingExit()
 {
     PLAYERFSM->SetSlideComboLevel(0);
     PLAYERCTRL->UnlockJump();
+
+    PLAYERFSM->SetInvincible(false);
 }
 
 // ===============
@@ -634,11 +639,13 @@ void CKirbyAbility_Sword::SlideEnter()
     PLAYER->Animator()->Play(ANIMPREFIX("SwordSlide"));
 
     PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(true);
+    PLAYERFSM->SetInvincible(true);
 }
 
 void CKirbyAbility_Sword::SlideExit()
 {
     PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(false);
+    PLAYERFSM->SetInvincible(false);
 }
 
 // Start
@@ -651,11 +658,13 @@ void CKirbyAbility_Sword::SlideStartEnter()
     PLAYER->Animator()->Play(ANIMPREFIX("SwordSlideStart"), false);
 
     PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(true);
+    PLAYERFSM->SetInvincible(true);
 }
 
 void CKirbyAbility_Sword::SlideStartExit()
 {
     PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(false);
+    PLAYERFSM->SetInvincible(false);
 }
 
 // End
@@ -668,11 +677,13 @@ void CKirbyAbility_Sword::SlideEndEnter()
     PLAYER->Animator()->Play(ANIMPREFIX("SwordSlideEnd"), false);
 
     PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(true);
+    PLAYERFSM->SetInvincible(true);
 }
 
 void CKirbyAbility_Sword::SlideEndExit()
 {
     PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(false);
+    PLAYERFSM->SetInvincible(false);
 }
 
 // ===============
@@ -704,6 +715,7 @@ void CKirbyAbility_Sword::SlideAttackEnter()
     PLAYERCTRL->SetGravity(-100.f);
 
     PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(true);
+    PLAYERFSM->SetInvincible(true);
 
     m_bFrmEnter = true;
 }
@@ -719,6 +731,7 @@ void CKirbyAbility_Sword::SlideAttackExit()
     }
 
     PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(false);
+    PLAYERFSM->SetInvincible(false);
 }
 
 // ===============

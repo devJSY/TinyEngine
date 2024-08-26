@@ -71,6 +71,7 @@ void CKirbyChangeAbility::Enter()
 
     // 커버 머터리얼 다시 설정
     CPlayerMgr::ClearBodyMtrl();
+    CPlayerMgr::ClearMouthMtrl();
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyNormal));
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthSmileOpen));
     CPlayerMgr::SetPlayerFace(FaceType::Normal);

@@ -76,10 +76,9 @@ void CMorphoDemo_Appear::Enter_Step()
     case StateStep::End: {
         GetOwner()->Animator()->Play(ANIMPREFIX("DemoBirthEnd"), false, false, 1.5f);
 
-        // 투타겟
+        // Camera : 투타겟
         CAMERACTRL->LoadInitSetting();
         CAMERACTRL->SetMorphoTwoTarget();
-
     }
     break;
     }
@@ -109,12 +108,10 @@ void CMorphoDemo_Appear::Start()
 {
     if (m_bFrmEnter == false && CHECK_ANIMFRM(GetOwner(), 412))
     {
-        // 점점 몰포 가까이
-
+        // Camera : 점점 몰포 가까이
         CGameObject* Target = BOSS->GetChildObject(L"CameraTarget");
 
         CAMERACTRL->SetMainTarget(Target);
-
         CAMERACTRL->SetOffset(Vec3(0.f, 0.f, 0.f));
         CAMERACTRL->SetTargetOffset(Vec3(0.f, 0.f, 0.f));
         CAMERACTRL->SetLookDir(Vec3(0.f, 0.f, -1.f));
@@ -141,7 +138,7 @@ void CMorphoDemo_Appear::Start()
             GamePlayStatic::SpawnGameObject(m_BossName, LAYER_STATIC);
         }
 
-        // 뒤로 이동(고정)
+        // Camera : 뒤로 이동(고정)
         CAMERACTRL->SetLookDir(Vec3(0.f, 0.35f, -0.937f));
         CAMERACTRL->SetLookDist(100.f);
 
@@ -150,11 +147,9 @@ void CMorphoDemo_Appear::Start()
         CAMERACTRL->SetZoomThreshold(500.f);
         CAMERACTRL->SetRotationSpeed(150.f);
 
-
         m_bFrmEnter2 = true;
     }
     
-
     if (GetOwner()->Animator()->IsFinish())
     {
         ChangeStep(StateStep::Progress);

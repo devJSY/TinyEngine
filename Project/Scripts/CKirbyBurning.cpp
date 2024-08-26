@@ -33,20 +33,6 @@ void CKirbyBurning::tick()
     {
         if (KEY_RELEASED(KEY_ATK))
         {
-            // MeshData 돌려주기
-            PLAYER->MeshRender()->SetMeshData(CAssetMgr::GetInst()->Load<CMeshData>(L"meshdata\\Kirby.mdat", L"meshdata\\Kirby.mdat"));
-
-            PLAYER->MeshRender()->SetMaterial(nullptr, 0);
-            PLAYER->MeshRender()->SetMaterial(nullptr, 2);
-            PLAYER->MeshRender()->SetMaterial(nullptr, 4);
-            PLAYER->MeshRender()->SetMaterial(nullptr, 6);
-            PLAYER->MeshRender()->SetMaterial(nullptr, 7);
-            PLAYER->MeshRender()->SetMaterial(nullptr, 8);
-
-            // 모자 다시 보이게하기
-            Ptr<CMaterial> HatMat =
-                CAssetMgr::GetInst()->Load<CMaterial>(L"material\\KiryDragonHat_DragonFireC.mtrl", L"material\\KiryDragonHat_DragonFireC.mtrl");
-            PLAYERFSM->GetCurHat()->MeshRender()->SetMaterial(HatMat, 0);
             ChangeState(L"JUMP_FALL");
         }
         else
@@ -54,14 +40,60 @@ void CKirbyBurning::tick()
             ChangeState(L"BURNING_END");
         }
     }
+
+    Vec3 Raystart = GetOwner()->Transform()->GetWorldPos();
+    Raystart.y += 20.f;
+
+    Vec3 RayDir = GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+
+    float RayLength = GetOwner()->CharacterController()->GetRadius() * 20.f + 5.f;
+
+    static vector<wstring> FireWallCollision{L"World Static"};
+    RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(Raystart, RayDir, RayLength, FireWallCollision);
+
+    if (Hit.pCollisionObj != nullptr)
+    {
+        Vec3 Normal = Hit.Normal;
+        Normal.y = 0.f;
+
+        if (Normal.Length() == 0.f)
+            return;
+
+        Normal.Normalize();
+
+        // 벽과 날아가는 각도가 45도 이하일 경우 WallEnd상태로 이동
+        if (Normal.Dot(-RayDir) >= cosf(XM_PI / 4.f))
+        {
+            ChangeState(L"BURNING_WALL_END");
+        }
+    }
+
 }
 
 void CKirbyBurning::Enter()
 {
+    // Wing Fire Particle 스폰
+    Ptr<CPrefab> WingFireParticle = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbyFireWingParticle.pref");
+    if (WingFireParticle.Get())
+    {
+        CGameObject* WingFireParticleObj = WingFireParticle->Instantiate();
+        WingFireParticleObj->Transform()->SetLocalPos(Vec3(0.f, 10.f, 0.f));
+        GamePlayStatic::AddChildObject(GetOwner(), WingFireParticleObj);
+    }
+
+
+    CGameObject* Wing = PLAYER->GetChildObject(L"KirbyDragon");
+
+    if (Wing != nullptr)
+    {
+        Wing->SetActive(true);
+    }
+
+    Wing->Animator()->Play(ANIMPREFIX("Burning"), false, false, 1.5f);
     m_Acc = 0.f;
 
     // 애니메이션 재생
-    PLAYER->Animator()->Play(ANIMPREFIX("Burning"), false, false, 1.5f);
+    PLAYER->Animator()->Play(ANIMPREFIX("Burning"), true, false, 1.5f);
 
     // Movement
     PLAYERCTRL->LockJump();
@@ -78,6 +110,20 @@ void CKirbyBurning::Enter()
 
 void CKirbyBurning::Exit()
 {
+    CGameObject* WingFireParticleObj = GetOwner()->GetChildObject(L"KirbyFireWingParticle");
+
+    if (WingFireParticleObj != nullptr)
+    {
+        GamePlayStatic::DestroyGameObject(WingFireParticleObj);
+    }
+
+    CGameObject* Wing = PLAYER->GetChildObject(L"KirbyDragon");
+
+    if (Wing != nullptr)
+    {
+        Wing->SetActive(false);
+    }
+
     // Movement
     PLAYERCTRL->UnlockJump();
     PLAYERCTRL->SetForwardMode(false);

@@ -121,7 +121,7 @@ void CKirbyAbility_Sleep::Attack()
 void CKirbyAbility_Sleep::AttackEnter()
 {
     PLAYER->Animator()->Play(ANIMPREFIX("Sleep"), true);
-    CPlayerMgr::SetPlayerFace(FaceType::Half);
+    CPlayerMgr::SetPlayerFace(FaceType::Close);
 
     PLAYERCTRL->LockMove();
     PLAYERCTRL->LockDirection();
@@ -168,19 +168,22 @@ void CKirbyAbility_Sleep::AttackStartExit()
 // End
 void CKirbyAbility_Sleep::AttackEndEnter()
 {
-    PLAYER->Animator()->Play(ANIMPREFIX("SleepEnd"), false);
+    PLAYER->Animator()->Play(ANIMPREFIX("SleepEnd"), false, false, 1.5f);
     CPlayerMgr::SetPlayerFace(FaceType::Half);
 
     PLAYERCTRL->LockMove();
     PLAYERCTRL->LockDirection();
     PLAYERCTRL->LockJump();
 
+    PLAYERFSM->SetGlobalState(true);
+    PLAYERFSM->SetInvincible(true);
+
+    PLAYERUNIT->BuffHP(30.f);
+
     if (m_SnotBubble)
     {
         m_SnotBubble->Animator()->Play(ANIMPREFIX("BubbleStart"), false, true);
     }
-
-    PLAYERUNIT->BuffHP(30.f);
 }
 
 void CKirbyAbility_Sleep::AttackEndExit()
@@ -190,6 +193,10 @@ void CKirbyAbility_Sleep::AttackEndExit()
     PLAYERCTRL->UnlockMove();
     PLAYERCTRL->UnlockDirection();
     PLAYERCTRL->UnlockJump();
+
+    PLAYERFSM->SetInvincible(false);
+    PLAYERFSM->ClearYPressedTime();
+    PLAYERFSM->ChangeAbilityCopy(AbilityCopyType::NORMAL);
 
     // off snotBubble
     if (m_SnotBubble)

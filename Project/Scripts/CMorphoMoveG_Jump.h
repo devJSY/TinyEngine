@@ -6,7 +6,6 @@ class CMorphoMoveG_Jump : public CBossState
 private:
     float m_StartHeight;
     float m_JumpHeight;
-    float m_PrevDrag;
 
 public:
     virtual void tick() override;

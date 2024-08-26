@@ -21,6 +21,9 @@ public:
     void ChangeFlowDeath();
     void ChangeFlowClear();
 
+public:
+    BossLevelFlow GetFlowState() { return m_FlowState; }
+
 private:
     void SpawnMorpho();
 

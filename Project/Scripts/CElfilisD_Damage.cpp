@@ -38,15 +38,11 @@ void CElfilisD_Damage::Enter_Step()
         Dir.Normalize();
 
         GetOwner()->Animator()->Play(ANIMPREFIX("Damage"), false, false, 2.5f, 0.f);
-        GetOwner()->Rigidbody()->SetKinematic(true);
         GetOwner()->Transform()->SetWorldPos(Vec3());
         GetOwner()->Transform()->Slerp(Dir, 1.f);
 
-        m_PrevDrag = GetOwner()->Rigidbody()->GetDrag();
-
-        // Fixed View
+        // Camera : Fixed View
         CAMERACTRL->SetMainTarget(BOSS);
-
         CAMERACTRL->FixedView(true, Vec3(-132.45f, 83.80f, -140.07f));
 
         CAMERACTRL->SetOffset(Vec3(0.f, 0.f, 0.f));
@@ -62,12 +58,10 @@ void CElfilisD_Damage::Enter_Step()
     break;
     case StateStep::Progress: {
         // BackStep
-        Vec3 BackDir = GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT) * -1.f;
-        BackDir.y = 0.f;
-        BackDir.Normalize();
-
-        GetOwner()->Rigidbody()->AddForce(BackDir * 700.f, ForceMode::Impulse);
-        m_TargetPos = BackDir * 300.f;
+        m_ForceDir = GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT) * -1.f;
+        m_ForceDir.y = 0.f;
+        m_ForceDir.Normalize();
+        m_TargetPos = m_ForceDir * 300.f;
     }
     break;
     }
@@ -77,17 +71,13 @@ void CElfilisD_Damage::Exit_Step()
 {
     switch (m_Step)
     {
-    case StateStep::Start: {
-        GetOwner()->Rigidbody()->SetKinematic(false);
-    }
-    break;
-    case StateStep::Progress:
-    {
+    case StateStep::Start:
+        break;
+    case StateStep::Progress: {
         GetOwner()->Rigidbody()->SetVelocity(Vec3());
         GetOwner()->Rigidbody()->SetAngularVelocity(Vec3());
-        GetOwner()->Rigidbody()->SetDrag(m_PrevDrag);
     }
-        break;
+    break;
     }
 }
 
@@ -98,12 +88,12 @@ void CElfilisD_Damage::Start()
 
 void CElfilisD_Damage::Process()
 {
-    // Add Drag
+    // Move
     Vec3 NewPos = GetOwner()->Transform()->GetWorldPos();
     float t = NewPos.Length() / m_TargetPos.Length();
-    float Ratio = clamp(t, 0.f, 1.f) * XM_PI;
-    float NewDrag = 3.f - 3.f * sinf(Ratio);
-    GetOwner()->Rigidbody()->SetDrag(NewDrag);
+    float SinGraph = clamp(sinf(t * XM_PI * 0.99f) * 1.3f, 0.f, 1.f);
+    float NewSpeed = 25.f * SinGraph;
+    GetOwner()->Rigidbody()->SetVelocity(m_ForceDir * NewSpeed);
 
     if (t >= 1.f)
     {

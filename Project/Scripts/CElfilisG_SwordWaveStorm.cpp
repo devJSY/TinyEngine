@@ -104,11 +104,12 @@ void CElfilisG_SwordWaveStorm::Progress()
         if (m_StormPref != nullptr)
         {
             // spawn strom
+            RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(GetOwner()->Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), 100.f,
+                                                             vector<wstring>{L"World Static"});
+
             for (int i = 0; i < 7; ++i)
             {
                 CGameObject* pStorm = m_StormPref->Instantiate();
-                RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(GetOwner()->Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), 100.f,
-                                                                 vector<wstring>{L"World Static"});
                 Vec3 m_InitPos =
                     (Hit.pCollisionObj) ? Hit.Point : Vec3(GetOwner()->Transform()->GetWorldPos().x, 0.f, GetOwner()->Transform()->GetWorldPos().z);
 

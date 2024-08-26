@@ -41,6 +41,7 @@ CKirbyFSM::CKirbyFSM()
     , m_LastJump(LastJumpType::HIGH)
     , m_DodgeType(DodgeType::NONE)
     , m_bStuffed(false)
+    , m_bUnstuffReverse(false)
     , m_KnockbackDir{}
     , m_YPressedTime(0.f)
     , m_Vacuum1MaxTime(2.f)
@@ -104,6 +105,7 @@ CKirbyFSM::CKirbyFSM(const CKirbyFSM& _Origin)
     , m_LastJump(LastJumpType::HIGH)
     , m_DodgeType(DodgeType::NONE)
     , m_bStuffed(false)
+    , m_bUnstuffReverse(false)
     , m_BodyCollider(nullptr)
     , m_KnockbackDir{}
     , m_YPressedTime(0.f)
@@ -255,6 +257,7 @@ CKirbyFSM::~CKirbyFSM()
 #include "CKirbyBurningStart.h"
 #include "CKirbyBurning.h"
 #include "CKirbyBurningEnd.h"
+#include "CKirbyBurningWallEnd.h"
 #include "CKirbyFinalCutterRise.h"
 #include "CKirbyFinalCutterDrop.h"
 #include "CKirbyFinalCutterEnd.h"
@@ -332,6 +335,15 @@ void CKirbyFSM::begin()
             GamePlayStatic::DestroyGameObject(KirbyChildObject[i]);
         }
     }
+
+    CGameObject* Wing = GetOwner()->GetChildObject(L"KirbyDragon");
+    if (Wing)
+    {
+        GamePlayStatic::AddChildObject(GetOwner(), Wing, L"Wing");
+    }
+
+
+
 
     // begin시에 ObjectCopy상태는 항상 None으로 바꿔준다.
     PLAYER->MeshRender()->SetMeshData(CPlayerMgr::GetPlayerMeshData());
@@ -461,6 +473,7 @@ void CKirbyFSM::begin()
     AddState(L"BURNING_START", new CKirbyBurningStart);
     AddState(L"BURNING", new CKirbyBurning);
     AddState(L"BURNING_END", new CKirbyBurningEnd);
+    AddState(L"BURNING_WALL_END", new CKirbyBurningWallEnd);
 
     // Cutter
     AddState(L"FINALCUTTERRISE", new CKirbyFinalCutterRise);
@@ -534,6 +547,12 @@ void CKirbyFSM::tick()
         {
             m_YPressedTime = 0.f;
         }
+    }
+
+    if (m_bUnstuffReverse)
+    {
+        m_bUnstuffReverse = false;
+        ClearStuff();
     }
 
     // 무적 상태 관리

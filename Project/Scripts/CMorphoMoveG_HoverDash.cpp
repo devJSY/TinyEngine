@@ -3,9 +3,10 @@
 #include "CMorphoFSM.h"
 
 CMorphoMoveG_HoverDash::CMorphoMoveG_HoverDash()
-    : m_PrevDrag(0.f)
-    , m_Speed(130.f)
-    , m_NewDrag(0.f)
+    : m_Speed(20.f)
+    , m_RotSpeed(3.f)
+    , m_PrevDrag(0.f)
+    , m_AccTime(0.f)
 {
 }
 
@@ -36,12 +37,21 @@ void CMorphoMoveG_HoverDash::tick()
     }
 }
 
+void CMorphoMoveG_HoverDash::Exit()
+{
+    Exit_Step();
+
+    GetOwner()->Rigidbody()->SetVelocity(Vec3());
+    GetOwner()->Rigidbody()->SetAngularVelocity(Vec3());
+}
+
 void CMorphoMoveG_HoverDash::Enter_Step()
 {
     switch (m_Step)
     {
     case StateStep::Start: {
         GetOwner()->Animator()->Play(ANIMPREFIX("HoverDashStart"), false, false, 1.5f);
+        m_AccTime = 0.f;
     }
     break;
     case StateStep::Progress: {
@@ -50,12 +60,12 @@ void CMorphoMoveG_HoverDash::Enter_Step()
     break;
     case StateStep::End: {
         GetOwner()->Animator()->Play(ANIMPREFIX("HoverDashEnd"), false, false, 1.5f);
-        m_PrevDrag = GetOwner()->Rigidbody()->GetDrag();
-        m_NewDrag = 1.f;
     }
     break;
     case StateStep::EndWait: {
         GetOwner()->Animator()->Play(ANIMPREFIX("Landing"), false, false, 1.5f);
+        m_PrevDrag = GetOwner()->Rigidbody()->GetDrag();
+        GetOwner()->Rigidbody()->SetDrag(2.f);
     }
     break;
     }
@@ -71,13 +81,16 @@ void CMorphoMoveG_HoverDash::Exit_Step()
         break;
     case StateStep::End:
         break;
-    case StateStep::EndWait:
-        break;
+    case StateStep::EndWait: {
+        GetOwner()->Rigidbody()->SetDrag(m_PrevDrag);
+    }
+    break;
     }
 }
 
 void CMorphoMoveG_HoverDash::Start()
 {
+    m_AccTime += DT;
     FlyToPlayer();
 
     if (GetOwner()->Animator()->IsFinish())
@@ -88,6 +101,7 @@ void CMorphoMoveG_HoverDash::Start()
 
 void CMorphoMoveG_HoverDash::Progress()
 {
+    m_AccTime += DT;
     FlyToPlayer();
 
     if (MRPFSM->IsNearPlayer())
@@ -98,10 +112,6 @@ void CMorphoMoveG_HoverDash::Progress()
 
 void CMorphoMoveG_HoverDash::End()
 {
-    // Add drag
-    m_NewDrag += 3.f * DT;
-    GetOwner()->Rigidbody()->SetDrag(m_NewDrag);
-
     if (GetOwner()->Animator()->IsFinish())
     {
         ChangeStep(StateStep::EndWait);
@@ -118,24 +128,42 @@ void CMorphoMoveG_HoverDash::EndWait()
 
 void CMorphoMoveG_HoverDash::FlyToPlayer()
 {
-    // move
-    Vec3 Veloc = GetOwner()->Rigidbody()->GetVelocity();
-    Vec3 Force = PLAYER->Transform()->GetWorldPos() - GetOwner()->Transform()->GetWorldPos();
-    Force.y = 0.f;
-    Force = Force.Normalize() * m_Speed;
+    float AppearTime = 2.f;
 
-    if (Veloc.Length() <= m_Speed)
+    // move
+    Vec3 Dir = PLAYER->Transform()->GetWorldPos() - GetOwner()->Transform()->GetWorldPos();
+    Dir.y = 0.f;
+    float Dist = Dir.Length();
+    Dir.Normalize();
+
+    Vec3 Force = Dir * m_Speed;
+    Force = (GetOwner()->Rigidbody()->GetVelocity() + Force * m_RotSpeed * DT).Normalize() * m_Speed;
+
+    // chase 0 : start
+    if (m_AccTime <= AppearTime)
     {
-        GetOwner()->Rigidbody()->AddForce(Force, ForceMode::Force);
+        float t = m_AccTime / AppearTime;
+        float Delta = sinf(XM_PI / 2.f * t);
+        GetOwner()->Rigidbody()->SetVelocity(Force * Delta);
     }
+
+    // chase 1 : end
+    else if (Dist <= MRPFSM->GetNearDist() + 10.f)
+    {
+        float t = Dist - MRPFSM->GetNearDist() / 10.f;
+        float Delta = cosf(XM_PI / 2.f * t);
+        Delta = Delta * 0.9f + 0.1f; // 0.1 ~ 1.0
+        GetOwner()->Rigidbody()->SetVelocity(Force * Delta);
+    }
+
+    // chase 2 : ing
     else
     {
-        Force = (Veloc + Force * 1.3f * DT).Normalize() * m_Speed;
         GetOwner()->Rigidbody()->SetVelocity(Force);
     }
 
     // rotate
     Force.y = 0.f;
     Force.Normalize();
-    GetOwner()->Transform()->Slerp(Force, BOSSUNIT->GetInitInfo().RotationSpeed * DT);
+    GetOwner()->Transform()->Slerp(Force, m_RotSpeed * DT);
 }

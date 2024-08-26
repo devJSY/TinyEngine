@@ -54,32 +54,6 @@ void CKirbyCutterBullet::begin()
 
 void CKirbyCutterBullet::tick()
 {
-    switch (m_CurState)
-    {
-    case BulletState::HOLD_AIR:
-        GetOwner()->SetName(L"AIR");
-        break;
-    case BulletState::HOLD_WALL:
-        GetOwner()->SetName(L"WALL");
-        break;
-    case BulletState::DRAG:
-        GetOwner()->SetName(L"DRAG");
-        break;
-    case BulletState::BACK:
-        GetOwner()->SetName(L"BACK");
-        break;
-    case BulletState::RAGE:
-        GetOwner()->SetName(L"RAGE");
-        break;
-    case BulletState::BURNING_WAIT:
-        GetOwner()->SetName(L"BURNING_WAIT");
-        break;
-    case BulletState::BURNING:
-        GetOwner()->SetName(L"BURNING");
-        break;
-    default:
-        break;
-    }
 
     // Burning check
     if (m_bPressedATK && (KEY_RELEASED(KEY_ATK) || KEY_NONE(KEY_ATK)))

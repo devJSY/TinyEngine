@@ -111,7 +111,6 @@ void CKirbyLongDiveStart::tick()
         {
             ChangeState(L"LONGDIVE");
         }
-
     }
     break;
     case AbilityCopyType::SLEEP: {
