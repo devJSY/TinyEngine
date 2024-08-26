@@ -732,6 +732,12 @@ void CLevelFlowMgr::ActiveOffDropUI()
         m_pDropUI->SetActive(false);
 }
 
+void CLevelFlowMgr::ActiveOnDropUI()
+{
+    if (nullptr != m_pDropUI)
+        m_pDropUI->SetActive(true);
+}
+
 void CLevelFlowMgr::TurnOffDropUI()
 {
     if (nullptr != m_pDropUI)

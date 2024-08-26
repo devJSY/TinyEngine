@@ -28,7 +28,7 @@ void CKirbyChangeObject::tick()
             ChangeState(L"CHANGE_OBJECT_END");
         }
     }
-        break;
+    break;
     }
 }
 
@@ -82,6 +82,13 @@ void CKirbyChangeObject::Enter()
     CTimeMgr::GetInst()->SetTimeScale(0.f);
     PLAYERCTRL->Animator()->SetAnimatorUpdateMode(AnimatorUpdateMode::UnscaledTime);
 
+    // UI 끄기
+    {
+        CLevelFlowMgr* FlowMgr = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager")->GetScript<CLevelFlowMgr>();
+        FlowMgr->TurnOffBossHP();
+        FlowMgr->TurnOffPlayerHP();
+        FlowMgr->ActiveOffDropUI();
+    }
 }
 
 void CKirbyChangeObject::Exit()
@@ -110,4 +117,12 @@ void CKirbyChangeObject::Exit()
     // Emissive를 다시 받도록 수정
     PLAYERFSM->SetSkrr(false);
     PLAYERFSM->SetInvincible(false);
+
+    // UI 키기
+    {
+        CLevelFlowMgr* FlowMgr = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager")->GetScript<CLevelFlowMgr>();
+        FlowMgr->TurnOnBossHP();
+        FlowMgr->TurnOnPlayerHP();
+        FlowMgr->ActiveOnDropUI();
+    }
 }

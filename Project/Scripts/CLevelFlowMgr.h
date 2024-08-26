@@ -115,6 +115,7 @@ public:
     void TurnOnDropUI();
 
     void ActiveOffDropUI();
+    void ActiveOnDropUI();
 
 public:
     void ResetFadeEffectTimer();
