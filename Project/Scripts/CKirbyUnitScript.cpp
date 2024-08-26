@@ -95,7 +95,7 @@ void CKirbyUnitScript::tick()
                 CLevelFlowMgr* FlowMgr = ManagerObj->GetScript<CLevelFlowMgr>();
                 if (FlowMgr)
                 {
-                    FlowMgr->OnRadialBlurEffect(1.f);
+                    FlowMgr->OnRadialBlurEffect(1.f,20.f,5.f);
                 }
             }
         }
