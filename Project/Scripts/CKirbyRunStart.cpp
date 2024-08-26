@@ -29,10 +29,6 @@ void CKirbyRunStart::tick()
             {
                 ChangeState(L"VACUUM1_START");
             }
-            else if (PLAYERFSM->GetYPressedTime() >= PLAYERFSM->GetDropCopyTime())
-            {
-                ChangeState(L"DROP_ABILITY");
-            }
             else if (KEY_TAP(KEY_JUMP) || (KEY_PRESSED(KEY_JUMP)))
             {
                 ChangeState(L"JUMP_START");
@@ -107,6 +103,10 @@ void CKirbyRunStart::tick()
                     ChangeState(L"ATTACK");
                 }
             }
+            else if (PLAYERFSM->GetYPressedTime() >= PLAYERFSM->GetDropCopyTime())
+            {
+                ChangeState(L"DROP_ABILITY");
+            }
             else if (KEY_TAP(KEY_JUMP) || (KEY_PRESSED(KEY_JUMP)))
             {
                 ChangeState(L"JUMP_START");
@@ -131,8 +131,6 @@ void CKirbyRunStart::tick()
             }
         }
         break;
-
-            break;
         case AbilityCopyType::SWORD: {
             if (KEY_TAP(KEY_ATK) && PLAYERFSM->IsNearDeformObject())
             {
@@ -250,5 +248,4 @@ void CKirbyRunStart::SpawnSmoke()
 
         m_LastSmokeIsRight = false;
     }
-
 }

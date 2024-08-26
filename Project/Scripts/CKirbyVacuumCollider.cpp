@@ -67,7 +67,7 @@ void CKirbyVacuumCollider::tick()
 
 void CKirbyVacuumCollider::OnTriggerEnter(CCollider* _OtherCollider)
 {
-    if (m_bDrawing || m_FindTarget)
+    if (m_bDrawing)
         return;
 
     // 흡수할 수 있는 물체라면
@@ -79,7 +79,10 @@ void CKirbyVacuumCollider::OnTriggerEnter(CCollider* _OtherCollider)
     AbilityCopyType newAbility = AbilityCopyType::NONE;
     ObjectCopyType newObject = ObjectCopyType::NONE;
     float newHoldTime = 0.f;
-    float newDist = (PLAYER->Transform()->GetWorldPos() - _OtherCollider->Transform()->GetWorldPos()).Length();
+
+    Vec3 DistVec = PLAYER->Transform()->GetWorldPos() - _OtherCollider->Transform()->GetWorldPos();
+    DistVec.y = 0.f;
+    float newDist = DistVec.Length();
     EatType newType = GetEatType(_OtherCollider->GetOwner(), newAbility, newObject, newHoldTime);
 
     if (newType == EatType::NONE)
@@ -270,7 +273,10 @@ void CKirbyVacuumCollider::CheckDrawing()
         // remove script
         for (CScript* Script : Front->GetScripts())
         {
-            Front->RemoveScript(Script);
+            if (Script->GetScriptType() != KIRBYBULLETSIZE)
+            {
+                Front->RemoveScript(Script);
+            }
         }
 
         // change collider

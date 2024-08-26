@@ -26,10 +26,6 @@ void CKirbyJump::tick()
             {
                 ChangeState(L"VACUUM1_START");
             }
-            else if (PLAYERFSM->GetYPressedTime() >= PLAYERFSM->GetDropCopyTime())
-            {
-                ChangeState(L"DROP_ABILITY");
-            }
             else if (PLAYERCTRL->IsGround())
             {
                 ChangeState(L"LANDING");
@@ -61,6 +57,10 @@ void CKirbyJump::tick()
                     ChangeState(L"ATTACK_CHARGE1_START");
                 }
             }
+            else if (PLAYERFSM->GetYPressedTime() >= PLAYERFSM->GetDropCopyTime())
+            {
+                ChangeState(L"DROP_ABILITY");
+            }
             else if (PLAYERCTRL->IsGround())
             {
                 ChangeState(L"LANDING");
@@ -88,6 +88,10 @@ void CKirbyJump::tick()
                 {
                     ChangeState(L"ATTACK");
                 }
+            }
+            else if (PLAYERFSM->GetYPressedTime() >= PLAYERFSM->GetDropCopyTime())
+            {
+                ChangeState(L"DROP_ABILITY");
             }
             else if (PLAYERCTRL->IsGround())
             {
@@ -119,6 +123,10 @@ void CKirbyJump::tick()
                 {
                     ChangeState(L"JUMP_ATTACK_START");
                 }
+            }
+            else if (PLAYERFSM->GetYPressedTime() >= PLAYERFSM->GetDropCopyTime())
+            {
+                ChangeState(L"DROP_ABILITY");
             }
             else if (PLAYERCTRL->IsGround())
             {

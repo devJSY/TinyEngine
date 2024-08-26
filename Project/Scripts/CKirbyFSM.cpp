@@ -509,6 +509,7 @@ void CKirbyFSM::begin()
 
 void CKirbyFSM::tick()
 {
+    // Combo
     if (m_ComboLevel != 0)
     {
         m_ComboAccTime += DT;
@@ -524,11 +525,13 @@ void CKirbyFSM::tick()
         m_ChargeAccTime += DT;
     }
 
+    // Hovering
     if (m_bHovering)
     {
         m_HoveringAccTime += DT;
     }
 
+    // Ability & Object Drop check
     if (m_bDroppable && (KEY_TAP(KEY::Y) || KEY_PRESSED(KEY::Y)))
     {
         if (m_CurObject == ObjectCopyType::NONE && m_CurAbility == AbilityCopyType::NORMAL)
@@ -549,6 +552,7 @@ void CKirbyFSM::tick()
         }
     }
 
+    // Clear Stuff
     if (m_bUnstuffReverse)
     {
         m_bUnstuffReverse = false;
