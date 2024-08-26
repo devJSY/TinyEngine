@@ -34,8 +34,8 @@ void CKirbyBulletScript::begin()
     if (!PLAYERFSM->GetStuffedObj())
         return;
 
-    CGameObject* pStuffedObj = new CGameObject();
-    CTransform* pTransform = PLAYERFSM->GetStuffedObj()->Transform()->Clone();
+    CGameObject* pStuffedObj = PLAYERFSM->GetStuffedObj()->Clone();
+    pStuffedObj->SetActive(true);
 
     // set SclaeFactor
     CKirbyBulletSize* pSizeScript = PLAYERFSM->GetStuffedObj()->GetScript<CKirbyBulletSize>();
@@ -73,25 +73,13 @@ void CKirbyBulletScript::begin()
     }
 
     // add component
-    pStuffedObj->AddComponent(pTransform);
-    pTransform->SetAbsolute(false);
-    pTransform->SetLocalRotation(Vec3());
-    pTransform->SetLocalScale(Vec3(m_ScaleFactor));
-
-    if (PLAYERFSM->GetStuffedObj()->MeshRender())
-    {
-        pStuffedObj->AddComponent(PLAYERFSM->GetStuffedObj()->MeshRender()->Clone());
-    }
+    pStuffedObj->Transform()->SetAbsolute(false);
+    pStuffedObj->Transform()->SetLocalRotation(Vec3());
+    pStuffedObj->Transform()->SetLocalScale(Vec3(m_ScaleFactor));
 
     if (PLAYERFSM->GetStuffedObj()->Animator())
     {
-        CAnimator* pAnimator = PLAYERFSM->GetStuffedObj()->Animator()->Clone();
-        pAnimator->Play(ANIMPREFIX("Damage"), true, false, 1.f);
-        pStuffedObj->AddComponent(pAnimator);
-    }
-    else
-    {
-        pTransform->SetLocalRotation(Vec3(XMConvertToRadians(-90.f), XMConvertToRadians(180.f), 0.f));
+        pStuffedObj->Animator()->Play(ANIMPREFIX("Damage"), true, false, 1.f);
     }
 
     pStuffedObj->SetName(L"StuffedObjCopy");
