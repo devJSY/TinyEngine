@@ -317,9 +317,8 @@ void CElfilisAirArrow::Attack()
 
                 // 방향회전 : 현재 타겟방향
                 Vec3 CurTargetDir = CurTargetDiff.Normalize();
-                Quaternion qua = Quaternion::LookRotation(CurTargetDir, Transform()->GetWorldDir(DIR_TYPE::FRONT));
-                Quaternion rot = Quaternion::Slerp(Transform()->GetWorldQuaternion(), qua, DT);
-                Transform()->SetWorldRotation(rot);
+                Transform()->SetDirection(CurTargetDir);
+                Transform()->SetDirection(Transform()->GetWorldDir(DIR_TYPE::UP));
             }
 
             // 추적 범위 검사 : 일정 거리 이상 가까워졌다면 추적 종료, 현재 방향으로 계속 진행

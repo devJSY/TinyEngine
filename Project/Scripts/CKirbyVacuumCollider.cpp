@@ -6,6 +6,7 @@
 #include "CKirbyCopyAbilityScript.h"
 #include "CKirbyCopyObjScript.h"
 #include "CKirbyCantEat.h"
+#include <Engine\CCollider.h>
 
 CKirbyVacuumCollider::CKirbyVacuumCollider()
     : CScript(KIRBYVACUUMCOLLIDER)
@@ -14,7 +15,10 @@ CKirbyVacuumCollider::CKirbyVacuumCollider()
     , m_FindAbilityType(AbilityCopyType::NONE)
     , m_FindObjType(ObjectCopyType::NONE)
     , m_FindDistance(FBXSDK_FLOAT_MAX)
+    , m_FindHoldAccTime(0.f)
     , m_FindHoldTime(0.f)
+    , m_DrawingAccTime(0.f)
+    , m_DrawingTime(0.5f)
     , m_bDrawing(false)
 {
 }
@@ -26,7 +30,10 @@ CKirbyVacuumCollider::CKirbyVacuumCollider(const CKirbyVacuumCollider& _Origin)
     , m_FindAbilityType(AbilityCopyType::NONE)
     , m_FindObjType(ObjectCopyType::NONE)
     , m_FindDistance(FBXSDK_FLOAT_MAX)
+    , m_FindHoldAccTime(0.f)
     , m_FindHoldTime(0.f)
+    , m_DrawingAccTime(0.f)
+    , m_DrawingTime(_Origin.m_DrawingTime)
     , m_bDrawing(false)
 {
 }
@@ -51,63 +58,18 @@ void CKirbyVacuumCollider::begin()
 
 void CKirbyVacuumCollider::tick()
 {
-    // 이전 충돌 판정 시 찾은 대상이 있다면
-    if (!m_bDrawing && m_FindTarget)
-    {
-        // target object가 monster라면 버티는 상태로 변경시켜줌
-        if (m_FindType == EatType::Copy_Monster || m_FindType == EatType::Monster)
-        {
-            if (m_FindTarget->Rigidbody())
-            {
-                m_FindTarget->Rigidbody()->SetVelocity(Vec3());
-                m_FindTarget->Rigidbody()->SetAngularVelocity(Vec3());
-            }
+    // Drawing 상태 결정
+    CheckDrawing();
 
-            m_FindTarget->GetScript<CMonsterUnitScript>()->SetResistState(true);
-        }
-
-        // collider clear
-        EnableCollider(false);
-
-        //@Effect 반짝 효과 셰이더
-        m_bDrawing = true;
-    }
-
-    // 타겟 오브젝트 빨아들임
-    if (m_bDrawing)
-    {
-        // safety check
-        Vec3 Dist = PLAYER->Transform()->GetWorldPos() - m_FindTarget->Transform()->GetWorldPos();
-        float Radius = PLAYER->GetChildObject(L"Body Collider")->CapsuleCollider()->GetRadius();
-        Radius *= PLAYER->Transform()->GetWorldScale().x;
-
-        if (Dist.Length() <= Radius + 1e-3)
-        {
-            DrawingCollisionEnter(m_FindTarget);
-            return;
-        }
-
-        // force
-        Vec3 Force = Dist.Normalize();
-        float PrevSpeed = m_FindTarget->Rigidbody()->GetVelocity().Length();
-        m_FindTarget->Rigidbody()->SetVelocity(Force * PrevSpeed);
-
-        if (m_FindHoldTime > 0.f)
-        {
-            m_FindHoldTime -= DT;
-            Force = Force.Normalize() * 7.5f;
-        }
-        else
-        {
-            Force = Force.Normalize() * 60.f;
-        }
-
-        m_FindTarget->Rigidbody()->AddForce(Force, ForceMode::Acceleration);
-    }
+    // Drawing 상태라면 타겟 오브젝트 빨아들임
+    DrawingTarget();
 }
 
 void CKirbyVacuumCollider::OnTriggerEnter(CCollider* _OtherCollider)
 {
+    if (m_bDrawing || m_FindTarget)
+        return;
+
     // 흡수할 수 있는 물체라면
     int i = _OtherCollider->GetOwner()->GetLayerIdx();
     if (_OtherCollider->GetOwner()->GetLayerIdx() != LAYER_DYNAMIC && _OtherCollider->GetOwner()->GetLayerIdx() != LAYER_MONSTER)
@@ -249,7 +211,7 @@ EatType CKirbyVacuumCollider::GetEatType(CGameObject* _pObj, AbilityCopyType& _o
         else
         {
             CMonsterUnitScript* pMonster = _pObj->GetScript<CMonsterUnitScript>();
-            
+
             if (!pMonster || !pMonster->IsEatable())
             {
                 return EatType::NONE;
@@ -261,6 +223,116 @@ EatType CKirbyVacuumCollider::GetEatType(CGameObject* _pObj, AbilityCopyType& _o
     }
 
     return EatType::NONE;
+}
+
+void CKirbyVacuumCollider::CheckDrawing()
+{
+    // 예외처리 : 이미 Drawing이거나, Drawing Target이 없는 경우
+    if (m_bDrawing || !m_FindTarget)
+        return;
+
+    // target object가 monster라면 버티는 상태로 변경시켜줌
+    if (m_FindType == EatType::Copy_Monster || m_FindType == EatType::Monster)
+    {
+        m_FindTarget->Rigidbody()->SetVelocity(Vec3());
+        m_FindTarget->Rigidbody()->SetAngularVelocity(Vec3());
+
+        m_FindTarget->GetScript<CMonsterUnitScript>()->SetResistState(true);
+    }
+
+    // clear vacuum collider
+    EnableCollider(false);
+
+    // clone
+    CGameObject* TargetClone = m_FindTarget->Clone();
+    int Layer = m_FindTarget->GetLayerIdx();
+    wstring Name = L"(Vacuum Target) " + m_FindTarget->GetName();
+    GamePlayStatic::DestroyGameObject(m_FindTarget);
+
+    m_FindTarget = TargetClone;
+    m_FindTarget->SetName(Name);
+    GamePlayStatic::SpawnGameObject(m_FindTarget, Layer);
+
+    // clean-up script & copmonents
+    m_FindTarget->RemoveComponent(COMPONENT_TYPE::RIGIDBODY);
+
+    std::deque<CGameObject*> Queue{m_FindTarget};
+    while (!Queue.empty())
+    {
+        CGameObject* Front = Queue.front();
+        Queue.pop_front();
+
+        for (CGameObject* Child : Front->GetChildObject())
+        {
+            Queue.push_back(Child);
+        }
+
+        // remove script
+        for (CScript* Script : Front->GetScripts())
+        {
+            Front->RemoveScript(Script);
+        }
+
+        // change collider
+        CCollider* Collider = Front->GetComponent<CCollider>();
+
+        if (Collider)
+        {
+            Collider->SetTrigger(true);
+        }
+    }
+
+    //@Effect 반짝 효과 셰이더
+    m_bDrawing = true;
+    m_FindHoldAccTime = 0.f;
+    m_DrawingAccTime = 0.f;
+}
+
+void CKirbyVacuumCollider::DrawingTarget()
+{
+    if (!m_bDrawing || !m_FindTarget)
+        return;
+
+    // safety check
+    Vec3 Dist = PLAYER->Transform()->GetWorldPos() - m_FindTarget->Transform()->GetWorldPos();
+    float Radius = PLAYER->GetChildObject(L"Body Collider")->CapsuleCollider()->GetRadius();
+    Radius *= PLAYER->Transform()->GetWorldScale().x;
+
+    if (Dist.Length() <= Radius + 1e-3)
+    {
+        DrawingCollisionEnter(m_FindTarget);
+        return;
+    }
+
+    // move target pos
+    Vec3 Dir = (m_FindTarget->Transform()->GetWorldPos() - PLAYER->Transform()->GetWorldPos()).Normalize();
+    Vec3 NewPos = PLAYER->Transform()->GetWorldPos();
+
+    if (m_FindHoldAccTime < m_FindHoldTime)
+    {
+        m_FindHoldAccTime += DT;
+
+        float t = m_FindHoldAccTime / m_FindHoldTime;
+        NewPos += Dir * (m_FindDistance - 10.f * t);
+    }
+    else
+    {
+        m_DrawingAccTime += DT;
+
+        float t = clamp(m_DrawingAccTime / m_DrawingTime, 0.f, 1.f);
+        NewPos = PLAYER->Transform()->GetWorldPos();
+
+        if (m_FindHoldTime > 0.f)
+        {
+            NewPos += Dir * ((m_FindDistance - 10.f) * cosf(t * XM_PI / 2.f));
+        }
+        else
+        {
+            NewPos += Dir * m_FindDistance * cosf(t * XM_PI / 2.f);
+        }
+    }
+
+    m_FindTarget->Transform()->SetWorldPos(NewPos);
 }
 
 UINT CKirbyVacuumCollider::SaveToLevelFile(FILE* _File)

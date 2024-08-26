@@ -62,6 +62,7 @@ void CMorphoDemo_Phase2::Enter_Step()
         CAMERACTRL->SetLookDist(100.f);
         CAMERACTRL->SetLookDir(-Dir);
         CAMERACTRL->SetOffset(Vec3(0.f, 10.f, 0.f));
+        CAMERACTRL->SetTargetOffset(Vec3(0.f, 10.f, 0.f));
 
         CAMERACTRL->SetMinSpeed(500.f);
         CAMERACTRL->SetMaxSpeed(1000.f);

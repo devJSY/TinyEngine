@@ -207,6 +207,26 @@ void CKirbyUnitScript::OnControllerColliderHit(ControllerColliderHit Hit)
     }
 }
 
+void CKirbyUnitScript::OnTriggerEnter(CCollider* _OtherCollider)
+{
+    // 흡입을 시작한 상태(타겟을 결정해 빨아들이기 시작한 상태)에서 충돌한 경우
+    if (PLAYERFSM->IsDrawing())
+    {
+        PLAYERFSM->DrawingCollisionEnter(_OtherCollider->GetOwner());
+        return;
+    }
+}
+
+void CKirbyUnitScript::OnTriggerStay(CCollider* _OtherCollider)
+{
+    // 흡입을 시작한 상태(타겟을 결정해 빨아들이기 시작한 상태)에서 충돌한 경우
+    if (PLAYERFSM->IsDrawing())
+    {
+        PLAYERFSM->DrawingCollisionEnter(_OtherCollider->GetOwner());
+        return;
+    }
+}
+
 void CKirbyUnitScript::DropAbility()
 {
     // spawn ability bubble

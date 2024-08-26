@@ -9,7 +9,6 @@ CElfilisD_ResistFail::CElfilisD_ResistFail()
     : m_AccTime(0.f)
     , m_bFrmEnter(true)
 {
-    m_StageClearPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\CStageGoal.pref");
 }
 
 CElfilisD_ResistFail::~CElfilisD_ResistFail()
@@ -90,7 +89,7 @@ void CElfilisD_ResistFail::Exit_Step()
     case StateStep::Progress: {
         ELFFSM->ResetEmissive();
 
-        //@CAMERA 커비타겟
+        // Camera : 커비타겟
         CAMERACTRL->SetMainTarget(PLAYER);
         CAMERACTRL->LoadInitSetting();
         CAMERACTRL->ResetCamera();
@@ -125,22 +124,13 @@ void CElfilisD_ResistFail::Progress()
     {
         if (m_bFrmEnter)
         {
-            if (m_StageClearPref != nullptr)
-            {
-                CGameObject* Star = m_StageClearPref->Instantiate();
-                Star->Transform()->SetWorldPos(GetOwner()->Transform()->GetWorldPos());
-
-                CStageClear* Script = Star->GetScript<CStageClear>();
-                Script->SetKirbyDance(true);
-                Script->SetKirbyPos(Vec3(0.f, 0.f, 100.f));
-                Script->SetKirbyDir(Vec3(0.f, -0.05f, 1.f).Normalize());
-
-                GamePlayStatic::SpawnGameObject(Star, LAYER_DYNAMIC);
-            }
-
             //@EFFECT 터지는 파티클
         }
 
-        GetOwner()->SetActive(false);
+        if (CBossMgr::GetElfilisFlowMgr())
+        {
+            ELFFSM->SetGlobalState(false);
+            CBossMgr::GetElfilisFlowMgr()->ChangeFlowClear();
+        }
     }
 }

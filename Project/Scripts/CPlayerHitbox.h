@@ -20,6 +20,10 @@ private:
     bool m_bRepeatEnter;
     bool m_bRepeat;
 
+    // cooltime
+    float m_CoolTime;
+    float m_PrevAttackTime;
+
 public:
     virtual void begin() override;
     virtual void tick() override;
