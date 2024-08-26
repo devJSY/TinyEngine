@@ -58,7 +58,7 @@ void CKirbyJumpFall::tick()
                 ChangeState(L"LANDING");
             }
         }
-            break;
+        break;
         case ObjectCopyType::LIGHT: {
             if (KEY_TAP(KEY_ATK) && !PLAYERFSM->IsAttackEvent())
             {
@@ -77,7 +77,7 @@ void CKirbyJumpFall::tick()
                 ChangeState(L"LANDING");
             }
         }
-            break;
+        break;
         }
     }
     else
@@ -88,6 +88,43 @@ void CKirbyJumpFall::tick()
             if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
             {
                 ChangeState(L"VACUUM1_START");
+            }
+            else if (PLAYERCTRL->IsGround())
+            {
+                if (m_Acc > m_Duration)
+                {
+                    ChangeState(L"LONGDIVE_START");
+                }
+                else
+                {
+                    ChangeState(L"LANDING");
+                }
+            }
+            else if (KEY_TAP(KEY_JUMP))
+            {
+                ChangeState(L"HOVERING_START");
+            }
+            else if (m_Acc > m_Duration)
+            {
+                ChangeState(L"LONGDIVE_START");
+            }
+        }
+        break;
+        case AbilityCopyType::FIRE: {
+            if (KEY_TAP(KEY_ATK) && PLAYERFSM->IsNearDeformObject())
+            {
+                ChangeState(L"VACUUM1_START");
+            }
+            else if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
+            {
+                if (KEY_PRESSED_ARROW && KEY_TAP(KEY_ATK))
+                {
+                    ChangeState(L"BURNING_PRE");
+                }
+                else
+                {
+                    ChangeState(L"ATTACK_CHARGE1_START");
+                }
             }
             else if (PLAYERFSM->GetYPressedTime() >= PLAYERFSM->GetDropCopyTime())
             {
@@ -114,47 +151,7 @@ void CKirbyJumpFall::tick()
             }
         }
         break;
-        case AbilityCopyType::FIRE: 
-        {
-            if (KEY_TAP(KEY_ATK) && PLAYERFSM->IsNearDeformObject())
-            {
-                ChangeState(L"VACUUM1_START");
-            }
-            else if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
-            {
-                if (KEY_PRESSED_ARROW && KEY_TAP(KEY_ATK))
-                {
-                    ChangeState(L"BURNING_PRE");
-                }
-                else
-                {
-                    ChangeState(L"ATTACK_CHARGE1_START");
-                }
-            }
-            else if (PLAYERCTRL->IsGround())
-            {
-                if (m_Acc > m_Duration)
-                {
-                    ChangeState(L"LONGDIVE_START");
-                }
-                else
-                {
-                    ChangeState(L"LANDING");
-                }
-            }
-            else if (KEY_TAP(KEY_JUMP))
-            {
-                ChangeState(L"HOVERING_START");
-            }
-            else if (m_Acc > m_Duration)
-            {
-                ChangeState(L"LONGDIVE_START");
-            }
-
-        }
-            break;
-        case AbilityCopyType::CUTTER: 
-        {
+        case AbilityCopyType::CUTTER: {
             if (KEY_TAP(KEY_ATK) && PLAYERFSM->IsNearDeformObject())
             {
                 ChangeState(L"VACUUM1_START");
@@ -166,6 +163,10 @@ void CKirbyJumpFall::tick()
                     ChangeState(L"ATTACK");
                 }
             }
+            else if (PLAYERFSM->GetYPressedTime() >= PLAYERFSM->GetDropCopyTime())
+            {
+                ChangeState(L"DROP_ABILITY");
+            }
             else if (PLAYERCTRL->IsGround())
             {
                 if (m_Acc > m_Duration)
@@ -185,9 +186,8 @@ void CKirbyJumpFall::tick()
             {
                 ChangeState(L"LONGDIVE_START");
             }
-
         }
-            break;
+        break;
         case AbilityCopyType::SWORD: {
             if (PLAYERFSM->GetSlideComboLevel())
             {
@@ -206,6 +206,10 @@ void CKirbyJumpFall::tick()
                 {
                     ChangeState(L"JUMP_ATTACK_START");
                 }
+            }
+            else if (PLAYERFSM->GetYPressedTime() >= PLAYERFSM->GetDropCopyTime())
+            {
+                ChangeState(L"DROP_ABILITY");
             }
             else if (PLAYERCTRL->IsGround())
             {
@@ -256,7 +260,6 @@ void CKirbyJumpFall::tick()
             {
                 ChangeState(L"LONGDIVE_START");
             }
-
         }
         break;
         }

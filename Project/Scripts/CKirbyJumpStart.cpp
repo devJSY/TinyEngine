@@ -104,7 +104,11 @@ void CKirbyJumpStart::tick()
                 ChangeState(L"LANDING");
             }
             else */
-            if (KEY_TAP(KEY_JUMP))
+            if (PLAYERFSM->GetYPressedTime() >= PLAYERFSM->GetDropCopyTime())
+            {
+                ChangeState(L"DROP_ABILITY");
+            }
+            else if (KEY_TAP(KEY_JUMP))
             {
                 ChangeState(L"HOVERING_START");
             }
@@ -133,7 +137,11 @@ void CKirbyJumpStart::tick()
                 ChangeState(L"LANDING");
             }
             else */
-            if (KEY_TAP(KEY_JUMP))
+            if (PLAYERFSM->GetYPressedTime() >= PLAYERFSM->GetDropCopyTime())
+            {
+                ChangeState(L"DROP_ABILITY");
+            }
+            else if (KEY_TAP(KEY_JUMP))
             {
                 ChangeState(L"HOVERING_START");
             }
@@ -178,7 +186,11 @@ void CKirbyJumpStart::tick()
                 ChangeState(L"LANDING");
             }
             else */
-            if (KEY_TAP(KEY_JUMP))
+            if (PLAYERFSM->GetYPressedTime() >= PLAYERFSM->GetDropCopyTime())
+            {
+                ChangeState(L"DROP_ABILITY");
+            }
+            else if (KEY_TAP(KEY_JUMP))
             {
                 ChangeState(L"HOVERING_START");
             }
