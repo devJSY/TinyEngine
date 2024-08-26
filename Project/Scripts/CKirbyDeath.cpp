@@ -89,7 +89,7 @@ void CKirbyDeath::Enter()
     FlowMgr->OffDimensionFade();
 
     // m_Duration 만큼 시간을 멈추기
-    CTimeMgr::GetInst()->SetTimeScale(0.f, m_Duration);
+    CTimeMgr::GetInst()->SetTimeScale(0.f, m_DeathDuraion);
 
     // 커비 표정
     CPlayerMgr::SetPlayerFace(FaceType::Frown);
