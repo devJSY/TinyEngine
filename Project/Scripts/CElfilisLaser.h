@@ -6,10 +6,11 @@ class CElfilisLaser : public CScript
 private:
     StateStep m_Step;
     bool m_bAutoPlay;
+    bool m_bCollisionFloor;
 
 public:
-    virtual void tick() override;
     virtual void begin() override;
+    virtual void tick() override;
 
     void SetAutoPlay(bool _Play) { m_bAutoPlay = _Play; }
     void SetStart();
@@ -33,5 +34,6 @@ public:
 public:
     CLONE(CElfilisLaser);
     CElfilisLaser();
+    CElfilisLaser(const CElfilisLaser& _Origin);
     virtual ~CElfilisLaser();
 };

@@ -122,10 +122,6 @@ void CKirbyRun::tick()
             {
                 ChangeState(L"VACUUM1_START");
             }
-            else if (PLAYERFSM->GetYPressedTime() >= PLAYERFSM->GetDropCopyTime())
-            {
-                ChangeState(L"DROP_ABILITY");
-            }
             else if (KEY_TAP(KEY_JUMP) || (KEY_PRESSED(KEY_JUMP)))
             {
                 ChangeState(L"JUMP_START");
@@ -186,6 +182,10 @@ void CKirbyRun::tick()
                 {
                     ChangeState(L"ATTACK");
                 }
+            }
+            else if (PLAYERFSM->GetYPressedTime() >= PLAYERFSM->GetDropCopyTime())
+            {
+                ChangeState(L"DROP_ABILITY");
             }
             else if (KEY_TAP(KEY_JUMP) || (KEY_PRESSED(KEY_JUMP)))
             {
@@ -339,7 +339,6 @@ void CKirbyRun::SpawnSmoke()
 
     if (CurType == AbilityCopyType::SLEEP)
         return;
-
 
     if (m_FirstStep == true && CHECK_ANIMFRM(GetOwner(), m_FirstStepSmokeFrm) && CHECK_ANIMFRM_UNDER(GetOwner(), m_SecondStepSmokeFrm - 1))
     {

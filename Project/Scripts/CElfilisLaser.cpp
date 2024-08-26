@@ -6,7 +6,18 @@ CElfilisLaser::CElfilisLaser()
     : CScript(ELFILISLASER)
     , m_Step(StateStep::Start)
     , m_bAutoPlay(false)
+    , m_bCollisionFloor(false)
 {
+    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bCollisionFloor, "Collision Floor");
+}
+
+CElfilisLaser::CElfilisLaser(const CElfilisLaser& _Origin)
+    : CScript(_Origin)
+    , m_Step(StateStep::Start)
+    , m_bAutoPlay(_Origin.m_bAutoPlay)
+    , m_bCollisionFloor(_Origin.m_bCollisionFloor)
+{
+    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bCollisionFloor, "Collision Floor");
 }
 
 CElfilisLaser::~CElfilisLaser()
@@ -80,6 +91,18 @@ void CElfilisLaser::Start()
 
 void CElfilisLaser::Progress()
 {
+    static vector<wstring> vecCollision{L"World Static"};
+
+    if (m_bCollisionFloor)
+    {
+        RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), 2000.f, vecCollision);
+
+        if (Hit.pCollisionObj)
+        {
+            // @Effect Æ¢´Â ÀÌÆåÆ®, ¹Ù´ÚÀÜ»ó ¼ÒÈ¯
+            GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), 2000.f, Vec3(1.f, 0.f, 0.f), true);
+        }
+    }
 }
 
 void CElfilisLaser::End()
@@ -102,10 +125,20 @@ void CElfilisLaser::PlayOuter(const wstring _Anim, bool _bRepeat)
 
 UINT CElfilisLaser::SaveToLevelFile(FILE* _File)
 {
-    return 0;
+    UINT MemoryByte = 0;
+
+    fwrite(&m_bCollisionFloor, sizeof(bool), 1, _File);
+    MemoryByte += sizeof(bool);
+
+    return MemoryByte;
 }
 
 UINT CElfilisLaser::LoadFromLevelFile(FILE* _File)
 {
-    return 0;
+    UINT MemoryByte = 0;
+
+    fread(&m_bCollisionFloor, sizeof(bool), 1, _File);
+    MemoryByte += sizeof(bool);
+
+    return MemoryByte;
 }
