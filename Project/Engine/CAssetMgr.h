@@ -39,6 +39,8 @@ public:
 
     float GetModelLoadingProgress() { return m_CompletedThread / (float)m_listLoadThread.size(); }
     bool IsAssetLoading() const { return m_listLoadThread.size() != m_CompletedThread; }
+
+private:
     void ThreadRelease();
 
 private:

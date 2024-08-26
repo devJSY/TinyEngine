@@ -2,9 +2,8 @@
 #include "global.hlsli"
 #include "func.hlsli"
 
-
-#define FarZ 50000
 #define FadeCoef g_float_0
+#define FarZ g_float_1
 
 float4 main(PS_IN _in) : SV_Target
 {

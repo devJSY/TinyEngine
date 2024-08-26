@@ -58,6 +58,7 @@ public:
 public:
     int FindClipIndex(const wstring& _strClipName);
     void Play(const wstring& _strClipName, bool _bRepeat = true, bool _bReverse = false, float _PlaySpeed = 2.5f, double _ChangeDuration = 0.1);
+    void Play(int _ClipIndex, bool _bRepeat = true, bool _bReverse = false, float _PlaySpeed = 2.5f, double _ChangeDuration = 0.1);
     bool IsFinish() const;
 
     bool IsValid() const { return nullptr != m_SkeletalMesh && m_SkeletalMesh->IsSkeletalMesh(); };

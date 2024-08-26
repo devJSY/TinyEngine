@@ -291,10 +291,11 @@ enum class SHADER_DOMAIN
     DOMAIN_MERGE, // Deferred 정보를 SwapChain 타겟으로 이동
 
     // Forward
-    DOMAIN_OPAQUE,      // 불투명
-    DOMAIN_MASKED,      // 불투명 or 투명
-    DOMAIN_TRANSPARENT, // 반투명
-    DOMAIN_POSTPROCESS, // 후처리
+    DOMAIN_OPAQUE,                 // 불투명
+    DOMAIN_MASKED,                 // 불투명 or 투명
+    DOMAIN_TRANSPARENT,            // 반투명
+    DOMAIN_TRANSPARENT_BACKGROUND, // 마지막에 그려지는 반투명
+    DOMAIN_POSTPROCESS,            // 후처리
 
     // Shadow
     DOMAIN_SHADOW,

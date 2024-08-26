@@ -26,6 +26,7 @@ CAssetMgr::CAssetMgr()
 
 CAssetMgr::~CAssetMgr()
 {
+    ThreadRelease();
 }
 
 void CAssetMgr::init()
