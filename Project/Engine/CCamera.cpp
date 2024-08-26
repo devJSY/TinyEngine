@@ -273,6 +273,7 @@ void CCamera::SortObject()
                     m_vecDecal.push_back(vecObjects[j]);
                     break;
                 case SHADER_DOMAIN::DOMAIN_TRANSPARENT:
+                case SHADER_DOMAIN::DOMAIN_TRANSPARENT_BACKGROUND:
                     m_vecTransparent.push_back(tInstObj{vecObjects[j], iMtrl});
                     break;
                 case SHADER_DOMAIN::DOMAIN_POSTPROCESS:
@@ -639,6 +640,22 @@ bool AlphaSortingComp(const tInstObj& _ObjA, const tInstObj& _ObjB)
 
     ObjAViewPos = Vec4::Transform(ObjAViewPos, _ObjA.pObj->Transform()->GetWorldMat() * g_Transform.matView);
     ObjBViewPos = Vec4::Transform(ObjBViewPos, _ObjB.pObj->Transform()->GetWorldMat() * g_Transform.matView);
+
+    SHADER_DOMAIN ObjAShaderDomain = _ObjA.pObj->GetRenderComponent()->GetMaterial(_ObjA.iMtrlIdx)->GetShader()->GetDomain();
+    SHADER_DOMAIN ObjBShaderDomain = _ObjB.pObj->GetRenderComponent()->GetMaterial(_ObjB.iMtrlIdx)->GetShader()->GetDomain();
+    // 두 Shader가 Transparent Background 인 경우 내림차순 정렬
+    if (!(ObjAShaderDomain == SHADER_DOMAIN::DOMAIN_TRANSPARENT_BACKGROUND && ObjBShaderDomain == SHADER_DOMAIN::DOMAIN_TRANSPARENT_BACKGROUND))
+    {
+        // 두 Shader중 하나만 BackGround 인 경우
+        if (ObjAShaderDomain == SHADER_DOMAIN::DOMAIN_TRANSPARENT_BACKGROUND)
+        {
+            return true;
+        }
+        else if (ObjBShaderDomain == SHADER_DOMAIN::DOMAIN_TRANSPARENT_BACKGROUND)
+        {
+            return false;
+        }
+    }
 
     // 내림차순
     return ObjAViewPos.z > ObjBViewPos.z;
