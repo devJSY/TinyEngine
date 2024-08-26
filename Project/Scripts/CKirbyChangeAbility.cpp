@@ -57,8 +57,6 @@ void CKirbyChangeAbility::tick()
 
 void CKirbyChangeAbility::Enter()
 {
-    CTimeMgr::GetInst()->SetTimeScale(0.f);
-
     m_bFrameEnter = false;
 
     PLAYERFSM->SetGlobalState(true);

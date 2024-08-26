@@ -34,7 +34,6 @@ void CKirbyChangeObject::tick()
 
 void CKirbyChangeObject::Enter()
 {
-    CTimeMgr::GetInst()->SetTimeScale(0.f);
 
     PLAYERFSM->SetGlobalState(true);
     PLAYERFSM->GetNextObject()->ChangeObjectEnter();
@@ -95,8 +94,6 @@ void CKirbyChangeObject::Enter()
 
 void CKirbyChangeObject::Exit()
 {
-    CTimeMgr::GetInst()->SetTimeScale(1.f);
-
     PLAYERFSM->GetNextObject()->ChangeObjectExit();
 
     // CameraSetting

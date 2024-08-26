@@ -33,8 +33,6 @@ void CKirbyChangeObjectEnd::tick()
 
 void CKirbyChangeObjectEnd::Enter()
 {
-    CTimeMgr::GetInst()->SetTimeScale(0.f);
-
     PLAYERFSM->SetGlobalState(true);
     PLAYERFSM->GetCurObject()->ChangeObjectEndEnter();
 
@@ -53,8 +51,6 @@ void CKirbyChangeObjectEnd::Enter()
 
 void CKirbyChangeObjectEnd::Exit()
 {
-    CTimeMgr::GetInst()->SetTimeScale(1.f);
-
     PLAYERFSM->GetCurObject()->ChangeObjectEndExit();
 
     // Emissive를 다시 받도록 수정
