@@ -16,6 +16,7 @@
 #include "CUIFlowScript.h"
 
 #include "CUIHPScript.h"
+#include "CKirbyDropOutUIScript.h"
 
 CLevelFlowMgr::CLevelFlowMgr(UINT _Type)
     : CScript(_Type)
@@ -29,6 +30,7 @@ CLevelFlowMgr::CLevelFlowMgr(UINT _Type)
     , m_pLoadingUI(nullptr)
     , m_pPlayerHP(nullptr)
     , m_pBossHP(nullptr)
+    , m_pDropUI(nullptr)
     , m_pEnterUIScript(nullptr)
     , m_pClearUI(nullptr)
     , m_bStartLevel(false)
@@ -55,6 +57,7 @@ CLevelFlowMgr::CLevelFlowMgr(const CLevelFlowMgr& _Origin)
     , m_pPlayerHP(nullptr)
     , m_pClearUI(nullptr)
     , m_pBossHP(nullptr)
+    , m_pDropUI(nullptr)
     , m_bStartLevel(false)
     , m_bStartLevelDurationValue(true)
     , m_bEnterLevel(true)
@@ -117,6 +120,11 @@ void CLevelFlowMgr::begin()
         if (nullptr != m_pBossHP)
             m_pBossHP->SetActive(false);
 
+        // Drop UI
+        m_pDropUI = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"UI_PlayerDropProgressBarUI");
+        if (nullptr != m_pDropUI)
+            m_pDropUI->SetActive(false);
+
         // Start Level Duration Value
         m_bStartLevelDurationValue = true;
 
@@ -129,7 +137,7 @@ void CLevelFlowMgr::begin()
 
         m_pClearUI = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"UI_LevelClear");
         if (nullptr != m_pClearUI)
-            TrunOffStageClearUI();
+            TurnOffStageClearUI();
     }
 }
 
@@ -342,6 +350,8 @@ void CLevelFlowMgr::LevelStart()
             SetFadeEffect(Vec3(255.f, 0.f, 255.f), true, 1.f, 1.25f, false);
     }
 
+    if (nullptr != m_pDropUI)
+        m_pDropUI->SetActive(true);
     // @TODO BGM Àç»ý
 }
 
@@ -358,11 +368,13 @@ void CLevelFlowMgr::LevelEnd()
         SetFadeEffect(Vec3(164.f, 44.f, 174.f), false, 1.f, 1.25f, false);
 
     if (m_pClearUI)
-        TrunOffStageClearUI();
+        TurnOffStageClearUI();
 
     // HP UI Turn Off
     TurnOffPlayerHP();
     TurnOffBossHP();
+    if (nullptr != m_pDropUI)
+        m_pDropUI->SetActive(false);
 
     m_bIsChangedLevel = true;
     m_bFadeEffect = true;
@@ -409,7 +421,8 @@ void CLevelFlowMgr::LevelRestart()
     TurnOffPlayerHP();
     TurnOffBossHP();
 
-    SetFadeEffect(Vec3(255.f, 0.f, 255.f), false, 1.f, 1.25f, false);
+    if (L"Start Level" != m_CurLevelPath)
+        SetFadeEffect(Vec3(255.f, 0.f, 255.f), false, 1.f, 1.25f, false);
 
     m_bIsChangedLevel = true;
     m_bFadeEffect = true;
@@ -521,11 +534,12 @@ void CLevelFlowMgr::TurnOffPlayerHP()
 {
     if (nullptr != m_pPlayerHP)
     {
+        SetEnterLevel(false);
         m_pPlayerHP->SetActive(false);
     }
 }
 
-void CLevelFlowMgr::TrunOffStageClearUI()
+void CLevelFlowMgr::TurnOffStageClearUI()
 {
     if (nullptr != m_pClearUI)
     {
@@ -547,7 +561,19 @@ void CLevelFlowMgr::SetLoadingUIColor(Vec3 _Color)
         return;
 
     Vec4 Color = Vec4(_Color.x, _Color.y, _Color.z, 255.f) / 255.f;
-    m_pLoadingUI->MeshRender()->GetMaterial(0)->SetAlbedo(Color);
+
+    vector<CGameObject*> vChilds = m_pLoadingUI->GetChildObject();
+
+    for (size_t i = 0; i < vChilds.size(); ++i)
+    {
+        if (nullptr != vChilds[i])
+        {
+            if (vChilds[i]->GetName() == L"CircleM" || vChilds[i]->GetName() == L"CircleL" || vChilds[i]->GetName() == L"BoldCircleL")
+            {
+                vChilds[i]->MeshRender()->GetMaterial(0)->SetAlbedo(Color);
+            }
+        }
+    }
 }
 
 void CLevelFlowMgr::OnDimensionFade(float _Coef)
@@ -686,6 +712,42 @@ void CLevelFlowMgr::SetUIDOFEffect()
 
     pDOFMtrl->SetScalarParam(FLOAT_0, 1.f);
     pDOFMtrl->SetScalarParam(FLOAT_0, 3000.f);
+}
+
+void CLevelFlowMgr::TurnOnDropUI()
+{
+    if (nullptr != m_pDropUI)
+    {
+        CKirbyDropOutUIScript* pScript = m_pDropUI->GetScript<CKirbyDropOutUIScript>();
+        if (pScript)
+        {
+            pScript->SetInteraction(true);
+        }
+    }
+}
+
+void CLevelFlowMgr::ActiveOffDropUI()
+{
+    if (nullptr != m_pDropUI)
+        m_pDropUI->SetActive(false);
+}
+
+void CLevelFlowMgr::ActiveOnDropUI()
+{
+    if (nullptr != m_pDropUI)
+        m_pDropUI->SetActive(true);
+}
+
+void CLevelFlowMgr::TurnOffDropUI()
+{
+    if (nullptr != m_pDropUI)
+    {
+        CKirbyDropOutUIScript* pScript = m_pDropUI->GetScript<CKirbyDropOutUIScript>();
+        if (pScript)
+        {
+            pScript->SetInteraction(false);
+        }
+    }
 }
 
 void CLevelFlowMgr::ResetFadeEffectTimer()

@@ -181,6 +181,7 @@ void CFlowMgr_LvRobby::LevelEnd()
 
     if (0 == m_iCurStage)
     {
+        // SetLoadingUIColor(Vec3(164.f, 222.f, 40.f));
         SetFadeEffect(Vec3(115.f, 156.f, 28.f), false, 1.f, 1.25f, true);
     }
     else if (1 == m_iCurStage)
@@ -204,7 +205,7 @@ void CFlowMgr_LvRobby::LevelEnd()
 void CFlowMgr_LvRobby::LevelRestart()
 {
     CLevelFlowMgr::LevelRestart();
-    SetFadeEffectColor(Vec3(252.f, 75.f, 129.f));
+    SetFadeEffect(Vec3(252.f, 75.f, 129.f), false, 1.f, 1.25f, true);
 }
 
 void CFlowMgr_LvRobby::RobbyLevel()
@@ -261,6 +262,7 @@ void CFlowMgr_LvRobby::EnterZoomState()
 
         m_pStartBtn->SetActive(true);
         m_pLevelLine->SetActive(true);
+        m_pStartBtn->GetScript<CButtonScript>()->ChangeState(ButtonState::DISABLED);
     }
     break;
     case ZoomState::ZoomOut: {
@@ -296,10 +298,13 @@ void CFlowMgr_LvRobby::EnterZoomState()
 
         m_pStartBtn->SetActive(false);
         m_pLevelLine->SetActive(false);
+        m_pStartBtn->GetScript<CButtonScript>()->ChangeState(ButtonState::DISABLED);
     }
     break;
-    case ZoomState::Stop:
-        break;
+    case ZoomState::Stop: {
+        m_pStartBtn->GetScript<CButtonScript>()->ChangeState(ButtonState::NORMAL);
+    }
+    break;
     case ZoomState::End:
         break;
     default:
@@ -432,7 +437,14 @@ void CFlowMgr_LvRobby::ZoomOut()
     {
         vWolrdPos.z = -200.f;
         m_pUICam->Transform()->SetWorldPos(vWolrdPos);
-        ChangeZoomState(ZoomState::Stop);
+        if (!KEY_PRESSED(LBTN))
+        {
+            ChangeZoomState(ZoomState::ZoomIn);
+        }
+        else
+        {
+            ChangeZoomState(ZoomState::Stop);
+        }
     }
     else
     {

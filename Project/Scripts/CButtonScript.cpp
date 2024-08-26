@@ -123,10 +123,12 @@ void CButtonScript::tick()
     CTransform* _pTr = GetOwner()->GetComponent<CTransform>();
     assert(_pTr);
 
-    ChangeState(ButtonState::NORMAL);
+    ButtonUpdate();
 
     if (m_eCurState == ButtonState::DISABLED)
         return;
+
+    ChangeState(ButtonState::NORMAL);
 
     if (IsMouseHovered())
     {
@@ -137,8 +139,6 @@ void CButtonScript::tick()
             ChangeState(ButtonState::PRESSED);
         }
     }
-
-    ButtonUpdate();
 }
 
 bool CButtonScript::IsMouseHovered()

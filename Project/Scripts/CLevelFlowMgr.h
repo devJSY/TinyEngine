@@ -36,6 +36,7 @@ private:
     CGameObject* m_pLoadingUI;
     CGameObject* m_pPlayerHP;
     CGameObject* m_pBossHP;
+    CGameObject* m_pDropUI;
     CEnterUIScript* m_pEnterUIScript;
     CGameObject* m_pClearUI;
 
@@ -70,6 +71,7 @@ public:
     void SetUILevel(bool _bFlag) { m_bUILevel = _bFlag; }
 
     void SetLoadingUIColor(Vec3 _Color);
+    void SetEnterLevel(const bool _bFlag) { m_bEnterLevel = _bFlag; }
 
 public:
     void OnDimensionFade(float _Coef);
@@ -101,14 +103,20 @@ public:
     void TurnOnPlayerHP();
     void TurnOffPlayerHP();
 
-    void TrunOffStageClearUI();
+    void TurnOffStageClearUI();
     void TurnOnStageclearUI();
 
     void LevelLoading();
     void SetEnterTime(const float _fTime) { m_fFadeInWaitTime = _fTime; }
 
     void SetUIDOFEffect();
-    
+
+    void TurnOffDropUI();
+    void TurnOnDropUI();
+
+    void ActiveOffDropUI();
+    void ActiveOnDropUI();
+
 public:
     void ResetFadeEffectTimer();
 
