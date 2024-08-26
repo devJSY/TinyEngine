@@ -8,7 +8,6 @@ public:
 
 private:
     virtual void OnTriggerEnter(CCollider* _OtherCollider);
-    virtual void OnTriggerStay(CCollider* _OtherCollider);
     
     float FindDamage();
 

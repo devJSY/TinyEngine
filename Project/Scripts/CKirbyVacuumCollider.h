@@ -20,14 +20,17 @@ private:
     AbilityCopyType m_FindAbilityType;
     ObjectCopyType  m_FindObjType;
     float           m_FindDistance;
+    float           m_FindHoldAccTime;
     float           m_FindHoldTime;
+    float           m_DrawingAccTime;
+    float           m_DrawingTime;
     bool            m_bDrawing;
 
 public:
-    virtual void begin();
-    virtual void tick();
+    virtual void begin() override;
+    virtual void tick() override;
 
-    virtual void OnTriggerEnter(CCollider* _OtherCollider);
+    virtual void OnTriggerEnter(CCollider* _OtherCollider) override;
 
     void DrawingCollisionEnter(CGameObject* _CollisionObject);
     void EnableCollider(bool _bEnable);
@@ -37,6 +40,8 @@ public:
 
 private:
     EatType GetEatType(CGameObject* _pObj, AbilityCopyType& _outAbility, ObjectCopyType& _outObj, float& _outHoldTime);
+    void CheckDrawing();
+    void DrawingTarget();
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

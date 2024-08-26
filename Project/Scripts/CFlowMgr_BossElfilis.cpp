@@ -79,6 +79,8 @@ void CFlowMgr_BossElfilis::tick()
         break;
     case BossLevelFlow::Death:
         break;
+    case BossLevelFlow::Clear:
+        break;
     }
 }
 
@@ -102,7 +104,7 @@ void CFlowMgr_BossElfilis::ChangeFlowFight()
     m_FlowState = BossLevelFlow::Fight;
 }
 
-void CFlowMgr_BossElfilis::ChangeFlowResist()
+void CFlowMgr_BossElfilis::ChangeFlowDemo()
 {
     Vec3 NewPos{0.f, 0.f, 450.f};
     PLAYER->Transform()->SetWorldPos(NewPos);
@@ -119,6 +121,20 @@ void CFlowMgr_BossElfilis::ChangeFlowDeath()
     TurnOffBossHP();
 
     m_FlowState = BossLevelFlow::Death;
+}
+
+void CFlowMgr_BossElfilis::ChangeFlowClear()
+{
+    ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundIdle, L"GROUND_IDLE");
+    BOSS->SetActive(false);
+
+    CAMERACTRL->SetMainTarget(PLAYER);
+    CAMERACTRL->Normal(true);
+    CAMERACTRL->SetImmediate(false);
+
+    PLAYERFSM->ChangeState(L"STAGE_CLEAR");
+
+    m_FlowState = BossLevelFlow::Clear;
 }
 
 void CFlowMgr_BossElfilis::LevelEnd()

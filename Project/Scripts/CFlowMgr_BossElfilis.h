@@ -13,8 +13,9 @@ public:
     virtual void TriggerEvent(UINT _Idx);
 
     void ChangeFlowFight();
-    void ChangeFlowResist();
+    void ChangeFlowDemo();
     void ChangeFlowDeath();
+    void ChangeFlowClear();
 
     virtual void LevelEnd() override;
     virtual void LevelRestart() override;

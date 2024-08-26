@@ -18,7 +18,7 @@ CMorphoFSM::CMorphoFSM()
     , m_TeleportAppearTime(0.f)
     , m_EmissiveTime(0.3f)
     , m_MapFloorOffset(Vec3())
-    , m_MapSize(Vec3(300.f, 0.f, 300.f))
+    , m_MapSize(Vec3(325.f, 0.f, 325.f))
 {
     for (UINT i = 0; i < (UINT)MorphoStateGroup::END; ++i)
     {
@@ -156,10 +156,14 @@ void CMorphoFSM::tick()
 {
     CFSMScript::tick();
 
-    //if (KEY_TAP(KEY::ENTER))
-    //{
-    //    ChangeStateGroup(MorphoStateGroup::DEMO, L"DEMO_DEATH");
-    //}
+    if (KEY_TAP(KEY::ENTER))
+    {
+        ChangeStateGroup(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORT_FAR");
+    }
+    if (KEY_TAP(KEY::SPACE))
+    {
+        ChangeStateGroup(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORT_NEAR");
+    }
 
     // Emissive
     if (m_TeleportAppearTime > 0.f)

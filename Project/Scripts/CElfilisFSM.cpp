@@ -468,7 +468,7 @@ void CElfilisFSM::begin()
         {
             m_listWeaponMtrl.push_back(m_Weapon->MeshRender()->GetMaterial(i));
             m_listWeaponEmissive.push_back(m_Weapon->MeshRender()->GetMaterial(i)->GetEmission());
-            m_listBodyEmissiveTex.push_back(MeshRender()->GetMaterial(i)->GetTexParam(TEX_PARAM::TEX_7));
+            m_listWeaponEmissiveTex.push_back(MeshRender()->GetMaterial(i)->GetTexParam(TEX_PARAM::TEX_7));
         }
 
         m_Weapon->BoxCollider()->SetEnabled(false);
@@ -485,18 +485,12 @@ void CElfilisFSM::tick()
 {
     CFSMScript::tick();
 
-    if (KEY_TAP(KEY::_0))
-    {
-        Rigidbody()->SetVelocity(Vec3());
-        Rigidbody()->SetAngularVelocity(Vec3());
-        ChangeStateGroup(ElfilisStateGroup::AirSmallAtk1, L"AIR_ATKS_RAYARROW_UP");
-    }
-    if (KEY_TAP(KEY::ENTER))
-    {
-        Rigidbody()->SetVelocity(Vec3());
-        Rigidbody()->SetAngularVelocity(Vec3());
-        ChangeStateGroup(ElfilisStateGroup::GroundToAir, L"GROUND_TOAIR");
-    }
+    //if (KEY_TAP(KEY::ENTER))
+    //{
+    //    Rigidbody()->SetVelocity(Vec3());
+    //    Rigidbody()->SetAngularVelocity(Vec3());
+    //    ChangeStateGroup(ElfilisStateGroup::GroundAtkNear);
+    //}
 }
 
 void CElfilisFSM::OnCollisionEnter(CCollider* _OtherCollider)
