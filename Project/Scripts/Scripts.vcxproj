@@ -192,6 +192,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CCrumbleScript.h" />
     <ClInclude Include="CFadeEffectScript.h" />
     <ClInclude Include="CEnterUIScript.h" />
+    <ClInclude Include="CFireOnHitEffect.h" />
     <ClInclude Include="CFireProjectileScript.h" />
     <ClInclude Include="CChangeCamTrigger.h" />
     <ClInclude Include="CChangeAlphaScript.h" />
@@ -207,7 +208,9 @@ call CodeGen.exe</Command>
     <ClInclude Include="CFlowTriggerScript.h" />
     <ClInclude Include="CFollowPlayerScript.h" />
     <ClInclude Include="CKirbyBulletSize.h" />
+    <ClInclude Include="CKirbyBurningWallEnd.h" />
     <ClInclude Include="CKirbyDropOutUIScript.h" />
+    <ClInclude Include="CKirbyFireBullet.h" />
     <ClInclude Include="CKirbyLightScript.h" />
     <ClInclude Include="CKirbyObjDetectCollider.h" />
     <ClInclude Include="CKirbySmoke.h" />
@@ -531,6 +534,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CCrumbleScript.cpp" />
     <ClCompile Include="CFadeEffectScript.cpp" />
     <ClCompile Include="CEnterUIScript.cpp" />
+    <ClCompile Include="CFireOnHitEffect.cpp" />
     <ClCompile Include="CFireProjectileScript.cpp" />
     <ClCompile Include="CChangeCamTrigger.cpp" />
     <ClCompile Include="CChangeAlphaScript.cpp" />
@@ -546,7 +550,9 @@ call CodeGen.exe</Command>
     <ClCompile Include="CFlowTriggerScript.cpp" />
     <ClCompile Include="CFollowPlayerScript.cpp" />
     <ClCompile Include="CKirbyBulletSize.cpp" />
+    <ClCompile Include="CKirbyBurningWallEnd.cpp" />
     <ClCompile Include="CKirbyDropOutUIScript.cpp" />
+    <ClCompile Include="CKirbyFireBullet.cpp" />
     <ClCompile Include="CKirbyLightScript.cpp" />
     <ClCompile Include="CKirbyObjDetectCollider.cpp" />
     <ClCompile Include="CKirbySmoke.cpp" />

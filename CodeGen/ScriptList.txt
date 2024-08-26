@@ -115,5 +115,7 @@ CKirbyDropOutUIScript
 CPlayerHitbox
 CKirbyCantEat
 CBossDropStarScript
+CKirbyFireBullet
+CFireOnHitEffect
 CDamageStarEffect
 CMonsterDeadEffectSpawnScript

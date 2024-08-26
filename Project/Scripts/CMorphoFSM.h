@@ -76,6 +76,7 @@ public:
     void OnWeaponRTrigger();
     void OffWeaponLTrigger();
     void OffWeaponRTrigger();
+    void ResetFSM();
 
 private:
     void ChangeStateGroup_Random(MorphoStateGroup _Group);

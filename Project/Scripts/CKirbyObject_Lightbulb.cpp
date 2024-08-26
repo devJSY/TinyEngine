@@ -10,6 +10,7 @@ CKirbyObject_Lightbulb::CKirbyObject_Lightbulb()
     m_OriginObject = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Lightbulb.pref", L"prefab\\Lightbulb.pref");
     m_Mesh = CAssetMgr::GetInst()->Load<CMeshData>(L"meshdata\\KirbyLightbulb.mdat", L"meshdata\\KirbyLightbulb.mdat");
     m_DemoMesh = CAssetMgr::GetInst()->Load<CMeshData>(L"meshdata\\KirbyLightbulbDemo.mdat", L"meshdata\\KirbyLightbulbDemo.mdat");
+    m_LightShader = CAssetMgr::GetInst()->Load<CGraphicsShader>(L"KirbyLightbulbBodyShader");
 
     ParseDemoMesh(m_DemoMesh);
 }
@@ -22,6 +23,7 @@ CKirbyObject_Lightbulb::CKirbyObject_Lightbulb(const CKirbyObject_Lightbulb& _Or
     m_OriginObject = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Lightbulb.pref", L"prefab\\Lightbulb.pref");
     m_Mesh = CAssetMgr::GetInst()->Load<CMeshData>(L"meshdata\\KirbyLightbulb.mdat", L"meshdata\\KirbyLightbulb.mdat");
     m_DemoMesh = CAssetMgr::GetInst()->Load<CMeshData>(L"meshdata\\KirbyLightbulbDemo.mdat", L"meshdata\\KirbyLightbulbDemo.mdat");
+    m_LightShader = CAssetMgr::GetInst()->Load<CGraphicsShader>(L"KirbyLightbulbBodyShader");
 
     ParseDemoMesh(m_DemoMesh);
 }
@@ -231,6 +233,13 @@ void CKirbyObject_Lightbulb::DropObjectEnter()
 {
     CKirbyObject::DropObjectEnter();
 
+    // reset shader
+    if (m_LightShader != nullptr)
+    {
+        CPlayerMgr::GetPlayerBodyDemoMtrl()->SetShader(m_PrevShader);
+        CPlayerMgr::GetPlayerBodyMtrl()->SetShader(m_PrevShader);
+    }
+
     // 콜라이더 & 바디콜라이더 크기 세팅
     CPlayerMgr::ResetBodyColliderSetting();
 
@@ -253,15 +262,23 @@ void CKirbyObject_Lightbulb::ChangeObjectEnter()
 {
     CKirbyObject::ChangeObjectEnter();
 
+    // set shader
+    if (m_LightShader != nullptr)
+    {
+        m_PrevShader = CPlayerMgr::GetPlayerBodyMtrl()->GetShader();
+        CPlayerMgr::GetPlayerBodyDemoMtrl()->SetShader(m_LightShader);
+        CPlayerMgr::GetPlayerBodyMtrl()->SetShader(m_LightShader);
+    }
+
     // 콜라이더 & 바디콜라이더 크기 세팅
     PLAYER->CharacterController()->SetCenter(Vec3(0.f, 1.44f, 0.f));
-    PLAYER->CharacterController()->SetRadius(1.2f);
+    PLAYER->CharacterController()->SetRadius(1.f);
     PLAYER->CharacterController()->SetHeight(2.94f);
 
     CCapsuleCollider* BodyCol = PLAYER->GetChildObject(L"Body Collider")->CapsuleCollider();
     BodyCol->SetCenter(Vec3(0.f, 1.1f, 0.f));
-    BodyCol->SetRadius(1.1f);
-    BodyCol->SetHeight(2.9f);
+    BodyCol->SetRadius(1.f);
+    BodyCol->SetHeight(2.71f);
 
     PLAYERCTRL->SetSpeed(m_Speed);
     PLAYERCTRL->SetRotSpeed(m_Speed);

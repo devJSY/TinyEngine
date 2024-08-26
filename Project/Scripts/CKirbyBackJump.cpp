@@ -90,5 +90,5 @@ void CKirbyBackJump::Exit()
     PLAYERCTRL->SetFriction(1.f);
     PLAYERCTRL->SetFrictionMode(false);
 
-    PLAYERCTRL->SetGravity(-20.f);
+    PLAYERCTRL->SetGravity(PLAYERCTRL->GetInitGravity());
 }

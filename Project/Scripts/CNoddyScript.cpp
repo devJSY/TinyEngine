@@ -25,14 +25,13 @@ CNoddyScript::~CNoddyScript()
 
 void CNoddyScript::begin()
 {
-    SetSnotBubble();
-
-    ChangeState(NODDY_STATE::Sleep);
-
     if (nullptr != MeshRender())
     {
         MeshRender()->GetDynamicMaterial(0);
     }
+
+    SetSnotBubble();
+    ChangeState(NODDY_STATE::SleepStart);
 }
 
 void CNoddyScript::tick()
@@ -162,7 +161,7 @@ void CNoddyScript::EnterState()
 
         Animator()->Play(ANIMPREFIX("Damage"), false, false, 1.5f);
 
-        Ptr<CMaterial> pMtrl = MeshRender()->GetMaterial(0);
+        Ptr<CMaterial> pMtrl = MeshRender()->GetDynamicMaterial(0);
         pMtrl->SetTexParam(TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\Noddy\\ChNoddy.01.png",
                                                                        L"fbx\\Characters\\Monster\\Noddy\\ChNoddy.01.png"));
     }
@@ -201,7 +200,7 @@ void CNoddyScript::EnterState()
     break;
     case NODDY_STATE::SleepStart: {
         Animator()->Play(ANIMPREFIX("SleepStart"), false);
-        Ptr<CMaterial> pMtrl = MeshRender()->GetMaterial(0);
+        Ptr<CMaterial> pMtrl = MeshRender()->GetDynamicMaterial(0);
         pMtrl->SetTexParam(TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\Noddy\\ChNoddy.00.png",
                                                                        L"fbx\\Characters\\Monster\\Noddy\\ChNoddy.00.png"));
         if (nullptr != m_SnotBubble)
@@ -212,14 +211,14 @@ void CNoddyScript::EnterState()
     break;
     case NODDY_STATE::Wait: {
         Animator()->Play(ANIMPREFIX("Wait"));
-        Ptr<CMaterial> pMtrl = MeshRender()->GetMaterial(0);
+        Ptr<CMaterial> pMtrl = MeshRender()->GetDynamicMaterial(0);
         pMtrl->SetTexParam(TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\Noddy\\ChNoddy.02.png",
                                                                        L"fbx\\Characters\\Monster\\Noddy\\ChNoddy.02.png"));
     }
     break;
     case NODDY_STATE::Wakeup: {
         Animator()->Play(ANIMPREFIX("Wakeup"), false, false, 1.f);
-        Ptr<CMaterial> pMtrl = MeshRender()->GetMaterial(0);
+        Ptr<CMaterial> pMtrl = MeshRender()->GetDynamicMaterial(0);
         pMtrl->SetTexParam(TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\Noddy\\ChNoddy.02.png",
                                                                        L"fbx\\Characters\\Monster\\Noddy\\ChNoddy.02.png"));
     }
@@ -227,7 +226,7 @@ void CNoddyScript::EnterState()
     case NODDY_STATE::Eaten: {
         Animator()->Play(ANIMPREFIX("Damage"));
 
-        Ptr<CMaterial> pMtrl = MeshRender()->GetMaterial(0);
+        Ptr<CMaterial> pMtrl = MeshRender()->GetDynamicMaterial(0);
         pMtrl->SetTexParam(TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\Noddy\\ChNoddy.01.png",
                                                                        L"fbx\\Characters\\Monster\\Noddy\\ChNoddy.01.png"));
     }

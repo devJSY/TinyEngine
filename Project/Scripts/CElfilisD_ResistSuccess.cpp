@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CElfilisD_ResistSuccess.h"
 #include "CElfilisFSM.h"
+#include "CElfilisUnit.h"
 #include "CFlowMgr_BossElfilis.h"
 
 CElfilisD_ResistSuccess::CElfilisD_ResistSuccess()
@@ -26,12 +27,20 @@ void CElfilisD_ResistSuccess::tick()
     }
 }
 
+void CElfilisD_ResistSuccess::Exit()
+{
+    Exit_Step();
+    ELFFSM->SetResist(false);
+}
+
 void CElfilisD_ResistSuccess::Enter_Step()
 {
     switch (m_Step)
     {
     case StateStep::Start: {
         GetOwner()->Animator()->Play(ANIMPREFIX("ResistSuccess"), false, false, 1.5f);
+        ELFFSM->SetResist(true);
+        ((CElfilisUnit*)BOSSUNIT)->ResistSuccess();
         CBossMgr::GetElfilisFlowMgr()->ChangeFlowFight();
     }
     break;

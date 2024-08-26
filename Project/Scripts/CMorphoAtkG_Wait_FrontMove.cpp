@@ -13,20 +13,18 @@ CMorphoAtkG_Wait_FrontMove::~CMorphoAtkG_Wait_FrontMove()
 
 void CMorphoAtkG_Wait_FrontMove::tick()
 {
+    float PlayTime = 1.8f;
+    float Speed = 2.f;
     m_AccTime += DT;
 
     // move
-    float Speed = 15.f;
-    Vec3 Force = GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT) * Speed;
-    GetOwner()->Rigidbody()->AddForce(Force, ForceMode::Force);
-
-    if (GetOwner()->Rigidbody()->GetVelocity().Length() > Speed)
-    {
-        GetOwner()->Rigidbody()->SetVelocity(Force);
-    }
+    float t = m_AccTime / PlayTime;
+    float NewSpeed = Speed * fabsf(sinf(t * XM_PI * 3.f));
+    Vec3 NewVeloc = GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT) * NewSpeed;
+    GetOwner()->Rigidbody()->SetVelocity(NewVeloc);
 
     // change state
-    if (m_AccTime > 1.5f)
+    if (m_AccTime > PlayTime)
     {
         float Rand = GetRandomfloat(1.f, 10.f);
 

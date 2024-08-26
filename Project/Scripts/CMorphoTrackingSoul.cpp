@@ -5,8 +5,8 @@ CMorphoTrackingSoul::CMorphoTrackingSoul()
     : CScript(MORPHOTRACKINGSOUL)
     , m_Target(nullptr)
     , m_Step(StateStep::Start)
-    , m_Speed(200.f)
-    , m_RotSpeed(3.f)
+    , m_Speed(3.f)
+    , m_RotSpeed(0.7f)
     , m_AccTime(0.f)
 {
 }
@@ -74,18 +74,20 @@ void CMorphoTrackingSoul::Tracking()
     CurPos.y -= 60.f;
     Vec3 Dir = m_Target->Transform()->GetWorldPos() - CurPos;
     Dir.Normalize();
+    Vec3 Force = Dir * m_Speed;
+    Force = (Rigidbody()->GetVelocity() + Force * m_RotSpeed * DT).Normalize() * m_Speed;
 
     // chase
-    Vec3 Veloc = Rigidbody()->GetVelocity();
-    Vec3 Force = Dir * m_Speed;
+    float AppearTime = 2.f;
 
-    if (Veloc.Length() <= m_Speed)
+    if (m_AccTime <= AppearTime)
     {
-        Rigidbody()->AddForce(Force, ForceMode::Force);
+        float t = m_AccTime / AppearTime;
+        float Delta = sinf(XM_PI / 2.f * t);
+        Rigidbody()->SetVelocity(Force * Delta);
     }
     else
     {
-        Force = (Veloc + Force * DT).Normalize() * m_Speed;
         Rigidbody()->SetVelocity(Force);
     }
 

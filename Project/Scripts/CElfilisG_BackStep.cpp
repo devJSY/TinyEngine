@@ -4,6 +4,8 @@
 
 CElfilisG_BackStep::CElfilisG_BackStep()
     : m_PrevDrag(0.f)
+    , m_bFinishMove(false)
+    , m_bWall(false)
 {
 }
 
@@ -30,6 +32,14 @@ void CElfilisG_BackStep::tick()
     }
 }
 
+void CElfilisG_BackStep::Exit()
+{
+    Exit_Step();
+
+    GetOwner()->Rigidbody()->SetVelocity(Vec3());
+    GetOwner()->Rigidbody()->SetDrag(m_PrevDrag);
+}
+
 void CElfilisG_BackStep::Enter_Step()
 {
     switch (m_Step)
@@ -37,17 +47,19 @@ void CElfilisG_BackStep::Enter_Step()
     case StateStep::Start: {
         GetOwner()->Animator()->Play(ANIMPREFIX("AwayFastReady"), false);
         m_PrevDrag = GetOwner()->Rigidbody()->GetDrag();
+        m_bFinishMove = false;
+        m_bWall = false;
     }
     break;
     case StateStep::Progress: {
         GetOwner()->Animator()->Play(ANIMPREFIX("AwayFastStart"), false);
 
-        // Jump
-        Vec3 JumpDir = GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT) * -1.f;
-        GetOwner()->Rigidbody()->AddForce(JumpDir * 1000.f, ForceMode::Impulse);
+        m_ForceDir = GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT) * -1.f;
+        m_ForceDir.y = 0.f;
+        m_ForceDir.Normalize();
 
         m_StartPos = GetOwner()->Transform()->GetWorldPos();
-        m_TargetPos = m_StartPos + JumpDir * 400.f;
+        m_TargetPos = m_StartPos + m_ForceDir * 400.f;
     }
     break;
     case StateStep::End: {
@@ -65,11 +77,8 @@ void CElfilisG_BackStep::Exit_Step()
         break;
     case StateStep::Progress:
         break;
-    case StateStep::End: {
-        GetOwner()->Rigidbody()->SetVelocity(Vec3());
-        GetOwner()->Rigidbody()->SetDrag(m_PrevDrag);
-    }
-    break;
+    case StateStep::End:
+        break;
     }
 }
 
@@ -86,12 +95,7 @@ void CElfilisG_BackStep::Start()
 
 void CElfilisG_BackStep::Progress()
 {
-    // Add drag
-    Vec3 NewPos = GetOwner()->Transform()->GetWorldPos();
-    float CurDist = (NewPos - m_StartPos).Length();
-    float Ratio = clamp((CurDist / (m_TargetPos - m_StartPos).Length()), 0.f, 1.f) * XM_PI;
-    float NewDrag = 4.f - 4.f * sinf(Ratio);
-    GetOwner()->Rigidbody()->SetDrag(NewDrag);
+    MoveBack();
 
     if (GetOwner()->Animator()->IsFinish())
     {
@@ -101,12 +105,7 @@ void CElfilisG_BackStep::Progress()
 
 void CElfilisG_BackStep::End()
 {
-    // Add drag
-    Vec3 NewPos = GetOwner()->Transform()->GetWorldPos();
-    float CurDist = (NewPos - m_StartPos).Length();
-    float Ratio = clamp((CurDist / (m_TargetPos - m_StartPos).Length()), 0.f, 1.f) * XM_PI;
-    float NewDrag = 4.f - 4.f * sinf(Ratio);
-    GetOwner()->Rigidbody()->SetDrag(NewDrag);
+    MoveBack();
 
     if (GetOwner()->Animator()->IsFinish())
     {
@@ -115,20 +114,66 @@ void CElfilisG_BackStep::End()
         if (NextState == ElfilisStateGroup::GroundAtkFar || NextState == ElfilisStateGroup::GroundAtkNear)
         {
             ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundAtkFar, L"GROUND_ATK_SWORDWAVE_RL");
-            //float Rand = GetRandomfloat(1.f, 100.f);
+            // float Rand = GetRandomfloat(1.f, 100.f);
 
-            //if (Rand <= 45.f)
+            // if (Rand <= 45.f)
             //{
-            //    ELFFSM->ChangeStateGroup_SetState(NextState, L"GROUND_ATK_SWORDWAVE_RL");
-            //}
-            //else
+            //     ELFFSM->ChangeStateGroup_SetState(NextState, L"GROUND_ATK_SWORDWAVE_RL");
+            // }
+            // else
             //{
-            //    ELFFSM->ChangeStateGroup_SetState(NextState, L"GROUND_ATK_DIMENSIONSPIKE");
-            //}
+            //     ELFFSM->ChangeStateGroup_SetState(NextState, L"GROUND_ATK_DIMENSIONSPIKE");
+            // }
         }
         else
         {
             ELFFSM->ChangeStateGroup(NextState);
         }
+    }
+}
+
+void CElfilisG_BackStep::MoveBack()
+{
+    if (m_bWall)
+        return;
+
+    // move
+    if (!m_bFinishMove)
+    {
+        Vec3 NewPos = GetOwner()->Transform()->GetWorldPos();
+        float CurDist = (NewPos - m_StartPos).Length();
+        float Ratio = CurDist / (m_TargetPos - m_StartPos).Length();
+
+        if (Ratio < 1.f)
+        {
+            Ratio = Ratio * 0.9f + 0.1f;
+            float SinGraph = clamp(sinf(Ratio * XM_PI) * 1.5f, 0.f, 1.f);
+            float NewSpeed = 40.f * SinGraph;
+
+            GetOwner()->Rigidbody()->SetVelocity(m_ForceDir * NewSpeed);
+        }
+        else
+        {
+            if (!m_bFinishMove)
+            {
+                m_bFinishMove = true;
+                GetOwner()->Rigidbody()->SetDrag(4.f);
+            }
+        }
+    }
+
+    // Map Check
+    Vec3 NewPos = GetOwner()->Transform()->GetWorldPos();
+    float MapSizeRadius = ELFFSM->GetMapSizeRadius();
+
+    if (NewPos.Length() > MapSizeRadius)
+    {
+        Vec3 MapFloorOffset = ELFFSM->GetMapFloorOffset();
+        Vec3 Dir = (NewPos - MapFloorOffset).Normalize();
+        NewPos = MapFloorOffset + Dir * MapSizeRadius;
+
+        GetOwner()->Rigidbody()->SetVelocity(Vec3());
+        GetOwner()->Transform()->SetWorldPos(NewPos);
+        m_bWall = true;
     }
 }

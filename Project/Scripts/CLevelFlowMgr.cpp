@@ -476,6 +476,8 @@ void CLevelFlowMgr::MtrlParamUpdate()
             Vec2 UV = NDCToUV(NDCPos);
 
             pRadialBlurMtrl->SetScalarParam(VEC2_0, UV);
+            pRadialBlurMtrl->SetScalarParam(FLOAT_0, 20.f);
+            pRadialBlurMtrl->SetScalarParam(FLOAT_1, 5.f);
         }
     }
 

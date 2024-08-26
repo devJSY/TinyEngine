@@ -6,6 +6,9 @@
 #include "CKirbyUnitScript.h"
 #include "CState.h"
 
+
+#include "CCameraController.h"
+#include <Engine/CTimeMgr.h>
 #include "CState.h"
 
 CKirbyBodyCollider::CKirbyBodyCollider()
@@ -47,6 +50,12 @@ void CKirbyBodyCollider::OnTriggerEnter(CCollider* _OtherCollider)
         if (PLAYERFSM->GetCurState()->GetName() == L"DODGE_START" || PLAYERFSM->GetCurState()->GetName() == L"DODGE1" ||
             PLAYERFSM->GetCurState()->GetName() == L"DODGE2" || PLAYERFSM->GetCurState()->GetName() == L"BACKJUMP")
             return;
+
+        // 경직 효과가 있는 스테이트
+        if (PLAYERFSM->GetCurState()->GetName() == L"BURNING" || PLAYERFSM->GetCurState()->GetName() == L"BURNING_START")
+        {
+            CTimeMgr::GetInst()->SetTimeScale(0.1f, 0.f);
+        }
 
         Vec3 HitDir = (_OtherCollider->Transform()->GetWorldPos() - Transform()->GetWorldPos()).Normalize();
         float HitDamage = FindDamage();

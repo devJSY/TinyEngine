@@ -21,10 +21,10 @@ void CKirbyStuffedJump::tick()
     {
         ChangeState(L"ATTACK");
     }
-    else if (PLAYERCTRL->IsGround())
+    /*else if (PLAYERCTRL->IsGround())
     {
         ChangeState(L"STUFFED_LANDING");
-    }
+    }*/
     else if (m_JumpAccTime > m_MaxJumpTime)
     {
         if (KEY_RELEASED(KEY_JUMP) || KEY_NONE(KEY_JUMP))
@@ -49,7 +49,9 @@ void CKirbyStuffedJump::Enter()
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyBig));
 
     PLAYERCTRL->Jump();
+
     PLAYERFSM->SetLastJump(LastJumpType::LOW);
+    PLAYERFSM->SetUnstuffReverse(false);
 
     m_JumpAccTime = 0.f;
     m_bVelocityCut = false;
@@ -60,4 +62,6 @@ void CKirbyStuffedJump::Exit()
     CPlayerMgr::ClearBodyMtrl();
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyNormal));
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));
+
+    PLAYERFSM->SetUnstuffReverse(true);
 }

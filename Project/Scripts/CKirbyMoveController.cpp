@@ -60,6 +60,7 @@ void CKirbyMoveController::begin()
     m_RotSpeed = PLAYERUNIT->GetInitInfo().RotationSpeed;
     m_JumpPower = PLAYERUNIT->GetInitInfo().JumpPower;
     m_Gravity = -20.f;
+    m_InitGravity = m_Gravity;
     m_bGround = false;
     m_bLimitFallSpeed = false;
     m_CheckPointPos = Transform()->GetWorldPos();
@@ -174,14 +175,14 @@ void CKirbyMoveController::RayGround()
         {
             if (arrRay[i].pCollisionObj != nullptr)
             {
-                if (i != 0)
+                if (i != 0 && m_MoveVelocity.y <= 0.f)
                 {
                     IsColision = true;
                     break;
                 }
 
                 // 중앙 레이
-                if (i == 0 && arrRay[i].Distance < 10.f)
+                if (i == 0 && arrRay[i].Distance < 10.f && m_MoveVelocity.y <= 0.f)
                 {
                     IsColision = true;
                     break;
@@ -212,7 +213,8 @@ void CKirbyMoveController::RayGround()
                 // 중앙 레이
                 if (i == 0 && arrRay[i].Distance < 10.f && m_MoveVelocity.y <= 0.f)
                 {
-                    IsColision = false;
+                    IsColision = true;
+                    break;
                 }
             }
         }
@@ -386,6 +388,17 @@ void CKirbyMoveController::Move()
     // =========================
     // 움직임 적용
     // =========================
+
+    // 강제로 호출한 Move
+    list<Vec3>::iterator iter = m_AddMoveList.begin();
+    for (;iter != m_AddMoveList.end(); ++iter)
+    {
+        CharacterController()->Move(*iter * DT);
+    }
+    
+    m_AddMoveList.clear();
+
+    // 현재 프레임에서 계산된 Velocity를 Move
     CharacterController()->Move(m_MoveVelocity * DT);
 
     // 땅에 닿은 상태면 Velocity Y값 초기화

@@ -445,7 +445,7 @@ CGameObject* CLevelSaveLoad::LoadGameObject(CGameObject* _ParentObj, FILE* _File
     fread(&BoneIndex, sizeof(int), 1, _File);
     LoadWStringFromFile(BoneSocketName, _File);
 
-    if (-1 != BoneIndex)
+    if (nullptr != _ParentObj && -1 != BoneIndex)
     {
         const tMTBone& Bone = _ParentObj->Animator()->GetSkeletalMesh()->GetBones()->at(BoneIndex);
         for (tBoneSocket* BoneSocket : Bone.vecBoneSocket)

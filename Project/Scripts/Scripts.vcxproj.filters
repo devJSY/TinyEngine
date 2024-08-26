@@ -943,6 +943,15 @@
     <ClInclude Include="CBossDropStarScript.h">
       <Filter>Scripts\Gimmik\BossDropStar</Filter>
     </ClInclude>
+    <ClInclude Include="CKirbyFireBullet.h">
+      <Filter>Scripts\Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbyBurningWallEnd.h">
+      <Filter>State\KirbyState\Burning\BurningWallEnd</Filter>
+    </ClInclude>
+    <ClInclude Include="CFireOnHitEffect.h">
+      <Filter>Scripts\Gimmik\FireOnHitEffect</Filter>
+    </ClInclude>
     <ClInclude Include="CDamageStarEffect.h">
       <Filter>Scripts\UI\UIEffect</Filter>
     </ClInclude>
@@ -1902,6 +1911,15 @@
     <ClCompile Include="CBossDropStarScript.cpp">
       <Filter>Scripts\Gimmik\BossDropStar</Filter>
     </ClCompile>
+    <ClCompile Include="CKirbyFireBullet.cpp">
+      <Filter>Scripts\Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyBurningWallEnd.cpp">
+      <Filter>State\KirbyState\Burning\BurningWallEnd</Filter>
+    </ClCompile>
+    <ClCompile Include="CFireOnHitEffect.cpp">
+      <Filter>Scripts\Gimmik\FireOnHitEffect</Filter>
+    </ClCompile>
     <ClCompile Include="CDamageStarEffect.cpp">
       <Filter>Scripts\UI\UIEffect</Filter>
     </ClCompile>
@@ -2813,9 +2831,6 @@
     <Filter Include="State\MorphoState\AtkA\DoubleSword\Division">
       <UniqueIdentifier>{89aa4661-afd1-45f3-872c-be3b05de335c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Gimmik\ChangeAlpha2">
-      <UniqueIdentifier>{56ce7cc3-a157-4199-82db-2e555903c3f1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="State\MorphoState\MoveGround\TeleportCombo">
       <UniqueIdentifier>{a74d43f7-3ea5-4560-b1af-fe178405585c}</UniqueIdentifier>
     </Filter>
@@ -3007,6 +3022,12 @@
     </Filter>
     <Filter Include="Scripts\Gimmik\BossDropStar">
       <UniqueIdentifier>{b4e00075-1777-4b85-a3a2-76c54ae2eabf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\Burning\BurningWallEnd">
+      <UniqueIdentifier>{9748a399-b31b-44df-98d5-9da3dfcf244f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Gimmik\FireOnHitEffect">
+      <UniqueIdentifier>{c065a48f-6c41-4365-bb77-feed1904fd2c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\UI\UIEffect">
       <UniqueIdentifier>{30c4464f-cd91-421f-9ba8-7370645a7846}</UniqueIdentifier>

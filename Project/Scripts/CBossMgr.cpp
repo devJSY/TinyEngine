@@ -22,6 +22,12 @@ CBossMgr::CBossMgr()
 
 CBossMgr::~CBossMgr()
 {
+    m_Boss = nullptr;
+    m_BossUnit = nullptr;
+    m_BossFSM = nullptr;
+    m_FlowMgr = nullptr;
+    m_FlowMgrMorpho = nullptr;
+    m_FlowMgrElfilis = nullptr;
 }
 
 void CBossMgr::begin()

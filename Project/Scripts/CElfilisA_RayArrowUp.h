@@ -7,12 +7,15 @@ class CElfilisA_RayArrowUp : public CBossState
 private:
     Ptr<CPrefab> m_ArrowPref;
     CElfilisAirArrow* m_ArrowScript[7];
+    ElfilisStateGroup m_NextStateGroup;
     float m_AccTime;
     bool m_bSpawn[7];
     bool m_bReady;
+    bool m_bStateExit;
 
 public:
     virtual void tick() override;
+    virtual void Exit() override;
 
 private:
     virtual void Enter_Step() override;

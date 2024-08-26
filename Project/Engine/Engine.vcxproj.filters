@@ -1536,6 +1536,12 @@
     <FxCompile Include="RimOnlyPS.hlsl">
       <Filter>ShaderCode\Kirby\Common</Filter>
     </FxCompile>
+    <FxCompile Include="BarricadePS.hlsl">
+      <Filter>ShaderCode\Kirby\Common</Filter>
+    </FxCompile>
+    <FxCompile Include="KirbyDragonWingPS.hlsl">
+      <Filter>ShaderCode\Kirby\Characters\Kirby</Filter>
+    </FxCompile>
     <FxCompile Include="EffectMaskingPS.hlsl">
       <Filter>ShaderCode\Kirby\UIShader\EffectMaskingShader</Filter>
     </FxCompile>

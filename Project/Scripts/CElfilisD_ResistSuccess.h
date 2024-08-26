@@ -5,6 +5,7 @@ class CElfilisD_ResistSuccess : public CBossState
 {
 public:
     virtual void tick() override;
+    virtual void Exit() override;
 
 private:
     void Enter_Step();

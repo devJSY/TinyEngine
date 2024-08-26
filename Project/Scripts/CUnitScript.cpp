@@ -73,17 +73,22 @@ float CUnitScript::DamageProc()
             break;
 
         case DAMAGE_TYPE::DOT: {
+            iter->Acc += DT;
+
             if (iter->Acc >= DOT_TERM)
             {
                 CurDamage += iter->Damage;
                 iter->Acc -= DOT_TERM;
                 iter->Duration -= DOT_TERM;
+                iter++;
             }
 
             if (iter->Duration <= 0.f)
             {
                 iter = m_HitHistory.erase(iter);
             }
+
+
         }
         break;
         }
