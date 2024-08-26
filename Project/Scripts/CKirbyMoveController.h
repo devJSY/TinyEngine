@@ -70,6 +70,11 @@ private:
     Vec3                        m_CheckPointPos;
     Vec3                        m_ForcePos;
 
+    float                       m_InitGravity;
+
+    // 추가적으로 캐릭터 컨트롤러의 Move를 호출하기 위한 속도를 담아놓은 list
+    list<Vec3>                  m_AddMoveList;
+
 
 public:
     virtual void begin() override;
@@ -101,6 +106,11 @@ public:
     void SetFriction(float _Friction) { m_Friction = _Friction; }
     void SetGravity(float _Gravity) { m_Gravity = _Gravity; }
     void ClearVelocityY() { m_MoveVelocity.y = 0.f; }
+    void ClearVelocityHorizontal()
+    {
+        m_MoveVelocity.x = 0.f;
+        m_MoveVelocity.z = 0.f;
+    }
     void SetVelocity(Vec3 _VeloCity) { m_MoveVelocity = _VeloCity; }
     void AddVelocity(Vec3 _AddVel) { m_AddVelocity += _AddVel; }
     void ForceDir(ForceDirInfo _Info) { m_ForceDirInfos.push_back(_Info); }
@@ -120,7 +130,10 @@ public:
     float GetGuard() const { return m_bActiveFriction; }
     float GetJumpPower() const { return m_JumpPower; }
     bool IsGround() const { return m_bGround; }
+    float GetInitGravity() const { return m_InitGravity; }
     RaycastHit GetRay() const { return m_RayHit; }
+
+    void PushAddMove(Vec3 _Move) { m_AddMoveList.push_back(_Move); }
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

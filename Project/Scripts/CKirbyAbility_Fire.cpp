@@ -4,12 +4,15 @@
 #include "CPlayerMgr.h"
 #include "CKirbyMoveController.h"
 #include "CKirbyFSM.h"
+#include "CKirbyFireBullet.h"
 
 #include <Engine/CMesh.h>
 
 CKirbyAbility_Fire::CKirbyAbility_Fire()
     : m_bFrmEnter(true)
     , m_SavedSpeed(0.f)
+    , m_ProjectileAcc(0.f)
+    , m_ProjectileCooltime(0.1f)
 {
     m_Hat = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KiryDragonHat.pref", L"prefab\\KiryDragonHat.pref");
 }
@@ -18,6 +21,8 @@ CKirbyAbility_Fire::CKirbyAbility_Fire(const CKirbyAbility_Fire& _Origin)
     : CKirbyAbility(_Origin)
     , m_bFrmEnter(true)
     , m_SavedSpeed(0.f)
+    , m_ProjectileAcc(0.f)
+    , m_ProjectileCooltime(_Origin.m_ProjectileCooltime)
 {
     m_Hat = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KiryDragonHat.pref", L"prefab\\KiryDragonHat.pref");
 }
@@ -38,6 +43,10 @@ void CKirbyAbility_Fire::AttackCharge1Start()
 
 void CKirbyAbility_Fire::AttackCharge1StartEnter()
 {
+    // Projectile CoolTime, Acc 초기화
+    m_ProjectileAcc = 0.f;
+    m_ProjectileCooltime = 0.1f;
+
     // 애니메이션 재생
     PLAYER->Animator()->Play(ANIMPREFIX("FireBreathStart"), false, false, 2.f);
 
@@ -52,7 +61,7 @@ void CKirbyAbility_Fire::AttackCharge1StartEnter()
     m_SavedSpeed = PLAYERCTRL->GetSpeed();
 
     // 속도 변경
-    PLAYERCTRL->SetSpeed(2.f);
+    PLAYERCTRL->SetSpeed(m_SavedSpeed/2.f);
 }
 
 void CKirbyAbility_Fire::AttackCharge1StartExit()
@@ -76,6 +85,28 @@ void CKirbyAbility_Fire::AttackCharge1StartExit()
 
 void CKirbyAbility_Fire::AttackCharge1()
 {
+    // tick
+    m_ProjectileAcc += DT;
+
+    if (m_ProjectileAcc > m_ProjectileCooltime)
+    {
+        // Fire Projectile 스폰
+        Ptr<CPrefab> FireProjectilePref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\FireBulletLV0.pref");
+        CGameObject* FireProjectileObj = FireProjectilePref->Instantiate();
+
+        // Kirby의 입쪽에서 FireProjectile이 스폰되도록 위치를 계산한다. 방향은 커비가 바라보고 있는 방향으로 한다.
+        Vec3 KirbyPos = PLAYER->Transform()->GetWorldPos();
+        Vec3 KirbyFront = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+        Vec3 Offset = Vec3(0.f, 15.f, 0.f) + KirbyFront * 5.f;
+
+        FireProjectileObj->Transform()->SetWorldPos(KirbyPos + Offset);
+        FireProjectileObj->Transform()->SetDirection(KirbyFront);
+        FireProjectileObj->GetScript<CKirbyFireBullet>()->SetFirst();
+
+        GamePlayStatic::SpawnGameObject(FireProjectileObj, FireProjectileObj->GetLayerIdx());
+
+        m_ProjectileAcc -= m_ProjectileCooltime;
+    }
 }
 
 void CKirbyAbility_Fire::AttackCharge1Enter()
@@ -86,17 +117,15 @@ void CKirbyAbility_Fire::AttackCharge1Enter()
     // 커비 표정 바꿔주기
     CPlayerMgr::SetPlayerFace(FaceType::UpTail);
 
-    // 커비 머터리얼 변경
-    //CPlayerMgr::ClearBodyMtrl();
-    //CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyBig));
-
-    // @TODO 움직임 구현 -> 회전값을 바꿔줘야 함
     // Movement 제한
     PLAYERCTRL->LockJump();
     m_SavedSpeed = PLAYERCTRL->GetSpeed();
     PLAYERCTRL->SetSpeed(4.f);
 
-    // @TODO 일정 주기마다 Fire Projectile 스폰
+    // 회전 속도 제한
+    m_SaveRotSpeed = PLAYERCTRL->GetRotSpeed();
+    PLAYERCTRL->SetRotSpeed(m_SaveRotSpeed / 3.f);
+    
 }
 
 void CKirbyAbility_Fire::AttackCharge1Exit()
@@ -111,6 +140,9 @@ void CKirbyAbility_Fire::AttackCharge1Exit()
     // Movement 복구
     PLAYERCTRL->UnlockJump();
     PLAYERCTRL->SetSpeed(m_SavedSpeed);
+
+    // 회전 속도 복구
+    PLAYERCTRL->SetRotSpeed(m_SaveRotSpeed);
 }
 
 // ========
@@ -123,6 +155,8 @@ void CKirbyAbility_Fire::AttackCharge1End()
 
 void CKirbyAbility_Fire::AttackCharge1EndEnter()
 {
+    m_ProjectileAcc = 0.f;
+
     // 애니메이션 재생
     PLAYER->Animator()->Play(ANIMPREFIX("FireBreathEnd"), false, false , 2.f);
 
@@ -137,11 +171,32 @@ void CKirbyAbility_Fire::AttackCharge1EndExit()
     // Movement 복구
     PLAYERCTRL->UnlockJump();
     PLAYERCTRL->SetSpeed(m_SavedSpeed);
-
 }
 
 void CKirbyAbility_Fire::AttackCharge1Run()
 {
+    // tick
+    m_ProjectileAcc += DT;
+
+    if (m_ProjectileAcc > m_ProjectileCooltime)
+    {
+        // Fire Projectile 스폰
+        Ptr<CPrefab> FireProjectilePref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\FireBulletLV0.pref");
+        CGameObject* FireProjectileObj = FireProjectilePref->Instantiate();
+
+        // Kirby의 입쪽에서 FireProjectile이 스폰되도록 위치를 계산한다. 방향은 커비가 바라보고 있는 방향으로 한다.
+        Vec3 KirbyPos = PLAYER->Transform()->GetWorldPos();
+        Vec3 KirbyFront = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+        Vec3 Offset = Vec3(0.f, 15.f, 0.f) + KirbyFront * 5.f;
+
+        FireProjectileObj->Transform()->SetWorldPos(KirbyPos + Offset);
+        FireProjectileObj->Transform()->SetDirection(KirbyFront);
+        FireProjectileObj->GetScript<CKirbyFireBullet>()->SetFirst();
+
+        GamePlayStatic::SpawnGameObject(FireProjectileObj, FireProjectileObj->GetLayerIdx());
+
+        m_ProjectileAcc -= m_ProjectileCooltime;
+    }
 }
 
 void CKirbyAbility_Fire::AttackCharge1RunEnter()
@@ -157,7 +212,10 @@ void CKirbyAbility_Fire::AttackCharge1RunEnter()
     // Kirby 표정 바꿔주기
     CPlayerMgr::SetPlayerFace(FaceType::UpTail);
 
-    // @TODO 일정 주기마다 Fire Projectile 스폰
+    
+    // 회전 속도 제한
+    m_SaveRotSpeed = PLAYERCTRL->GetRotSpeed();
+    PLAYERCTRL->SetRotSpeed(m_SaveRotSpeed / 3.f);
 
 }
 
@@ -173,19 +231,11 @@ void CKirbyAbility_Fire::AttackCharge1RunExit()
     // Movement 복구
     PLAYERCTRL->UnlockJump();
     PLAYERCTRL->SetSpeed(m_SavedSpeed);
+
+    // 회전 속도 복구
+    PLAYERCTRL->SetRotSpeed(m_SaveRotSpeed);
 }
 
-void CKirbyAbility_Fire::JumpAttack()
-{
-}
-
-void CKirbyAbility_Fire::JumpAttackEnter()
-{
-}
-
-void CKirbyAbility_Fire::JumpAttackExit()
-{
-}
 
 void CKirbyAbility_Fire::ChangeAbility()
 {
@@ -194,13 +244,15 @@ void CKirbyAbility_Fire::ChangeAbility()
 void CKirbyAbility_Fire::ChangeAbilityEnter()
 {
     // 소켓에 모자 끼워주기
-    CGameObject* pInstObj = m_Hat->Instantiate();
-    GamePlayStatic::AddChildObject(PLAYER, pInstObj, L"Hat");
+    if (m_Hat.Get())
+    {
+        CGameObject* pInstObj = m_Hat->Instantiate();
+        GamePlayStatic::AddChildObject(PLAYER, pInstObj, L"Hat");
+        PLAYERFSM->SetCurHat(pInstObj);
 
-    PLAYERFSM->SetCurHat(pInstObj);
-
-    // 애니메이션 재생
-    pInstObj->Animator()->Play(ANIMPREFIX("Deform"));
+        // 애니메이션 재생
+        pInstObj->Animator()->Play(ANIMPREFIX("Deform"),false,false,2.5f,0);
+    }
 }
 
 void CKirbyAbility_Fire::ChangeAbilityExit()

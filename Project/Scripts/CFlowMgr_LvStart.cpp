@@ -54,7 +54,12 @@ void CFlowMgr_LvStart::LevelStart()
         KirbyPref->Save(L"prefab\\Main Player.pref");
     }
 
+    Ptr<CPrefab> MainPlayerFreb =  CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\Main Player.pref");
 
+    if (MainPlayerFreb.Get())
+    {
+        GamePlayStatic::DeleteAsset(ASSET_TYPE::PREFAB, MainPlayerFreb.Get());
+    }
 }
 
 void CFlowMgr_LvStart::LevelEnd()
