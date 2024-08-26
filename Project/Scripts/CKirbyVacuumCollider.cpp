@@ -270,7 +270,10 @@ void CKirbyVacuumCollider::CheckDrawing()
         // remove script
         for (CScript* Script : Front->GetScripts())
         {
-            Front->RemoveScript(Script);
+            if (Script->GetScriptType() != KIRBYBULLETSIZE)
+            {
+                Front->RemoveScript(Script);
+            }
         }
 
         // change collider
