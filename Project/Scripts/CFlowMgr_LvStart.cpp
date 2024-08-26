@@ -32,6 +32,8 @@ void CFlowMgr_LvStart::begin()
     OffDimensionFade();
     SetToneMappingParam(false);
     SetUIDOFEffect();
+
+    // SetLoadingUIColor(Vec3(255.f, 100.f, 129.f));
 }
 
 void CFlowMgr_LvStart::LevelStart()
@@ -47,14 +49,7 @@ void CFlowMgr_LvStart::LevelStart()
         SetFadeEffect(Vec3(252.f, 75.f, 129.f), true, 1.f, 1.25f, true);
     }
 
-    Ptr<CPrefab> KirbyPref =  CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Kirby.pref");
-
-    if (KirbyPref.Get())
-    {
-        KirbyPref->Save(L"prefab\\Main Player.pref");
-    }
-
-    Ptr<CPrefab> MainPlayerFreb =  CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\Main Player.pref");
+    Ptr<CPrefab> MainPlayerFreb = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Main Player.pref");
 
     if (MainPlayerFreb.Get())
     {
@@ -65,7 +60,6 @@ void CFlowMgr_LvStart::LevelStart()
 void CFlowMgr_LvStart::LevelEnd()
 {
     CLevelFlowMgr::LevelEnd();
-
     ActiveFadeEffect(true);
     SetFadeEffect(Vec3(252.f, 75.f, 129.f), false, 1.f, 1.25f, true);
 }
@@ -73,7 +67,8 @@ void CFlowMgr_LvStart::LevelEnd()
 void CFlowMgr_LvStart::LevelRestart()
 {
     CLevelFlowMgr::LevelRestart();
-    SetFadeEffectColor(Vec3(252.f, 75.f, 129.f));
+    ActiveFadeEffect(true);
+    SetFadeEffect(Vec3(252.f, 75.f, 129.f), false, 1.f, 1.25f, true);
 }
 
 void CFlowMgr_LvStart::RobbyLevel()

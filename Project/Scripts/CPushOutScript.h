@@ -15,6 +15,7 @@ class CPushOutScript : public CScript
 private:
     CGameObject* m_pChild[3];
     CGameObject* m_pPlayer;
+    CGameObject* m_pPlayer1;
     Vec3 m_vBase;
     Vec3 m_vDest;
     Vec3 m_vDir;
@@ -40,6 +41,7 @@ public:
 
 public:
     void SetPlayer(CGameObject* _pObj) { m_pPlayer = _pObj; }
+    void SetPlayer1(CGameObject* _pObj) { m_pPlayer1 = _pObj; }
 
 private:
     void MoveBase();

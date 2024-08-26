@@ -508,6 +508,26 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
     }
 
     // =================================
+    // 2DEffectMaskingShader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\UIDefaultVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\EffectMaskingPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::LESS_EQUAL);
+        pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_OPAQUE);
+
+        pShader->AddTexParam(TEX_0, "Texture");
+
+        pShader->SetName(L"2DMaskingEffectShader");
+        AddAsset(L"2DMaskingEffectShader", pShader);
+    }
+
+    // =================================
     // UIKirbyHPOutLineShader
     // =================================
     {

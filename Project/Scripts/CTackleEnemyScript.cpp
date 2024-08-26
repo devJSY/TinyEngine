@@ -51,7 +51,7 @@ void CTackleEnemyScript::begin()
 
     ChangeState(TackleEnemyState::Idle);
 
-    SetInfo(UnitInfo{67.f, 67.f, 70.f, 7.f, 1.f, 5.f});
+    SetInfo(UnitInfo{67.f, 67.f, 70.f, 8.f, 1.f, 5.f});
     m_fMaxSpeed = m_fSpeed = 16.f;
     m_fRushLerp = 0.8f;
     m_fRushSpeedLerp = 0.2f;
@@ -214,7 +214,10 @@ void CTackleEnemyScript::EnterState(TackleEnemyState _state)
 
         SetSparkle(true);
 
-        Transform()->SetDirection((PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos()).Normalize());
+        Vec3 vFollowDir = (PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos()).Normalize();
+        vFollowDir.y = 0.f;
+
+        Transform()->SetDirection(vFollowDir);
 
         Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
 
@@ -542,6 +545,10 @@ void CTackleEnemyScript::Wait()
 #pragma region DEATH
 void CTackleEnemyScript::Death()
 {
-    Animator()->IsFinish() ? GamePlayStatic::DestroyGameObject(GetOwner()) : void();
+    if (Animator()->IsFinish())
+    {
+        SpawnDeadEffect(0);
+        GamePlayStatic::DestroyGameObject(GetOwner());
+    }
 }
 #pragma endregion

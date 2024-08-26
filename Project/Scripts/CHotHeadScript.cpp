@@ -260,7 +260,10 @@ void CHotHeadScript::EnterState(HotHeadState _state)
 
         SetSparkle(true);
 
-        Transform()->SetDirection((PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos()).Normalize());
+        Vec3 vFollowDir = (PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos()).Normalize();
+        vFollowDir.y = 0.f;
+
+        Transform()->SetDirection(vFollowDir);
 
         Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
 
@@ -639,6 +642,10 @@ void CHotHeadScript::Eaten()
 #pragma region DEATH
 void CHotHeadScript::Death()
 {
-    Animator()->IsFinish() ? GamePlayStatic::DestroyGameObject(GetOwner()) : void();
+    if (Animator()->IsFinish())
+    {
+        SpawnDeadEffect(2);
+        GamePlayStatic::DestroyGameObject(GetOwner());
+    }
 }
 #pragma endregion

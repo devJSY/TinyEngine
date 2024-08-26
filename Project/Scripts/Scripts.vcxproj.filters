@@ -952,6 +952,12 @@
     <ClInclude Include="CFireOnHitEffect.h">
       <Filter>Scripts\Gimmik\FireOnHitEffect</Filter>
     </ClInclude>
+    <ClInclude Include="CDamageStarEffect.h">
+      <Filter>Scripts\UI\UIEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="CMonsterDeadEffectSpawnScript.h">
+      <Filter>Scripts\UI\UIEffect\UIDamageStarSpawnEffect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1913,6 +1919,12 @@
     </ClCompile>
     <ClCompile Include="CFireOnHitEffect.cpp">
       <Filter>Scripts\Gimmik\FireOnHitEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="CDamageStarEffect.cpp">
+      <Filter>Scripts\UI\UIEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="CMonsterDeadEffectSpawnScript.cpp">
+      <Filter>Scripts\UI\UIEffect\UIDamageStarSpawnEffect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -3016,6 +3028,12 @@
     </Filter>
     <Filter Include="Scripts\Gimmik\FireOnHitEffect">
       <UniqueIdentifier>{c065a48f-6c41-4365-bb77-feed1904fd2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIEffect">
+      <UniqueIdentifier>{30c4464f-cd91-421f-9ba8-7370645a7846}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIEffect\UIDamageStarSpawnEffect">
+      <UniqueIdentifier>{36332977-0f55-4ae4-8169-ee65a9694020}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

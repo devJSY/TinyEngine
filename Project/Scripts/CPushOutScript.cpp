@@ -9,6 +9,7 @@ CPushOutScript::CPushOutScript()
     : CScript(PUSHOUTSCRIPT)
     , m_pChild{}
     , m_pPlayer(nullptr)
+    , m_pPlayer1(nullptr)
     , m_vBase{}
     , m_vDest{}
     , m_vDir{}
@@ -46,6 +47,7 @@ CPushOutScript::CPushOutScript(const CPushOutScript& Origin)
     : CScript(Origin)
     , m_pChild{}
     , m_pPlayer(nullptr)
+    , m_pPlayer1(nullptr)
     , m_vBase{}
     , m_vDest{}
     , m_vDir{}
@@ -279,14 +281,22 @@ void CPushOutScript::MovePlusX(Vec3 _vDir, Vec3 _vDest, float _fSpeed, bool _fla
         Transform()->SetWorldPos(Transform()->GetWorldPos() + _vDir * _fSpeed * DT);
     }
 
-    if (nullptr != m_pPlayer && false == _flag)
+    if (nullptr != m_pPlayer)
     {
         float Offset = m_fMoveBaseOffset;
         if (Offset == 0)
         {
             Offset = 30;
         }
-        m_pPlayer->CharacterController()->Move((_vDir / Offset) * DT);
+
+        if (true == _flag)
+        {
+            PLAYERCTRL->PushAddMove((_vDir / m_fMoveDestOffset) * DT);
+        }
+        else
+        {
+            m_pPlayer->CharacterController()->Move((_vDir / m_fMoveBaseOffset) * DT);
+        }
     }
 }
 
@@ -303,14 +313,22 @@ void CPushOutScript::MovePlusZ(Vec3 _vDir, Vec3 _vDest, float _fSpeed, bool _fla
         Transform()->SetWorldPos(Transform()->GetWorldPos() + _vDir * _fSpeed * DT);
     }
 
-    if (nullptr != m_pPlayer && false == _flag)
+    if (nullptr != m_pPlayer)
     {
         float Offset = m_fMoveBaseOffset;
         if (Offset == 0)
         {
             Offset = 30;
         }
-        m_pPlayer->CharacterController()->Move((_vDir / Offset) * DT);
+
+        if (true == _flag)
+        {
+            PLAYERCTRL->PushAddMove((_vDir / m_fMoveDestOffset) * DT);
+        }
+        else
+        {
+            m_pPlayer->CharacterController()->Move((_vDir / m_fMoveBaseOffset) * DT);
+        }
     }
 }
 
@@ -327,14 +345,22 @@ void CPushOutScript::MoveMinusX(Vec3 _vDir, Vec3 _vDest, float _fSpeed, bool _fl
         Transform()->SetWorldPos(Transform()->GetWorldPos() + _vDir * _fSpeed * DT);
     }
 
-    if (nullptr != m_pPlayer && false == _flag)
+    if (nullptr != m_pPlayer)
     {
         float Offset = m_fMoveBaseOffset;
         if (Offset == 0)
         {
             Offset = 30;
         }
-        m_pPlayer->CharacterController()->Move((_vDir / Offset) * DT);
+
+        if (true == _flag)
+        {
+            PLAYERCTRL->PushAddMove((_vDir / m_fMoveDestOffset) * DT);
+        }
+        else
+        {
+            m_pPlayer->CharacterController()->Move((_vDir / m_fMoveBaseOffset) * DT);
+        }
     }
 }
 
@@ -358,7 +384,15 @@ void CPushOutScript::MoveMinusZ(Vec3 _vDir, Vec3 _vDest, float _fSpeed, bool _fl
         {
             Offset = 30;
         }
-        m_pPlayer->CharacterController()->Move((_vDir / Offset) * DT);
+
+        if (true == _flag)
+        {
+            PLAYERCTRL->PushAddMove((_vDir / m_fMoveDestOffset) * DT);
+        }
+        else
+        {
+            m_pPlayer->CharacterController()->Move((_vDir / m_fMoveBaseOffset) * DT);
+        }
     }
 }
 

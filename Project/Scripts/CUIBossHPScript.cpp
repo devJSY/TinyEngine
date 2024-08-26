@@ -129,6 +129,8 @@ void CUIBossHPScript::EnterState()
         m_pNameObj = GetOwner()->GetChildObject(L"UI_BossName1");
         m_pNameObj2 = GetOwner()->GetChildObject(L"UI_BossName2");
 
+        m_fDescSpeed = 30.f;
+
         if (m_bMolPho)
         {
             m_pNameObj->SetActive(true);

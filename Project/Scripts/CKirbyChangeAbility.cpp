@@ -25,7 +25,7 @@ void CKirbyChangeAbility::tick()
         PLAYER->Animator()->SetPlay(true);
     }
 
-    // 애니메이션 재생중 필요한 작업 
+    // 애니메이션 재생중 필요한 작업
     PLAYERFSM->GetNextAbility()->ChangeAbility();
 
     if (PLAYER->Animator()->IsFinish())
@@ -53,7 +53,6 @@ void CKirbyChangeAbility::tick()
         break;
         }
     }
-
 }
 
 void CKirbyChangeAbility::Enter()
@@ -65,7 +64,7 @@ void CKirbyChangeAbility::Enter()
 
     // 소켓 꽂아주기
     PLAYERFSM->GetNextAbility()->ChangeAbilityEnter();
-    
+
     // 커비 변신 애니메이션 재생
     PLAYER->Animator()->Play(ANIMPREFIX("CopyFirst"), false, false, 1.f);
 
@@ -110,21 +109,27 @@ void CKirbyChangeAbility::Enter()
     CamCtrl->SetOffset(Vec3(0.f, 15.f, 0));
     CamCtrl->SetLookDir(DirToKirby);
     CamCtrl->SetLookDist(250.f);
-    
+
     // Normal Setup으로 변경
     m_SaveSetup = (UINT)CamCtrl->GetCameraSetup();
     CamCtrl->SetCameraSetup(CameraSetup::NORMAL);
 
-
     // 배경 블러 효과
     CGameObject* Manager = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager");
-    CLevelFlowMgr* FLowMgrScript =  Manager->GetScript<CLevelFlowMgr>();
+    CLevelFlowMgr* FLowMgrScript = Manager->GetScript<CLevelFlowMgr>();
 
     if (FLowMgrScript != nullptr)
     {
         FLowMgrScript->OnDimensionFade(0.3f);
     }
 
+    // UI 끄기
+    {
+        CLevelFlowMgr* FlowMgr = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager")->GetScript<CLevelFlowMgr>();
+        FlowMgr->TurnOffBossHP();
+        FlowMgr->TurnOffPlayerHP();
+        FlowMgr->ActiveOffDropUI();
+    }
 }
 
 void CKirbyChangeAbility::Exit()
@@ -162,4 +167,12 @@ void CKirbyChangeAbility::Exit()
     // Emissive를 다시 받도록 수정
     PLAYERFSM->SetSkrr(false);
     PLAYERFSM->SetInvincible(false);
+
+    // UI 끄기
+    {
+        CLevelFlowMgr* FlowMgr = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager")->GetScript<CLevelFlowMgr>();
+        FlowMgr->TurnOnBossHP();
+        FlowMgr->TurnOnPlayerHP();
+        FlowMgr->ActiveOnDropUI();
+    }
 }

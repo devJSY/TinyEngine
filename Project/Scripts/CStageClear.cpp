@@ -75,16 +75,23 @@ void CStageClear::OnTriggerEnter(CCollider* _OtherCollider)
 
             CLevelFlowMgr* FlowMgrScript = ManagerObj->GetScript<CLevelFlowMgr>();
 
-            //FlowMgrScript->TrunOnDropUI();
+            FlowMgrScript->TurnOnDropUI();
 
             return;
         }
-
 
         if (m_bKirbyDance)
         {
             m_KirbyDir.y = 0.f;
             m_KirbyDir.Normalize();
+
+            // UI ´Ù ²ô±â
+            CGameObject* ManagerObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager");
+
+            CLevelFlowMgr* FlowMgrScript = ManagerObj->GetScript<CLevelFlowMgr>();
+            FlowMgrScript->TurnOffBossHP();
+            FlowMgrScript->TurnOffPlayerHP();
+            FlowMgrScript->ActiveOffDropUI();
 
             // CameraSetting
             CCameraController* CamCtrl = CAMERACTRL;
@@ -113,8 +120,6 @@ void CStageClear::OnTriggerEnter(CCollider* _OtherCollider)
             }
         }
     }
-
-
 }
 
 void CStageClear::OnTriggerStay(CCollider* _OtherCollider)
@@ -133,12 +138,9 @@ void CStageClear::OnTriggerExit(CCollider* _OtherCollider)
 
             CLevelFlowMgr* FlowMgrScript = ManagerObj->GetScript<CLevelFlowMgr>();
 
-            // FlowMgrScript->TurnOffDropUI();
+            FlowMgrScript->TurnOffDropUI();
 
             return;
         }
     }
-
-
-
 }

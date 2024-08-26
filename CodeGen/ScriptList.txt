@@ -117,3 +117,5 @@ CKirbyCantEat
 CBossDropStarScript
 CKirbyFireBullet
 CFireOnHitEffect
+CDamageStarEffect
+CMonsterDeadEffectSpawnScript

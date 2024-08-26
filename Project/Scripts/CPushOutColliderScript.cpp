@@ -90,7 +90,13 @@ void CPushOutColliderScript::OnTriggerStay(CCollider* _OtherCollider)
         Vec2 LT = Vec2(vWolrdPos.x - vWorldScale.x, vWolrdPos.z - vWorldScale.z);
         Vec2 RB = Vec2(vWolrdPos.x + vWorldScale.x, vWolrdPos.z + vWorldScale.z);
 
-        if ((LT.x + fOffset <= vPlayerPos.x && vPlayerPos.x <= RB.x - fOffset) && (LT.y + fOffset <= vPlayerPos.z && vPlayerPos.z <= RB.y - fOffset))
+        if ((LT.x + fOffset <= vPlayerPos.x && vPlayerPos.x <= RB.x - fOffset) &&
+            (LT.y + fOffset <= vPlayerPos.z && vPlayerPos.z <= RB.y - fOffset) && m_eState == PushOutColliderState::MoveBase)
+        {
+            m_pPlayer = PLAYER;
+        }   
+
+        if (m_eState == PushOutColliderState::MoveDest)
         {
             m_pPlayer = PLAYER;
         }

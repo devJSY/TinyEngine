@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "CKirbyChangeObjectEnd.h"
 
+#include "CLevelFlowMgr.h"
+
 CKirbyChangeObjectEnd::CKirbyChangeObjectEnd()
 {
 }
@@ -25,7 +27,7 @@ void CKirbyChangeObjectEnd::tick()
             ChangeState(L"IDLE");
         }
     }
-        break;
+    break;
     }
 }
 
@@ -37,6 +39,14 @@ void CKirbyChangeObjectEnd::Enter()
     // 변신 중일 땐 커비가 이미시브 효과를 받지않도록 한다.
     PLAYERFSM->SetSkrr(true);
     PLAYERFSM->SetInvincible(true);
+
+    // UI 끄기
+    {
+        CLevelFlowMgr* FlowMgr = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager")->GetScript<CLevelFlowMgr>();
+        FlowMgr->TurnOffBossHP();
+        FlowMgr->TurnOffPlayerHP();
+        FlowMgr->ActiveOffDropUI();
+    }
 }
 
 void CKirbyChangeObjectEnd::Exit()
@@ -46,4 +56,12 @@ void CKirbyChangeObjectEnd::Exit()
     // Emissive를 다시 받도록 수정
     PLAYERFSM->SetSkrr(false);
     PLAYERFSM->SetInvincible(false);
+
+    // UI 키기
+    {
+        CLevelFlowMgr* FlowMgr = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager")->GetScript<CLevelFlowMgr>();
+        FlowMgr->TurnOnBossHP();
+        FlowMgr->TurnOnPlayerHP();
+        FlowMgr->ActiveOnDropUI();
+    }
 }

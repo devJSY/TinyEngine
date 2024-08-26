@@ -124,6 +124,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CBossMgr.h" />
     <ClInclude Include="CCanJuice.h" />
     <ClInclude Include="CCutterProjectileScript.h" />
+    <ClInclude Include="CDamageStarEffect.h" />
     <ClInclude Include="CElfilisAirArrow.h" />
     <ClInclude Include="CElfilisArrowScript.h" />
     <ClInclude Include="CElfilisArrowSetScript.h" />
@@ -247,6 +248,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CMomentaryObjScript.h" />
     <ClInclude Include="CMonsterATKScript.h" />
     <ClInclude Include="CElevatorScript.h" />
+    <ClInclude Include="CMonsterDeadEffectSpawnScript.h" />
     <ClInclude Include="CMorphoAtkA_DoubleSword.h" />
     <ClInclude Include="CMorphoAtkA_DoubleSwordAtkL.h" />
     <ClInclude Include="CMorphoAtkA_DoubleSwordAtkLR.h" />
@@ -464,6 +466,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CBossMgr.cpp" />
     <ClCompile Include="CCanJuice.cpp" />
     <ClCompile Include="CCutterProjectileScript.cpp" />
+    <ClCompile Include="CDamageStarEffect.cpp" />
     <ClCompile Include="CElfilisAirArrow.cpp" />
     <ClCompile Include="CElfilisArrowScript.cpp" />
     <ClCompile Include="CElfilisArrowSetScript.cpp" />
@@ -587,6 +590,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CMomentaryObjScript.cpp" />
     <ClCompile Include="CMonsterATKScript.cpp" />
     <ClCompile Include="CElevatorScript.cpp" />
+    <ClCompile Include="CMonsterDeadEffectSpawnScript.cpp" />
     <ClCompile Include="CMorphoAtkA_DoubleSword.cpp" />
     <ClCompile Include="CMorphoAtkA_DoubleSwordAtkL.cpp" />
     <ClCompile Include="CMorphoAtkA_DoubleSwordAtkLR.cpp" />

@@ -32,6 +32,8 @@ public:
     bool GetResistState() const { return m_bResistState; }
     void SetResistState(const bool _bResist) { m_bResistState = _bResist; }
 
+    void SpawnDeadEffect(int _iSize);
+
 public:
     virtual void begin() override;
     virtual void tick() override;

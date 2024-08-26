@@ -242,6 +242,7 @@ void CNoddyScript::ExitState()
     case NODDY_STATE::Damage: {
         if (m_CurInfo.HP <= 0.f)
         {
+            SpawnDeadEffect(2);
             GamePlayStatic::DestroyGameObject(GetOwner());
         }
         Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
