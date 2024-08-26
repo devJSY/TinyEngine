@@ -9,9 +9,8 @@ private:
     bool m_bCollisionFloor;
 
 public:
-    virtual void tick() override;
     virtual void begin() override;
-    virtual void OnCollisionEnter(CCollider* _OtherCollider) override;
+    virtual void tick() override;
 
     void SetAutoPlay(bool _Play) { m_bAutoPlay = _Play; }
     void SetStart();

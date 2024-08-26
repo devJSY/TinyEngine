@@ -40,18 +40,6 @@ void CElfilisLaser::begin()
     }
 }
 
-void CElfilisLaser::OnCollisionEnter(CCollider* _OtherCollider)
-{
-    if (!m_bCollisionFloor)
-        return;
-    else if (_OtherCollider->GetOwner()->GetLayerIdx() != LAYER_STATIC || _OtherCollider->GetOwner()->GetName() == L"Floor")
-        return;
-
-    static vector<wstring> vecCollision{L"World Static"};
-    RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), 2000.f, vecCollision);
-    GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), 2000.f, Vec3(1.f, 0.f, 0.f), true);
-}
-
 void CElfilisLaser::tick()
 {
     if (!m_bAutoPlay)
@@ -103,6 +91,18 @@ void CElfilisLaser::Start()
 
 void CElfilisLaser::Progress()
 {
+    static vector<wstring> vecCollision{L"World Static"};
+
+    if (m_bCollisionFloor)
+    {
+        RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), 2000.f, vecCollision);
+
+        if (Hit.pCollisionObj)
+        {
+            // @Effect Æ¢´Â ÀÌÆåÆ®, ¹Ù´ÚÀÜ»ó ¼ÒÈ¯
+            GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), 2000.f, Vec3(1.f, 0.f, 0.f), true);
+        }
+    }
 }
 
 void CElfilisLaser::End()
