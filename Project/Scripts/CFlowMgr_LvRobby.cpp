@@ -262,6 +262,7 @@ void CFlowMgr_LvRobby::EnterZoomState()
 
         m_pStartBtn->SetActive(true);
         m_pLevelLine->SetActive(true);
+        m_pStartBtn->GetScript<CButtonScript>()->ChangeState(ButtonState::DISABLED);
     }
     break;
     case ZoomState::ZoomOut: {
@@ -297,10 +298,13 @@ void CFlowMgr_LvRobby::EnterZoomState()
 
         m_pStartBtn->SetActive(false);
         m_pLevelLine->SetActive(false);
+        m_pStartBtn->GetScript<CButtonScript>()->ChangeState(ButtonState::DISABLED);
     }
     break;
-    case ZoomState::Stop:
-        break;
+    case ZoomState::Stop: {
+        m_pStartBtn->GetScript<CButtonScript>()->ChangeState(ButtonState::NORMAL);
+    }
+    break;
     case ZoomState::End:
         break;
     default:
@@ -433,7 +437,14 @@ void CFlowMgr_LvRobby::ZoomOut()
     {
         vWolrdPos.z = -200.f;
         m_pUICam->Transform()->SetWorldPos(vWolrdPos);
-        ChangeZoomState(ZoomState::Stop);
+        if (!KEY_PRESSED(LBTN))
+        {
+            ChangeZoomState(ZoomState::ZoomIn);
+        }
+        else
+        {
+            ChangeZoomState(ZoomState::Stop);
+        }
     }
     else
     {
