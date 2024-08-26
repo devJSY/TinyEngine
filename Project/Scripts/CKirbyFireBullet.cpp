@@ -256,6 +256,8 @@ void CKirbyFireBullet::OnTriggerEnter(CCollider* _OtherCollider)
 
             Monster->GetDamage(HitInfo);
         }
+
+        GamePlayStatic::DestroyGameObject(GetOwner());
     }
 
 }
