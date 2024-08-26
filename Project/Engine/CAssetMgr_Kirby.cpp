@@ -516,7 +516,7 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
         pShader->CreatePixelShader(L"shader\\EffectMaskingPS.hlsl", "main");
 
         pShader->SetRSType(RS_TYPE::CULL_NONE);
-        pShader->SetDSType(DS_TYPE::NO_TEST);
+        pShader->SetDSType(DS_TYPE::LESS_EQUAL);
         pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_OPAQUE);
