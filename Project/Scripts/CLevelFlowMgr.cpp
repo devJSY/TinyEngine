@@ -528,6 +528,7 @@ void CLevelFlowMgr::TurnOffPlayerHP()
 {
     if (nullptr != m_pPlayerHP)
     {
+        SetEnterLevel(false);
         m_pPlayerHP->SetActive(false);
     }
 }

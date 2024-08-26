@@ -71,6 +71,7 @@ public:
     void SetUILevel(bool _bFlag) { m_bUILevel = _bFlag; }
 
     void SetLoadingUIColor(Vec3 _Color);
+    void SetEnterLevel(const bool _bFlag) { m_bEnterLevel = _bFlag; }
 
 public:
     void OnDimensionFade(float _Coef);
