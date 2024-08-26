@@ -15,6 +15,9 @@ public:
     void init();
     void tick();
 
+private:
+    void ThreadRelease();
+
 public:
     CLevel* GetCurrentLevel() const { return m_CurLevel; }
     CLevel* CreateDefaultLevel();
@@ -22,7 +25,6 @@ public:
 public:
     void ChangeLevel(CLevel* _NextLevel, LEVEL_STATE _StartState);
     void ChangeLevelAsync(const wstring& _strPath, LEVEL_STATE _StartState);
-    void ThreadRelease();
 
 private:
     void ChangeLevelAsyncFunc(const wstring& _strPath, LEVEL_STATE _StartState);

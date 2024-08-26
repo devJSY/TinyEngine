@@ -477,8 +477,14 @@ void CLevelFlowMgr::MtrlParamUpdate()
 
     if (m_DimensionFadeEffect->IsActive())
     {
+        CCamera* pMainCam = CRenderMgr::GetInst()->GetMainCamera();
+
         static Ptr<CMaterial> pDimensionalFadeMtrl = CAssetMgr::GetInst()->Load<CMaterial>(L"material\\DimensionFadeMtrl.mtrl");
         pDimensionalFadeMtrl->SetScalarParam(FLOAT_0, m_CurDimensionalCoef);
+        if (nullptr != pMainCam)
+        {
+            pDimensionalFadeMtrl->SetScalarParam(FLOAT_1, pMainCam->GetFar());
+        }
     }
 }
 
