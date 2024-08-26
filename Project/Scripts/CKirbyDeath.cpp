@@ -63,6 +63,10 @@ void CKirbyDeath::tick()
 
 void CKirbyDeath::Enter()
 {
+    // Effect Lock
+    CAMERACTRL->SetEffectLock(true);
+
+
     
     // Death State 진입 시 몬스터와 관련된 모든 오브젝트를 삭제한다.
     for (int i = LAYER_MONSTER; i <= LAYER_MONSTERATK_TRIGGER; ++i)
