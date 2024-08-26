@@ -5,6 +5,7 @@ class CKirbyVacuum1 : public CState
 {
 private:
     float m_SavedSpeed;
+    float m_SaveRotSpeed;
 
 public:
     virtual void tick();

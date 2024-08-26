@@ -13,6 +13,16 @@ CKirbyVacuum2::~CKirbyVacuum2()
 
 void CKirbyVacuum2::tick()
 {
+    // 키보드 입력이 없으면 해당 방향에서 멈추도록 설정
+    if (PLAYERCTRL->GetInput().Length() == 0.f)
+    {
+        PLAYERCTRL->LockDirection();
+    }
+    else
+    {
+        PLAYERCTRL->UnlockDirection();
+    }
+
     if (PLAYERFSM->IsStuffed() && PLAYERFSM->GetCurAbilityIdx() == AbilityCopyType::NORMAL)
     {
         ChangeState(L"STUFFED");
@@ -38,6 +48,10 @@ void CKirbyVacuum2::Enter()
     PLAYERCTRL->LockJump();
     m_SavedSpeed = PLAYERCTRL->GetSpeed();
     PLAYERCTRL->SetSpeed(2.f);
+    // 회전 속도 제한
+    m_SaveRotSpeed = PLAYERCTRL->GetRotSpeed();
+    PLAYERCTRL->SetRotSpeed(m_SaveRotSpeed / 4.f);
+
 
     PLAYERFSM->GetVacuumCol()->EnableCollider(true);
 }
@@ -51,6 +65,10 @@ void CKirbyVacuum2::Exit()
 
     PLAYERCTRL->UnlockJump();
     PLAYERCTRL->SetSpeed(m_SavedSpeed);
+    PLAYERCTRL->UnlockDirection();
+
+    // 회전 속도 복구
+    PLAYERCTRL->SetRotSpeed(m_SaveRotSpeed);
 
     PLAYERFSM->GetVacuumCol()->EnableCollider(false);
 }
