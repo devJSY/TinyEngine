@@ -86,11 +86,6 @@ void CPlayerHitbox::tick()
 
 void CPlayerHitbox::OnTriggerEnter(CCollider* _OtherCollider)
 {
-    if (DT_ENGINE - m_PrevAttackTime < m_CoolTime)
-    {
-        return;
-    }
-    m_PrevAttackTime = DT_ENGINE;
 
     UINT Layer = _OtherCollider->GetOwner()->GetLayerIdx();
     wstring Name = _OtherCollider->GetOwner()->GetName();
@@ -119,6 +114,8 @@ void CPlayerHitbox::OnTriggerEnter(CCollider* _OtherCollider)
     m_bRepeatEnter = true;
     m_AccTime = 0.f;
     AddDamage(pMonster);
+
+    CTimeMgr::GetInst()->SetTimeScale(0.1f, 0.f);
 }
 
 void CPlayerHitbox::AddDamage(CGameObject* _Monster)
