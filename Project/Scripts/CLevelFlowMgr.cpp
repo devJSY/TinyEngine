@@ -182,7 +182,7 @@ void CLevelFlowMgr::tick()
     // Player HP UI On
     if (m_bEnterLevel)
     {
-        m_fFadeInAccTime += DT;
+        m_fFadeInAccTime += DT_ENGINE;
 
         if (m_CurLevelPath == L"Level1-1-2.tLevel")
         {
@@ -200,7 +200,7 @@ void CLevelFlowMgr::tick()
 
     if (m_bLoadingUIWait)
     {
-        m_fLoadingAccTime += DT;
+        m_fLoadingAccTime += DT_ENGINE;
         if (2.f <= m_fLoadingAccTime)
         {
             m_bLoadingUIWait = false;
@@ -210,7 +210,7 @@ void CLevelFlowMgr::tick()
 
     if (m_bFadeEffect)
     {
-        m_FadeEffectAcc += DT;
+        m_FadeEffectAcc += DT_ENGINE;
 
         // UI가 끝나면
         if (m_FadeEffectAcc > m_FadeEffectDuration)

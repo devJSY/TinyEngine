@@ -55,6 +55,8 @@ void CKirbyDeath::tick()
 
     if (m_Acc > m_DeathDuraion)
     {
+        CTimeMgr::GetInst()->SetTimeScale(1.f);
+
         // Level Restart
         CLevelFlowMgr* FlowMgr = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager")->GetScript<CLevelFlowMgr>();
         FlowMgr->LevelRestart();
@@ -91,7 +93,7 @@ void CKirbyDeath::Enter()
     FlowMgr->OffDimensionFade();
 
     // m_Duration 만큼 시간을 멈추기
-    CTimeMgr::GetInst()->SetTimeScale(0.f, m_DeathDuraion);
+    CTimeMgr::GetInst()->SetTimeScale(0.f, m_Duration);
 
     // 커비 표정
     CPlayerMgr::SetPlayerFace(FaceType::Frown);
