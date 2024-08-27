@@ -425,6 +425,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CUIAnimManagerScript.h" />
     <ClInclude Include="CUIAnimScript.h" />
     <ClInclude Include="CUIBossHPScript.h" />
+    <ClInclude Include="CUIBurstImpactEffectScript.h" />
     <ClInclude Include="CUIBurstStarSpawnEffectScript.h" />
     <ClInclude Include="CUIFlowMgr.h" />
     <ClInclude Include="CUIGlowMoveScript.h" />
@@ -769,6 +770,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CUIAnimManagerScript.cpp" />
     <ClCompile Include="CUIAnimScript.cpp" />
     <ClCompile Include="CUIBossHPScript.cpp" />
+    <ClCompile Include="CUIBurstImpactEffectScript.cpp" />
     <ClCompile Include="CUIBurstStarSpawnEffectScript.cpp" />
     <ClCompile Include="CUIFlowMgr.cpp" />
     <ClCompile Include="CUIGlowMoveScript.cpp" />

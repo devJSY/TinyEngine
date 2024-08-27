@@ -432,7 +432,6 @@ void CLevelFlowMgr::LevelRestart()
 
     // 현재 레벨을 다시 시작하기 위해 NextLevelPath 를 현재레벨의 Path로 바꿔준다.
     m_NextLevelPath = ToString(m_CurLevelPath);
-
     // @TODO BGM 종료
 }
 

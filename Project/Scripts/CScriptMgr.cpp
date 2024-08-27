@@ -124,6 +124,7 @@
 #include "CMonsterDeadEffectSpawnScript.h"
 #include "CShcokWaveScript.h"
 #include "CUIBurstStarSpawnEffectScript.h"
+#include "CUIBurstImpactEffectScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -250,6 +251,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CMonsterDeadEffectSpawnScript");
 	_vec.push_back(L"CShcokWaveScript");
 	_vec.push_back(L"CUIBurstStarSpawnEffectScript");
+	_vec.push_back(L"CUIBurstImpactEffectScript");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -500,6 +502,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CShcokWaveScript;
 	if (L"CUIBurstStarSpawnEffectScript" == _strScriptName)
 		return new CUIBurstStarSpawnEffectScript;
+	if (L"CUIBurstImpactEffectScript" == _strScriptName)
+		return new CUIBurstImpactEffectScript;
 	return nullptr;
 }
 
@@ -753,6 +757,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CShcokWaveScript;
 	case (UINT)SCRIPT_TYPE::UIBURSTSTARSPAWNEFFECTSCRIPT:
 		return new CUIBurstStarSpawnEffectScript;
+	case (UINT)SCRIPT_TYPE::UIBURSTIMPACTEFFECTSCRIPT:
+		return new CUIBurstImpactEffectScript;
 	}
 	return nullptr;
 }
@@ -1007,6 +1013,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CShcokWaveScript";
 	case SCRIPT_TYPE::UIBURSTSTARSPAWNEFFECTSCRIPT:
 		return L"CUIBurstStarSpawnEffectScript";
+	case SCRIPT_TYPE::UIBURSTIMPACTEFFECTSCRIPT:
+		return L"CUIBurstImpactEffectScript";
 	}
 	return nullptr;
 }
