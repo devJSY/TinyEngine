@@ -5,6 +5,7 @@ class CElfilisA_Stab : public CBossState
 {
 private:
     Ptr<CPrefab> m_StabRockPref;
+    Vec3 m_ForceDir;
 
 public:
     virtual void tick() override;

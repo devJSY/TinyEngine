@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CElfilisG_NormalAtkTeleportR.h"
 #include "CElfilisFSM.h"
+#include "CCameraController.h"
 
 CElfilisG_NormalAtkTeleportR::CElfilisG_NormalAtkTeleportR()
     : m_BeforeObj(nullptr)
@@ -82,7 +83,6 @@ void CElfilisG_NormalAtkTeleportR::Enter_Step()
     }
     break;
     case StateStep::StartEnd: {
-        GetOwner()->Rigidbody()->SetKinematic(true);
         m_bFrmEnter = true;
         SpawnTeleport();
     }
@@ -90,6 +90,7 @@ void CElfilisG_NormalAtkTeleportR::Enter_Step()
     case StateStep::Progress: {
         GetOwner()->Animator()->Play(ANIMPREFIX("SwingRight"), false, false, 1.5f);
         ELFFSM->OnWeaponTrigger();
+        m_bFrmEnter = true;
     }
     break;
     case StateStep::End: {
@@ -108,8 +109,6 @@ void CElfilisG_NormalAtkTeleportR::Exit_Step()
     case StateStep::Wait:
         break;
     case StateStep::StartEnd: {
-        GetOwner()->Rigidbody()->SetKinematic(false);
-
         if (m_BeforeObj)
         {
             GamePlayStatic::DestroyGameObject(m_BeforeObj);
@@ -215,10 +214,17 @@ void CElfilisG_NormalAtkTeleportR::Progress()
     {
         if (GetOwner()->Animator()->GetClipFrameIndex() < 13)
         {
-            pHitbox->GetOwner()->SetActive(true);
-            pHitbox->Transform()->SetLocalPos(Vec3(0.71f, 1.f, 2.64f));
-            pHitbox->Transform()->SetLocalRotation(Vec3(0.f));
-            pHitbox->Transform()->SetLocalScale(Vec3(7.56f, 1.f, 4.81f));
+            if (m_bFrmEnter)
+            {
+                m_bFrmEnter = false;
+
+                pHitbox->GetOwner()->SetActive(true);
+                pHitbox->Transform()->SetLocalPos(Vec3(0.71f, 1.f, 2.64f));
+                pHitbox->Transform()->SetLocalRotation(Vec3(0.f));
+                pHitbox->Transform()->SetLocalScale(Vec3(7.56f, 1.f, 4.81f));
+
+                CAMERACTRL->Shake(0.3f, 30.f, 30.f);
+            }
         }
         else
         {

@@ -31,15 +31,12 @@ CFSMScript::CFSMScript(const CFSMScript& _Origin)
     {
         m_CurState = FindState(_Origin.m_CurState->GetName());
     }
-
 }
 
 CFSMScript::~CFSMScript()
 {
     Delete_Map(m_mapState);
 }
-
-
 
 void CFSMScript::tick()
 {
@@ -97,11 +94,11 @@ void CFSMScript::ChangeState(const wstring& _strState)
 
     // 2. adjust task to taskMgr
     // Param1: Parent Object    |   Param2: Next State
-    //tTask pTask = {};
-    //pTask.Type = TASK_TYPE::CHANGE_STATE;
-    //pTask.Param_1 = (UINT_PTR)GetOwner();
-    //pTask.Param_2 = (UINT_PTR)pNextState;
-    //CTaskMgr::GetInst()->AddTask(pTask);
+    // tTask pTask = {};
+    // pTask.Type = TASK_TYPE::CHANGE_STATE;
+    // pTask.Param_1 = (UINT_PTR)GetOwner();
+    // pTask.Param_2 = (UINT_PTR)pNextState;
+    // CTaskMgr::GetInst()->AddTask(pTask);
 }
 
 void CFSMScript::ChangeState_proc(CState* _pNextState)
@@ -115,7 +112,10 @@ void CFSMScript::ChangeState_proc(CState* _pNextState)
     m_CurState = _pNextState;
     m_CurState->Enter();
 
-    LOG(LOG_LEVEL::Log, (string("[State Change] : ") + ToString(m_CurState->GetName())).c_str());
+    if (GetOwner()->GetLayerIdx() != LAYER_PLAYER)
+    {
+        LOG(LOG_LEVEL::Log, (string("[State Change] : ") + ToString(m_CurState->GetName())).c_str());
+    }
 }
 
 UINT CFSMScript::SaveToLevelFile(FILE* _File)

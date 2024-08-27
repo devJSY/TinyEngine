@@ -2,6 +2,7 @@
 #include "CElfilisG_SwordWaveStorm.h"
 #include "CElfilisFSM.h"
 #include "CElfilisStormScript.h"
+#include "CCameraController.h"
 #include <Engine\CAssetMgr.h>
 #include <Engine\CPrefab.h>
 
@@ -123,6 +124,9 @@ void CElfilisG_SwordWaveStorm::Progress()
                 GamePlayStatic::SpawnGameObject(pStorm, LAYER_MONSTERATK_TRIGGER);
             }
         }
+
+        // Camera Shake
+        CAMERACTRL->Shake(0.4f, 60.f, 40.f);
 
         m_bFrmEnter = false;
     }
