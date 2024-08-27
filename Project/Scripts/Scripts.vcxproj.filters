@@ -961,6 +961,9 @@
     <ClInclude Include="CShcokWaveScript.h">
       <Filter>Scripts\Postprocess</Filter>
     </ClInclude>
+    <ClInclude Include="CUIBurstStarSpawnEffectScript.h">
+      <Filter>Scripts\UI\UIEffect\UIBurstStarSpawnEffect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1931,6 +1934,9 @@
     </ClCompile>
     <ClCompile Include="CShcokWaveScript.cpp">
       <Filter>Scripts\Postprocess</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIBurstStarSpawnEffectScript.cpp">
+      <Filter>Scripts\UI\UIEffect\UIBurstStarSpawnEffect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -3040,6 +3046,9 @@
     </Filter>
     <Filter Include="Scripts\UI\UIEffect\UIDamageStarSpawnEffect">
       <UniqueIdentifier>{36332977-0f55-4ae4-8169-ee65a9694020}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIEffect\UIBurstStarSpawnEffect">
+      <UniqueIdentifier>{a4db04cb-9f57-49de-8e78-9a7d135f7110}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

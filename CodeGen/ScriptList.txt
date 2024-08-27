@@ -120,3 +120,4 @@ CFireOnHitEffect
 CDamageStarEffect
 CMonsterDeadEffectSpawnScript
 CShcokWaveScript
+CUIBurstStarSpawnEffectScript

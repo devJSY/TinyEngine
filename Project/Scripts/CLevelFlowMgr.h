@@ -49,6 +49,7 @@ private:
     bool m_bStartLevelDurationValue;
     bool m_bUILevel;
     bool m_bLoadingUIWait;
+    bool m_bAlreayEnterBossUI;
     // UI
 
     CFadeEffectScript* m_FadeEffectScript;
