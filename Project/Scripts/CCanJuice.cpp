@@ -9,7 +9,7 @@ CCanJuice::CCanJuice()
     : CScript(CANJUICE)
     , m_Acc(0.f)
     , m_Duration(5.f)
-    , m_InitSpeed(13.f)
+    , m_InitSpeed(18.f)
     , m_Damage(10.f)
 {
 }
@@ -80,7 +80,7 @@ void CCanJuice::begin()
     Vec3 FlyDir = Front + Vec3(0.f, 0.2f, 0.f);
     FlyDir.Normalize();
 
-    Rigidbody()->SetVelocity(FlyDir * m_InitSpeed);
+    Rigidbody()->AddForce(FlyDir * m_InitSpeed, ForceMode::Impulse);
 }
 
 void CCanJuice::tick()

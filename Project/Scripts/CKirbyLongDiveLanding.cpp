@@ -19,7 +19,7 @@ void CKirbyLongDiveLanding::tick()
         {
             ChangeState(L"VACUUM1_START");
         }
-        else if (PLAYER->Animator()->IsFinish())
+        else if (PLAYERCTRL->IsGround())
         {
             ChangeState(L"LONGDIVE_BOUND");
         }
@@ -41,7 +41,7 @@ void CKirbyLongDiveLanding::tick()
                 ChangeState(L"ATTACK_CHARGE1_START");
             }
         }
-        else if (PLAYER->Animator()->IsFinish())
+        else if (PLAYERCTRL->IsGround())
         {
             ChangeState(L"LONGDIVE_BOUND");
         }
@@ -59,7 +59,7 @@ void CKirbyLongDiveLanding::tick()
                 ChangeState(L"ATTACK");
             }
         }
-        else if (PLAYER->Animator()->IsFinish())
+        else if (PLAYERCTRL->IsGround())
         {
             ChangeState(L"LONGDIVE_BOUND");
         }
@@ -92,14 +92,14 @@ void CKirbyLongDiveLanding::tick()
                 ChangeState(L"JUMP_ATTACK_START");
             }
         }
-        else if (PLAYER->Animator()->IsFinish())
+        else if (PLAYERCTRL->IsGround())
         {
             ChangeState(L"LONGDIVE_BOUND");
         }
     }
     break;
     case AbilityCopyType::SLEEP: {
-        if (PLAYER->Animator()->IsFinish())
+        if (PLAYERCTRL->IsGround())
         {
             ChangeState(L"LONGDIVE_BOUND");
         }

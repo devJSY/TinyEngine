@@ -13,7 +13,6 @@ public:
 
 private:
     void OnTriggerEnter(CCollider* _OtherCollider);
-    void OnTriggerStay(CCollider* _OtherCollider);
 
 public:
     CLONE(CGordoLongScript)

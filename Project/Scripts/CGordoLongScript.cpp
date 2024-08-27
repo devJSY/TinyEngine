@@ -1,9 +1,6 @@
 #include "pch.h"
 #include "CGordoLongScript.h"
 
-#include "CPlayerMgr.h"
-#include "CKirbyMoveController.h"
-
 CGordoLongScript::CGordoLongScript()
     : CMonsterUnitScript(GORDOLONGSCRIPT)
 {
@@ -35,20 +32,10 @@ void CGordoLongScript::OnTriggerEnter(CCollider* _OtherCollider)
 {
     CGameObject* pObj = _OtherCollider->GetOwner();
 
-    if (pObj->GetLayerIdx() == LAYER_PLAYER_TRIGGER && pObj->GetName() == L"Body Collider")
+    if (pObj->GetLayerIdx() == LAYER_PLAYER && pObj->GetName() == L"Main Player")
     {
-        UnitHit hitInfo = {DAMAGE_TYPE::NORMAL, Transform()->GetWorldDir(DIR_TYPE::FRONT), GetCurInfo().ATK, 0.f, 0.f};
-        pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo);
-    }
-}
-
-void CGordoLongScript::OnTriggerStay(CCollider* _OtherCollider)
-{
-    CGameObject* pObj = _OtherCollider->GetOwner();
-
-    if (pObj->GetLayerIdx() == LAYER_PLAYER_TRIGGER && pObj->GetName() == L"Body Collider")
-    {
-        PLAYERCTRL->PushAddMove(Vec3(-0.000001f, 0.f, 0.f));
+        UnitHit hitInfo = {DAMAGE_TYPE::NORMAL, Transform()->GetWorldDir(DIR_TYPE::FRONT), 7.f, 0.f, 0.f};
+        pObj->GetScript<CUnitScript>()->GetDamage(hitInfo);
     }
 }
 
