@@ -207,7 +207,7 @@ void CKirbyObject_VendingMachine::ChangeObjectEnter()
 {
     CKirbyObject::ChangeObjectEnter();
 
-    PLAYERCTRL->SetSpeed(5.f);
+    PLAYERCTRL->SetSpeed(8.f);
     m_SaveJumpPower = PLAYERCTRL->GetJumpPower();
     PLAYERCTRL->SetJumpPower(m_SaveJumpPower * 0.8f);
 

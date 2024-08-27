@@ -38,7 +38,7 @@ void CAttackAreaScript::OnTriggerStay(CCollider* _OtherCollider)
 
     if (pObj->GetLayerIdx() == LAYER_PLAYER && pObj->GetName() == L"Main Player")
     {
-        UnitHit hitInfo = {DAMAGE_TYPE::NORMAL, Transform()->GetWorldDir(DIR_TYPE::FRONT), 8.f, 0.f, 0.f};
+        UnitHit hitInfo = {DAMAGE_TYPE::NORMAL, Transform()->GetWorldDir(DIR_TYPE::FRONT), 7.f, 0.f, 0.f};
         pObj->GetScript<CUnitScript>()->GetDamage(hitInfo);
     }
 }

@@ -326,6 +326,29 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
     }
 
     // =================================
+    // UIDefaultBluredMaskShader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\UIDefaultVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\KirbyUIDefaultBluredPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+        pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
+
+        pShader->AddTexParam(TEX_0, "Blured Texture");
+        pShader->AddTexParam(TEX_1, "PostProcess Texture");
+
+        pShader->AddScalarParam(FLOAT_0, "Blur Amount", 0.0001f);
+
+        pShader->SetName(L"UIDefaultBluredMaskShader");
+        AddAsset(L"UIDefaultBluredMaskShader", pShader);
+    }
+
+    // =================================
     // UICircleProgressShader
     // =================================
     {

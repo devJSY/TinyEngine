@@ -30,6 +30,7 @@ CCameraController::CCameraController()
     , m_EditZoomSpeed(500.f)
     , m_EditMode(false)
     , m_Weight(0.3f)
+    , m_bEffectLock(false)
 {
 
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_Offset, "Offset");
@@ -100,6 +101,7 @@ void CCameraController::begin()
     SaveInitSetting();
 
     m_Setup = CameraSetup::NORMAL;
+    m_bEffectLock = false;
 
 }
 
@@ -729,6 +731,9 @@ float simpleNoise(float t)
 
 void CCameraController::ProcessEffet()
 {
+    if (m_bEffectLock)
+        return;
+
     for (int i = 0; i < (UINT)EFFECT_TYPE::END; ++i)
     {
         CamEffect& CurEffet = m_Effect[i];

@@ -292,6 +292,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CObstacleTriggerScript.h" />
     <ClInclude Include="CProgressCamTrigger.h" />
     <ClInclude Include="CPushOutScript.h" />
+    <ClInclude Include="CShcokWaveScript.h" />
     <ClInclude Include="CSirKibbleScript.h" />
     <ClInclude Include="CButtonManagerScript.h" />
     <ClInclude Include="CButtonScript.h" />
@@ -424,6 +425,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CUIAnimManagerScript.h" />
     <ClInclude Include="CUIAnimScript.h" />
     <ClInclude Include="CUIBossHPScript.h" />
+    <ClInclude Include="CUIBurstStarSpawnEffectScript.h" />
     <ClInclude Include="CUIFlowMgr.h" />
     <ClInclude Include="CUIGlowMoveScript.h" />
     <ClInclude Include="CUIHPScript.h" />
@@ -634,6 +636,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CObstacleTriggerScript.cpp" />
     <ClCompile Include="CProgressCamTrigger.cpp" />
     <ClCompile Include="CPushOutScript.cpp" />
+    <ClCompile Include="CShcokWaveScript.cpp" />
     <ClCompile Include="CSirKibbleScript.cpp" />
     <ClCompile Include="CButtonManagerScript.cpp" />
     <ClCompile Include="CButtonScript.cpp" />
@@ -766,6 +769,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CUIAnimManagerScript.cpp" />
     <ClCompile Include="CUIAnimScript.cpp" />
     <ClCompile Include="CUIBossHPScript.cpp" />
+    <ClCompile Include="CUIBurstStarSpawnEffectScript.cpp" />
     <ClCompile Include="CUIFlowMgr.cpp" />
     <ClCompile Include="CUIGlowMoveScript.cpp" />
     <ClCompile Include="CUIHPScript.cpp" />

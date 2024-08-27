@@ -27,11 +27,6 @@ void CMorphoUnit::tick()
     CUnitScript::tick();
     CFlowMgr_BossMorpho* FlowMgr = CBossMgr::GetMorphoFlowMgr();
 
-    //if (KEY_TAP(KEY::SPACE))
-    //{
-    //    m_CurInfo.HP = 10.f;
-    //}
-
     // Death
     if (m_CurInfo.HP <= 0.f && FlowMgr && FlowMgr->GetFlowState() < BossLevelFlow::Death)
     {
@@ -42,6 +37,12 @@ void CMorphoUnit::tick()
     // Phase 1
     else if (MRPFSM->GetPhase() == 1)
     {
+        // Cheet : Phase 1 -> Phase 2
+        if (KEY_PRESSED(KEY::LCTRL) && (KEY_TAP(KEY::ENTER)))
+        {
+            m_CurInfo.HP = m_InitInfo.HP * 0.6f;
+        }
+
         if (m_CurInfo.HP <= m_InitInfo.HP * 0.5f)
         {
             MRPFSM->SetPhase(2);
@@ -50,6 +51,14 @@ void CMorphoUnit::tick()
     }
 
     // Phase 2
+    else if (MRPFSM->GetPhase() == 2)
+    {
+        // Cheet : Death
+        if (KEY_PRESSED(KEY::LCTRL) && (KEY_TAP(KEY::ENTER)))
+        {
+            m_CurInfo.HP = 0.f;
+        }
+    }
 }
 
 UINT CMorphoUnit::SaveToLevelFile(FILE* _File)

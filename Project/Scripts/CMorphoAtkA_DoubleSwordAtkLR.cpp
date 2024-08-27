@@ -9,6 +9,7 @@ CMorphoAtkA_DoubleSwordAtkLR::CMorphoAtkA_DoubleSwordAtkLR()
     : m_LightningEffect{nullptr,}
     , m_FireSwipe{nullptr,}
     , m_bFrmEnter(true)
+    , m_bOverlapBurning(false)
 {
     m_LightningEffectPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Effect_MorphoLightningSet.pref", L"prefab\\Effect_MorphoLightningSet.pref");
     m_FireSwipePref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\MorphoFireSwipe.pref", L"prefab\\MorphoFireSwipe.pref");
@@ -307,6 +308,37 @@ void CMorphoAtkA_DoubleSwordAtkLR::EndWait()
         }
     }
 
+    // 1도 이하로 줄어들면 Burning
+    if (acos(Sim) < (XM_PI / 180.f) && !m_bOverlapBurning)
+    {
+        m_bOverlapBurning = true;
+
+        for (int i = 0; i < 2; ++i)
+        {
+            if (m_FireSwipe[i])
+            {
+                const vector<CGameObject*>& vecChild = m_FireSwipe[i]->GetChildObject();
+                for (int j = 0; j < vecChild.size(); ++j)
+                {
+                    CGameObject* pFireParticle = vecChild[j]->GetChildObject(L"MorphoFireParticle");
+                    if (nullptr != pFireParticle)
+                    {
+                        CParticleSystem* pParticleSystem = pFireParticle->ParticleSystem();
+
+                        if (nullptr != pParticleSystem)
+                        {
+                            pParticleSystem->EnableModule(PARTICLE_MODULE::SCALE, true);
+                            tParticleModule Module = pParticleSystem->GetParticleModule();
+                            float RandomFlaot = GetRandomfloat(2.f, 8.f);
+                            Module.vScaleRatio = Vec4(2.f, RandomFlaot, 2.f, 2.f);
+                            pParticleSystem->SetParticleModule(Module);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     if (Sim >= 1.f - 1e-5f)
     {
         ChangeStep(StateStep::EndEnd);
@@ -317,47 +349,8 @@ void CMorphoAtkA_DoubleSwordAtkLR::EndEnd()
 {
     m_AccTime += DT;
 
-    float DurationTime = 0.3f;
-    float BurningTime = 1.f;
-
-    // start big
-    if (m_AccTime <= DurationTime)
-    {
-        for (int i = 0; i < 2; ++i)
-        {
-            if (m_FireSwipe[i])
-            {
-                float t = 1.f + (m_AccTime / DurationTime) * 1.5f;
-                Vec3 NewScale = m_SwipeOriginScale;
-                NewScale.y *= t;
-                m_FireSwipe[i]->Transform()->SetLocalScale(NewScale);
-            }
-        }
-    }
-
-    // burning
-    else if (m_AccTime < DurationTime + BurningTime)
-    {
-        if (m_FireSwipe[0])
-        {
-            m_SwipeOriginScale = m_FireSwipe[0]->Transform()->GetLocalScale();
-        }
-    }
-
-    // start end
-    else if (m_AccTime < 2.f * DurationTime + BurningTime)
-    {
-        for (int i = 0; i < 2; ++i)
-        {
-            float t = 1.f - ((m_AccTime - DurationTime - BurningTime) / DurationTime);
-            Vec3 NewScale = m_SwipeOriginScale;
-            NewScale.y *= t;
-            m_FireSwipe[i]->Transform()->SetLocalScale(NewScale);
-        }
-    }
-
-    // end
-    else
+    float DurationTime = 1.f;
+    if (m_AccTime > DurationTime)
     {
         MRPFSM->Move();
     }

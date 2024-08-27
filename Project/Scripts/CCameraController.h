@@ -127,6 +127,9 @@ private:
     float                       m_LockAcc;
     float                       m_LockDuration;
 
+    // Effect Lock
+    bool                        m_bEffectLock;
+
 
     //Edit
     bool                        m_EditMode;             // EditMode ½ºÀ§Ä¡
@@ -184,6 +187,7 @@ private:
         m_LockDuration = _Duration;
     }
     void RotationLookDirRightAxis(float _Degree);
+    void SetEffectLock(bool _Lock) { m_bEffectLock = _Lock; }
 
 
     void SaveSetting();
