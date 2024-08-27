@@ -122,10 +122,20 @@ void CKirbyChangeAbility::Enter()
     {
         FLowMgrScript->OnDimensionFade(0.3f);
     }
+
+    // UI 끄기
+    {
+        CLevelFlowMgr* FlowMgr = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager")->GetScript<CLevelFlowMgr>();
+        FlowMgr->TurnOffBossHP();
+        FlowMgr->TurnOffPlayerHP();
+        FlowMgr->ActiveOffDropUI();
+    }
 }
 
 void CKirbyChangeAbility::Exit()
 {
+    CTimeMgr::GetInst()->SetTimeScale(1.f);
+
     // MoveController Lock
     PLAYERCTRL->UnlockInput();
     PLAYERCTRL->UnlockJump();
@@ -159,4 +169,12 @@ void CKirbyChangeAbility::Exit()
     // Emissive를 다시 받도록 수정
     PLAYERFSM->SetSkrr(false);
     PLAYERFSM->SetInvincible(false);
+
+    // UI 끄기
+    {
+        CLevelFlowMgr* FlowMgr = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager")->GetScript<CLevelFlowMgr>();
+        FlowMgr->TurnOnBossHP();
+        FlowMgr->TurnOnPlayerHP();
+        FlowMgr->ActiveOnDropUI();
+    }
 }

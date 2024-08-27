@@ -113,6 +113,9 @@ void CKirbyLongDiveBound::Enter()
 {
     // 애니메이션 재생
     PLAYER->Animator()->Play(ANIMPREFIX("LongDiveAttackBound"), false, false, 2.f);
+
+    PLAYERCTRL->ClearVelocityY();
+    PLAYERCTRL->AddVelocity(Vec3(0.f, 7.f, 0.f));
 }
 
 void CKirbyLongDiveBound::Exit()

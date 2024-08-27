@@ -247,7 +247,7 @@ void CKirbyFireBullet::OnTriggerEnter(CCollider* _OtherCollider)
         }
 
 
-        CMonsterUnitScript* Monster = _OtherCollider->GetOwner()->GetParent()->GetScript<CMonsterUnitScript>();
+        CUnitScript* Monster = _OtherCollider->GetOwner()->GetParent()->GetScript<CUnitScript>();
         if (nullptr != Monster)
         {
             Vec3 HitDir = _OtherCollider->Transform()->GetWorldPos() - Transform()->GetWorldPos();
@@ -256,6 +256,8 @@ void CKirbyFireBullet::OnTriggerEnter(CCollider* _OtherCollider)
 
             Monster->GetDamage(HitInfo);
         }
+
+        GamePlayStatic::DestroyGameObject(GetOwner());
     }
 
 }

@@ -85,6 +85,17 @@ void CKirbyAbility_Fire::AttackCharge1StartExit()
 
 void CKirbyAbility_Fire::AttackCharge1()
 {
+    // 키보드 입력이 없으면 해당 방향에서 멈추도록 설정
+    if (PLAYERCTRL->GetInput().Length() == 0.f)
+    {
+        PLAYERCTRL->LockDirection();
+    }
+    else
+    {
+        PLAYERCTRL->UnlockDirection();
+    }
+
+
     // tick
     m_ProjectileAcc += DT;
 
@@ -124,7 +135,7 @@ void CKirbyAbility_Fire::AttackCharge1Enter()
 
     // 회전 속도 제한
     m_SaveRotSpeed = PLAYERCTRL->GetRotSpeed();
-    PLAYERCTRL->SetRotSpeed(m_SaveRotSpeed / 3.f);
+    PLAYERCTRL->SetRotSpeed(m_SaveRotSpeed / 4.f);
     
 }
 
@@ -140,6 +151,7 @@ void CKirbyAbility_Fire::AttackCharge1Exit()
     // Movement 복구
     PLAYERCTRL->UnlockJump();
     PLAYERCTRL->SetSpeed(m_SavedSpeed);
+    PLAYERCTRL->UnlockDirection();
 
     // 회전 속도 복구
     PLAYERCTRL->SetRotSpeed(m_SaveRotSpeed);
@@ -175,6 +187,16 @@ void CKirbyAbility_Fire::AttackCharge1EndExit()
 
 void CKirbyAbility_Fire::AttackCharge1Run()
 {
+    // 키보드 입력이 없으면 해당 방향에서 멈추도록 설정
+    if (PLAYERCTRL->GetInput().Length() == 0.f)
+    {
+        PLAYERCTRL->LockDirection();
+    }
+    else
+    {
+        PLAYERCTRL->UnlockDirection();
+    }
+
     // tick
     m_ProjectileAcc += DT;
 
@@ -230,6 +252,7 @@ void CKirbyAbility_Fire::AttackCharge1RunExit()
 
     // Movement 복구
     PLAYERCTRL->UnlockJump();
+    PLAYERCTRL->UnlockDirection();
     PLAYERCTRL->SetSpeed(m_SavedSpeed);
 
     // 회전 속도 복구
