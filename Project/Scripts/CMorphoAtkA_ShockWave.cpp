@@ -85,6 +85,15 @@ void CMorphoAtkA_ShockWave::Enter_Step()
             iter->SetActive(true);
             //@EFFECT 충격파 이펙트
         }
+
+        // Spawn DropStar
+        Vec3 SpawnPos = GetOwner()->Transform()->GetWorldPos();
+        Vec3 RightDir = GetOwner()->Transform()->GetWorldDir(DIR_TYPE::RIGHT);
+        RightDir.y = 0.f;
+        RightDir.Normalize();
+
+        MRPFSM->SpawnDropStar(SpawnPos - RightDir * 50.f);
+        MRPFSM->SpawnDropStar(SpawnPos + RightDir * 50.f);
     }
     break;
     case StateStep::Wait: {
@@ -159,4 +168,3 @@ void CMorphoAtkA_ShockWave::End()
         MRPFSM->ChangeStateGroup(MorphoStateGroup::MoveToGround, L"MOVEG_JUMPFALL");
     }
 }
-

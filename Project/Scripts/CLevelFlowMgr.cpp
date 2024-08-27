@@ -184,7 +184,7 @@ void CLevelFlowMgr::tick()
     // Player HP UI On
     if (m_bEnterLevel)
     {
-        m_fFadeInAccTime += DT;
+        m_fFadeInAccTime += DT_ENGINE;
 
         if (m_CurLevelPath == L"Level1-1-2.tLevel")
         {
@@ -202,7 +202,7 @@ void CLevelFlowMgr::tick()
 
     if (m_bLoadingUIWait)
     {
-        m_fLoadingAccTime += DT;
+        m_fLoadingAccTime += DT_ENGINE;
         if (2.f <= m_fLoadingAccTime)
         {
             m_bLoadingUIWait = false;
@@ -212,7 +212,7 @@ void CLevelFlowMgr::tick()
 
     if (m_bFadeEffect)
     {
-        m_FadeEffectAcc += DT;
+        m_FadeEffectAcc += DT_ENGINE;
 
         // UI가 끝나면
         if (m_FadeEffectAcc > m_FadeEffectDuration)
@@ -378,6 +378,22 @@ void CLevelFlowMgr::LevelEnd()
     if (nullptr != m_pDropUI)
         m_pDropUI->SetActive(false);
 
+    // Kirby 프리팹 저장
+    if (nullptr != PLAYER)
+    {
+        Ptr<CPrefab> MainPlayerPref = new CPrefab(PLAYER->Clone());
+        MainPlayerPref->Save(L"prefab\\Main Player.pref");
+
+        Ptr<CPrefab> CurKirbyPref = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\Main Player.pref");
+
+        if (CurKirbyPref.Get())
+        {
+            GamePlayStatic::DeleteAsset(ASSET_TYPE::PREFAB, CurKirbyPref.Get());
+        }
+
+        // CAssetMgr::GetInst()->ReplacePrefab(MainPlayerPref, L"prefab\\Main Player.pref");
+    }
+
     m_bIsChangedLevel = true;
     m_bFadeEffect = true;
     m_fFadeInWaitTime = 1.f;
@@ -390,24 +406,7 @@ void CLevelFlowMgr::LevelEnd()
 void CLevelFlowMgr::LevelExit()
 {
     // Loding UI 시작
-    // Kirby 프리팹 저장
-    if (!m_bUILevel)
-    {
-        if (nullptr != PLAYER)
-        {
-            Ptr<CPrefab> MainPlayerPref = new CPrefab(PLAYER->Clone());
-            MainPlayerPref->Save(L"prefab\\Main Player.pref");
 
-            Ptr<CPrefab> CurKirbyPref = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\Main Player.pref");
-
-            if (CurKirbyPref.Get())
-            {
-                GamePlayStatic::DeleteAsset(ASSET_TYPE::PREFAB, CurKirbyPref.Get());
-            }
-
-            // CAssetMgr::GetInst()->ReplacePrefab(MainPlayerPref, L"prefab\\Main Player.pref");
-        }
-    }
 
     // Level Change
     GamePlayStatic::ChangeLevelAsync(ToWstring(m_NextLevelPath), LEVEL_STATE::PLAY);

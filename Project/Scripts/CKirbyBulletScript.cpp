@@ -181,6 +181,10 @@ void CKirbyBulletScript::OnTriggerEnter(CCollider* _OtherCollider)
             UnitHit HitInfo = {DAMAGE_TYPE::NORMAL, HitDir, 20.f, 0.f, 0.f};
             pMonster->GetDamage(HitInfo);
             ((CUnitScript*)PLAYERUNIT)->AttackReward();
+
+            //@Effect 터지는 이펙트
+
+            GamePlayStatic::DestroyGameObject(GetOwner());
         }
     }
 }

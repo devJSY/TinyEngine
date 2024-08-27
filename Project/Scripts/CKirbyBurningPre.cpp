@@ -66,6 +66,8 @@ void CKirbyBurningPre::Exit()
         Wing->SetActive(false);
     }
 
+    CPlayerMgr::SetPlayerFace(FaceType::Normal);
+
     PLAYERCTRL->UnlockMove();
     PLAYERCTRL->UnlockDirection();
     PLAYERCTRL->UnlockJump();

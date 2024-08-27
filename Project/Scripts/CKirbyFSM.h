@@ -82,6 +82,7 @@ private:
     // Fire Gliding Timer
     float                   m_GlidingDuration;
     float                   m_GlidingAcc;
+    bool                    m_GlidingGravity;
 
     // Vending Machine
     UINT                    m_LeftCanCount;
@@ -127,6 +128,7 @@ public:
     void SetLadderBottom(Vec3 _Bottom) { m_LadderBottom = _Bottom; }
     void SetEscapeLadder(bool _b) { m_bEscapeLadder = _b; }
     void SetSkrr(bool _Skrr) { m_bIsSkrr = _Skrr; }    
+    void SetGlidingGravity(float _Gravity) { m_GlidingGravity = _Gravity; }
     
     void SetUnstuffReverse(bool _Unstuffed) { m_bUnstuffReverse = _Unstuffed; }
     void ClearCurHatWeapon();
@@ -179,6 +181,8 @@ public:
     bool CanBladeAttack() const { return m_bCanBladeAttack; }
     Vec3 GetKnockBackDir() const { return m_KnockbackDir; }
     UINT GetCanCount() const { return m_LeftCanCount; }
+    float GetGlidingGravity() const { return m_GlidingGravity; }
+
 
     bool GetCollisionLadder() const { return m_bInCollisionLadder; }
     Vec3 GetLadderUpSightDir() const { return m_LadderUpSightDir; }

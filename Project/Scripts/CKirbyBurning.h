@@ -6,7 +6,6 @@ private:
     float m_SaveRotSpeed;
     float m_Duration;
     float m_Acc;
-    float m_SaveSpeed;
 
 
 public:

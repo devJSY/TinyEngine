@@ -58,6 +58,7 @@ private:
     float                       m_Friction; // 마찰력 계수
     float                       m_JumpPower;
     float                       m_Gravity;
+    float                       m_ForwardSpeed;
 
     // Ray 정보
     RaycastHit                  m_RayHit;
@@ -71,6 +72,12 @@ private:
     Vec3                        m_ForcePos;
 
     float                       m_InitGravity;
+
+    // Foward 모드 감속을 위한 변수
+    float                       m_FowardAcc;
+    float                       m_FowardDuration;
+    float                       m_FowardMinSpeed;
+
 
     // 추가적으로 캐릭터 컨트롤러의 Move를 호출하기 위한 속도를 담아놓은 list
     list<Vec3>                  m_AddMoveList;
@@ -118,6 +125,12 @@ public:
     void SetJumpPower(float _Power) { m_JumpPower = _Power; }
     void SetCheckPoint(Vec3 _CheckPoint) { m_CheckPointPos = _CheckPoint; }
     void TeleportGround() { m_bTeleportGround = true; }
+    void SetForwardSpeed(float _Speed) { m_ForwardSpeed = _Speed; }
+    void SetFowardMinSpeed(float _Speed) { m_FowardMinSpeed = _Speed; }
+    void SetFowardDuration(float _Duration) { m_FowardDuration = _Duration; }
+    void ClearFowardAcc() { m_FowardAcc = 0.f; }
+
+
 
     Vec3 GetInput() const { return m_Input; }
     Vec3 GetInputWorld() const { return m_InputWorld; }
@@ -132,6 +145,7 @@ public:
     bool IsGround() const { return m_bGround; }
     float GetInitGravity() const { return m_InitGravity; }
     RaycastHit GetRay() const { return m_RayHit; }
+    float GetFowardSpeed() const { return m_ForwardSpeed; }
 
     void PushAddMove(Vec3 _Move) { m_AddMoveList.push_back(_Move); }
 

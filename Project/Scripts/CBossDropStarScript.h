@@ -4,6 +4,7 @@
 class CBossDropStarScript : public CScript
 {
 private:
+    CGameObject* m_Star;
     CLight* m_Light;
     Vec3 m_OriginScale;
     float m_LifeTime;

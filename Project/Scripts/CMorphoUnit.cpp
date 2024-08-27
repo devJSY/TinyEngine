@@ -38,13 +38,14 @@ void CMorphoUnit::tick()
     else if (MRPFSM->GetPhase() == 1)
     {
         // Cheet : Phase 1 -> Phase 2
-        if (KEY_PRESSED(KEY::LCTRL) && (KEY_TAP(KEY::ENTER)))
+        if ((KEY_PRESSED(KEY::LCTRL) && (KEY_TAP(KEY::ENTER))) || (KEY_TAP(KEY::LCTRL) && (KEY_PRESSED(KEY::ENTER))))
         {
-            m_CurInfo.HP = m_InitInfo.HP * 0.6f;
+            m_CurInfo.HP = m_InitInfo.HP * 0.5f;
         }
 
         if (m_CurInfo.HP <= m_InitInfo.HP * 0.5f)
         {
+            MRPFSM->ResetFSM();
             MRPFSM->SetPhase(2);
             MRPFSM->ChangeStateGroup(MorphoStateGroup::DEMO, L"DEMO_PHASE2");
         }
@@ -54,7 +55,7 @@ void CMorphoUnit::tick()
     else if (MRPFSM->GetPhase() == 2)
     {
         // Cheet : Death
-        if (KEY_PRESSED(KEY::LCTRL) && (KEY_TAP(KEY::ENTER)))
+        if ((KEY_PRESSED(KEY::LCTRL) && (KEY_TAP(KEY::ENTER))) || (KEY_TAP(KEY::LCTRL) && (KEY_PRESSED(KEY::ENTER))))
         {
             m_CurInfo.HP = 0.f;
         }

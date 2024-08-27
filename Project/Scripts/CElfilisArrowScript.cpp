@@ -1,10 +1,13 @@
 #include "pch.h"
 #include "CElfilisArrowScript.h"
+#include "CBossMgr.h"
+#include "CElfilisFSM.h"
 
 CElfilisArrowScript::CElfilisArrowScript()
     : CScript(ELFILISARROWSCRIPT)
     , m_Step(0)
     , m_AccTime(0.f)
+    , m_bSpawnDropStar(false)
 {
 }
 
@@ -20,6 +23,8 @@ void CElfilisArrowScript::begin()
 
 void CElfilisArrowScript::tick()
 {
+    m_AccTime += DT;
+
     switch (m_Step)
     {
     case 0:
@@ -36,12 +41,6 @@ void CElfilisArrowScript::tick()
     }
 }
 
-void CElfilisArrowScript::StartSpawn()
-{
-    m_Step = 1;
-    GetOwner()->SetActive(true);
-}
-
 void CElfilisArrowScript::Spawn()
 {
     // scaling
@@ -52,7 +51,7 @@ void CElfilisArrowScript::Spawn()
     if (NewScale > 1.f)
     {
         NewScale = 1.f;
-        m_Step = 0;
+        ChangeStep(0);
     }
 
     GetOwner()->Transform()->SetLocalScale(Vec3(NewScale));
@@ -60,8 +59,7 @@ void CElfilisArrowScript::Spawn()
 
 void CElfilisArrowScript::Ready()
 {
-    static float RotSpeed = 20.f;
-    m_AccTime += DT;
+    float RotSpeed = 20.f;
 
     // rotate & backstep
     if (m_AccTime <= 0.5f)
@@ -105,7 +103,7 @@ void CElfilisArrowScript::Ready()
         else
         {
             GetOwner()->Transform()->SetLocalRotation(Vec3());
-            m_Step = 3;
+            ChangeStep(3);
         }
     }
 }
@@ -118,6 +116,35 @@ void CElfilisArrowScript::Attack()
     Position.z += DT * Speed;
 
     GetOwner()->Transform()->SetLocalPos(Position);
+
+    // Spawn DropStar
+    if (!m_bSpawnDropStar && m_AccTime >= 0.5f)
+    {
+        m_bSpawnDropStar = true;
+        ELFFSM->SpawnDropStar(GetOwner()->Transform()->GetWorldPos());
+    }
+}
+
+void CElfilisArrowScript::ChangeStep(UINT _Step)
+{
+    switch (_Step)
+    {
+    case 0:
+        break;
+    case 1: {
+        GetOwner()->SetActive(true);
+    }
+    break;
+    case 2:
+        break;
+    case 3: {
+        m_bSpawnDropStar = false;
+    }
+    break;
+    }
+
+    m_AccTime = 0.f;
+    m_Step = _Step;
 }
 
 UINT CElfilisArrowScript::SaveToLevelFile(FILE* _File)
