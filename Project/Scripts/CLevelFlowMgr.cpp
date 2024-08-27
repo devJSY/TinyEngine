@@ -376,6 +376,22 @@ void CLevelFlowMgr::LevelEnd()
     if (nullptr != m_pDropUI)
         m_pDropUI->SetActive(false);
 
+    // Kirby 프리팹 저장
+    if (nullptr != PLAYER)
+    {
+        Ptr<CPrefab> MainPlayerPref = new CPrefab(PLAYER->Clone());
+        MainPlayerPref->Save(L"prefab\\Main Player.pref");
+
+        Ptr<CPrefab> CurKirbyPref = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\Main Player.pref");
+
+        if (CurKirbyPref.Get())
+        {
+            GamePlayStatic::DeleteAsset(ASSET_TYPE::PREFAB, CurKirbyPref.Get());
+        }
+
+        // CAssetMgr::GetInst()->ReplacePrefab(MainPlayerPref, L"prefab\\Main Player.pref");
+    }
+
     m_bIsChangedLevel = true;
     m_bFadeEffect = true;
     m_fFadeInWaitTime = 1.f;
@@ -388,24 +404,7 @@ void CLevelFlowMgr::LevelEnd()
 void CLevelFlowMgr::LevelExit()
 {
     // Loding UI 시작
-    // Kirby 프리팹 저장
-    if (!m_bUILevel)
-    {
-        if (nullptr != PLAYER)
-        {
-            Ptr<CPrefab> MainPlayerPref = new CPrefab(PLAYER->Clone());
-            MainPlayerPref->Save(L"prefab\\Main Player.pref");
 
-            Ptr<CPrefab> CurKirbyPref = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"prefab\\Main Player.pref");
-
-            if (CurKirbyPref.Get())
-            {
-                GamePlayStatic::DeleteAsset(ASSET_TYPE::PREFAB, CurKirbyPref.Get());
-            }
-
-            // CAssetMgr::GetInst()->ReplacePrefab(MainPlayerPref, L"prefab\\Main Player.pref");
-        }
-    }
 
     // Level Change
     GamePlayStatic::ChangeLevelAsync(ToWstring(m_NextLevelPath), LEVEL_STATE::PLAY);
