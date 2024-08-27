@@ -37,11 +37,11 @@ void CMorphoDemo_Phase2::Enter_Step()
     {
     case StateStep::Start: {
         GetOwner()->Animator()->Play(ANIMPREFIX("Damage2"), false, false, 1.5f);
-        GetOwner()->Rigidbody()->SetVelocity(Vec3());
         GetOwner()->Rigidbody()->SetAngularVelocity(Vec3());
         GetOwner()->Rigidbody()->SetUseGravity(true);
 
         GetOwner()->Rigidbody()->SetVelocity(Vec3(0.f, 5.f, 0.f));
+        MRPFSM->SetGlobalState(true);
     }
     break;
     case StateStep::StartEnd: {
@@ -114,6 +114,7 @@ void CMorphoDemo_Phase2::Progress()
 {
     if (GetOwner()->Animator()->IsFinish())
     {
+        MRPFSM->SetGlobalState(false);
         MRPFSM->SetPattern(MorphoPatternType::Demo_TeleportDoubleSword);
         MRPFSM->ProcPatternStep();
     }
