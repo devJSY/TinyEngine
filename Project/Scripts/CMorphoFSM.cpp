@@ -190,10 +190,10 @@ void CMorphoFSM::tick()
 {
     CFSMScript::tick();
 
-    if (KEY_TAP(KEY::ENTER))
-    {
-        ChangeStateGroup(MorphoStateGroup::AtkGroundTeleport1, L"ATKG_TELEPORT_TORNADO");
-    }
+    //if (KEY_TAP(KEY::ENTER))
+    //{
+    //    ChangeStateGroup(MorphoStateGroup::AtkGroundTeleport1, L"ATKG_TELEPORT_TORNADO");
+    //}
 
     // Emissive
     if (m_TeleportAppearTime > 0.f)
