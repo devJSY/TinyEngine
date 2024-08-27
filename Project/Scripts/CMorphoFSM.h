@@ -47,6 +47,7 @@ private:
     bool m_bAttackRepeat;
 
     // Child
+    CCapsuleCollider* m_BodyCollider;
     CGameObject* m_WeaponL;
     CGameObject* m_WeaponR;
     vector<CGameObject*> m_vecShockWave;
@@ -73,11 +74,18 @@ public:
     void ChangeStateGroup(MorphoStateGroup _Group, const wstring& _State = L"");
     void RepeatState(wstring _State = L"");
     void ProcPatternStep();
+    void ResetFSM();
+
     void OnWeaponLTrigger();
     void OnWeaponRTrigger();
     void OffWeaponLTrigger();
     void OffWeaponRTrigger();
-    void ResetFSM();
+    void EnableRender();
+    void DisableRender();
+    void EnableCollider();
+    void DisableCollider();
+    void ResetEmissive();
+
     void SpawnDropStar(Vec3 _Pos);
 
 private:
@@ -92,10 +100,7 @@ public:
     void ClearComboLevel() { m_ComboLevel = 0; }
     void AddComboLevel() { m_ComboLevel++; }
     void SetComboLevel(UINT _Level) { m_ComboLevel = _Level; }
-    void EnableRender();
-    void DisableRender();
     void SetTeleportTime(bool _Emissive);
-    void ResetEmissive();
     void AddEmissive(Vec3 _Color);
     void SetWeaponEmissive(Vec3 _Color);
 

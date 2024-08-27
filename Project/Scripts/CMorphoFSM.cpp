@@ -12,6 +12,7 @@ CMorphoFSM::CMorphoFSM()
     , m_Phase(1)
     , m_ComboLevel(0)
     , m_NearDist(150.f)
+    , m_BodyCollider(nullptr)
     , m_WeaponL(nullptr)
     , m_WeaponR(nullptr)
     , m_bAttackRepeat(false)
@@ -40,6 +41,7 @@ CMorphoFSM::CMorphoFSM(const CMorphoFSM& _Origin)
     , m_ComboLevel(0)
     , m_NearDist(_Origin.m_NearDist)
     , m_bAttackRepeat(false)
+    , m_BodyCollider(nullptr)
     , m_WeaponL(nullptr)
     , m_WeaponR(nullptr)
     , m_vecShockWave{}
@@ -136,6 +138,7 @@ void CMorphoFSM::begin()
     ChangeStateGroup(MorphoStateGroup::Idle);
 
     // childs
+    m_BodyCollider = GetOwner()->GetChildObject(L"Body Collider")->CapsuleCollider();
     m_WeaponL = GetOwner()->GetChildObject(L"BossMorphoSwordL");
     m_WeaponR = GetOwner()->GetChildObject(L"BossMorphoSwordR");
     m_vecShockWave.push_back(GetOwner()->GetChildObject(L"ShockWaveL"));
@@ -639,9 +642,10 @@ void CMorphoFSM::ResetFSM()
     SetGlobalState(false);
     SetPattern(MorphoPatternType::NONE);
     ClearComboLevel();
+    EnableRender();
+    EnableCollider();
     OffWeaponLTrigger();
     OffWeaponRTrigger();
-    EnableRender();
     ResetEmissive();
 }
 
@@ -703,6 +707,32 @@ void CMorphoFSM::DisableRender()
     MeshRender()->SetEnabled(false);
     m_WeaponL->MeshRender()->SetEnabled(false);
     m_WeaponR->MeshRender()->SetEnabled(false);
+}
+
+void CMorphoFSM::EnableCollider()
+{
+    CapsuleCollider()->SetEnabled(true);
+    
+    if (m_BodyCollider)
+    {
+        m_BodyCollider->SetEnabled(true);
+    }
+
+    OnWeaponLTrigger();
+    OnWeaponRTrigger();
+}
+
+void CMorphoFSM::DisableCollider()
+{
+    CapsuleCollider()->SetEnabled(false);
+
+    if (m_BodyCollider)
+    {
+        m_BodyCollider->SetEnabled(false);
+    }
+
+    OffWeaponLTrigger();
+    OffWeaponRTrigger();
 }
 
 void CMorphoFSM::SetTeleportTime(bool _Set)
