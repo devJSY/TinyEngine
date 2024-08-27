@@ -121,7 +121,7 @@ void CMorphoAtkG_Teleport_Tornado::Enter_Step()
 
                 // Transform ÃÊ±âÈ­
                 Vec3 Pos = GetOwner()->Transform()->GetWorldPos();
-                Pos.y = 0.f;
+                Pos.y = -20.f;
                 Vec3 Dir = GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT);
                 Dir.y = 0.f;
                 Dir.Normalize();
