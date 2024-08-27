@@ -292,6 +292,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CObstacleTriggerScript.h" />
     <ClInclude Include="CProgressCamTrigger.h" />
     <ClInclude Include="CPushOutScript.h" />
+    <ClInclude Include="CShcokWaveScript.h" />
     <ClInclude Include="CSirKibbleScript.h" />
     <ClInclude Include="CButtonManagerScript.h" />
     <ClInclude Include="CButtonScript.h" />
@@ -634,6 +635,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CObstacleTriggerScript.cpp" />
     <ClCompile Include="CProgressCamTrigger.cpp" />
     <ClCompile Include="CPushOutScript.cpp" />
+    <ClCompile Include="CShcokWaveScript.cpp" />
     <ClCompile Include="CSirKibbleScript.cpp" />
     <ClCompile Include="CButtonManagerScript.cpp" />
     <ClCompile Include="CButtonScript.cpp" />
