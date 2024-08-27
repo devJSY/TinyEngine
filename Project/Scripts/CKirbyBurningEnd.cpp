@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "CKirbyBurningEnd.h"
 
+#include "CCameraController.h"
+
 CKirbyBurningEnd::CKirbyBurningEnd()
     : m_SaveRotSpeed(0.f)
     , m_SaveSpeed(0.f)
@@ -59,6 +61,13 @@ void CKirbyBurningEnd::Enter()
 
     //  公利 惑怕
     PLAYERFSM->SetInvincible(true);
+
+    // Camera Setting
+    CAMERACTRL->SaveSetting();
+
+    CAMERACTRL->SetMinSpeed(100.f);
+    CAMERACTRL->SetMaxSpeed(500.f);
+    CAMERACTRL->SetThresholdDistance(300.f);
 }
 
 void CKirbyBurningEnd::Exit()
@@ -82,4 +91,7 @@ void CKirbyBurningEnd::Exit()
 
     //  公利 惑怕
     PLAYERFSM->SetInvincible(false);
+
+        // Camera Setting Return
+    CAMERACTRL->LoadSetting();
 }

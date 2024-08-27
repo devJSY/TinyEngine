@@ -1,11 +1,12 @@
 #include "pch.h"
 #include "CKirbyBurning.h"
 
+#include "CCameraController.h"
+
 CKirbyBurning::CKirbyBurning()
     : m_SaveRotSpeed(0.f)
     , m_Duration(0.5f)
     , m_Acc(0.f)
-    , m_SaveSpeed(0.f)
 {
 }
 
@@ -31,14 +32,7 @@ void CKirbyBurning::tick()
     // 현재스테이트의 제한시간이 넘어갔거나, 땅에 닿았을 경우 BurningEnd
     if (m_Acc > m_Duration)
     {
-        if (KEY_RELEASED(KEY_ATK))
-        {
-            ChangeState(L"JUMP_FALL");
-        }
-        else
-        {
-            ChangeState(L"BURNING_END");
-        }
+        ChangeState(L"BURNING_END");
     }
 
     Vec3 Raystart = GetOwner()->Transform()->GetWorldPos();
@@ -94,13 +88,18 @@ void CKirbyBurning::Enter()
     m_SaveRotSpeed = PLAYERCTRL->GetRotSpeed();
     PLAYERCTRL->SetRotSpeed(0.5f);
 
-    m_SaveSpeed = PLAYERCTRL->GetSpeed();
-    PLAYERCTRL->SetSpeed(13.f);
-
     PLAYERCTRL->SetGravity(PLAYERFSM->GetGlidingGravity());
 
     //  무적 상태
     PLAYERFSM->SetInvincible(true);
+
+    // Camera Setting
+    CAMERACTRL->SaveSetting();
+
+    CAMERACTRL->SetMinSpeed(100.f);
+    CAMERACTRL->SetMaxSpeed(500.f);
+    CAMERACTRL->SetThresholdDistance(300.f);
+
 }
 
 void CKirbyBurning::Exit()
@@ -119,12 +118,13 @@ void CKirbyBurning::Exit()
     PLAYERCTRL->SetForwardMode(false);
     PLAYERCTRL->SetRotSpeed(m_SaveRotSpeed);
 
-    PLAYERCTRL->SetSpeed(m_SaveSpeed);
-
     PLAYERFSM->SetGlidingGravity(PLAYERCTRL->GetGravity());
     PLAYERCTRL->SetGravity(PLAYERCTRL->GetInitGravity());
 
 
     //  무적 상태
     PLAYERFSM->SetInvincible(false);
+
+        // Camera Setting Return
+    CAMERACTRL->LoadSetting();
 }

@@ -1,9 +1,10 @@
 #include "pch.h"
 #include "CKirbyBurningStart.h"
 
+#include "CCameraController.h"
+
 CKirbyBurningStart::CKirbyBurningStart()
     : m_SaveRotSpeed(0.f)
-    , m_SaveSpeed(0.f)
 {
 }
 
@@ -85,13 +86,23 @@ void CKirbyBurningStart::Enter()
     m_SaveRotSpeed = PLAYERCTRL->GetRotSpeed();
     PLAYERCTRL->SetRotSpeed(0.5f);
 
-    m_SaveSpeed = PLAYERCTRL->GetSpeed();
-    PLAYERCTRL->SetSpeed(13.f);
-
     PLAYERCTRL->ClearVelocityY();
+
+    PLAYERCTRL->SetForwardSpeed(15.f);
+    PLAYERCTRL->SetFowardMinSpeed(5.f);
+    PLAYERCTRL->SetFowardDuration(1.f);
+    PLAYERCTRL->ClearFowardAcc();
 
     //  公利 惑怕
     PLAYERFSM->SetInvincible(true);
+
+    // Camera Setting 
+    CAMERACTRL->SaveSetting();
+
+    CAMERACTRL->SetMinSpeed(100.f);
+    CAMERACTRL->SetMaxSpeed(500.f);
+    CAMERACTRL->SetThresholdDistance(150.f);
+
 }
 
 void CKirbyBurningStart::Exit()
@@ -107,13 +118,14 @@ void CKirbyBurningStart::Exit()
 
     PLAYERFSM->SetGlidingGravity(PLAYERCTRL->GetGravity());
     PLAYERCTRL->SetGravity(PLAYERCTRL->GetInitGravity());
-
-
     PLAYERCTRL->UnlockJump();
     PLAYERCTRL->SetForwardMode(false);
     PLAYERCTRL->SetRotSpeed(m_SaveRotSpeed);
-    PLAYERCTRL->SetSpeed(m_SaveSpeed);
 
     //  公利 惑怕
     PLAYERFSM->SetInvincible(false);
+
+    // Camera Setting Return
+    CAMERACTRL->LoadSetting();
+
 }
