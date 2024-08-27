@@ -72,6 +72,8 @@ void CKirbyBurning::tick()
 
 void CKirbyBurning::Enter()
 {
+    CPlayerMgr::SetPlayerFace(FaceType::UpTail);
+
 
     CGameObject* Wing = PLAYER->GetChildObject(L"KirbyDragon");
 
@@ -101,6 +103,8 @@ void CKirbyBurning::Enter()
 
 void CKirbyBurning::Exit()
 {
+    CPlayerMgr::SetPlayerFace(FaceType::Normal);
+
     CGameObject* Wing = PLAYER->GetChildObject(L"KirbyDragon");
 
     if (Wing != nullptr)

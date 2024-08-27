@@ -25,7 +25,7 @@ void CKirbyBurningStart::tick()
         PLAYERCTRL->SetGravity(CurGravity);
     }
 
-
+    
     if (PLAYER->GetChildObject(L"KirbyDragon")->Animator()->IsFinish())
     {
         ChangeState(L"BURNING");
@@ -61,6 +61,7 @@ void CKirbyBurningStart::tick()
 
 void CKirbyBurningStart::Enter()
 {
+    CPlayerMgr::SetPlayerFace(FaceType::UpTail);
 
     CGameObject* Wing = PLAYER->GetChildObject(L"KirbyDragon");
 
@@ -68,6 +69,7 @@ void CKirbyBurningStart::Enter()
     {
         Wing->SetActive(true);
     }
+
 
     Wing->Animator()->Play(ANIMPREFIX("BurningStart"), false, false, 1.5f);
 
@@ -94,6 +96,8 @@ void CKirbyBurningStart::Enter()
 
 void CKirbyBurningStart::Exit()
 {
+    CPlayerMgr::SetPlayerFace(FaceType::Normal);
+
     CGameObject* Wing = PLAYER->GetChildObject(L"KirbyDragon");
 
     if (Wing != nullptr)
