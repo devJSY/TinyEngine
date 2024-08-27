@@ -57,7 +57,6 @@ private:
 
 private:
     void OnTriggerEnter(CCollider* _OtherCollider);
-    void OnTriggerStay(CCollider* _OtherCollider);
     void OnTriggerExit(CCollider* _OtherCollider);
 
 private:

@@ -126,6 +126,9 @@ void CElfilisA_Stab::Enter_Step()
             pScript->SetPlayTime(5.f);
 
             GamePlayStatic::SpawnGameObject(pRock, LAYER_DYNAMIC);
+
+            // Spawn Drop
+            ELFFSM->SpawnDropStar(NewPos + NewDir * 100.f);
         }
 
         // ≈ı ≈∏∞Ÿ

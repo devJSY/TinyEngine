@@ -61,6 +61,11 @@ void CMorphoAtkG_NormalNear_Atk3::Exit_Step()
         GetOwner()->Rigidbody()->SetAngularVelocity(Vec3());
         MRPFSM->ClearComboLevel();
         MRPFSM->OffWeaponRTrigger();
+
+        // Spawn DropStar
+        Vec3 SpawnPos = GetOwner()->Transform()->GetWorldPos();
+        SpawnPos -= GetOwner()->Transform()->GetWorldDir(DIR_TYPE::RIGHT) * 50.f;
+        MRPFSM->SpawnDropStar(SpawnPos);
     }
     break;
     case StateStep::End:

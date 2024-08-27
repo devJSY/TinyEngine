@@ -71,7 +71,7 @@ void CMorphoAtkA_DoubleSwordAtkL::Exit_Step()
     case StateStep::Start:
         break;
     case StateStep::Progress:
-        break;
+    break;
     case StateStep::End: {
         m_LightningEffect = nullptr;
     }
@@ -108,6 +108,33 @@ void CMorphoAtkA_DoubleSwordAtkL::Progress()
             m_LightningEffect->Transform()->Slerp(Dir.Normalize(), 1.f);
 
             GamePlayStatic::SpawnGameObject(m_LightningEffect, LAYER_EFFECT);
+        }
+
+        // Spawn DropStar
+        Vec3 SpawnPos = MRPFSM->GetWeaponL()->Transform()->GetWorldPos();
+        Vec3 FrontDir = MRPFSM->GetWeaponL()->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+        Vec3 RightDir = MRPFSM->GetWeaponL()->Transform()->GetWorldDir(DIR_TYPE::UP);
+        FrontDir.y = RightDir.y = 0.f;
+        FrontDir.y = 0.f;
+        FrontDir.Normalize();
+        RightDir.Normalize();
+
+        for (int i = 0; i < 3; ++i)
+        {
+            Vec3 OffsetSpawnPos = SpawnPos;
+            OffsetSpawnPos += RightDir * 20.f;
+            OffsetSpawnPos += FrontDir * (100.f * i);
+
+            MRPFSM->SpawnDropStar(OffsetSpawnPos);
+        }
+
+        for (int i = 0; i < 3; ++i)
+        {
+            Vec3 OffsetSpawnPos = SpawnPos;
+            OffsetSpawnPos -= RightDir * 20.f;
+            OffsetSpawnPos += FrontDir * (50.f + 100.f * i);
+
+            MRPFSM->SpawnDropStar(OffsetSpawnPos);
         }
     }
 

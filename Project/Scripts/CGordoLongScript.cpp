@@ -30,6 +30,7 @@ void CGordoLongScript::tick()
 
 void CGordoLongScript::OnTriggerEnter(CCollider* _OtherCollider)
 {
+    int a = 10;
     CGameObject* pObj = _OtherCollider->GetOwner();
 
     if (pObj->GetLayerIdx() == LAYER_PLAYER && pObj->GetName() == L"Main Player")

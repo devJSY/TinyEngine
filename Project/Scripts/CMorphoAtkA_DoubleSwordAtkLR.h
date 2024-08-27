@@ -11,6 +11,7 @@ class CMorphoAtkA_DoubleSwordAtkLR : public CBossState
     Vec3 m_SwipeTargetDir;
     float m_AccTime;
     bool m_bFrmEnter;
+    bool m_bOverlapBurning;
 
 public:
     virtual void tick() override;

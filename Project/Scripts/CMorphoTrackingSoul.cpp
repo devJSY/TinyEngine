@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "CMorphoTrackingSoul.h"
+#include "CBossMgr.h"
+#include "CMorphoFSM.h"
 
 CMorphoTrackingSoul::CMorphoTrackingSoul()
     : CScript(MORPHOTRACKINGSOUL)
@@ -8,6 +10,7 @@ CMorphoTrackingSoul::CMorphoTrackingSoul()
     , m_Speed(3.f)
     , m_RotSpeed(0.7f)
     , m_AccTime(0.f)
+    , m_bSpawnDropStar(false)
 {
 }
 
@@ -65,6 +68,7 @@ void CMorphoTrackingSoul::Appear()
     {
         m_Step = StateStep::Progress;
         m_AccTime = 0.f;
+        m_bSpawnDropStar = false;
     }
 }
 
@@ -96,6 +100,16 @@ void CMorphoTrackingSoul::Tracking()
     Dir.y *= 0.3f;
     Dir.Normalize();
     Transform()->Slerp(Dir, m_RotSpeed * DT);
+
+    // spawn dropstar
+    if (!m_bSpawnDropStar && m_AccTime > 3.f)
+    {
+        m_bSpawnDropStar = true;
+
+        Vec3 SpawnPos = Transform()->GetWorldPos();
+        SpawnPos.y = 0.f;
+        MRPFSM->SpawnDropStar(SpawnPos);
+    }
 
     // change state
     float LifeTime = 14.f;

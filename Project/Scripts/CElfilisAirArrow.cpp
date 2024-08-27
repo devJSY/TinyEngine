@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "CElfilisAirArrow.h"
 #include "CMomentaryObjScript.h"
+#include "CBossMgr.h"
+#include "CElfilisFSM.h"
 #include <Engine\CAssetMgr.h>
 #include <Engine\CPrefab.h>
 
@@ -348,6 +350,9 @@ void CElfilisAirArrow::Attack()
 
             Rigidbody()->SetVelocity(Vec3());
             Rigidbody()->SetAngularVelocity(Vec3());
+
+            // Spawn Drop
+            ELFFSM->SpawnDropStar(NewPos);
         }
 
         if (m_AccTime > 1.f)

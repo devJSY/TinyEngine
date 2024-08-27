@@ -9,6 +9,7 @@ CMorphoAtkG_Teleport_Tornado::CMorphoAtkG_Teleport_Tornado()
     , m_TornadoTime(5.f)
     , m_Tornado{false,}
     , m_TornadoSpeed(5.f)
+    , m_bSpawnDropStar(false)
 {
     m_ChargeEffect = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Effect_MorphoTornadoCharging.pref", L"prefab\\Effect_MorphoTornadoCharging.pref");
     m_TornadoPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\MorphoTornado.pref", L"prefab\\MorphoTornado.pref");
@@ -120,7 +121,7 @@ void CMorphoAtkG_Teleport_Tornado::Enter_Step()
 
                 // Transform ÃÊ±âÈ­
                 Vec3 Pos = GetOwner()->Transform()->GetWorldPos();
-                Pos.y = 0.f;
+                Pos.y = -20.f;
                 Vec3 Dir = GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT);
                 Dir.y = 0.f;
                 Dir.Normalize();
@@ -144,6 +145,7 @@ void CMorphoAtkG_Teleport_Tornado::Enter_Step()
     break;
     case StateStep::Wait: {
         m_AccTime = 0.f;
+        m_bSpawnDropStar = false;
     }
     break;
     case StateStep::End: {
@@ -240,6 +242,7 @@ void CMorphoAtkG_Teleport_Tornado::Progress()
 void CMorphoAtkG_Teleport_Tornado::Wait()
 {
     m_AccTime += DT;
+    float DisappearTime = 0.5f;
 
     // move
     for (int i = 0; i < 6; ++i)
@@ -253,9 +256,23 @@ void CMorphoAtkG_Teleport_Tornado::Wait()
         }
     }
 
+    // spawn dropstar
+    if (!m_bSpawnDropStar && m_AccTime >= 2.f)
+    {
+        m_bSpawnDropStar = true;
+
+        for (int i = 0; i < 6; ++i)
+        {
+            if (m_Tornado[i])
+            {
+                Vec3 SpawnPos = m_Tornado[i]->Transform()->GetWorldPos();
+                MRPFSM->SpawnDropStar(SpawnPos);
+            }
+        }
+    }
+
     // disappear scaling
-    float DisappearTime = 0.5f;
-    if (m_AccTime > m_TornadoTime - DisappearTime)
+    else if (m_AccTime > m_TornadoTime - DisappearTime)
     {
         for (int i = 0; i < 6; ++i)
         {

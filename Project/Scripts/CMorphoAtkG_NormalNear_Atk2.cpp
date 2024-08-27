@@ -69,6 +69,11 @@ void CMorphoAtkG_NormalNear_Atk2::Exit_Step()
         {
             GetOwner()->Rigidbody()->SetVelocity(Vec3());
         }
+
+        // Spawn DropStar
+        Vec3 SpawnPos = GetOwner()->Transform()->GetWorldPos();
+        SpawnPos += GetOwner()->Transform()->GetWorldDir(DIR_TYPE::RIGHT) * 50.f;
+        MRPFSM->SpawnDropStar(SpawnPos);
     }
     break;
     case StateStep::End: {

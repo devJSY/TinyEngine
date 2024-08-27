@@ -18,7 +18,6 @@ CKirbyFallDetectTrigger::~CKirbyFallDetectTrigger()
 {
 }
 
-
 void CKirbyFallDetectTrigger::OnTriggerEnter(CCollider* _OtherCollider)
 {
     if (_OtherCollider->GetOwner()->GetLayerIdx() == LAYER_PLAYER)
@@ -26,8 +25,12 @@ void CKirbyFallDetectTrigger::OnTriggerEnter(CCollider* _OtherCollider)
         // Player가 충돌했다면 FAll상태로 바꾼다.
         PLAYERFSM->ChangeState(L"FALL");
     }
-}
 
+    if (_OtherCollider->GetOwner()->GetLayerIdx() == LAYER_MONSTER)
+    {
+        GamePlayStatic::DestroyGameObject(_OtherCollider->GetOwner());
+    }
+}
 
 UINT CKirbyFallDetectTrigger::SaveToLevelFile(FILE* _File)
 {

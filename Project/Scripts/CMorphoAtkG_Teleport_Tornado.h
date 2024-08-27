@@ -7,6 +7,7 @@ private:
     float m_AccTime;
     float m_ChargeTime;
     float m_TornadoTime;
+    bool m_bSpawnDropStar;
 
     // tornado
     Ptr<CPrefab> m_ChargeEffect;

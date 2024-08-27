@@ -62,6 +62,7 @@ private:
     // map
     Vec3 m_MapFloorOffset;
     Vec3 m_MapSize;
+    Ptr<CPrefab> m_DropStarPref;
 
 public:
     virtual void begin() override;
@@ -77,6 +78,7 @@ public:
     void OffWeaponLTrigger();
     void OffWeaponRTrigger();
     void ResetFSM();
+    void SpawnDropStar(Vec3 _Pos);
 
 private:
     void ChangeStateGroup_Random(MorphoStateGroup _Group);
@@ -120,5 +122,6 @@ public:
 
     CLONE(CMorphoFSM)
     CMorphoFSM();
+    CMorphoFSM(const CMorphoFSM& _Origin);
     virtual ~CMorphoFSM();
 };

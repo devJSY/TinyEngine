@@ -40,6 +40,7 @@ CLevelFlowMgr::CLevelFlowMgr(UINT _Type)
     , m_fLoadingAccTime(0.f)
     , m_fFadeInWaitTime(2.3f)
     , m_bUILevel(false)
+    , m_bAlreayEnterBossUI(true)
 {
     AddScriptParam(SCRIPT_PARAM::STRING, &m_NextLevelPath, "Next Level Name");
 }
@@ -66,6 +67,7 @@ CLevelFlowMgr::CLevelFlowMgr(const CLevelFlowMgr& _Origin)
     , m_fFadeInWaitTime(2.f)
     , m_bUILevel(false)
     , m_RadialBlurEffect(nullptr)
+    , m_bAlreayEnterBossUI(true)
 {
     AddScriptParam(SCRIPT_PARAM::STRING, &m_NextLevelPath, "Next Level Name");
 }
@@ -508,7 +510,11 @@ void CLevelFlowMgr::TurnOnBossHP()
         if (nullptr != pScript)
         {
             pScript->GetOwner()->SetActive(true);
-            pScript->ChangeState(HPState::Enter);
+            if (m_bAlreayEnterBossUI)
+            {
+                m_bAlreayEnterBossUI = false;
+                pScript->ChangeState(HPState::Enter);
+            }
         }
     }
 }

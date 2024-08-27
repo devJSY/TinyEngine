@@ -107,14 +107,6 @@ void CKabuScript::OnTriggerEnter(CCollider* _OtherCollider)
             return;
         }
     }
-}
-
-void CKabuScript::OnTriggerStay(CCollider* _OtherCollider)
-{
-    if (KabuState::Eaten == m_eState)
-        return;
-
-    CGameObject* pObj = _OtherCollider->GetOwner();
 
     Vec3 vDir = PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos();
     UnitHit hitInfo = {DAMAGE_TYPE::NORMAL, vDir.Normalize(), GetCurInfo().ATK, 0.f, 0.f};

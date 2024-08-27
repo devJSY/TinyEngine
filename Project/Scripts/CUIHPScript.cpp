@@ -308,6 +308,12 @@ void CUIHPScript::SwitchKirbyName()
 
     if (-1 == ObjectIdx)
     {
+        for (int i = 0; i < 3; i++)
+        {
+            if (GetOwner()->GetChildObject(L"UI_PlayerName" + std::to_wstring(i)))
+                GetOwner()->GetChildObject(L"UI_PlayerName" + std::to_wstring(i))->SetActive(false);
+        }
+
         for (int i = 3; i < 8; i++)
         {
             if (i == AbilityIdx)
@@ -320,12 +326,6 @@ void CUIHPScript::SwitchKirbyName()
                 if (GetOwner()->GetChildObject(L"UI_PlayerName" + std::to_wstring(i)))
                     GetOwner()->GetChildObject(L"UI_PlayerName" + std::to_wstring(i))->SetActive(false);
             }
-        }
-
-        for (int i = 0; i < 3; i++)
-        {
-            if (GetOwner()->GetChildObject(L"UI_PlayerName" + std::to_wstring(i)))
-                GetOwner()->GetChildObject(L"UI_PlayerName" + std::to_wstring(i))->SetActive(false);
         }
     }
     else
