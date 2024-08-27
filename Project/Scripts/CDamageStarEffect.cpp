@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "CDamageStarEffect.h"
 
+#include "CPlayerMgr.h"
+#include "CCameraController.h"
+
 CDamageStarEffect::CDamageStarEffect()
     : CScript(DAMAGESTAREFFECT)
     , m_bUseGravity(false)
@@ -160,19 +163,8 @@ void CDamageStarEffect::Exit()
 
 void CDamageStarEffect::TrackCamera()
 {
-    // Track
-    CGameObject* pCamObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Editor Camera");
-
-    if (nullptr == pCamObj)
-        return;
-
-    // owenr
-    CTransform* pTr = GetOwner()->Transform();
-
-    if (nullptr != pTr)
-    {
-        pTr->SetLocalRotation(pCamObj->Transform()->GetLocalRotation());
-    }
+    Vec3 LookDir = (CAMERACTRL->GetOwner()->Transform()->GetWorldPos() - Transform()->GetWorldPos()).Normalize();
+    Transform()->SetDirection(LookDir);
 }
 
 void CDamageStarEffect::Scaling(bool _bFlag)

@@ -1148,14 +1148,14 @@
     <Filter Include="ShaderCode\Kirby\UIShader\UIClearLineShader">
       <UniqueIdentifier>{28ba29fb-fb00-432c-b8bf-e47bbd158f01}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ShaderCode\Kirby\UIShader\UICircleProgressShader">
-      <UniqueIdentifier>{6ddc372f-4b5e-424a-a1e4-45a921dec957}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ShaderCode\Kirby\Map\Invasion at the House of Horror">
       <UniqueIdentifier>{421a40da-c45f-4cff-87f9-0051de4dd71d}</UniqueIdentifier>
     </Filter>
     <Filter Include="ShaderCode\Kirby\UIShader\EffectMaskingShader">
       <UniqueIdentifier>{64fd1e64-cb64-451b-b37d-5c33e8301cbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\Kirby\UIShader\UIDefaultBluredShader">
+      <UniqueIdentifier>{eec2f318-5245-4bff-9659-04c660fd91f4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1524,9 +1524,6 @@
     <FxCompile Include="UIKirbyClearLineShader.hlsl">
       <Filter>ShaderCode\Kirby\UIShader\UIClearLineShader</Filter>
     </FxCompile>
-    <FxCompile Include="UICircleProgressPS.hlsl">
-      <Filter>ShaderCode\Kirby\UIShader\UICircleProgressShader</Filter>
-    </FxCompile>
     <FxCompile Include="EffectPS.hlsl">
       <Filter>ShaderCode\Kirby\Common</Filter>
     </FxCompile>
@@ -1544,6 +1541,9 @@
     </FxCompile>
     <FxCompile Include="EffectMaskingPS.hlsl">
       <Filter>ShaderCode\Kirby\UIShader\EffectMaskingShader</Filter>
+    </FxCompile>
+    <FxCompile Include="KirbyUIDefaultBluredPS.hlsl">
+      <Filter>ShaderCode\Kirby\UIShader\UIDefaultBluredShader</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>
