@@ -18,7 +18,7 @@ CElfilisArrowScript::~CElfilisArrowScript()
 void CElfilisArrowScript::begin()
 {
     GetOwner()->SetActive(false);
-    GetOwner()->Transform()->SetLocalScale(Vec3());
+    GetOwner()->Transform()->SetLocalScale(Vec3(0.001f));
 }
 
 void CElfilisArrowScript::tick()
