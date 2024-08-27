@@ -119,3 +119,4 @@ CKirbyFireBullet
 CFireOnHitEffect
 CDamageStarEffect
 CMonsterDeadEffectSpawnScript
+CUIBurstStarSpawnEffectScript
