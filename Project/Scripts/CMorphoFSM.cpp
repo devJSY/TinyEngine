@@ -25,6 +25,40 @@ CMorphoFSM::CMorphoFSM()
         m_StateGroup[(MorphoStateGroup)i][0] = vector<wstring>();
         m_StateGroup[(MorphoStateGroup)i][1] = vector<wstring>();
     }
+
+    m_DropStarPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\BossDropStar.pref");
+}
+
+CMorphoFSM::CMorphoFSM(const CMorphoFSM& _Origin)
+    : CFSMScript(_Origin)
+    , m_StateGroup{}
+    , m_StateSelectionCount{}
+    , m_CurStateGroup(MorphoStateGroup::END)
+    , m_Pattern(MorphoPatternType::NONE)
+    , m_PatternStep(0)
+    , m_Phase(1)
+    , m_ComboLevel(0)
+    , m_NearDist(_Origin.m_NearDist)
+    , m_bAttackRepeat(false)
+    , m_WeaponL(nullptr)
+    , m_WeaponR(nullptr)
+    , m_vecShockWave{}
+    , m_listBodyMtrl{}
+    , m_listWeaponMtrl{}
+    , m_listBodyEmissive{}
+    , m_listWeaponEmissive{}
+    , m_TeleportAppearTime(0.f)
+    , m_EmissiveTime(_Origin.m_EmissiveTime)
+    , m_MapFloorOffset(_Origin.m_MapFloorOffset)
+    , m_MapSize(_Origin.m_MapFloorOffset)
+{
+    for (UINT i = 0; i < (UINT)MorphoStateGroup::END; ++i)
+    {
+        m_StateGroup[(MorphoStateGroup)i][0] = vector<wstring>();
+        m_StateGroup[(MorphoStateGroup)i][1] = vector<wstring>();
+    }
+
+    m_DropStarPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\BossDropStar.pref");
 }
 
 CMorphoFSM::~CMorphoFSM()
@@ -158,11 +192,7 @@ void CMorphoFSM::tick()
 
     if (KEY_TAP(KEY::ENTER))
     {
-        ChangeStateGroup(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORT_FAR");
-    }
-    if (KEY_TAP(KEY::SPACE))
-    {
-        ChangeStateGroup(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORT_NEAR");
+        ChangeStateGroup(MorphoStateGroup::AtkGroundTeleport1, L"ATKG_TELEPORT_TRACKINGSOUL");
     }
 
     // Emissive
@@ -615,13 +645,23 @@ void CMorphoFSM::ResetFSM()
     ResetEmissive();
 }
 
+void CMorphoFSM::SpawnDropStar(Vec3 _Pos)
+{
+    if (m_DropStarPref == nullptr)
+        return;
+
+    CGameObject* pDropStar = m_DropStarPref->Instantiate();
+    pDropStar->Transform()->SetWorldPos(_Pos);
+    GamePlayStatic::SpawnGameObject(pDropStar, LAYER_DYNAMIC);
+}
+
 void CMorphoFSM::ResetEmissive()
 {
-    for(int i = 0; i < m_listBodyMtrl.size(); ++i)
+    for (int i = 0; i < m_listBodyMtrl.size(); ++i)
     {
         m_listBodyMtrl[i]->SetEmission(Vec4(m_listBodyEmissive[i], 0.f));
     }
-    
+
     for (int i = 0; i < m_listWeaponMtrl.size(); ++i)
     {
         m_listWeaponMtrl[i]->SetEmission(Vec4(m_listWeaponEmissive[i], 0.f));

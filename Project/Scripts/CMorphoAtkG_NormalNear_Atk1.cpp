@@ -102,6 +102,11 @@ void CMorphoAtkG_NormalNear_Atk1::Exit_Step()
         }
 
         MRPFSM->OffWeaponRTrigger();
+
+        // Spawn DropStar
+        Vec3 SpawnPos = GetOwner()->Transform()->GetWorldPos();
+        SpawnPos -= GetOwner()->Transform()->GetWorldDir(DIR_TYPE::RIGHT) * 50.f;
+        MRPFSM->SpawnDropStar(SpawnPos);
     }
     break;
     case StateStep::End: {

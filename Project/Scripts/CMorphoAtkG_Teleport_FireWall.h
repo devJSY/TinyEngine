@@ -7,7 +7,9 @@ private:
     CGameObject* m_FireWall;
     Ptr<CPrefab> m_FireWallPref;
     float m_WallSpeed;
+    float m_AccTime;
     bool m_bFrmEnter;
+    bool m_bSpawnDropStar;
 
 public:
     virtual void tick() override;
