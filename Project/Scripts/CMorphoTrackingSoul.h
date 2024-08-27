@@ -9,6 +9,7 @@ private:
     float m_Speed;
     float m_RotSpeed;
     float m_AccTime;
+    bool m_bSpawnDropStar;
 
 public:
     virtual void begin() override;

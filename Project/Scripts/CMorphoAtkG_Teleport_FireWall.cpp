@@ -5,7 +5,9 @@
 CMorphoAtkG_Teleport_FireWall::CMorphoAtkG_Teleport_FireWall()
     : m_FireWall(nullptr)
     , m_WallSpeed(150.f)
+    , m_AccTime(0.f)
     , m_bFrmEnter(true)
+    , m_bSpawnDropStar(false)
 {
     m_FireWallPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\MorphoFireWall.pref", L"prefab\\MorphoFireWall.pref");
 }
@@ -60,6 +62,8 @@ void CMorphoAtkG_Teleport_FireWall::Enter_Step()
     break;
     case StateStep::End: {
         GetOwner()->Animator()->Play(ANIMPREFIX("GigaMoonShotCombWait"), true, false, 1.5f);
+        m_AccTime = 0.f;
+        m_bSpawnDropStar = false;
     }
     break;
     }
@@ -132,7 +136,34 @@ void CMorphoAtkG_Teleport_FireWall::Progress()
 
 void CMorphoAtkG_Teleport_FireWall::End()
 {
+    m_AccTime += DT;
+
+    // move fire wall
     MoveFireWall();
+
+    // spawn dropstar
+    if (!m_bSpawnDropStar && m_AccTime > 1.f)
+    {
+        m_bSpawnDropStar = true;
+        UINT bOdd = 0;
+
+        for (CGameObject* Fire : m_FireWall->GetChildObject())
+        {
+            if (!Fire->CapsuleCollider())
+                continue;
+
+            if (bOdd == 0)
+            {
+                Vec3 SpawnPos = Fire->Transform()->GetWorldPos();
+                MRPFSM->SpawnDropStar(SpawnPos);
+            }
+
+            if (++bOdd > 3)
+            {
+                bOdd = 0;
+            }
+        }
+    }
 
     if (m_FireWall && m_FireWall->Animator()->IsFinish())
     {

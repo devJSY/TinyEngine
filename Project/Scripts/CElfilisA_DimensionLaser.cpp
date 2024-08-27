@@ -190,7 +190,7 @@ void CElfilisA_DimensionLaser::Progress()
 
             for (int i = 0; i < 5; ++i)
             {
-                ELFFSM->SpawnDropStar(CenterPos + RightDir * (-400.f + 200.f * i));
+                ELFFSM->SpawnDropStar(CenterPos + RightDir * (-400.f + 150.f * i));
             }
         }
     }
