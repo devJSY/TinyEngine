@@ -1,9 +1,10 @@
 #include "pch.h"
 #include "CKirbyBurningStart.h"
 
+#include "CCameraController.h"
+
 CKirbyBurningStart::CKirbyBurningStart()
     : m_SaveRotSpeed(0.f)
-    , m_SaveSpeed(0.f)
 {
 }
 
@@ -25,7 +26,7 @@ void CKirbyBurningStart::tick()
         PLAYERCTRL->SetGravity(CurGravity);
     }
 
-
+    
     if (PLAYER->GetChildObject(L"KirbyDragon")->Animator()->IsFinish())
     {
         ChangeState(L"BURNING");
@@ -61,14 +62,7 @@ void CKirbyBurningStart::tick()
 
 void CKirbyBurningStart::Enter()
 {
-    // Wing Fire Particle 스폰
-    Ptr<CPrefab> WingFireParticle = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbyFireWingParticle.pref");
-    if (WingFireParticle.Get())
-    {
-        CGameObject* WingFireParticleObj = WingFireParticle->Instantiate();
-        WingFireParticleObj->Transform()->SetLocalPos(Vec3(0.f, 10.f, 0.f));
-        GamePlayStatic::AddChildObject(GetOwner(), WingFireParticleObj);
-    }
+    CPlayerMgr::SetPlayerFace(FaceType::UpTail);
 
     CGameObject* Wing = PLAYER->GetChildObject(L"KirbyDragon");
 
@@ -76,6 +70,7 @@ void CKirbyBurningStart::Enter()
     {
         Wing->SetActive(true);
     }
+
 
     Wing->Animator()->Play(ANIMPREFIX("BurningStart"), false, false, 1.5f);
 
@@ -91,23 +86,28 @@ void CKirbyBurningStart::Enter()
     m_SaveRotSpeed = PLAYERCTRL->GetRotSpeed();
     PLAYERCTRL->SetRotSpeed(0.5f);
 
-    m_SaveSpeed = PLAYERCTRL->GetSpeed();
-    PLAYERCTRL->SetSpeed(13.f);
-
     PLAYERCTRL->ClearVelocityY();
+
+    PLAYERCTRL->SetForwardSpeed(15.f);
+    PLAYERCTRL->SetFowardMinSpeed(5.f);
+    PLAYERCTRL->SetFowardDuration(1.f);
+    PLAYERCTRL->ClearFowardAcc();
 
     //  무적 상태
     PLAYERFSM->SetInvincible(true);
+
+    // Camera Setting 
+    CAMERACTRL->SaveSetting();
+
+    CAMERACTRL->SetMinSpeed(100.f);
+    CAMERACTRL->SetMaxSpeed(500.f);
+    CAMERACTRL->SetThresholdDistance(150.f);
+
 }
 
 void CKirbyBurningStart::Exit()
 {
-    CGameObject* WingFireParticleObj = GetOwner()->GetChildObject(L"KirbyFireWingParticle");
-
-    if (WingFireParticleObj != nullptr)
-    {
-        GamePlayStatic::DestroyGameObject(WingFireParticleObj);
-    }
+    CPlayerMgr::SetPlayerFace(FaceType::Normal);
 
     CGameObject* Wing = PLAYER->GetChildObject(L"KirbyDragon");
 
@@ -116,11 +116,16 @@ void CKirbyBurningStart::Exit()
         Wing->SetActive(false);
     }
 
+    PLAYERFSM->SetGlidingGravity(PLAYERCTRL->GetGravity());
+    PLAYERCTRL->SetGravity(PLAYERCTRL->GetInitGravity());
     PLAYERCTRL->UnlockJump();
     PLAYERCTRL->SetForwardMode(false);
     PLAYERCTRL->SetRotSpeed(m_SaveRotSpeed);
-    PLAYERCTRL->SetSpeed(m_SaveSpeed);
 
     //  무적 상태
     PLAYERFSM->SetInvincible(false);
+
+    // Camera Setting Return
+    CAMERACTRL->LoadSetting();
+
 }

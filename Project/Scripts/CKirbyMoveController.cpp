@@ -299,12 +299,15 @@ void CKirbyMoveController::Move()
         m_MoveVelocity.z += m_Accel.z * DT;
     }
     else if (m_bForwardMode)
-    {
+    { 
         m_CurDir.y = 0.f;
         m_CurDir.Normalize();
 
-        m_MoveVelocity.x = m_CurDir.x * m_Speed;
-        m_MoveVelocity.z = m_CurDir.z * m_Speed;
+        float Alpha = clamp((m_FowardAcc / m_FowardDuration),0.f,1.f);
+        float CurSpeed = m_FowardMinSpeed + (m_ForwardSpeed - m_FowardMinSpeed) * cosf(Alpha * XM_PI * 0.5f);
+
+        m_MoveVelocity.x = m_CurDir.x * CurSpeed;
+        m_MoveVelocity.z = m_CurDir.z * CurSpeed;
     }
     else
     {
@@ -358,7 +361,7 @@ void CKirbyMoveController::Move()
 
     // 수평 MaxSpeed 제한
     Vec3 HorizontalVel = {m_MoveVelocity.x, 0.f, m_MoveVelocity.z};
-    if (HorizontalVel.Length() > m_MaxSpeed)
+    if (HorizontalVel.Length() > m_MaxSpeed && m_bForwardMode == false)
     {
         HorizontalVel = HorizontalVel.Normalize() * m_MaxSpeed;
         m_MoveVelocity.x = HorizontalVel.x;

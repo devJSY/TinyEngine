@@ -82,6 +82,7 @@ void CPlayerHitbox::tick()
 
 void CPlayerHitbox::OnTriggerEnter(CCollider* _OtherCollider)
 {
+
     UINT Layer = _OtherCollider->GetOwner()->GetLayerIdx();
     wstring Name = _OtherCollider->GetOwner()->GetName();
     CGameObject* pMonster = nullptr;
@@ -109,6 +110,8 @@ void CPlayerHitbox::OnTriggerEnter(CCollider* _OtherCollider)
     m_bRepeatEnter = true;
     m_AccTime = 0.f;
     AddDamage(pMonster);
+
+    CTimeMgr::GetInst()->SetTimeScale(0.1f, 0.f);
 }
 
 void CPlayerHitbox::AddDamage(CGameObject* _Monster)

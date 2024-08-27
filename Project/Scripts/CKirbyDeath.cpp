@@ -55,6 +55,8 @@ void CKirbyDeath::tick()
 
     if (m_Acc > m_DeathDuraion)
     {
+        CTimeMgr::GetInst()->SetTimeScale(1.f);
+
         // Level Restart
         CLevelFlowMgr* FlowMgr = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager")->GetScript<CLevelFlowMgr>();
         FlowMgr->LevelRestart();
@@ -67,17 +69,17 @@ void CKirbyDeath::Enter()
     CAMERACTRL->SetEffectLock(true);
 
     // Death State 진입 시 몬스터와 관련된 모든 오브젝트를 삭제한다.
-    for (int i = LAYER_MONSTER; i <= LAYER_MONSTERATK_TRIGGER; ++i)
-    {
-        CLayer* CurLayer = CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(i);
+    //for (int i = LAYER_MONSTER; i <= LAYER_MONSTERATK_TRIGGER; ++i)
+    //{
+    //    CLayer* CurLayer = CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(i);
 
-        const vector<CGameObject*>& Objects = CurLayer->GetParentObjects();
+    //    const vector<CGameObject*>& Objects = CurLayer->GetParentObjects();
 
-        for (size_t j = 0; j < Objects.size(); ++j)
-        {
-            GamePlayStatic::DestroyGameObject(Objects[j]);
-        }
-    }
+    //    for (size_t j = 0; j < Objects.size(); ++j)
+    //    {
+    //        GamePlayStatic::DestroyGameObject(Objects[j]);
+    //    }
+    //}
 
     m_Acc = 0.f;
     m_Duration = 1.f;
@@ -91,7 +93,7 @@ void CKirbyDeath::Enter()
     FlowMgr->OffDimensionFade();
 
     // m_Duration 만큼 시간을 멈추기
-    CTimeMgr::GetInst()->SetTimeScale(0.f, m_DeathDuraion);
+    CTimeMgr::GetInst()->SetTimeScale(0.f, m_Duration);
 
     // 커비 표정
     CPlayerMgr::SetPlayerFace(FaceType::Frown);
