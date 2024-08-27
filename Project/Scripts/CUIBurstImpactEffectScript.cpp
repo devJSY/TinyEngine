@@ -41,7 +41,7 @@ void CUIBurstImpactEffectScript::Enter()
     CTransform* pTr = Transform();
     if (nullptr != pTr)
     {
-        m_fScale = Lerp(m_fScale, 1.f, DT * 3.f);
+        m_fScale = Lerp(m_fScale, 80.f, DT * 20.f);
         pTr->SetWorldScale(Vec3(1.f, 1.f, 1.f) * m_fScale);
     }
 }

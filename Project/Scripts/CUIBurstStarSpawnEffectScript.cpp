@@ -62,7 +62,7 @@ void CUIBurstStarSpawnEffectScript::Enter()
 
 void CUIBurstStarSpawnEffectScript::BurstWait()
 {
-    if (m_pBurstImpactEffectObj->GetScript<CUIBurstImpactEffectScript>()->GetScale() <= 2.5f)
+    if (m_pBurstImpactEffectObj->GetScript<CUIBurstImpactEffectScript>()->GetScale() >= 79.f)
     {
         m_pBurstImpactEffectObj->GetScript<CUIBurstImpactEffectScript>()->ChangeState(CUIBurstImpactEffectState::End);
         ChangeState(MonsterBurstStarSpawnState::StarEnter);
@@ -74,7 +74,7 @@ void CUIBurstStarSpawnEffectScript::StarEnter()
     Vec3 vOwnerPos = GetOwner()->Transform()->GetWorldPos();
 
     // Star Spawn
-    for (int i = 0; i < 15; i++)
+    for (int i = 0; i < 5; i++)
     {
         CGameObject* pStarEffect =
             CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Effect_BurstStar0.pref", L"prefab\\Effect_BurstStar0.pref")->Instantiate();
@@ -100,6 +100,34 @@ void CUIBurstStarSpawnEffectScript::StarEnter()
         GamePlayStatic::SpawnGameObject(pStarEffect, pStarEffect->GetLayerIdx());
 
         pStarEffect = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Effect_BurstStar3.pref", L"prefab\\Effect_BurstStar3.pref")->Instantiate();
+
+        pStarEffect->Transform()->SetWorldPos(vOwnerPos);
+
+        GamePlayStatic::SpawnGameObject(pStarEffect, pStarEffect->GetLayerIdx());
+    }
+
+    for (int i = 0; i < 5; i++)
+    {
+        CGameObject* pStarEffect =
+            CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Effect_BurstStar4.pref", L"prefab\\Effect_BurstStar4.pref")->Instantiate();
+
+        pStarEffect->Transform()->SetWorldPos(vOwnerPos);
+
+        GamePlayStatic::SpawnGameObject(pStarEffect, pStarEffect->GetLayerIdx());
+
+        pStarEffect = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Effect_BurstStar5.pref", L"prefab\\Effect_BurstStar5.pref")->Instantiate();
+
+        pStarEffect->Transform()->SetWorldPos(vOwnerPos);
+
+        GamePlayStatic::SpawnGameObject(pStarEffect, pStarEffect->GetLayerIdx());
+
+        pStarEffect = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Effect_BurstStar6.pref", L"prefab\\Effect_BurstStar6.pref")->Instantiate();
+
+        pStarEffect->Transform()->SetWorldPos(vOwnerPos);
+
+        GamePlayStatic::SpawnGameObject(pStarEffect, pStarEffect->GetLayerIdx());
+
+        pStarEffect = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Effect_BurstStar7.pref", L"prefab\\Effect_BurstStar7.pref")->Instantiate();
 
         pStarEffect->Transform()->SetWorldPos(vOwnerPos);
 

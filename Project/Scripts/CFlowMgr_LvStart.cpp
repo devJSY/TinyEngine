@@ -2,6 +2,7 @@
 #include "CFlowMgr_LvStart.h"
 
 #include "CUIFlowScript.h"
+#include <Engine\csoun>
 
 bool CFlowMgr_LvStart::m_bEnter = true;
 
@@ -61,6 +62,9 @@ void CFlowMgr_LvStart::LevelStart()
     {
         GamePlayStatic::DeleteAsset(ASSET_TYPE::PREFAB, MainPlayerFreb.Get());
     }
+
+    // BGM
+    // GamePlayStatic::Play2DBGM(L"sound\\stream\\K15_TitleNewWorld1.marker.wav", 0.2f);
 }
 
 void CFlowMgr_LvStart::LevelEnd()

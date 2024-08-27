@@ -21,16 +21,25 @@ void CBossDropStarScript::begin()
 {
     m_OriginScale = GetOwner()->Transform()->GetWorldScale();
     m_AccTime = 0.f;
- 
+
     m_Star = GetOwner()->GetChildObject(L"WarpStar");
     m_Light = GetOwner()->GetChildObject(L"Point Light")->Light();
 
-    Vec3 RelativeForce = Transform()->GetWorldPos() - BOSS->Transform()->GetWorldPos();
-    RelativeForce.y = 0.f;
-    RelativeForce.Normalize();
+    /*  Vec3 RelativeForce = Transform()->GetWorldPos() - BOSS->Transform()->GetWorldPos();
+      RelativeForce.y = 0.f;
+      RelativeForce.Normalize();
 
-    Rigidbody()->AddForce(Vec3(0.f, 30.f, 0.f), ForceMode::Impulse);
-    Rigidbody()->AddForce(RelativeForce * 10.f, ForceMode::Impulse);
+      Rigidbody()->AddForce(Vec3(0.f, 30.f, 0.f), ForceMode::Impulse);
+      Rigidbody()->AddForce(RelativeForce * 10.f, ForceMode::Impulse);*/
+
+    if (BOSS)
+    {
+        Vec3 RelativeForce = Transform()->GetWorldPos() - BOSS->Transform()->GetWorldPos();
+        RelativeForce.y = 0.f;
+        RelativeForce.Normalize();
+
+        Rigidbody()->AddForce(RelativeForce * 10.f, ForceMode::Impulse);
+    }
 }
 
 void CBossDropStarScript::tick()
