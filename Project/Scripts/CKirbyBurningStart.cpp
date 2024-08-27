@@ -105,6 +105,10 @@ void CKirbyBurningStart::Exit()
         Wing->SetActive(false);
     }
 
+    PLAYERFSM->SetGlidingGravity(PLAYERCTRL->GetGravity());
+    PLAYERCTRL->SetGravity(PLAYERCTRL->GetInitGravity());
+
+
     PLAYERCTRL->UnlockJump();
     PLAYERCTRL->SetForwardMode(false);
     PLAYERCTRL->SetRotSpeed(m_SaveRotSpeed);

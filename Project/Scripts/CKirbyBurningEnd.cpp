@@ -55,6 +55,8 @@ void CKirbyBurningEnd::Enter()
     m_SaveSpeed = PLAYERCTRL->GetSpeed();
     PLAYERCTRL->SetSpeed(13.f);
 
+    PLAYERCTRL->SetGravity(PLAYERFSM->GetGlidingGravity());
+
     //  公利 惑怕
     PLAYERFSM->SetInvincible(true);
 }
@@ -73,8 +75,10 @@ void CKirbyBurningEnd::Exit()
     PLAYERCTRL->SetForwardMode(false);
     PLAYERCTRL->SetRotSpeed(m_SaveRotSpeed);
 
-    PLAYERCTRL->SetGravity(PLAYERCTRL->GetInitGravity());
     PLAYERCTRL->SetSpeed(m_SaveSpeed);
+
+    PLAYERFSM->SetGlidingGravity(PLAYERCTRL->GetGravity());
+    PLAYERCTRL->SetGravity(PLAYERCTRL->GetInitGravity());
 
     //  公利 惑怕
     PLAYERFSM->SetInvincible(false);
