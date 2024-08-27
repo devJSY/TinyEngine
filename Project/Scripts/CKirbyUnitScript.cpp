@@ -168,7 +168,7 @@ void CKirbyUnitScript::AttackReward()
 {
     if (PLAYERFSM->GetCurAbilityIdx() == AbilityCopyType::SWORD)
     {
-        m_CurInfo.HP += 2.5f;
+        m_CurInfo.HP += 1.5f;
 
         if (m_CurInfo.HP > m_CurInfo.MAXHP)
         {
