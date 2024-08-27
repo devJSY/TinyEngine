@@ -27,10 +27,10 @@ void CMorphoUnit::tick()
     CUnitScript::tick();
     CFlowMgr_BossMorpho* FlowMgr = CBossMgr::GetMorphoFlowMgr();
 
-    if (KEY_TAP(KEY::SPACE))
-    {
-        m_CurInfo.HP = 10.f;
-    }
+    //if (KEY_TAP(KEY::SPACE))
+    //{
+    //    m_CurInfo.HP = 10.f;
+    //}
 
     // Death
     if (m_CurInfo.HP <= 0.f && FlowMgr && FlowMgr->GetFlowState() < BossLevelFlow::Death)
