@@ -286,7 +286,9 @@ CKirbyFSM::~CKirbyFSM()
 
 void CKirbyFSM::begin()
 {
+    // ---------------------------
     // Get Childs
+    // ---------------------------
     if (!GetOwner()->GetChildObject(L"Vacuum Collider") || !GetOwner()->GetChildObject(L"Vacuum Collider")->GetScript<CKirbyVacuumCollider>())
     {
         MessageBox(nullptr, L"Player에 자식 오브젝트 'Vacuum Collider'가 존재하지 않습니다", L"Player FSM begin() 실패", MB_OK);
@@ -301,12 +303,6 @@ void CKirbyFSM::begin()
     {
         m_PointLight = PointLight->GetScript<CKirbyLightScript>();
         m_PointLight->GetOwner()->SetActive(false);
-    }
-
-    // NONE일 경우 예외처리
-    if (m_CurAbility == AbilityCopyType::NONE)
-    {
-        m_CurAbility = AbilityCopyType::NORMAL;
     }
 
     vector<CGameObject*> KirbyChildObject = GetOwner()->GetChildObject();
@@ -328,24 +324,25 @@ void CKirbyFSM::begin()
                 GamePlayStatic::DestroyGameObject(KirbyChildObject[i]);
             }
         }
-
-        if (ObjName.find(L"Weapon") != wstring::npos)
+        else if (ObjName.find(L"Weapon") != wstring::npos)
         {
             m_CurWeapon = KirbyChildObject[i]->Clone();
             GamePlayStatic::DestroyGameObject(KirbyChildObject[i]);
         }
+        else if (ObjName == L"KirbyDragon")
+        {
+            GamePlayStatic::AddChildObject(GetOwner(), KirbyChildObject[i], L"Wing");
+        }
+        else if (ObjName == L"SleepSnotBubble")
+        {
+            GamePlayStatic::AddChildObject(GetOwner(), KirbyChildObject[i], L"Mouth");
+        }
     }
 
-    CGameObject* Wing = GetOwner()->GetChildObject(L"KirbyDragon");
-    if (Wing)
-    {
-        GamePlayStatic::AddChildObject(GetOwner(), Wing, L"Wing");
-    }
-
-
-
-
-    // begin시에 ObjectCopy상태는 항상 None으로 바꿔준다.
+    // ---------------------------
+    // Mesh & Mtrls
+    // ---------------------------
+    // Parsing Mesh
     PLAYER->MeshRender()->SetMeshData(CPlayerMgr::GetPlayerMeshData());
     CPlayerMgr::ClearBodyMtrl();
     CPlayerMgr::ClearMouthMtrl();
@@ -353,6 +350,27 @@ void CKirbyFSM::begin()
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));
     CPlayerMgr::SetPlayerFace(FaceType::Normal);
 
+    // Mtrl Emissive 세팅
+    for (UINT i = 0; i < PLAYER->MeshRender()->GetMtrlCount(); ++i)
+    {
+        Ptr<CMaterial> pMaterial = PLAYER->MeshRender()->GetMaterial(i);
+        if (pMaterial != nullptr)
+        {
+            pMaterial->SetEmission(Vec4(0.f, 0.f, 0.f, 1.f));
+        }
+    }
+    m_bEmissive = false;
+
+    // ---------------------------
+    // Ability & Object Copy 처리
+    // ---------------------------
+    // Ability : NONE일 경우 예외처리
+    if (m_CurAbility == AbilityCopyType::NONE)
+    {
+        m_CurAbility = AbilityCopyType::NORMAL;
+    }
+
+    // ObjectCopy : begin시 항상 None으로 바꿔준다.
     m_CurObject = ObjectCopyType::NONE;
 
     // 복사해놓은 Hat, Weapon을 다시 끼워준다.
@@ -371,6 +389,9 @@ void CKirbyFSM::begin()
         GamePlayStatic::AddChildObject(GetOwner(), m_CurWeapon, L"Weapon");
     }
 
+    // ---------------------------
+    // Set Components
+    // ---------------------------
     // 캐릭터 컨트롤러 캡슐 사이즈 세팅
     PLAYER->CharacterController()->SetCenter(Vec3(0.f, 0.77f, 0.f));
     PLAYER->CharacterController()->SetHeight(1.51f);
@@ -378,18 +399,9 @@ void CKirbyFSM::begin()
     PLAYER->CharacterController()->SetSkinWidth(0.015f);
     PLAYER->CharacterController()->SetMinMoveDistance(0.f);
 
-    // Emissive 세팅
-    for (UINT i = 0; i < PLAYER->MeshRender()->GetMtrlCount(); ++i)
-    {
-        Ptr<CMaterial> pMaterial = PLAYER->MeshRender()->GetMaterial(i);
-        if (pMaterial != nullptr)
-        {
-            pMaterial->SetEmission(Vec4(0.f, 0.f, 0.f, 1.f));
-        }
-    }
-    m_bEmissive = false;
-
+    // ---------------------------
     // State 추가
+    // ---------------------------
     AddState(L"IDLE", new CKirbyIdle);
     AddState(L"IDLE_START", new CKirbyIdleStart);
     AddState(L"DEATH", new CKirbyDeath);
@@ -467,6 +479,21 @@ void CKirbyFSM::begin()
     AddState(L"CHANGE_ABILITY_WAIT", new CKirbyChangeAbilityWait);
     AddState(L"CHANGE_ABILITY_END", new CKirbyChangeAbilityEnd);
     AddState(L"DROP_ABILITY", new CKirbyDropAbility);
+    AddState(L"CHANGE_OBJECT", new CKirbyChangeObject);
+    AddState(L"CHANGE_OBJECT_END", new CKirbyChangeObjectEnd);
+    AddState(L"DROP_OBJECT", new CKirbyDropObject);
+    AddState(L"DROP_OBJECT_START", new CKirbyDropObjectStart);
+    AddState(L"FALL", new CKirbyFall);
+    AddState(L"LONGDIVE_START", new CKirbyLongDiveStart);
+    AddState(L"LONGDIVE", new CKirbyLongDive);
+    AddState(L"LONGDIVE_LANDING", new CKirbyLongDiveLanding);
+    AddState(L"LONGDIVE_BOUND", new CKirbyLongDiveBound);
+    AddState(L"LADDER_UP", new CKirbyLadderUp);
+    AddState(L"LADDER_DOWN", new CKirbyLadderDown);
+    AddState(L"LADDER_WAIT", new CKirbyLadderWait);
+    AddState(L"LADDER_WAITSTART", new CKirbyLadderWaitStart);
+    AddState(L"LADDER_EXIT", new CKirbyLadderExit);
+    AddState(L"STAGE_CLEAR", new CKirbyStageClear);
 
     // Fire
     AddState(L"BURNING_PRE", new CKirbyBurningPre);
@@ -481,29 +508,7 @@ void CKirbyFSM::begin()
     AddState(L"FINALCUTTEREND", new CKirbyFinalCutterEnd);
     AddState(L"FINALCUTTERENDAFTER", new CKirbyFinalCutterEndAfter);
 
-    AddState(L"CHANGE_OBJECT", new CKirbyChangeObject);
-    AddState(L"CHANGE_OBJECT_END", new CKirbyChangeObjectEnd);
-    AddState(L"DROP_OBJECT", new CKirbyDropObject);
-    AddState(L"DROP_OBJECT_START", new CKirbyDropObjectStart);
-
-    // Stage Clear
-    AddState(L"STAGE_CLEAR", new CKirbyStageClear);
-
-    // Long Dive
-    AddState(L"LONGDIVE_START", new CKirbyLongDiveStart);
-    AddState(L"LONGDIVE", new CKirbyLongDive);
-    AddState(L"LONGDIVE_LANDING", new CKirbyLongDiveLanding);
-    AddState(L"LONGDIVE_BOUND", new CKirbyLongDiveBound);
-
-    // Ladder
-    AddState(L"LADDER_UP", new CKirbyLadderUp);
-    AddState(L"LADDER_DOWN", new CKirbyLadderDown);
-    AddState(L"LADDER_WAIT", new CKirbyLadderWait);
-    AddState(L"LADDER_WAITSTART", new CKirbyLadderWaitStart);
-    AddState(L"LADDER_EXIT", new CKirbyLadderExit);
-
-    AddState(L"FALL", new CKirbyFall);
-
+    // Change State
     ChangeState(L"IDLE");
 }
 
