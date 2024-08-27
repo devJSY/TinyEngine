@@ -33,12 +33,13 @@ void CGordoLongScript::tick()
 
 void CGordoLongScript::OnTriggerEnter(CCollider* _OtherCollider)
 {
+    int a = 10;
     CGameObject* pObj = _OtherCollider->GetOwner();
 
-    if (pObj->GetLayerIdx() == LAYER_PLAYER_TRIGGER && pObj->GetName() == L"Body Collider")
+    if (pObj->GetLayerIdx() == LAYER_PLAYER && pObj->GetName() == L"Main Player")
     {
         UnitHit hitInfo = {DAMAGE_TYPE::NORMAL, Transform()->GetWorldDir(DIR_TYPE::FRONT), GetCurInfo().ATK, 0.f, 0.f};
-        pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo);
+        pObj->GetScript<CUnitScript>()->GetDamage(hitInfo);
     }
 }
 
