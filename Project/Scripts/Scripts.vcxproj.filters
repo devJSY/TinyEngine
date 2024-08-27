@@ -958,6 +958,9 @@
     <ClInclude Include="CMonsterDeadEffectSpawnScript.h">
       <Filter>Scripts\UI\UIEffect\UIDamageStarSpawnEffect</Filter>
     </ClInclude>
+    <ClInclude Include="CShcokWaveScript.h">
+      <Filter>Scripts\Postprocess</Filter>
+    </ClInclude>
     <ClInclude Include="CUIBurstStarSpawnEffectScript.h">
       <Filter>Scripts\UI\UIEffect\UIBurstStarSpawnEffect</Filter>
     </ClInclude>
@@ -1928,6 +1931,9 @@
     </ClCompile>
     <ClCompile Include="CMonsterDeadEffectSpawnScript.cpp">
       <Filter>Scripts\UI\UIEffect\UIDamageStarSpawnEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="CShcokWaveScript.cpp">
+      <Filter>Scripts\Postprocess</Filter>
     </ClCompile>
     <ClCompile Include="CUIBurstStarSpawnEffectScript.cpp">
       <Filter>Scripts\UI\UIEffect\UIBurstStarSpawnEffect</Filter>
