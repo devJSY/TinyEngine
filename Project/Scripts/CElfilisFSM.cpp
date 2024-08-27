@@ -340,6 +340,19 @@ void CElfilisFSM::SpawnDropStar(Vec3 _Pos)
     GamePlayStatic::SpawnGameObject(pDropStar, LAYER_DYNAMIC);
 }
 
+void CElfilisFSM::DestroySumon()
+{
+    for (CGameObject* Obj : CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(LAYER_MONSTERATK)->GetParentObjects())
+    {
+        GamePlayStatic::DestroyGameObject(Obj);
+    }
+
+    for (CGameObject* Obj : CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(LAYER_MONSTERATK_TRIGGER)->GetParentObjects())
+    {
+        GamePlayStatic::DestroyGameObject(Obj);
+    }
+}
+
 #include "CElfilisD_Appear.h"
 #include "CElfilisD_Damage.h"
 #include "CElfilisD_Jump.h"

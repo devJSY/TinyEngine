@@ -87,6 +87,7 @@ public:
     void ResetEmissive();
 
     void SpawnDropStar(Vec3 _Pos);
+    void DestroySumon();
 
 private:
     void ChangeStateGroup_Random(MorphoStateGroup _Group);

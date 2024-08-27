@@ -659,6 +659,19 @@ void CMorphoFSM::SpawnDropStar(Vec3 _Pos)
     GamePlayStatic::SpawnGameObject(pDropStar, LAYER_DYNAMIC);
 }
 
+void CMorphoFSM::DestroySumon()
+{
+    for (CGameObject* Obj : CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(LAYER_MONSTERATK)->GetParentObjects())
+    {
+        GamePlayStatic::DestroyGameObject(Obj);
+    }
+    
+    for (CGameObject* Obj : CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(LAYER_MONSTERATK_TRIGGER)->GetParentObjects())
+    {
+        GamePlayStatic::DestroyGameObject(Obj);
+    }
+}
+
 void CMorphoFSM::ResetEmissive()
 {
     for (int i = 0; i < m_listBodyMtrl.size(); ++i)
