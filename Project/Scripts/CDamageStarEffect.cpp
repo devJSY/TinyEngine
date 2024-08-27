@@ -147,7 +147,7 @@ void CDamageStarEffect::UpState()
 void CDamageStarEffect::DownState()
 {
     Scaling(false);
-    if (m_fScaling <= 1.f)
+    if (m_fScaling <= 1.1f)
     {
         ChangeState(DamageStarState::Exit);
     }
