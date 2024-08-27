@@ -28,6 +28,9 @@ public:
     virtual void render(UINT _Subset) override;
 
 public:
+    tParticleModule GetParticleModule() const { return m_Module; }
+    void SetParticleModule(tParticleModule _Module) { m_Module = _Module; }
+
     void EnableModule(PARTICLE_MODULE _ModuleType, bool _bEnable) { m_Module.arrModuleCheck[(UINT)_ModuleType] = _bEnable; }
 
 public:
