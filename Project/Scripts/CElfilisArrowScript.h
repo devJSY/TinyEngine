@@ -6,19 +6,23 @@ class CElfilisArrowScript : public CScript
 private:
     UINT m_Step;
     float m_AccTime;
+    bool m_bSpawnDropStar;
 
 public:
     virtual void begin() override;
     virtual void tick() override;
 
 public:
-    void StartSpawn();
-    void StartAttack() { m_Step = 2; m_AccTime = 0.f;}
+    void StartSpawn() { ChangeStep(1); };
+    void StartAttack() { ChangeStep(2); };
 
 private:
+    // tick
     void Spawn();
     void Ready();
     void Attack();
+
+    void ChangeStep(UINT _Step);
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

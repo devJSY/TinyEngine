@@ -144,8 +144,8 @@ void CElfilisA_MoveL::Fly()
 
         Vec3 RightFrorce = ForceDir * 1700.f;
         RightFrorce += Vec3(0.f, 1.f, 0.f) * 300.f;
-        GetOwner()->Rigidbody()->AddForce(RightFrorce, ForceMode::Impulse);
         GetOwner()->Rigidbody()->SetDrag(1.6f);
+        GetOwner()->Rigidbody()->AddForce(RightFrorce, ForceMode::Impulse);
     }
 
     // move up

@@ -60,6 +60,21 @@ void CElfilisG_SwordWaveFinishRL::Exit_Step()
         break;
     case StateStep::Progress: {
         ELFFSM->OffWeaponTrigger();
+
+        // Spawn DropStar
+        Vec3 SpawnPos = GetOwner()->Transform()->GetWorldPos();
+
+        for (int i = 0; i < 5; ++i)
+        {
+            float Rot = XMConvertToRadians(360.f / 5.f * i);
+            Vec3 RotSpawnPos;
+            RotSpawnPos.x = cosf(Rot) - sinf(Rot);
+            RotSpawnPos.z = sinf(Rot) + cosf(Rot);
+            RotSpawnPos.Normalize();
+
+            RotSpawnPos = SpawnPos + RotSpawnPos * 100.f;
+            ELFFSM->SpawnDropStar(RotSpawnPos);
+        }
     }
     break;
     }

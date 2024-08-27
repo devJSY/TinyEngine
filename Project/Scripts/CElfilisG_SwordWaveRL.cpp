@@ -99,6 +99,11 @@ void CElfilisG_SwordWaveRL::Exit_Step()
 
         ELFFSM->OffWeaponTrigger();
         ELFFSM->GetHitbox()->SetEnabled(true);
+
+        // Spawn DropStar
+        Vec3 SpawnDir = (GetOwner()->Transform()->GetWorldDir(DIR_TYPE::RIGHT) - GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT)).Normalize();
+        Vec3 SpawnPos = GetOwner()->Transform()->GetWorldPos() + SpawnDir * 100.f;
+        ELFFSM->SpawnDropStar(SpawnPos);
     }
     break;
     case StateStep::End:

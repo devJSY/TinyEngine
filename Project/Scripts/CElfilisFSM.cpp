@@ -495,7 +495,7 @@ void CElfilisFSM::tick()
     {
         Rigidbody()->SetVelocity(Vec3());
         Rigidbody()->SetAngularVelocity(Vec3());
-        ChangeStateGroup(ElfilisStateGroup::AirLargeAtk, L"AIR_ATKL_DRAWLASER");
+        ChangeStateGroup(ElfilisStateGroup::GroundAtkFar, L"GROUND_ATK_SWORDWAVE_RL");
     }
 }
 

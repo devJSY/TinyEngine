@@ -7,6 +7,7 @@ private:
     Vec3 m_InitDir;
     float m_AccTime;
     float m_LifeTime;
+    bool m_bSpawnDropStar;
 
 public:
     virtual void begin() override;
