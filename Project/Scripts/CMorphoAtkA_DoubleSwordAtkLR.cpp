@@ -60,12 +60,17 @@ void CMorphoAtkA_DoubleSwordAtkLR::Exit()
                 m_LightningEffect[i] = nullptr;
             }
         }
-    }
 
-    if (m_Step < StateStep::EndEnd)
-    {
-        m_Step = StateStep::EndEnd;
-        Exit_Step();
+        for (int i = 0; i < 2; ++i)
+        {
+            if (m_FireSwipe[i])
+            {
+                GamePlayStatic::DestroyGameObject(m_FireSwipe[i]);
+                m_FireSwipe[i] = nullptr;
+            }
+        }
+
+        MRPFSM->GetWeaponL()->SetActive(false);
     }
 
     MRPFSM->OffWeaponLTrigger();
@@ -128,30 +133,33 @@ void CMorphoAtkA_DoubleSwordAtkLR::Exit_Step()
         break;
     case StateStep::EndEnd: {
         // Spawn DropStar
-        Vec3 SpawnPos = m_FireSwipe[0]->Transform()->GetWorldPos();
-        Vec3 FrontDir = m_FireSwipe[0]->Transform()->GetWorldDir(DIR_TYPE::FRONT);
-        Vec3 RightDir = m_FireSwipe[0]->Transform()->GetWorldDir(DIR_TYPE::RIGHT);
-        FrontDir.y = RightDir.y = 0.f;
-        FrontDir.y = 0.f;
-        FrontDir.Normalize();
-        RightDir.Normalize();
-
-        for (int i = 0; i < 3; ++i)
+        if (m_FireSwipe)
         {
-            Vec3 OffsetSpawnPos = SpawnPos;
-            OffsetSpawnPos += RightDir * 20.f;
-            OffsetSpawnPos += FrontDir * (50.f + 100.f * i);
+            Vec3 SpawnPos = m_FireSwipe[0]->Transform()->GetWorldPos();
+            Vec3 FrontDir = m_FireSwipe[0]->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+            Vec3 RightDir = m_FireSwipe[0]->Transform()->GetWorldDir(DIR_TYPE::RIGHT);
+            FrontDir.y = RightDir.y = 0.f;
+            FrontDir.y = 0.f;
+            FrontDir.Normalize();
+            RightDir.Normalize();
 
-            MRPFSM->SpawnDropStar(OffsetSpawnPos);
-        }
+            for (int i = 0; i < 3; ++i)
+            {
+                Vec3 OffsetSpawnPos = SpawnPos;
+                OffsetSpawnPos += RightDir * 20.f;
+                OffsetSpawnPos += FrontDir * (50.f + 100.f * i);
 
-        for (int i = 0; i < 3; ++i)
-        {
-            Vec3 OffsetSpawnPos = SpawnPos;
-            OffsetSpawnPos -= RightDir * 20.f;
-            OffsetSpawnPos += FrontDir * (100.f + 100.f * i);
+                MRPFSM->SpawnDropStar(OffsetSpawnPos);
+            }
 
-            MRPFSM->SpawnDropStar(OffsetSpawnPos);
+            for (int i = 0; i < 3; ++i)
+            {
+                Vec3 OffsetSpawnPos = SpawnPos;
+                OffsetSpawnPos -= RightDir * 20.f;
+                OffsetSpawnPos += FrontDir * (100.f + 100.f * i);
+
+                MRPFSM->SpawnDropStar(OffsetSpawnPos);
+            }
         }
 
         // delete
