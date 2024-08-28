@@ -32,10 +32,11 @@ void CElfilisUnit::tick()
 {
     CUnitScript::tick();
 
-    //if (KEY_TAP(KEY::ENTER))
-    //{
-    //    m_CurInfo.HP = 10.f;
-    //}
+    // Cheet : Phase 1 -> Phase 2
+    if ((KEY_PRESSED(KEY::LCTRL) && (KEY_TAP(KEY::ENTER))) || (KEY_TAP(KEY::LCTRL) && (KEY_PRESSED(KEY::ENTER))))
+    {
+        m_CurInfo.HP = m_InitInfo.HP * 0.2f;
+    }
 
     // Death & Resist
     if (GetCurInfo().HP <= 50.f && !ELFFSM->IsResist())
