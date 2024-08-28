@@ -22,11 +22,19 @@ void CKirbyStageClear::tick()
     {
         PLAYER->Animator()->SetPlay(false);
 
+        // CameraSetting
         CCameraController* CamCtrl = CAMERACTRL;
+        CamCtrl->SetMainTarget(PLAYER);
+        CamCtrl->SetLookDir(-PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT));
+        CamCtrl->SetOffset(Vec3(0.f, 50.f, 0));
+        CamCtrl->SetTargetOffset(Vec3(0.f, 0.f, 0.f));
+        CamCtrl->SetLookDist(300.f);
+        CamCtrl->RotationLookDirRightAxis(5.f);
         CamCtrl->Normal(true);
+
+
         CamCtrl->SetOffset(Vec3(0.f, -5.f, 0));
-        //CamCtrl->SetLookDir(Vec3(0.f, -0.331f, 0.944f));
-        CamCtrl->RotationLookDirRightAxis(15.f);
+        CamCtrl->RotationLookDirRightAxis(10.f);
         CamCtrl->SetLookDist(200.f);
 
         m_Step = 1;
@@ -173,12 +181,6 @@ void CKirbyStageClear::tick()
     {
         CPlayerMgr::SetPlayerFace(FaceType::Half);
 
-        CCameraController* CamCtrl = CAMERACTRL;
-        CamCtrl->SetOffset(Vec3(0.f, 10.f, 0));
-        //CamCtrl->SetLookDir(Vec3(0.f, -0.216f, 0.976f));
-        CamCtrl->RotationLookDirRightAxis(7.f);
-        CamCtrl->SetLookDist(150.f);
-
         m_Step = 20;
     }
 
@@ -189,11 +191,36 @@ void CKirbyStageClear::tick()
         m_Step = 21;
     }
 
-    if (m_Step == 21 && CHECK_ANIMFRM(GetOwner(), 319))
+    if (m_Step == 21 && CHECK_ANIMFRM(GetOwner(), 316))
     {
         CPlayerMgr::SetPlayerFace(FaceType::Normal);
         CPlayerMgr::ClearMouthMtrl();
         CPlayerMgr::SetPlayerMtrl(CPlayerMgr::GetPlayerMeshIdx().MouthSmileOpen);
+
+        Vec3 LookDir = -PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+        LookDir.y = 0.f;
+        LookDir.Normalize();
+
+        CCameraController* CamCtrl = CAMERACTRL;
+        CamCtrl->SetOffset(Vec3(0.f, 45.f, 0));
+        CamCtrl->SetLookDir(LookDir);
+        CamCtrl->SetLookDist(150.f);
+
+        CamCtrl->SetRotationSpeed(100.f);
+        CamCtrl->SetMinSpeed(50.f);
+        CamCtrl->SetMaxSpeed(300.f);
+        CamCtrl->SetThresholdDistance(50.f);
+
+        CamCtrl->SetZoomMinSpeed(50.f);
+        CamCtrl->SetZoomMaxSpeed(300.f);
+        CamCtrl->SetZoomThreshold(150.f);
+
+        // StageClear UI On
+        CGameObject* ManagerObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager");
+
+        CLevelFlowMgr* FlowMgrScript = ManagerObj->GetScript<CLevelFlowMgr>();
+
+        FlowMgrScript->TurnOnStageclearUI();
 
         m_Step = 22;
     }
@@ -229,6 +256,14 @@ void CKirbyStageClear::Enter()
 
     // 애니메이션 재생
     PLAYER->Animator()->Play(ANIMPREFIX("ClearDanceLong"), false, false, 1.7f);
+
+    // UI 다 끄기
+    CGameObject* ManagerObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager");
+
+    CLevelFlowMgr* FlowMgrScript = ManagerObj->GetScript<CLevelFlowMgr>();
+    FlowMgrScript->TurnOffBossHP();
+    FlowMgrScript->TurnOffPlayerHP();
+    FlowMgrScript->ActiveOffDropUI();
 
     m_Step = 0;
     m_Duration = 2.f;
