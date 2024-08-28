@@ -58,6 +58,7 @@ void CKirbyBackJump::Enter()
 
     Vec3 KnockBackDir = PLAYERFSM->GetKnockBackDir();
     PLAYERFSM->SetKnockBackDir(Vec3());
+    PLAYERFSM->SetInvincible(true);
 
     PLAYERCTRL->LockMove();
     PLAYERCTRL->LockDirection();
@@ -68,7 +69,7 @@ void CKirbyBackJump::Enter()
 
     PLAYERCTRL->AddVelocity({0.f, m_JumpPower, 0.f});
     PLAYERCTRL->AddVelocity(KnockBackDir * m_InitSpeed);
-
+    
     PLAYERCTRL->SetGravity(-35.f);
 
     m_StateEnter = true;
@@ -82,6 +83,8 @@ void CKirbyBackJump::Exit()
         CPlayerMgr::ClearMouthMtrl();
         CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));
     }
+
+    PLAYERFSM->SetInvincible(false);
 
     PLAYERCTRL->UnlockMove();
     PLAYERCTRL->UnlockDirection();
