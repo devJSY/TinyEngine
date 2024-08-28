@@ -83,6 +83,8 @@ void CFlowMgr_BossElfilis::EnterClear()
 {
     ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundIdle, L"GROUND_IDLE");
 
+    SetPlayerPos(ELFFSM->GetMapFloorOffset(), Vec3(0.f, 0.f, -1.f));
+
     CBossLevelFlowMgr::EnterClear();
 }
 
