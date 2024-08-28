@@ -33,8 +33,8 @@ void CKirbyDeath::tick()
     {
         CPlayerMgr::SetPlayerFace(FaceType::Close);
 
-        // Camera 조작
-        //CCameraController* CamCtrl = CAMERACTRL;
+        // Layer Off
+        CAMERACTRL->TurnOffMonsterLayer();
 
         // 커비와 UI를 제외한 배경은 검은색으로 Fade Out
         if (m_bFadeEffect == false)
@@ -60,6 +60,9 @@ void CKirbyDeath::Enter()
 {
     // Effect Lock
     CAMERACTRL->SetEffectLock(true);
+
+    PLAYERFSM->SetInvincible(true);
+    PLAYERFSM->SetEmissive(false,0.f);
 
     m_Acc = 0.f;
     m_Duration = 1.f;

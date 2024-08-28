@@ -245,6 +245,8 @@ void CKirbyStageClear::Enter()
 {
     // @TODO StageClear Sound
 
+    CAMERACTRL->TurnOffMonsterLayer();
+
     // MoveController Lock
     PLAYERCTRL->LockInput();
     PLAYERCTRL->LockJump();

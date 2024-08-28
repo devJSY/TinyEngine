@@ -226,6 +226,9 @@ private:
     void EditMode();
 
 public:
+    void TurnOffMonsterLayer();
+    void TurnOffEffectLayer();
+
 
     // Interface Func
     void ResetCamera(); // 현재의 설정값들로 카메라를 바로 이동한다.

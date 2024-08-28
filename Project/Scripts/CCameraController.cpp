@@ -541,6 +541,20 @@ void CCameraController::EditMode()
     }
 }
 
+void CCameraController::TurnOffMonsterLayer()
+{
+    Camera()->LayerMask(LAYER_MONSTER, false);
+    Camera()->LayerMask(LAYER_MONSTER_TRIGGER, false);
+    Camera()->LayerMask(LAYER_MONSTERATK, false);
+    Camera()->LayerMask(LAYER_MONSTERATK_TRIGGER, false);
+}
+
+void CCameraController::TurnOffEffectLayer()
+{
+    Camera()->LayerMask(LAYER_EFFECT, false);
+    Camera()->LayerMask(LAYER_FIREBULLET, false);
+}
+
 void CCameraController::Normal()
 {
     m_LookAtPos = m_TargetPos;
