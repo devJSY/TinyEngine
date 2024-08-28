@@ -68,19 +68,6 @@ void CKirbyDeath::Enter()
     // Effect Lock
     CAMERACTRL->SetEffectLock(true);
 
-    // Death State 진입 시 몬스터와 관련된 모든 오브젝트를 삭제한다.
-    //for (int i = LAYER_MONSTER; i <= LAYER_MONSTERATK_TRIGGER; ++i)
-    //{
-    //    CLayer* CurLayer = CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(i);
-
-    //    const vector<CGameObject*>& Objects = CurLayer->GetParentObjects();
-
-    //    for (size_t j = 0; j < Objects.size(); ++j)
-    //    {
-    //        GamePlayStatic::DestroyGameObject(Objects[j]);
-    //    }
-    //}
-
     m_Acc = 0.f;
     m_Duration = 1.f;
     m_FaceDuraion = 3.f;
