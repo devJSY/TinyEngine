@@ -34,14 +34,9 @@ void CElfilisD_Damage::Enter_Step()
     switch (m_Step)
     {
     case StateStep::Start: {
-        Vec3 Dir = PLAYER->Transform()->GetWorldPos();
-        Dir.y = 0.f;
-        Dir.Normalize();
-
         GetOwner()->Animator()->Play(ANIMPREFIX("Damage"), false, false, 2.5f, 0.f);
         GetOwner()->Transform()->SetWorldPos(Vec3());
         GetOwner()->Transform()->SetWorldRotation(Vec3());
-        GetOwner()->Transform()->Slerp(Dir, 1.f);
 
         CBossMgr::GetElfilisFlowMgr()->ChangeFlowDemo();
 

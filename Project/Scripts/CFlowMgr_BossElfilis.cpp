@@ -107,10 +107,13 @@ void CFlowMgr_BossElfilis::ChangeFlowFight()
 void CFlowMgr_BossElfilis::ChangeFlowDemo()
 {
     Vec3 NewPos{0.f, 0.f, 450.f};
-    PLAYER->Transform()->SetWorldPos(NewPos);
-    PLAYER->Transform()->Slerp(-NewPos.Normalize(), 1.f);
-    PLAYERFSM->ChangeState(L"IDLE");
+
+    PLAYERCTRL->ForcePos(NewPos);
+    PLAYERCTRL->ForceDir({ForceDirType::STAGEEVENT, -NewPos.Normalize(), true});
+    PLAYERCTRL->TeleportGround();
     PLAYERCTRL->LockInput();
+
+    PLAYERFSM->ChangeState(L"IDLE");
 
     m_FlowState = BossLevelFlow::DemoPlay;
 }
