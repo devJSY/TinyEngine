@@ -676,13 +676,6 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
         }
     }
 
-    // 설정한 질량 업데이트
-    if (nullptr != pRigidbody)
-    {
-        PxRigidBody* body = (PxRigidBody*)pRigidbody->m_RuntimeBody;
-        PxRigidBodyExt::updateMassAndInertia(*body, pRigidbody->m_Mass);
-    }
-
     // Physics Object 추가
     RigidActor->userData = (void*)_GameObject;
     m_Scene->addActor(*RigidActor);
