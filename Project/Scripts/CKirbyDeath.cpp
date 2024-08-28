@@ -34,14 +34,7 @@ void CKirbyDeath::tick()
         CPlayerMgr::SetPlayerFace(FaceType::Close);
 
         // Camera 조작
-        CCameraController* CamCtrl = CAMERACTRL;
-        CamCtrl->Normal(false);
-        CamCtrl->SetOffset(Vec3(0.f, 0.f, 0));
-        CamCtrl->SetLookDir(Vec3(0.f, -1.f, 0.f));
-        CamCtrl->SetLookDist(100.f);
-        CamCtrl->SetZoomMinSpeed(50.f);
-        CamCtrl->SetZoomMaxSpeed(100.f);
-        CamCtrl->SetZoomThreshold(500.f);
+        //CCameraController* CamCtrl = CAMERACTRL;
 
         // 커비와 UI를 제외한 배경은 검은색으로 Fade Out
         if (m_bFadeEffect == false)
@@ -87,6 +80,19 @@ void CKirbyDeath::Enter()
 
     // CameraSetting
     CCameraController* CamCtrl = CAMERACTRL;
+
+    CamCtrl->Normal(false);
+    CamCtrl->SetLock(true, m_FaceDuraion);
+
+    CamCtrl->SetOffset(Vec3(0.f, 10.f, 0.f));
+    CamCtrl->RotationLookDirRightAxis(50.f);
+
+    CamCtrl->SetLookDist(100.f);
+    CamCtrl->SetZoomMinSpeed(50.f);
+    CamCtrl->SetZoomMaxSpeed(100.f);
+    CamCtrl->SetZoomThreshold(500.f);
+
+
 
     // Camera Shake
     CamCtrl->Shake(0.5f, 50.f, 50.f);
