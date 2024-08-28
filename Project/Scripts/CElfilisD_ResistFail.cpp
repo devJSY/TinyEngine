@@ -2,7 +2,7 @@
 #include "CElfilisD_ResistFail.h"
 #include "CElfilisFSM.h"
 #include "CCameraController.h"
-#include "CFlowMgr_BossElfilis.h"
+#include "CBossLevelFlowMgr.h"
 #include "CStageClear.h"
 
 CElfilisD_ResistFail::CElfilisD_ResistFail()
@@ -59,7 +59,7 @@ void CElfilisD_ResistFail::Enter_Step()
         ELFFSM->DestroySumon();
 
         // Flow Mgr
-        CBossMgr::GetElfilisFlowMgr()->ChangeFlowDeath();
+        CBossMgr::GetBossFlowMgr()->ChangeFlow(BossLevelFlow::Death);
 
         // CAMERA : 에피리스 타겟, 시네마뷰
         CAMERACTRL->SetMainTarget(BOSS);
@@ -129,10 +129,7 @@ void CElfilisD_ResistFail::Progress()
             //@EFFECT 터지는 파티클
         }
 
-        if (CBossMgr::GetElfilisFlowMgr())
-        {
-            ELFFSM->SetGlobalState(false);
-            CBossMgr::GetElfilisFlowMgr()->ChangeFlowClear();
-        }
+        ELFFSM->SetGlobalState(false);
+        CBossMgr::GetBossFlowMgr()->ChangeFlow(BossLevelFlow::Clear);
     }
 }

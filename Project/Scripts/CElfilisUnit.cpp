@@ -33,12 +33,13 @@ void CElfilisUnit::tick()
     CUnitScript::tick();
 
     // Death & Resist
-    if (GetCurInfo().HP <= 50.f && !ELFFSM->IsResist())
+    if (m_CurInfo.HP <= m_InitInfo.MAXHP * 0.05f && !ELFFSM->IsResist())
     {
         ElfilisStateGroup CurStateGroup = ELFFSM->GetCurStateGroup();
         if ((CurStateGroup >= ElfilisStateGroup::GroundIdle || CurStateGroup <= ElfilisStateGroup::GroundAtkFar))
         {
             ELFFSM->ResetFSM();
+            m_CurInfo.HP = m_InitInfo.MAXHP * 0.05f; 
             ELFFSM->ChangeStateGroup(ElfilisStateGroup::DEMO, L"DEMO_RESIST");
         }
     }

@@ -1,27 +1,23 @@
 #pragma once
-#include "CLevelFlowMgr.h"
+#include "CBossLevelFlowMgr.h"
 
-class CFlowMgr_BossElfilis : public CLevelFlowMgr
+class CFlowMgr_BossElfilis : public CBossLevelFlowMgr
 {
 private:
-    BossLevelFlow m_FlowState;
     CGameObject* m_LevelEnterWall;
 
 public:
     virtual void begin() override;
-    virtual void tick() override;
+
     virtual void TriggerEvent(UINT _Idx);
-
-    void ChangeFlowFight();
-    void ChangeFlowDemo();
-    void ChangeFlowDeath();
-    void ChangeFlowClear();
-
     virtual void LevelEnd() override;
     virtual void LevelRestart() override;
 
 private:
     void SpawnElfilis();
+
+    virtual void FlowLevelStart() override;
+    virtual void EnterClear() override;
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

@@ -2,8 +2,7 @@
 #include <Engine\\CScript.h>
 class CUnitScript;
 class CFSMScript;
-class CLevelFlowMgr;
-class CFlowMgr_BossElfilis;
+class CBossLevelFlowMgr;
 class CFlowMgr_BossMorpho;
 
 class CBossMgr : public CScript
@@ -15,8 +14,7 @@ private:
     static CGameObject* m_Boss;
     static CUnitScript* m_BossUnit;
     static CFSMScript* m_BossFSM;
-    static CLevelFlowMgr* m_FlowMgr;
-    static CFlowMgr_BossElfilis* m_FlowMgrElfilis;
+    static CBossLevelFlowMgr* m_FlowMgr;
     static CFlowMgr_BossMorpho* m_FlowMgrMorpho;
 
 public:
@@ -28,9 +26,8 @@ public:
     static CGameObject* GetBoss() { return m_Boss; }
     static CUnitScript* GetBossUnit() { return m_BossUnit; }
     static CFSMScript* GetBossFSM() { return m_BossFSM; }
-    static CLevelFlowMgr* GetBossFlowMgr() { return m_FlowMgr; }
+    static CBossLevelFlowMgr* GetBossFlowMgr() { return m_FlowMgr; }
     static CFlowMgr_BossMorpho* GetMorphoFlowMgr() { return m_FlowMgrMorpho; }
-    static CFlowMgr_BossElfilis* GetElfilisFlowMgr() { return m_FlowMgrElfilis; }
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

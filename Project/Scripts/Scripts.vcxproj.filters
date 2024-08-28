@@ -964,6 +964,9 @@
     <ClInclude Include="CUIBurstStarSpawnEffectScript.h">
       <Filter>Scripts\UI\UIEffect\UIBurstStarSpawnEffect</Filter>
     </ClInclude>
+    <ClInclude Include="CBossLevelFlowMgr.h">
+      <Filter>Module\FlowMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1937,6 +1940,9 @@
     </ClCompile>
     <ClCompile Include="CUIBurstStarSpawnEffectScript.cpp">
       <Filter>Scripts\UI\UIEffect\UIBurstStarSpawnEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="CBossLevelFlowMgr.cpp">
+      <Filter>Module\FlowMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

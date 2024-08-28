@@ -3,7 +3,7 @@
 #include "CBossMgr.h"
 #include "CElfilisFSM.h"
 #include "CElfilisBigFSM.h"
-#include "CFlowMgr_BossElfilis.h"
+#include "CBossLevelFlowMgr.h"
 
 #include "CCameraController.h"
 
@@ -61,7 +61,7 @@ void CElfilisD_Roar::Enter()
 
 void CElfilisD_Roar::Exit()
 {
-    CBossMgr::GetElfilisFlowMgr()->ChangeFlowFight();
+    CBossMgr::GetBossFlowMgr()->ChangeFlow(BossLevelFlow::Fight);
 
     // Camera : ÇÏ´Ã ºä
     CAMERACTRL->SetElfilisSky();
