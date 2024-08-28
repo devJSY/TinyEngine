@@ -209,35 +209,35 @@ Vec3 CDamageStarEffect::RadomizeDir()
         int Random = GetRandomInt(0, 7);
         if (0 == Random)
         {
-            vDir = Vec3(0.f, 1.f, 0.f);
+            vDir = Vec3(0.f, 1.f, -0.5f);
         }
         else if (1 == Random)
         {
-            vDir = Vec3(0.5f, 1.f, 0.f);
+            vDir = Vec3(0.5f, 1.f, 0.5f);
         }
         else if (2 == Random)
         {
-            vDir = Vec3(1.f, 0.f, 0.f);
+            vDir = Vec3(1.f, 0.f, 0.5f);
         }
         else if (3 == Random)
         {
-            vDir = Vec3(0.5f, -1.f, 0.f);
+            vDir = Vec3(0.5f, -1.f, 0.5f);
         }
         else if (4 == Random)
         {
-            vDir = Vec3(0.f, -1.f, 0.f);
+            vDir = Vec3(0.f, -1.f, -0.5f);
         }
         else if (5 == Random)
         {
-            vDir = Vec3(-0.5f, -1.f, 0.f);
+            vDir = Vec3(-0.5f, -1.f, 0.5f);
         }
         else if (6 == Random)
         {
-            vDir = Vec3(-1.f, 0.f, 0.f);
+            vDir = Vec3(-1.f, 0.f, -0.5f);
         }
         else
         {
-            vDir = Vec3(-0.5f, 1.f, 0.f);
+            vDir = Vec3(-0.5f, 1.f, 0.5f);
         }
     }
 

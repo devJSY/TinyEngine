@@ -12,7 +12,6 @@ enum class MonsterBurstStarSpawnState
 class CUIBurstStarSpawnEffectScript : public CScript
 {
 private:
-    CGameObject* m_pBurstImpactEffectObj;
     MonsterBurstStarSpawnState m_eState;
 
 public:
@@ -20,8 +19,6 @@ public:
 
 private:
     void ChangeState(MonsterBurstStarSpawnState _eState) { m_eState = _eState; }
-    void Enter();
-    void BurstWait();
     void StarEnter();
     void End();
 

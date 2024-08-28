@@ -25,8 +25,6 @@ enum class HotHeadState
 class CHotHeadScript : public CMonsterUnitScript
 {
 private:
-    CGameObject* m_pFlameRotObject;
-
     HotHeadState m_eState;
     Vec3 m_vDamageDir;
 

@@ -183,6 +183,16 @@ void CKirbyBulletScript::OnTriggerEnter(CCollider* _OtherCollider)
             ((CUnitScript*)PLAYERUNIT)->AttackReward();
 
             //@Effect 터지는 이펙트
+            CGameObject* pStarEffect = CAssetMgr::GetInst()
+                                           ->Load<CPrefab>(L"prefab\\Effect_BurstStarSpawnEffect.pref", L"prefab\\Effect_BurstStarSpawnEffect.pref")
+                                           ->Instantiate();
+            Vec3 vPos = Vec3(0.f);
+            if (Transform())
+                vPos = Transform()->GetWorldPos();
+
+            pStarEffect->Transform()->SetWorldPos(vPos);
+
+            GamePlayStatic::SpawnGameObject(pStarEffect, pStarEffect->GetLayerIdx());
 
             GamePlayStatic::DestroyGameObject(GetOwner());
         }

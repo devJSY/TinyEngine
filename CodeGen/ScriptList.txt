@@ -121,4 +121,3 @@ CDamageStarEffect
 CMonsterDeadEffectSpawnScript
 CShcokWaveScript
 CUIBurstStarSpawnEffectScript
-CUIBurstImpactEffectScript
