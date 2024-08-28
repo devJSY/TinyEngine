@@ -340,6 +340,19 @@ void CElfilisFSM::SpawnDropStar(Vec3 _Pos)
     GamePlayStatic::SpawnGameObject(pDropStar, LAYER_DYNAMIC);
 }
 
+void CElfilisFSM::DestroySumon()
+{
+    for (CGameObject* Obj : CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(LAYER_MONSTERATK)->GetParentObjects())
+    {
+        GamePlayStatic::DestroyGameObject(Obj);
+    }
+
+    for (CGameObject* Obj : CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(LAYER_MONSTERATK_TRIGGER)->GetParentObjects())
+    {
+        GamePlayStatic::DestroyGameObject(Obj);
+    }
+}
+
 #include "CElfilisD_Appear.h"
 #include "CElfilisD_Damage.h"
 #include "CElfilisD_Jump.h"
@@ -485,18 +498,18 @@ void CElfilisFSM::tick()
 {
     CFSMScript::tick();
 
-    //if (KEY_TAP(KEY::_0))
-    //{
-    //    Rigidbody()->SetVelocity(Vec3());
-    //    Rigidbody()->SetAngularVelocity(Vec3());
-    //    ChangeStateGroup(ElfilisStateGroup::GroundToAir, L"GROUND_TOAIR_TELEPORT");
-    //}
-    //if (KEY_TAP(KEY::ENTER))
-    //{
-    //    Rigidbody()->SetVelocity(Vec3());
-    //    Rigidbody()->SetAngularVelocity(Vec3());
-    //    ChangeStateGroup(ElfilisStateGroup::GroundAtkFar, L"GROUND_ATK_SWORDWAVE_RL");
-    //}
+    if (KEY_TAP(KEY::_0))
+    {
+        Rigidbody()->SetVelocity(Vec3());
+        Rigidbody()->SetAngularVelocity(Vec3());
+        ChangeStateGroup(ElfilisStateGroup::AirToGround, L"AIR_TOGROUND_TELEPORT");
+    }
+    if (KEY_TAP(KEY::ENTER))
+    {
+        Rigidbody()->SetVelocity(Vec3());
+        Rigidbody()->SetAngularVelocity(Vec3());
+        ChangeStateGroup(ElfilisStateGroup::GroundAtkNear);
+    }
 }
 
 void CElfilisFSM::OnCollisionEnter(CCollider* _OtherCollider)

@@ -2,6 +2,7 @@
 #include "CElfilisG_SwordWaveFinishRL.h"
 #include "CElfilisFSM.h"
 #include "CElfilisSwordSlashScript.h"
+#include "CCameraController.h"
 
 CElfilisG_SwordWaveFinishRL::CElfilisG_SwordWaveFinishRL()
     : m_bFrmEnter(true)
@@ -111,6 +112,8 @@ void CElfilisG_SwordWaveFinishRL::Progress()
             pScript->SetInitDir(GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT));
             GamePlayStatic::SpawnGameObject(pSlash, LAYER_MONSTERATK);
         }
+
+        CAMERACTRL->Shake(0.3f, 30.f, 10.f);
 
         m_bFrmEnter = false;
     }

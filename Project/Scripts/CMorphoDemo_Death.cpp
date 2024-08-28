@@ -69,6 +69,8 @@ void CMorphoDemo_Death::Enter_Step()
     }
     break;
     case StateStep::Start: {
+        MRPFSM->DestroySumon();
+
         GetOwner()->Animator()->SetPlay(true);
         GetOwner()->Transform()->SetWorldPos(Vec3(0.f, 0.f, -300.f));
         GetOwner()->Transform()->SetWorldRotation(Vec3());

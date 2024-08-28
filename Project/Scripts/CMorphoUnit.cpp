@@ -37,7 +37,7 @@ void CMorphoUnit::tick()
     // Phase 1
     else if (MRPFSM->GetPhase() == 1)
     {
-        // Cheet : Phase 1 -> Phase 2
+        // Cheat : Phase 1 -> Phase 2
         if ((KEY_PRESSED(KEY::LCTRL) && (KEY_TAP(KEY::ENTER))) || (KEY_TAP(KEY::LCTRL) && (KEY_PRESSED(KEY::ENTER))))
         {
             m_CurInfo.HP = m_InitInfo.HP * 0.5f;
@@ -54,7 +54,7 @@ void CMorphoUnit::tick()
     // Phase 2
     else if (MRPFSM->GetPhase() == 2)
     {
-        // Cheet : Death
+        // Cheat : Death
         if ((KEY_PRESSED(KEY::LCTRL) && (KEY_TAP(KEY::ENTER))) || (KEY_TAP(KEY::LCTRL) && (KEY_PRESSED(KEY::ENTER))))
         {
             m_CurInfo.HP = 0.f;

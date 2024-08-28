@@ -9,6 +9,7 @@ private:
     Vec3 m_PrevPos;
     UINT m_ComboLevel;
     float m_SpawnDist;
+    bool m_bCamShake;
 
 public:
     virtual void tick() override;

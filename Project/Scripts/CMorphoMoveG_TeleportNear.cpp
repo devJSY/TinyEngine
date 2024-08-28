@@ -27,6 +27,16 @@ void CMorphoMoveG_TeleportNear::tick()
     }
 }
 
+void CMorphoMoveG_TeleportNear::Exit()
+{
+    Exit_Step();
+
+    MRPFSM->EnableRender();
+    MRPFSM->EnableCollider();
+    GetOwner()->Rigidbody()->SetUseGravity(true);
+    GetOwner()->Animator()->SetPlay(true);
+}
+
 void CMorphoMoveG_TeleportNear::Enter_Step()
 {
     switch (m_Step)
@@ -86,14 +96,13 @@ void CMorphoMoveG_TeleportNear::Exit_Step()
     {
     case StateStep::Start: {
         MRPFSM->DisableRender();
+        MRPFSM->DisableCollider();
         MRPFSM->ResetEmissive();
+        GetOwner()->Rigidbody()->SetUseGravity(false);
     }
     break;
-    case StateStep::End: {
-        MRPFSM->EnableRender();
-        GetOwner()->Animator()->SetPlay(true);
-    }
-    break;
+    case StateStep::End:
+        break;
     }
 }
 

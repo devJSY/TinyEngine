@@ -202,12 +202,12 @@ void CElfilisAirArrow::SetArrowIdx(int _Idx)
         break;
     }
 
-    m_WaitTime *= 0.3f;
+    m_WaitTime *= 0.5f;
 }
 
 void CElfilisAirArrow::Spawn()
 {
-    static float SpawnTime = 0.5f;
+    float SpawnTime = 0.5f;
 
     // scaling
     if (m_AccTime <= SpawnTime)
@@ -224,16 +224,15 @@ void CElfilisAirArrow::Spawn()
 
 void CElfilisAirArrow::Ready()
 {
-    static float ReadyTime = 0.5f;
+    float ReadyTime = 0.5f;
+    float Angle = (105.f / 7) * (-3 + m_ArrowIdx);
+    Vec3 NewRot = Transform()->GetLocalRotation();
 
     if (m_AccTime <= ReadyTime)
     {
-        static float RotSpeed = 1.f / ReadyTime;
+        float t = m_AccTime / ReadyTime;
 
         // rotate (Z & X)
-        float t = m_AccTime / ReadyTime;
-        float Angle = (-105.f / 7) * (-3 + m_ArrowIdx);
-        Vec3 NewRot = Transform()->GetLocalRotation();
         NewRot.z = XMConvertToRadians(Angle) * t;
         NewRot.x = XMConvertToRadians(360.f) * t;
         Transform()->SetLocalRotation(NewRot);
@@ -244,8 +243,6 @@ void CElfilisAirArrow::Ready()
     }
     else
     {
-        float Angle = (-105.f / 7) * (-3 + m_ArrowIdx);
-        Vec3 NewRot = Transform()->GetLocalRotation();
         NewRot.z = XMConvertToRadians(Angle);
         NewRot.x = 0.f;
         Transform()->SetLocalRotation(NewRot);
@@ -264,15 +261,14 @@ void CElfilisAirArrow::Wait()
 
 void CElfilisAirArrow::Aim()
 {
-    static float RotTime = 0.3f;
+    float RotTime = 0.75f;
 
     if (m_AccTime <= RotTime)
     {
         // rotate
         Vec3 Rotation = GetOwner()->Transform()->GetLocalRotation();
         float t = m_AccTime / RotTime;
-
-        Rotation.y += XMConvertToRadians(180.f) * t;
+        Rotation.y = XMConvertToRadians(580.f) * t;
 
         GetOwner()->Transform()->SetLocalRotation(Rotation);
     }
@@ -286,14 +282,14 @@ void CElfilisAirArrow::Attack()
 {
     if (!m_bGround)
     {
-        static float DetectRange = 200.f;
+        float DetectRange = 200.f;
         Vec3 CurTargetDiff = m_Target->Transform()->GetWorldPos() - Transform()->GetWorldPos();
         float Diff = CurTargetDiff.Length();
 
         // 추적 : 일정 거리 이상 떨어져있다면 추적
         if (Diff >= DetectRange)
         {
-            static float StartTime = 0.5f;
+            float StartTime = 0.5f;
             Vec3 PrevPos = Transform()->GetWorldPos();
 
             // ~1.f : 현재 UpVector 방향으로 진행
@@ -309,7 +305,7 @@ void CElfilisAirArrow::Attack()
             // 1.f ~ : 타겟방향으로 위치 lerp
             else
             {
-                m_AttackSpeed += 300.f * DT;
+                m_AttackSpeed += 170.f * DT;
                 float t = m_AttackSpeed / m_TargetDist;
 
                 Vec3 CurPos = Transform()->GetWorldPos();

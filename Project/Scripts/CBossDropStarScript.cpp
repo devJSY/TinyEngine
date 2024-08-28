@@ -7,7 +7,9 @@
 CBossDropStarScript::CBossDropStarScript()
     : CScript(BOSSDROPSTARSCRIPT)
     , m_Light(nullptr)
-    , m_LifeTime(3.f)
+    , m_Star(nullptr)
+    , m_RotSpeed(2.f)
+    , m_LifeTime(4.f)
     , m_AccTime(0.f)
     , m_LightAccTime(0.f)
 {
@@ -19,27 +21,31 @@ CBossDropStarScript::~CBossDropStarScript()
 
 void CBossDropStarScript::begin()
 {
-    m_OriginScale = GetOwner()->Transform()->GetWorldScale();
+    m_OriginScale = Transform()->GetWorldScale();
+    m_RotSpeed = GetRandomfloat(1.f, 3.f);
     m_AccTime = 0.f;
 
     m_Star = GetOwner()->GetChildObject(L"WarpStar");
     m_Light = GetOwner()->GetChildObject(L"Point Light")->Light();
 
-    /*  Vec3 RelativeForce = Transform()->GetWorldPos() - BOSS->Transform()->GetWorldPos();
-      RelativeForce.y = 0.f;
-      RelativeForce.Normalize();
+    // Set Star Rot Random
+    Vec3 InitRot = m_Star->Transform()->GetLocalRotation();
+    InitRot.z += XMConvertToRadians(GetRandomfloat(0.f, 360.f));
+    m_Star->Transform()->SetLocalRotation(InitRot);
 
-      Rigidbody()->AddForce(Vec3(0.f, 30.f, 0.f), ForceMode::Impulse);
-      Rigidbody()->AddForce(RelativeForce * 10.f, ForceMode::Impulse);*/
+    // Add Force
+    Vec3 Force{0.f, 30.f, 0.f};
 
     if (BOSS)
     {
         Vec3 RelativeForce = Transform()->GetWorldPos() - BOSS->Transform()->GetWorldPos();
         RelativeForce.y = 0.f;
-        RelativeForce.Normalize();
+        RelativeForce = RelativeForce.Normalize() * 10.f;
 
-        Rigidbody()->AddForce(RelativeForce * 10.f, ForceMode::Impulse);
+        Force += RelativeForce;
     }
+
+    Rigidbody()->AddForce(Force, ForceMode::Impulse);
 }
 
 void CBossDropStarScript::tick()
@@ -53,10 +59,8 @@ void CBossDropStarScript::tick()
     Transform()->SetDirection(LookDir);
 
     // rotate
-    Vec3 Force = Transform()->GetWorldDir(DIR_TYPE::FRONT) * 500.f;
-    Rigidbody()->AddTorque(Force * DT);
     Vec3 StarRot = m_Star->Transform()->GetLocalRotation();
-    StarRot.z += 2.f * DT;
+    StarRot.z += m_RotSpeed * DT;
     m_Star->Transform()->SetLocalRotation(StarRot);
 
     // change light color
@@ -76,18 +80,18 @@ void CBossDropStarScript::tick()
     m_Light->SetLightRadiance(LightColor);
 
     // End : destroy
-    if (m_AccTime > m_LifeTime)
+    if (m_AccTime >= m_LifeTime)
     {
-        m_Light->SetLightRadiance(Vec3());
-        GetOwner()->Transform()->SetWorldScale(Vec3());
+        m_Light->SetLightRadiance(Vec3::Zero);
+        GetOwner()->Transform()->SetWorldScale(Vec3::Zero);
         GamePlayStatic::DestroyGameObject(GetOwner());
     }
 
     // End : dissapear (scaling down)
-    else if (m_AccTime > StartDissapear)
+    else if (m_AccTime >= StartDissapear)
     {
-        float t = (m_AccTime - StartDissapear) / 0.5f;
-        t = 1.f - sinf(XM_PI / 2.f * t);
+        float t = clamp((m_AccTime - StartDissapear) / 0.5f, 0.f, 1.f);
+        t = cosf(XM_PI / 2.f * t);
         GetOwner()->Transform()->SetWorldScale(m_OriginScale * t);
 
         m_Light->SetLightRadiance(LightColor * t);
