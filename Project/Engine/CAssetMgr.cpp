@@ -26,8 +26,6 @@ CAssetMgr::CAssetMgr()
 
 CAssetMgr::~CAssetMgr()
 {
-    ThreadRelease();
-
     // Asset Release
     for (UINT i = 0; i < (UINT)ASSET_TYPE::END; ++i)
     {

@@ -15,7 +15,6 @@ public:
     void init();
     void tick();
 
-private:
     void ThreadRelease();
 
 public:

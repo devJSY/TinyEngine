@@ -6,6 +6,7 @@
 #include <Engine\\CKeyMgr.h>
 #include <Engine\\CLevelMgr.h>
 #include <Engine\\CLevel.h>
+#include <Engine\\CTaskMgr.h>
 
 // Engine
 #ifdef _DEBUG
@@ -91,6 +92,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
             CEngine::GetInst()->progress();
         }
     }
+
+    CLevelMgr::GetInst()->ThreadRelease();
+    CAssetMgr::GetInst()->ThreadRelease();
+
+    CTaskMgr::GetInst()->tick(); // 등록된 Task 처리 후 종료
 
     return (int)msg.wParam;
 }
