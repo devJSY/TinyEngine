@@ -27,6 +27,19 @@ CAssetMgr::CAssetMgr()
 CAssetMgr::~CAssetMgr()
 {
     ThreadRelease();
+
+    // Asset Release
+    for (UINT i = 0; i < (UINT)ASSET_TYPE::END; ++i)
+    {
+        m_mapAsset[i].clear();
+    }
+
+    // Sound Release
+    if (nullptr != CSound::g_pFMOD)
+    {
+        CSound::g_pFMOD->release();
+        CSound::g_pFMOD = nullptr;
+    }
 }
 
 void CAssetMgr::init()
@@ -49,6 +62,7 @@ void CAssetMgr::initSound()
     if (nullptr == CSound::g_pFMOD)
     {
         assert(nullptr);
+        return;
     }
 
     // 32개 채널 생성

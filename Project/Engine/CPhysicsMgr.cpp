@@ -383,9 +383,23 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
     if (nullptr == m_Scene || nullptr == _GameObject || !_GameObject->IsActive() || _GameObject->IsDead())
         return;
 
+    CTransform* pTr = _GameObject->Transform();
+
+    Vec3 WorldPos = pTr->GetWorldPos();
+    Quat WorldQuat = pTr->GetWorldQuaternion();
+    Vec3 WorldScale = pTr->GetWorldScale();
+
+    const float WorldRatio = pTr->GetWorldRatio();
+
+    WorldPos /= m_PPM;
+    WorldScale /= m_PPM;
+
+    // Scale 예외처리
+    if (WorldScale.x <= 0.f || WorldScale.y <= 0.f || WorldScale.z <= 0.f)
+        return;
+
     AddCharacterControllerObject(_GameObject);
 
-    CTransform* pTr = _GameObject->Transform();
     CRigidbody* pRigidbody = _GameObject->Rigidbody();
     CBoxCollider* pBoxCol = _GameObject->BoxCollider();
     CSphereCollider* pSphereCol = _GameObject->SphereCollider();
@@ -404,15 +418,6 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
 
         return;
     }
-
-    Vec3 WorldPos = pTr->GetWorldPos();
-    Quat WorldQuat = pTr->GetWorldQuaternion();
-    Vec3 WorldScale = pTr->GetWorldScale();
-
-    const float WorldRatio = pTr->GetWorldRatio();
-
-    WorldPos /= m_PPM;
-    WorldScale /= m_PPM;
 
     // World Space 기준 위치, 회전상태 적용
     PxTransform PxTr = PxTransform(WorldPos.x, WorldPos.y, WorldPos.z, PxQuat(WorldQuat.x, WorldQuat.y, WorldQuat.z, WorldQuat.w));
