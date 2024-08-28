@@ -4,17 +4,23 @@
 class CElfilisBigFSM : public CFSMScript
 {
 private:
-    vector<Ptr<CMaterial>> m_vecMtrls;
+    // FSM
     wstring m_ReverseState;
-    float m_PositionOffset;
     UINT m_ComboLevel;
+
+    CGameObject* m_Weapon;
+    vector<Ptr<CMaterial>> m_vecMtrls;
+    float m_PositionOffset;
 
 public:
     virtual void begin() override;
 
-    void Activate();
     void ReverseState(const wstring& _State) { m_ReverseState = _State; }
     virtual void ChangeState(const wstring& _strStateName) override;
+
+    void Activate();
+    void OnWeaponCollider();
+    void OffWeaponCollider();
 
 public:
     void ClearComboLevel() { m_ComboLevel = 0; }

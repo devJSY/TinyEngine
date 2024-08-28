@@ -49,6 +49,8 @@ void CElfilisBig_Roar::Enter()
     GetOwner()->SetActive(true);
     GetOwner()->Animator()->Play(ANIMPREFIX("BigRoar"), false, false, 2.5f, 0.f);
 
+    ELFFSM->GetBigBossFSM()->OffWeaponCollider();
+
     //@ Effect 나타나는 Burning 효과
     m_AccTime = 0.f;
     m_PrevAlpha = *(float*)(GetOwner()->MeshRender()->GetMaterial(0)->GetScalarParam(SCALAR_PARAM::FLOAT_2));
@@ -56,4 +58,5 @@ void CElfilisBig_Roar::Enter()
 
 void CElfilisBig_Roar::Exit()
 {
+    ELFFSM->GetBigBossFSM()->OnWeaponCollider();
 }
