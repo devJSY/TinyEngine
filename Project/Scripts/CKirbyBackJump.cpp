@@ -17,14 +17,6 @@ void CKirbyBackJump::tick()
 {
     if (PLAYERFSM->GetCurObjectIdx() != ObjectCopyType::NONE)
     {
-        //@TODO 회전시켜주기
-        // Vec3 Rot = PLAYER->Transform()->GetLocalRotation();
-        // Rot.x += DT * 10.f;
-        // if (Rot.x >= XMConvertToRadians(360.f))
-        //{
-        //    Rot.x = XMConvertToRadians(360.f);
-        //}
-
         if (PLAYERCTRL->IsGround())
         {
             if (m_StateEnter)
@@ -42,9 +34,16 @@ void CKirbyBackJump::tick()
     }
     else
     {
-        if (PLAYER->Animator()->IsFinish() && PLAYERCTRL->IsGround())
+        if (PLAYER->Animator()->IsFinish())
         {
-            ChangeState(L"IDLE");
+            if (PLAYERCTRL->IsGround())
+            {
+                ChangeState(L"IDLE");
+            }
+            else
+            {
+                ChangeState(L"JUMP_FALL");
+            }
         }
     }
 }
