@@ -22,6 +22,8 @@ private:
     virtual void EnterWaitBoss() override;
     virtual void FlowWaitBoss() override;
     virtual void EnterFight() override;
+    virtual void EnterDeath() override;
+    virtual void ExitDeath() override;
     virtual void EnterClear() override;
 
     // trigger events

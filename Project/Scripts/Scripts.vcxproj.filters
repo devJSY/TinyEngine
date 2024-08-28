@@ -842,7 +842,7 @@
       <Filter>Scripts\Gimmik\SpawnTrigger</Filter>
     </ClInclude>
     <ClInclude Include="CFlowMgr_BossElfilis.h">
-      <Filter>Scripts\Manager\FlowManager\Elfilis Level Flow Manager</Filter>
+      <Filter>Scripts\Manager\FlowManager\5. Elfilis Level Flow Manager</Filter>
     </ClInclude>
     <ClInclude Include="CFlowTriggerScript.h">
       <Filter>Scripts\Trigger\FlowTrigger</Filter>
@@ -854,7 +854,7 @@
       <Filter>Scripts\Character\Boss\Hitbox</Filter>
     </ClInclude>
     <ClInclude Include="CFlowMgr_BossMorpho.h">
-      <Filter>Scripts\Manager\FlowManager\Morpho Level Flow Manager</Filter>
+      <Filter>Scripts\Manager\FlowManager\5. Morpho Level Flow Manager</Filter>
     </ClInclude>
     <ClInclude Include="CFollowPlayerScript.h">
       <Filter>Scripts\Gimmik\FollowPlayer</Filter>
@@ -1819,7 +1819,7 @@
       <Filter>Scripts\Character\Monster\MonsterScript\Phanta</Filter>
     </ClCompile>
     <ClCompile Include="CFlowMgr_BossElfilis.cpp">
-      <Filter>Scripts\Manager\FlowManager\Elfilis Level Flow Manager</Filter>
+      <Filter>Scripts\Manager\FlowManager\5. Elfilis Level Flow Manager</Filter>
     </ClCompile>
     <ClCompile Include="CFlowTriggerScript.cpp">
       <Filter>Scripts\Trigger\FlowTrigger</Filter>
@@ -1831,7 +1831,7 @@
       <Filter>Scripts\Character\Boss\Hitbox</Filter>
     </ClCompile>
     <ClCompile Include="CFlowMgr_BossMorpho.cpp">
-      <Filter>Scripts\Manager\FlowManager\Morpho Level Flow Manager</Filter>
+      <Filter>Scripts\Manager\FlowManager\5. Morpho Level Flow Manager</Filter>
     </ClCompile>
     <ClCompile Include="CFollowPlayerScript.cpp">
       <Filter>Scripts\Gimmik\FollowPlayer</Filter>
@@ -2909,9 +2909,6 @@
     <Filter Include="Scripts\Character\Monster\MonsterScript\Phanta">
       <UniqueIdentifier>{3b041919-a9b4-4d0b-8723-3d8f0595ad5a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Manager\FlowManager\Elfilis Level Flow Manager">
-      <UniqueIdentifier>{dc577414-555c-4965-aec1-5df008469f1e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scripts\Manager\FlowManager\0. Tutorial Level Flow Manager">
       <UniqueIdentifier>{94bc6ff3-9195-4360-93b9-2b5734d0af06}</UniqueIdentifier>
     </Filter>
@@ -2926,9 +2923,6 @@
     </Filter>
     <Filter Include="Scripts\Manager\FlowManager\4. Pk3-3-3 Flow Manager">
       <UniqueIdentifier>{3a0aedc3-fbce-401f-b3f9-e0a368de3bcc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Manager\FlowManager\Morpho Level Flow Manager">
-      <UniqueIdentifier>{ab75756a-0394-44c4-8fd0-78d24de70a78}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\Gimmik\SpawnTrigger">
       <UniqueIdentifier>{853c8a9c-6323-4f6e-819d-cd4b03875654}</UniqueIdentifier>
@@ -3055,6 +3049,12 @@
     </Filter>
     <Filter Include="Scripts\UI\UIEffect\UIBurstStarSpawnEffect">
       <UniqueIdentifier>{a4db04cb-9f57-49de-8e78-9a7d135f7110}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Manager\FlowManager\5. Elfilis Level Flow Manager">
+      <UniqueIdentifier>{dc577414-555c-4965-aec1-5df008469f1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Manager\FlowManager\5. Morpho Level Flow Manager">
+      <UniqueIdentifier>{ab75756a-0394-44c4-8fd0-78d24de70a78}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

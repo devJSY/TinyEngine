@@ -45,7 +45,7 @@ protected:
     virtual void ExitFight(){};
     virtual void ExitDemoPlay();
     virtual void ExitDeath(){};
-    virtual void ExitClear(){};
+    virtual void ExitClear();
 
 public:
     BossLevelFlow GetFlowState() { return m_FlowState; }

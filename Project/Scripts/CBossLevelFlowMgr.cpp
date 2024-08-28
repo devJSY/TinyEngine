@@ -59,7 +59,7 @@ void CBossLevelFlowMgr::ChangeFlow(BossLevelFlow _State)
 {
     ExitFlow(m_FlowState);
     m_FlowState = _State;
-    EnterFlow(m_FlowState);
+    EnterFlow(_State);
 }
 
 void CBossLevelFlowMgr::EnterFlow(BossLevelFlow _State)
@@ -117,7 +117,7 @@ void CBossLevelFlowMgr::SetPlayerPos(Vec3 _Pos, Vec3 _Rot)
     _Rot.Normalize();
 
     PLAYER->Transform()->SetWorldPos(_Pos);
-    PLAYER->Transform()->SetDirection(_Rot);
+    PLAYERCTRL->ForceDir({ForceDirType::STAGEEVENT, _Rot, true});
 }
 
 // --------------------
@@ -158,11 +158,12 @@ void CBossLevelFlowMgr::EnterClear()
 {
     BOSS->SetActive(false);
 
+    PLAYERCTRL->LockInput();
+    PLAYERFSM->ChangeState(L"STAGE_CLEAR");
+    
     CAMERACTRL->SetMainTarget(PLAYER);
     CAMERACTRL->Normal(true);
     CAMERACTRL->SetImmediate(false);
-
-    PLAYERFSM->ChangeState(L"STAGE_CLEAR");
 }
 
 // --------------------
@@ -177,6 +178,11 @@ void CBossLevelFlowMgr::ExitWaitBoss()
 }
 
 void CBossLevelFlowMgr::ExitDemoPlay()
+{
+    PLAYERCTRL->UnlockInput();
+}
+
+void CBossLevelFlowMgr::ExitClear()
 {
     PLAYERCTRL->UnlockInput();
 }
