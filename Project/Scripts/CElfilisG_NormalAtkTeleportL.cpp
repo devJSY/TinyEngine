@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CElfilisG_NormalAtkTeleportL.h"
 #include "CElfilisFSM.h"
+#include "CCameraController.h"
 
 CElfilisG_NormalAtkTeleportL::CElfilisG_NormalAtkTeleportL()
     : m_BeforeObj(nullptr)
@@ -90,6 +91,7 @@ void CElfilisG_NormalAtkTeleportL::Enter_Step()
     case StateStep::Progress: {
         GetOwner()->Animator()->Play(ANIMPREFIX("SwingLeft"), false, false, 1.5f);
         ELFFSM->OnWeaponTrigger();
+        m_bFrmEnter = true;
     }
     break;
     case StateStep::End: {
@@ -206,10 +208,17 @@ void CElfilisG_NormalAtkTeleportL::Progress()
     {
         if (GetOwner()->Animator()->GetClipFrameIndex() < 13)
         {
-            pHitbox->GetOwner()->SetActive(true);
-            pHitbox->Transform()->SetLocalPos(Vec3(0.71f, 1.f, 2.64f));
-            pHitbox->Transform()->SetLocalRotation(Vec3(0.f));
-            pHitbox->Transform()->SetLocalScale(Vec3(5.96f, 1.f, 4.81f));
+            if (m_bFrmEnter)
+            {
+                m_bFrmEnter = false;
+
+                pHitbox->GetOwner()->SetActive(true);
+                pHitbox->Transform()->SetLocalPos(Vec3(0.71f, 1.f, 2.64f));
+                pHitbox->Transform()->SetLocalRotation(Vec3(0.f));
+                pHitbox->Transform()->SetLocalScale(Vec3(5.96f, 1.f, 4.81f));
+
+                CAMERACTRL->Shake(0.3f, 30.f, 30.f);
+            }
         }
         else
         {

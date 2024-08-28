@@ -7,6 +7,7 @@ private:
     CGameObject* m_Star;
     CLight* m_Light;
     Vec3 m_OriginScale;
+    float m_RotSpeed;
     float m_LifeTime;
     float m_AccTime;
     float m_LightAccTime;

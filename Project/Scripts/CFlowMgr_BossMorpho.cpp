@@ -67,7 +67,7 @@ void CFlowMgr_BossMorpho::tick()
         if (m_Barricade)
         {
             m_Barricade->SetActive(false);
-            m_Barricade->Transform()->SetLocalScale(Vec3());
+            m_Barricade->Transform()->SetLocalScale(Vec3::Zero);
         }
 
         m_FlowState = BossLevelFlow::WaitBoss;

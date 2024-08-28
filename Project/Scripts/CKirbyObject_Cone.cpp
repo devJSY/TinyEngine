@@ -50,14 +50,11 @@ void CKirbyObject_Cone::AttackEnter()
 {
     PLAYER->Animator()->Play(ANIMPREFIX("TurnEnd"), false, false, 1.5f);
 
-    PLAYERCTRL->ClearVelocityY();
-    PLAYERCTRL->LockMove();
     PLAYERCTRL->LockDirection();
 }
 
 void CKirbyObject_Cone::AttackExit()
 {
-    PLAYERCTRL->UnlockMove();
     PLAYERCTRL->UnlockDirection();
 }
 
@@ -72,7 +69,8 @@ void CKirbyObject_Cone::AttackStartEnter()
 
     // 속도세팅
     PLAYERCTRL->LockDirection();
-    PLAYERCTRL->AddVelocity(Vec3(0.f, 15.f, 0.f));
+    PLAYERCTRL->ClearVelocityY();
+    PLAYERCTRL->AddVelocity(Vec3(0.f, 17.5f, 0.f));
 }
 
 void CKirbyObject_Cone::AttackStartExit()
@@ -91,7 +89,9 @@ void CKirbyObject_Cone::AttackEndEnter()
     //@Effect 속도선
 
     PLAYERCTRL->LockDirection();
-    PLAYERCTRL->AddVelocity(Vec3(0.f, -20.f, 0.f));
+    PLAYERCTRL->SetLimitFallSpeed(false);
+    PLAYERCTRL->ClearVelocityY();
+    PLAYERCTRL->AddVelocity(Vec3(0.f, -50.f, 0.f));
 
     PLAYERFSM->SetInvincible(true);
 }
@@ -99,6 +99,7 @@ void CKirbyObject_Cone::AttackEndEnter()
 void CKirbyObject_Cone::AttackEndExit()
 {
     PLAYERCTRL->UnlockDirection();
+    PLAYERCTRL->SetLimitFallSpeed(true);
 
     PLAYERFSM->SetInvincible(false);
 }

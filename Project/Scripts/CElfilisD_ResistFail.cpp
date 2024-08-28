@@ -56,10 +56,12 @@ void CElfilisD_ResistFail::Enter_Step()
         m_AccTime = 0.f;
         m_bFrmEnter = true;
 
+        ELFFSM->DestroySumon();
+
         // Flow Mgr
         CBossMgr::GetElfilisFlowMgr()->ChangeFlowDeath();
 
-        //@CAMERA ¿¡ÇÇ¸®½º Å¸°Ù, ½Ã³×¸¶ºä
+        // CAMERA : ¿¡ÇÇ¸®½º Å¸°Ù, ½Ã³×¸¶ºä
         CAMERACTRL->SetMainTarget(BOSS);
         CAMERACTRL->SetOffset(Vec3(0.f, 0.f, 0.f));
         CAMERACTRL->SetTargetOffset(Vec3(0.f, 0.f, 0.f));

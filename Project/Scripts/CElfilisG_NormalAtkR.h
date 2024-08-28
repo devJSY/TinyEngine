@@ -5,6 +5,7 @@ class CElfilisG_NormalAtkR : public CBossState
 {
 private:
     bool m_bComboSuccess;
+    bool m_bFrmEnter;
 
 public:
     virtual void tick() override;

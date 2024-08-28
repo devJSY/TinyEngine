@@ -2,6 +2,7 @@
 #include "CElfilisG_SwordWaveLR.h"
 #include "CElfilisFSM.h"
 #include "CElfilisSwordSlashScript.h"
+#include "CCameraController.h"
 
 CElfilisG_SwordWaveLR::CElfilisG_SwordWaveLR()
     : m_bComboSuccess(false)
@@ -149,6 +150,8 @@ void CElfilisG_SwordWaveLR::Progress()
 
             GamePlayStatic::SpawnGameObject(pSlash, LAYER_MONSTERATK);
         }
+
+        CAMERACTRL->Shake(0.3f, 30.f, 10.f);
 
         m_bFrmEnter = false;
     }

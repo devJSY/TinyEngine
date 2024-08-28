@@ -3,6 +3,9 @@
 
 class CElfilisG_NormalAtkFinishL : public CBossState
 {
+private:
+    bool m_bFrmEnter;
+
 public:
     virtual void tick() override;
     virtual void Exit() override;
