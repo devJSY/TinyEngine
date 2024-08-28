@@ -66,7 +66,7 @@ void COutliner::render()
     for (UINT i = 0; i < LAYER_MAX; i++)
     {
         CLayer* layer = CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(i);
-        const vector<CGameObject*>& objs = layer->GetParentObject();
+        const vector<CGameObject*>& objs = layer->GetParentObjects();
 
         for (size_t i = 0; i < objs.size(); i++)
         {
