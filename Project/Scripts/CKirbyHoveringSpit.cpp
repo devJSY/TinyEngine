@@ -63,7 +63,7 @@ void CKirbyHoveringSpit::Enter()
         SpitSmokeObj->Transform()->SetWorldPos(SmokePos);
         SpitSmokeObj->Transform()->SetDirection(PlayerDir);
 
-        GamePlayStatic::SpawnGameObject(SpitSmokeObj, LAYER_EFFECT);
+        GamePlayStatic::SpawnGameObject(SpitSmokeObj, SpitSmokeObj->GetLayerIdx());
     }
 }
 
