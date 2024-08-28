@@ -82,8 +82,8 @@ void CBossDropStarScript::tick()
     // End : destroy
     if (m_AccTime >= m_LifeTime)
     {
-        m_Light->SetLightRadiance(Vec3());
-        GetOwner()->Transform()->SetWorldScale(Vec3(0.001f));
+        m_Light->SetLightRadiance(Vec3::Zero);
+        GetOwner()->Transform()->SetWorldScale(Vec3::Zero);
         GamePlayStatic::DestroyGameObject(GetOwner());
     }
 
