@@ -26,11 +26,6 @@ CEngine::CEngine()
 
 CEngine::~CEngine()
 {
-    if (nullptr != CSound::g_pFMOD)
-    {
-        CSound::g_pFMOD->release();
-        CSound::g_pFMOD = nullptr;
-    }
 }
 
 int CEngine::init(HWND _hWnd, Vec2 _vResolution)
@@ -74,9 +69,6 @@ void CEngine::progress()
         CKeyMgr::GetInst()->tick();
         CAssetMgr::GetInst()->tick();
 
-        // FMOD Update
-        CSound::g_pFMOD->update();
-
         // Level Update
         CEditorMgr::GetInst()->tick();
         CLevelMgr::GetInst()->tick();
@@ -84,6 +76,9 @@ void CEngine::progress()
         // Physics Update
         CPhysics2DMgr::GetInst()->tick();
         CPhysicsMgr::GetInst()->tick();
+
+        // FMOD Update
+        CSound::g_pFMOD->update();
     }
 
     // ===========================
