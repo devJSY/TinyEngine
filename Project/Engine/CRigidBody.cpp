@@ -72,11 +72,8 @@ void CRigidbody::AddForce(Vec3 _Force, ForceMode _Mode)
     case ForceMode::Acceleration:
         body->addForce(physx::PxVec3(_Force.x, _Force.y, _Force.z), physx::PxForceMode::eACCELERATION);
         break;
-    case ForceMode::Impulse: {
+    case ForceMode::Impulse:
         body->addForce(physx::PxVec3(_Force.x, _Force.y, _Force.z), physx::PxForceMode::eIMPULSE);
-        string str = "Impulse: (" + std::to_string(_Force.x) + "," + std::to_string(_Force.y) + "," + std::to_string(_Force.z) + ")";
-        LOG(Warning, str.c_str());
-    }
     break;
     case ForceMode::VelocityChange:
         body->addForce(physx::PxVec3(_Force.x, _Force.y, _Force.z), physx::PxForceMode::eVELOCITY_CHANGE);
