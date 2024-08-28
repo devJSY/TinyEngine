@@ -114,9 +114,8 @@ void CBossLevelFlowMgr::ExitFlow(BossLevelFlow _State)
 
 void CBossLevelFlowMgr::SetPlayerPos(Vec3 _Pos)
 {
-    PLAYERCTRL->ForcePos(_Pos);
-    PLAYERCTRL->ForceDir({ForceDirType::STAGEEVENT, -_Pos.Normalize(), true});
-    PLAYERCTRL->TeleportGround();
+    PLAYER->Transform()->SetWorldPos(_Pos);
+    PLAYER->Transform()->Slerp(-_Pos.Normalize(), 1.f);
 }
 
 // --------------------
@@ -188,9 +187,6 @@ UINT CBossLevelFlowMgr::SaveToLevelFile(FILE* _File)
     UINT MemoryByte = 0;
     MemoryByte += CLevelFlowMgr::SaveToLevelFile(_File);
 
-    fwrite(&m_DefaultDemoPos, sizeof(Vec3), 1, _File);
-    MemoryByte += sizeof(Vec3);
-
     return MemoryByte;
 }
 
@@ -198,9 +194,6 @@ UINT CBossLevelFlowMgr::LoadFromLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;
     MemoryByte += CLevelFlowMgr::LoadFromLevelFile(_File);
-
-    fread(&m_DefaultDemoPos, sizeof(Vec3), 1, _File);
-    MemoryByte += sizeof(Vec3);
 
     return MemoryByte;
 }

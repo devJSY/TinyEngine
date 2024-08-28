@@ -45,6 +45,7 @@ void CElfilisD_ResistFail::Enter_Step()
         m_AccTime = 0.f;
 
         ELFFSM->SetResist(true);
+        ELFFSM->SetGlobalState(true);
 
         // TimeScale & Camera Àá±ñ ¸ØÃã
         CTimeMgr::GetInst()->SetTimeScale(0.5f, 0.f);

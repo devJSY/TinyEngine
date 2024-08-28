@@ -41,6 +41,7 @@ void CElfilisD_ResistSuccess::Enter_Step()
         GetOwner()->Animator()->Play(ANIMPREFIX("ResistSuccess"), false, false, 1.5f);
         ELFFSM->SetResist(true);
         ((CElfilisUnit*)BOSSUNIT)->ResistSuccess();
+
         CBossMgr::GetBossFlowMgr()->ChangeFlow(BossLevelFlow::Fight);
     }
     break;
