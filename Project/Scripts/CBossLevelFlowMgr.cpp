@@ -4,12 +4,14 @@
 CBossLevelFlowMgr::CBossLevelFlowMgr(UINT _Type)
     : CLevelFlowMgr(_Type)
     , m_FlowState(BossLevelFlow::LevelStart)
+    , m_DemoType(BossDemoType::NONE)
 {
 }
 
 CBossLevelFlowMgr::CBossLevelFlowMgr(const CBossLevelFlowMgr& _Origin)
     : CLevelFlowMgr(_Origin)
     , m_FlowState(BossLevelFlow::LevelStart)
+    , m_DemoType(BossDemoType::NONE)
     , m_DefaultDemoPos(_Origin.m_DefaultDemoPos)
 {
 }
@@ -180,6 +182,7 @@ void CBossLevelFlowMgr::ExitWaitBoss()
 void CBossLevelFlowMgr::ExitDemoPlay()
 {
     PLAYERCTRL->UnlockInput();
+    m_DemoType = BossDemoType::NONE;
 }
 
 void CBossLevelFlowMgr::ExitClear()

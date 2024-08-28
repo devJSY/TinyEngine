@@ -91,25 +91,31 @@ void CFlowMgr_BossMorpho::FlowLevelStart()
     CBossLevelFlowMgr::FlowLevelStart();
 }
 
-void CFlowMgr_BossMorpho::EnterWaitBoss()
+void CFlowMgr_BossMorpho::EnterDemoPlay()
 {
-    CBossLevelFlowMgr::EnterWaitBoss();
+    CBossLevelFlowMgr::EnterDemoPlay();
     m_AccTime = 0.f;
 }
 
-void CFlowMgr_BossMorpho::FlowWaitBoss()
+void CFlowMgr_BossMorpho::FlowDemoPlay()
 {
-    float SpawnBarricadeTime = 3.f;
-
-    if (m_Barricade && m_Barricade->IsActive() && m_AccTime < SpawnBarricadeTime)
+    switch (m_DemoType)
     {
-        m_AccTime += DT;
+    case BossDemoType::Encounter: {
+        float SpawnBarricadeTime = 3.f;
 
-        float t = m_AccTime / SpawnBarricadeTime;
-        Vec3 NewScale = m_BarricadeScale;
-        NewScale.y *= t;
+        if (m_Barricade && m_Barricade->IsActive() && m_AccTime < SpawnBarricadeTime)
+        {
+            m_AccTime += DT;
 
-        m_Barricade->Transform()->SetWorldScale(NewScale);
+            float t = m_AccTime / SpawnBarricadeTime;
+            Vec3 NewScale = m_BarricadeScale;
+            NewScale.y *= t;
+
+            m_Barricade->Transform()->SetWorldScale(NewScale);
+        }
+    }
+    break;
     }
 }
 
@@ -140,7 +146,7 @@ void CFlowMgr_BossMorpho::ExitDeath()
 void CFlowMgr_BossMorpho::EnterClear()
 {
     MRPFSM->ChangeStateGroup(MorphoStateGroup::Idle, L"IDLE");
-        
+
     SetPlayerPos(Vec3(), Vec3(0.f, 0.f, 1.f));
 
     CBossLevelFlowMgr::EnterClear();
@@ -164,6 +170,7 @@ void CFlowMgr_BossMorpho::SpawnMorpho()
         m_Barricade->SetActive(true);
     }
 
+    SetDemoType(BossDemoType::Encounter);
     ChangeFlow(BossLevelFlow::DemoPlay);
 }
 

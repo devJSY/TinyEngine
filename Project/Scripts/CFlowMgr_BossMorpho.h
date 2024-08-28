@@ -19,9 +19,9 @@ public:
 private:
     // overrided flow events
     virtual void FlowLevelStart() override;
-    virtual void EnterWaitBoss() override;
-    virtual void FlowWaitBoss() override;
     virtual void EnterFight() override;
+    virtual void EnterDemoPlay() override;
+    virtual void FlowDemoPlay() override;
     virtual void EnterDeath() override;
     virtual void ExitDeath() override;
     virtual void EnterClear() override;

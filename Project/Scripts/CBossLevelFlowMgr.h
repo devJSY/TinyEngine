@@ -10,6 +10,7 @@ class CBossLevelFlowMgr : public CLevelFlowMgr
 {
 protected:
     BossLevelFlow m_FlowState;
+    BossDemoType m_DemoType;
     Vec3 m_DefaultDemoPos;
 
 public:
@@ -17,6 +18,7 @@ public:
     virtual void tick() override;
 
     void ChangeFlow(BossLevelFlow _State);
+    void SetDemoType(BossDemoType _Type) { m_DemoType = _Type; }
 
 protected:
     void EnterFlow(BossLevelFlow _State);

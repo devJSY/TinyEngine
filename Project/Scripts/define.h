@@ -109,3 +109,9 @@ enum class BossLevelFlow
     Death,
     Clear,
 };
+
+enum class BossDemoType
+{
+    Encounter,
+    NONE,
+};
