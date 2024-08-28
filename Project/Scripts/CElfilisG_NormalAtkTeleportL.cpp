@@ -83,7 +83,6 @@ void CElfilisG_NormalAtkTeleportL::Enter_Step()
     }
     break;
     case StateStep::StartEnd: {
-        GetOwner()->Rigidbody()->SetKinematic(true);
         m_bFrmEnter = true;
         SpawnTeleport();
     }
@@ -110,8 +109,6 @@ void CElfilisG_NormalAtkTeleportL::Exit_Step()
     case StateStep::Wait:
         break;
     case StateStep::StartEnd: {
-        GetOwner()->Rigidbody()->SetKinematic(false);
-
         if (m_BeforeObj)
         {
             GamePlayStatic::DestroyGameObject(m_BeforeObj);
