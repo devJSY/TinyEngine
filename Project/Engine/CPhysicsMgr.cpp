@@ -680,7 +680,7 @@ void CPhysicsMgr::AddPhysicsObject(CGameObject* _GameObject)
     if (nullptr != pRigidbody)
     {
         PxRigidBody* body = (PxRigidBody*)pRigidbody->m_RuntimeBody;
-        PxRigidBodyExt::updateMassAndInertia(*body, body->getMass());
+        PxRigidBodyExt::updateMassAndInertia(*body, pRigidbody->m_Mass);
     }
 
     // Physics Object Ãß°¡
