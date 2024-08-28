@@ -126,6 +126,8 @@ void CFlowMgr_BossMorpho::EnterFight()
 void CFlowMgr_BossMorpho::EnterClear()
 {
     MRPFSM->ChangeStateGroup(MorphoStateGroup::Idle, L"IDLE");
+    
+    SetPlayerPos(Vec3(), Vec3(0.f, 0.f, -1.f));
 
     CBossLevelFlowMgr::EnterClear();
 }

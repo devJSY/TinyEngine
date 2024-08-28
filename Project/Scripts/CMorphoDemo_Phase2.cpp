@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "CMorphoDemo_Phase2.h"
 #include "CMorphoFSM.h"
-
+#include "CBossLevelFlowMgr.h"
 #include "CCameraController.h"
 
 CMorphoDemo_Phase2::CMorphoDemo_Phase2()
@@ -31,6 +31,17 @@ void CMorphoDemo_Phase2::tick()
     }
 }
 
+void CMorphoDemo_Phase2::Exit()
+{
+    Exit_Step();
+
+    CBossMgr::GetBossFlowMgr()->ChangeFlow(BossLevelFlow::Fight);
+
+    // Camera : º¹±¸
+    CAMERACTRL->LoadInitSetting();
+    CAMERACTRL->SetMorphoTwoTarget();
+}
+
 void CMorphoDemo_Phase2::Enter_Step()
 {
     switch (m_Step)
@@ -50,6 +61,8 @@ void CMorphoDemo_Phase2::Enter_Step()
     break;
     case StateStep::Progress: {
         GetOwner()->Animator()->Play(ANIMPREFIX("Appeal"), false, false, 1.5f, 0.3f);
+
+        CBossMgr::GetBossFlowMgr()->ChangeFlow(BossLevelFlow::DemoPlay);
 
         // Camera : ¸ôÆ÷ Å¸°Ù Distortion
         CAMERACTRL->SetMainTarget(BOSS);
@@ -85,12 +98,8 @@ void CMorphoDemo_Phase2::Exit_Step()
         break;
     case StateStep::StartEnd:
         break;
-    case StateStep::Progress: {
-        // Camera : º¹±¸
-        CAMERACTRL->LoadInitSetting();
-        CAMERACTRL->SetMorphoTwoTarget();
-    }
-    break;
+    case StateStep::Progress:
+        break;
     }
 }
 

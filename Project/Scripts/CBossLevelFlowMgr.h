@@ -21,7 +21,7 @@ public:
 protected:
     void EnterFlow(BossLevelFlow _State);
     void ExitFlow(BossLevelFlow _State);
-    void SetPlayerPos(Vec3 _Pos);
+    void SetPlayerPos(Vec3 _Pos, Vec3 _Rot);
 
     // tick
     virtual void FlowLevelStart();

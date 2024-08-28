@@ -112,10 +112,12 @@ void CBossLevelFlowMgr::ExitFlow(BossLevelFlow _State)
     }
 }
 
-void CBossLevelFlowMgr::SetPlayerPos(Vec3 _Pos)
+void CBossLevelFlowMgr::SetPlayerPos(Vec3 _Pos, Vec3 _Rot)
 {
+    _Rot.Normalize();
+
     PLAYER->Transform()->SetWorldPos(_Pos);
-    PLAYER->Transform()->Slerp(-_Pos.Normalize(), 1.f);
+    PLAYER->Transform()->SetDirection(_Rot);
 }
 
 // --------------------
@@ -141,7 +143,7 @@ void CBossLevelFlowMgr::EnterFight()
 
 void CBossLevelFlowMgr::EnterDemoPlay()
 {
-    SetPlayerPos(m_DefaultDemoPos);
+    SetPlayerPos(m_DefaultDemoPos, -m_DefaultDemoPos);
     PLAYERCTRL->LockInput();
     PLAYERFSM->ChangeState(L"IDLE");
 }
