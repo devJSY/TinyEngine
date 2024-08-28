@@ -63,19 +63,9 @@ void CFlowMgr_BossElfilis::LevelRestart()
     SetFadeEffectColor(Vec3(180.f, 140.f, 200.f));
 }
 
-void CFlowMgr_BossElfilis::SpawnElfilis()
-{
-    BOSS->SetActive(true);
-    ELFFSM->ChangeStateGroup(ElfilisStateGroup::DEMO, L"DEMO_APPEAR1");
-
-    if (m_LevelEnterWall)
-    {
-        m_LevelEnterWall->SetActive(true);
-    }
-
-    ChangeFlow(BossLevelFlow::DemoPlay);
-}
-
+// ---------------------------
+// Overrided Flow Events
+// ---------------------------
 void CFlowMgr_BossElfilis::FlowLevelStart()
 {
     BOSS->SetActive(false);
@@ -96,6 +86,25 @@ void CFlowMgr_BossElfilis::EnterClear()
     CBossLevelFlowMgr::EnterClear();
 }
 
+// ---------------------------
+// Trigger Events
+// ---------------------------
+void CFlowMgr_BossElfilis::SpawnElfilis()
+{
+    BOSS->SetActive(true);
+    ELFFSM->ChangeStateGroup(ElfilisStateGroup::DEMO, L"DEMO_APPEAR1");
+
+    if (m_LevelEnterWall)
+    {
+        m_LevelEnterWall->SetActive(true);
+    }
+
+    ChangeFlow(BossLevelFlow::DemoPlay);
+}
+
+// ---------------------------
+// Save & Load
+// ---------------------------
 UINT CFlowMgr_BossElfilis::SaveToLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;

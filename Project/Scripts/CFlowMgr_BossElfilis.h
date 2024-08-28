@@ -14,10 +14,12 @@ public:
     virtual void LevelRestart() override;
 
 private:
-    void SpawnElfilis();
-
+    // overrided flow events
     virtual void FlowLevelStart() override;
     virtual void EnterClear() override;
+     
+    // trigger events
+    void SpawnElfilis();
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

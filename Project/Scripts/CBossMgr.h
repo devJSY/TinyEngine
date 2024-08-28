@@ -3,7 +3,6 @@
 class CUnitScript;
 class CFSMScript;
 class CBossLevelFlowMgr;
-class CFlowMgr_BossMorpho;
 
 class CBossMgr : public CScript
 {
@@ -15,7 +14,6 @@ private:
     static CUnitScript* m_BossUnit;
     static CFSMScript* m_BossFSM;
     static CBossLevelFlowMgr* m_FlowMgr;
-    static CFlowMgr_BossMorpho* m_FlowMgrMorpho;
 
 public:
     virtual void begin() override;
@@ -27,7 +25,6 @@ public:
     static CUnitScript* GetBossUnit() { return m_BossUnit; }
     static CFSMScript* GetBossFSM() { return m_BossFSM; }
     static CBossLevelFlowMgr* GetBossFlowMgr() { return m_FlowMgr; }
-    static CFlowMgr_BossMorpho* GetMorphoFlowMgr() { return m_FlowMgrMorpho; }
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

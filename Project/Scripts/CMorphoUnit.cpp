@@ -2,7 +2,7 @@
 #include "CMorphoUnit.h"
 #include "CBossMgr.h"
 #include "CMorphoFSM.h"
-#include "CFlowMgr_BossMorpho.h"
+#include "CBossLevelFlowMgr.h"
 
 CMorphoUnit::CMorphoUnit()
     : CUnitScript(MORPHOUNIT)
@@ -25,10 +25,9 @@ CMorphoUnit::~CMorphoUnit()
 void CMorphoUnit::tick()
 {
     CUnitScript::tick();
-    CFlowMgr_BossMorpho* FlowMgr = CBossMgr::GetMorphoFlowMgr();
 
     // Death
-    if (m_CurInfo.HP <= 0.f && FlowMgr && FlowMgr->GetFlowState() < BossLevelFlow::Death)
+    if (m_CurInfo.HP <= 0.f && CBossMgr::GetBossFlowMgr()->GetFlowState() < BossLevelFlow::Death)
     {
         MRPFSM->ResetFSM();
         MRPFSM->ChangeStateGroup(MorphoStateGroup::DEMO, L"DEMO_DEATH");

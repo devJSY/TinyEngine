@@ -1,10 +1,9 @@
 #pragma once
-#include "CLevelFlowMgr.h"
+#include "CBossLevelFlowMgr.h"
 
-class CFlowMgr_BossMorpho : public CLevelFlowMgr
+class CFlowMgr_BossMorpho : public CBossLevelFlowMgr
 {
 private:
-    BossLevelFlow m_FlowState;
     CGameObject* m_SpawnButterfly;
     CGameObject* m_Barricade;
     Vec3 m_BarricadeScale;
@@ -12,21 +11,20 @@ private:
 
 public:
     virtual void begin() override;
-    virtual void tick() override;
     virtual void TriggerEvent(UINT _Idx);
 
-    virtual void LevelStart() override;
     virtual void LevelEnd() override;
     virtual void LevelRestart() override;
 
-    void ChangeFlowFight();
-    void ChangeFlowDeath();
-    void ChangeFlowClear();
-
-public:
-    BossLevelFlow GetFlowState() { return m_FlowState; }
-
 private:
+    // overrided flow events
+    virtual void FlowLevelStart() override;
+    virtual void EnterWaitBoss() override;
+    virtual void FlowWaitBoss() override;
+    virtual void EnterFight() override;
+    virtual void EnterClear() override;
+
+    // trigger events
     void SpawnMorpho();
 
 public:

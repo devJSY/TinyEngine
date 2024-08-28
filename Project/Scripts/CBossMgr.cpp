@@ -3,13 +3,11 @@
 #include "CUnitScript.h"
 #include "CFSMScript.h"
 #include "CBossLevelFlowMgr.h"
-#include "CFlowMgr_BossMorpho.h"
 
 CGameObject* CBossMgr::m_Boss = nullptr;
 CUnitScript* CBossMgr::m_BossUnit = nullptr;
 CFSMScript* CBossMgr::m_BossFSM = nullptr;
 CBossLevelFlowMgr* CBossMgr::m_FlowMgr = nullptr;
-CFlowMgr_BossMorpho* CBossMgr::m_FlowMgrMorpho = nullptr;
 
 CBossMgr::CBossMgr()
     : CScript(BOSSMGR)
@@ -24,7 +22,6 @@ CBossMgr::~CBossMgr()
     m_BossUnit = nullptr;
     m_BossFSM = nullptr;
     m_FlowMgr = nullptr;
-    m_FlowMgrMorpho = nullptr;
 }
 
 void CBossMgr::begin()
@@ -35,7 +32,6 @@ void CBossMgr::begin()
     }
 
     m_FlowMgr = GetOwner()->GetScript<CBossLevelFlowMgr>();
-    m_FlowMgrMorpho = GetOwner()->GetScript<CFlowMgr_BossMorpho>();
 }
 
 void CBossMgr::SetBoss()
