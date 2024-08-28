@@ -125,7 +125,7 @@ void CElfilisD_Appear::Exit_Step()
         }
 
         // Camera : ÅõÅ¸°Ù
-        CAMERACTRL->LoadInitSetting();
+        CAMERACTRL->LoadInitSetting(true);
         CAMERACTRL->SetElfilisTwoTarget();
     }
     break;

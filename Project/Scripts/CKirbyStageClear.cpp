@@ -260,6 +260,9 @@ void CKirbyStageClear::Enter()
     // UI 다 끄기
     CGameObject* ManagerObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager");
 
+    // Camera 속성을 초기값으로 돌린다.
+    CAMERACTRL->LoadInitSetting(true);
+
     CLevelFlowMgr* FlowMgrScript = ManagerObj->GetScript<CLevelFlowMgr>();
     FlowMgrScript->TurnOffBossHP();
     FlowMgrScript->TurnOffPlayerHP();

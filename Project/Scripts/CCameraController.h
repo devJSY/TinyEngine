@@ -192,8 +192,8 @@ private:
 
     void SaveSetting();
     void SaveInitSetting();
-    void LoadSetting();
-    void LoadInitSetting();
+    void LoadSetting(bool _OnlySetting = false);
+    void LoadInitSetting(bool _OnlySetting = false);
     void LoadDefaultSetting();
     CameraSetting GetSaveSetting() const { return m_SaveSetting; }
 

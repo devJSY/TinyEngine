@@ -432,13 +432,17 @@ void CCameraController::SaveInitSetting()
     m_InitSetting.ZoomThreshold = m_ZoomThreshold;
 }
 
-void CCameraController::LoadSetting()
+void CCameraController::LoadSetting(bool _OnlySetting)
 {
-    m_LookDir = m_SaveSetting.LookDir;
-    m_LookDist = m_SaveSetting.LookDist;
+    if (!_OnlySetting)
+    {
+        m_LookDir = m_SaveSetting.LookDir;
+        m_LookDist = m_SaveSetting.LookDist;
+        m_Offset = m_SaveSetting.Offset;
+    }
+
     m_MaxSpeed = m_SaveSetting.MaxSpeed;
     m_MinSpeed = m_SaveSetting.MinSpeed;
-    m_Offset = m_SaveSetting.Offset;
     m_RotationSpeed = m_SaveSetting.RotationSpeed;
     m_ThresholdDistance = m_SaveSetting.ThresholdDistance;
     m_ZoomMaxSpeed = m_SaveSetting.ZoomMaxSpeed;
@@ -446,13 +450,17 @@ void CCameraController::LoadSetting()
     m_ZoomThreshold = m_SaveSetting.ZoomThreshold;  
 }
 
-void CCameraController::LoadInitSetting()
+void CCameraController::LoadInitSetting(bool _OnlySetting)
 {
-    m_LookDir = m_InitSetting.LookDir;
-    m_LookDist = m_InitSetting.LookDist;
+    if (!_OnlySetting)
+    {
+        m_LookDir = m_SaveSetting.LookDir;
+        m_LookDist = m_SaveSetting.LookDist;
+        m_Offset = m_InitSetting.Offset;
+    }
+
     m_MaxSpeed = m_InitSetting.MaxSpeed;
     m_MinSpeed = m_InitSetting.MinSpeed;
-    m_Offset = m_InitSetting.Offset;
     m_RotationSpeed = m_InitSetting.RotationSpeed;
     m_ThresholdDistance = m_InitSetting.ThresholdDistance;
     m_ZoomMaxSpeed = m_InitSetting.ZoomMaxSpeed;
@@ -996,7 +1004,7 @@ void CCameraController::FixedView(bool _IsImmediate, Vec3 _FixedViewPos)
 
 void CCameraController::SetElfilisTwoTarget()
 {
-    LoadInitSetting();
+    LoadInitSetting(true);
 
     SetMainTarget(PLAYER);
     Boss(BOSS, 100.f, 0.5f);
@@ -1078,7 +1086,7 @@ void CCameraController::SetElfilisGround()
 
 void CCameraController::SetMorphoTwoTarget()
 {
-    LoadInitSetting();
+    LoadInitSetting(true);
 
     SetMainTarget(PLAYER);
     Boss(BOSS, 100.f, 0.5f);

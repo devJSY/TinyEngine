@@ -87,7 +87,7 @@ void CMorphoDemo_Phase2::Exit_Step()
         break;
     case StateStep::Progress: {
         // Camera : º¹±¸
-        CAMERACTRL->LoadInitSetting();
+        CAMERACTRL->LoadInitSetting(true);
         CAMERACTRL->SetMorphoTwoTarget();
     }
     break;

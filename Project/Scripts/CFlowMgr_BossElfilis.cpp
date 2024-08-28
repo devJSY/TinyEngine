@@ -129,7 +129,6 @@ void CFlowMgr_BossElfilis::ChangeFlowClear()
     BOSS->SetActive(false);
 
     CAMERACTRL->SetMainTarget(PLAYER);
-    CAMERACTRL->Normal(true);
     CAMERACTRL->SetImmediate(false);
 
     PLAYERFSM->ChangeState(L"STAGE_CLEAR");

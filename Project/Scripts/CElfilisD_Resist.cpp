@@ -85,7 +85,7 @@ void CElfilisD_Resist::Enter_Step()
         m_AccTime = 0.f;
 
         // Camera : ÅõÅ¸°Ù
-        CAMERACTRL->LoadInitSetting();
+        CAMERACTRL->LoadInitSetting(true);
         CAMERACTRL->SetElfilisTwoTarget();
     }
     break;

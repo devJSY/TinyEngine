@@ -91,7 +91,7 @@ void CElfilisD_ResistFail::Exit_Step()
 
         // Camera : Ä¿ºñÅ¸°Ù
         CAMERACTRL->SetMainTarget(PLAYER);
-        CAMERACTRL->LoadInitSetting();
+        CAMERACTRL->LoadInitSetting(true);
         CAMERACTRL->ResetCamera();
     }
     break;
