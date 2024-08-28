@@ -742,11 +742,22 @@ void GamePlayStatic::Play2DSound(const wstring& _SoundPath, int _Loop, float _Vo
 
     if (nullptr != pSound)
     {
-        pSound->Play(_Loop, _Volume, _Overlap);
+        pSound->Play2D(_Loop, _Volume, _Overlap);
     }
 }
 
-void GamePlayStatic::Play2DBGM(const wstring& _SoundPath, float _Volume)
+void GamePlayStatic::Play3DSound(const wstring& _SoundPath, Vec3 _WorldPos, int _Loop, float _Volume, bool _Overlap, float _Mindistance,
+                                 float _Maxdistance)
+{
+    Ptr<CSound> pSound = CAssetMgr::GetInst()->Load<CSound>(_SoundPath, _SoundPath);
+
+    if (nullptr != pSound)
+    {
+        pSound->Play3D(_WorldPos, _Loop, _Volume, _Overlap, _Mindistance, _Maxdistance);
+    }
+}
+
+void GamePlayStatic::PlayBGM(const wstring& _SoundPath, float _Volume)
 {
     static Ptr<CSound> CurBGM = nullptr;
 
@@ -759,7 +770,7 @@ void GamePlayStatic::Play2DBGM(const wstring& _SoundPath, float _Volume)
             CurBGM->Stop();
         }
 
-        pSound->Play(0, _Volume);
+        pSound->Play2D(0, _Volume);
         CurBGM = pSound;
     }
 }

@@ -23,11 +23,12 @@ CSound::~CSound()
     }
 }
 
-int CSound::Play(int _iRoopCount, float _fVolume, bool _bOverlap)
+int CSound::Play2D(int _iRoopCount, float _fVolume, bool _bOverlap)
 {
     if (_iRoopCount <= -1)
     {
         assert(nullptr);
+        return E_FAIL;
     }
 
     // 재생되고 있는 채널이 있는데, 중복재생을 허용하지 않았다 -> 재생 안함
@@ -44,6 +45,62 @@ int CSound::Play(int _iRoopCount, float _fVolume, bool _bOverlap)
     // 재생 실패
     if (nullptr == pChannel)
         return E_FAIL;
+
+    pChannel->setVolume(_fVolume);
+
+    pChannel->setCallback(CHANNEL_CALLBACK);
+    pChannel->setUserData(this);
+
+    pChannel->setMode(FMOD_LOOP_NORMAL);
+    pChannel->setLoopCount(_iRoopCount);
+
+    m_listChannel.push_back(pChannel);
+
+    int iIdx = -1;
+    pChannel->getIndex(&iIdx);
+    m_bPaused = false;
+
+    return iIdx;
+}
+
+int CSound::Play3D(Vec3 _WorldPos, int _iRoopCount, float _fVolume, bool _bOverlap, float _Mindistance, float _Maxdistance)
+{
+    if (_iRoopCount <= -1)
+    {
+        assert(nullptr);
+        return E_FAIL;
+    }
+
+    // 재생되고 있는 채널이 있는데, 중복재생을 허용하지 않았다 -> 재생 안함
+    if (!_bOverlap && !m_listChannel.empty())
+    {
+        return E_FAIL;
+    }
+
+    // Distance 가 음수인 경우
+    if (_Mindistance < 0.f || _Maxdistance < 0.f)
+    {
+        return E_FAIL;
+    }
+
+    _iRoopCount -= 1;
+
+    FMOD::Channel* pChannel = nullptr;
+    g_pFMOD->playSound(m_pSound, nullptr, false, &pChannel);
+
+    // 재생 실패
+    if (nullptr == pChannel)
+        return E_FAIL;
+
+    // Distance 예외처리
+    if (_Mindistance > _Maxdistance)
+    {
+        std::swap(_Mindistance, _Maxdistance);
+    }
+
+    FMOD_VECTOR pos = {_WorldPos.z, _WorldPos.y, _WorldPos.z};
+    pChannel->set3DAttributes(&pos, nullptr);
+    pChannel->set3DMinMaxDistance(_Mindistance, _Maxdistance);
 
     pChannel->setVolume(_fVolume);
 
@@ -203,7 +260,7 @@ void CSound::RemoveChannel(FMOD::Channel* _pTargetChannel)
 
 int CSound::Load(const wstring& _strFilePath)
 {
-    if (FMOD_OK != g_pFMOD->createSound(ToString(_strFilePath).c_str(), FMOD_DEFAULT, nullptr, &m_pSound))
+    if (FMOD_OK != g_pFMOD->createSound(ToString(_strFilePath).c_str(), FMOD_DEFAULT | FMOD_3D, nullptr, &m_pSound))
     {
         assert(nullptr);
         return E_FAIL;
