@@ -98,6 +98,7 @@ void CSurpriseBoardScript::EnterState(SurpriseBoardState _state)
     switch (m_eState)
     {
     case SurpriseBoardState::ArmMove: {
+        //GamePlayStatic::Play2DSound(L"sound\\wav\\GimmickSurpriseBoard\\0001.wav", 1, 0.5f);
         true == m_bIsRight ? Animator()->Play(ANIMPREFIX("ArmMoveR"), false) : Animator()->Play(ANIMPREFIX("ArmMoveL"), false);
     }
     break;

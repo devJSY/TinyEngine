@@ -118,6 +118,7 @@ void CSolarChargeScript::EnterState()
     }
     break;
     case SolarChargeState::ChargeOn: {
+        // GamePlayStatic::Play2DSound(L"sound\\wav\\GimmickSolarPanel\\0000.wav", 1, 0.5f);
         Animator()->Play(ANIMPREFIX("Charge"), false);
     }
     break;
@@ -126,12 +127,14 @@ void CSolarChargeScript::EnterState()
     }
     break;
     case SolarChargeState::ChargedStart: {
+        //GamePlayStatic::Play2DSound(L"sound\\wav\\GimmickSolarPanel\\0001.wav", 1, 0.5f);
         Animator()->Play(ANIMPREFIX("ChargedStart"), false);
     }
     break;
     case SolarChargeState::ChargedWait:
         break;
     case SolarChargeState::Decreases: {
+        // GamePlayStatic::Play2DSound(L"sound\\wav\\GimmickSolarPanel\\0002.wav", 1, 0.5f);
         Animator()->Play(ANIMPREFIX("Decreases"), false);
     }
     break;

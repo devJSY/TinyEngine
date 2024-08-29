@@ -201,7 +201,7 @@ void CUIBossHPScript::HPTick()
             if (m_bDamaged)
             {
                 m_bDamaged = false;
-                m_fCurPrevHP = m_fPrevHP = m_fCurHP;
+                //m_fCurPrevHP = m_fPrevHP = m_fCurHP;
             }
         }
     }
@@ -254,7 +254,8 @@ void CUIBossHPScript::HealScaling()
     if (m_fCurHP <= m_fPrevHP)
     {
         m_fPrevHP = m_fCurHP;
-        m_bIsHealedScaling = false;
+        m_bIsHealedScaling = true;
+        m_bHpHealed = false;
     }
     m_pRenderer->GetMaterial(0)->SetScalarParam(VEC4_1, Vec4(0.f, 176.f, 151.f, 255.f) / 255.f);
     float _fScalingRatio = m_fPrevHP / m_fMaxHP;
@@ -306,25 +307,25 @@ void CUIBossHPScript::HPDamageTask()
 
 void CUIBossHPScript::HPHealTask()
 {
-    for (size_t i = 0; i < m_vHealTask.size(); ++i)
-    {
-        // m_fPrevHP는 시작 할 때 현재 HP를 복사한다.
-        if (m_fCurPrevHP < m_vHealTask[i].fCurHP)
-        {
-            m_fAccTime = 0.f;
-            m_fCurPrevHP = m_vHealTask[i].fCurHP;
-        }
-    }
+    //for (size_t i = 0; i < m_vHealTask.size(); ++i)
+    //{
+    //    // m_fPrevHP는 시작 할 때 현재 HP를 복사한다.
+    //    if (m_fCurPrevHP < m_vHealTask[i].fCurHP)
+    //    {
+    //        m_fAccTime = 0.f;
+    //        m_fCurPrevHP = m_vHealTask[i].fCurHP;
+    //    }
+    //}
 
-    m_fAccTime += DT;
-    if (m_fAccTime >= m_fComboTime)
-    {
-        m_fAccTime = 0.f;
-        m_bHpHealed = false;
-        m_bIsScaling = false;
-        m_bIsHealedScaling = true;
-        m_vHealTask.clear();
-    }
+    //m_fAccTime += DT;
+    //if (m_fAccTime >= m_fComboTime)
+    //{
+    //    m_fAccTime = 0.f;
+    //    m_bHpHealed = false;
+    //    m_bIsScaling = false;
+    //    m_bIsHealedScaling = true;
+    //    m_vHealTask.clear();
+    //}
 }
 
 UINT CUIBossHPScript::SaveToLevelFile(FILE* _File)

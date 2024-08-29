@@ -61,6 +61,9 @@ void CFlowMgr_LvStart::LevelStart()
     {
         GamePlayStatic::DeleteAsset(ASSET_TYPE::PREFAB, MainPlayerPref.Get());
     }
+
+    // BGM
+    // GamePlayStatic::Play2DBGM(L"sound\\stream\\K15_TitleNewWorld1.marker.wav", 0.2f);
 }
 
 void CFlowMgr_LvStart::LevelEnd()

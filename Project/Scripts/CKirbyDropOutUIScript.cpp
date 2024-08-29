@@ -16,7 +16,7 @@ CKirbyDropOutUIScript::CKirbyDropOutUIScript()
     , m_bFailed(false)
     , m_fAccTime(0.f)
     , m_fAppearTime(0.f)
-    , m_fWaitTime(1.5f)
+    , m_fWaitTime(1.f)
     , m_fDisappearTime(0.f)
     , m_bInterAppear(false)
 {
@@ -69,6 +69,8 @@ void CKirbyDropOutUIScript::begin()
             }
         }
     }
+
+    m_fAppearTime = m_fDisappearTime = 1.f;
 }
 
 void CKirbyDropOutUIScript::tick()
