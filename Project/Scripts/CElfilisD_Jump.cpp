@@ -57,6 +57,7 @@ void CElfilisD_Jump::Enter_Step()
         JumpDir.Normalize();
 
         GetOwner()->Rigidbody()->SetDrag(3.f);
+        GetOwner()->Rigidbody()->SetVelocity(Vec3::Zero);
         GetOwner()->Rigidbody()->AddForce(JumpDir * 3800.f, ForceMode::Impulse);
 
         // Camera : ¿·±Ò∞Ì¡§

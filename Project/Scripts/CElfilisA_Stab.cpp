@@ -93,7 +93,14 @@ void CElfilisA_Stab::Enter_Step()
         HalberdTop += Halberd->Transform()->GetWorldDir(DIR_TYPE::UP) *
                       (Halberd->BoxCollider()->GetCenter().y + Halberd->BoxCollider()->GetSize().y * Halberd->Transform()->GetWorldScale().y / 2.f);
         m_ForceDir = (PLAYER->Transform()->GetWorldPos() - HalberdTop).Normalize();
+        
+        GetOwner()->Rigidbody()->SetVelocity(Vec3::Zero);
         GetOwner()->Rigidbody()->AddForce(m_ForceDir * 1800.f, ForceMode::Impulse);
+
+        Vec3 ElfilisDir = m_ForceDir;
+        ElfilisDir.y = 0.f;
+        ElfilisDir.Normalize();
+        GetOwner()->Transform()->SetDirection(ElfilisDir);
     }
     break;
     case StateStep::Progress: {
