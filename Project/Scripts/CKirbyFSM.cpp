@@ -342,6 +342,8 @@ void CKirbyFSM::begin()
     // ---------------------------
     // Mesh & Mtrls
     // ---------------------------
+    MeshRender()->SetEnabled(true);
+
     // Parsing Mesh
     PLAYER->MeshRender()->SetMeshData(CPlayerMgr::GetPlayerMeshData());
     CPlayerMgr::ClearBodyMtrl();
@@ -377,6 +379,7 @@ void CKirbyFSM::begin()
     if (m_CurHat)
     {
         GamePlayStatic::AddChildObject(GetOwner(), m_CurHat, L"Hat");
+        GetCurHat()->MeshRender()->SetEnabled(true);
     }
 
     if (m_CurHatBlade)
@@ -387,6 +390,7 @@ void CKirbyFSM::begin()
     if (m_CurWeapon)
     {
         GamePlayStatic::AddChildObject(GetOwner(), m_CurWeapon, L"Weapon");
+        GetCurWeapon()->MeshRender()->SetEnabled(true);
     }
 
     // ---------------------------
