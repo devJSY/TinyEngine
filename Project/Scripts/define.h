@@ -109,3 +109,10 @@ enum class BossLevelFlow
     Death,
     Clear,
 };
+
+enum class BossDemoType
+{
+    Encounter,
+    StartPhase2,
+    NONE,
+};

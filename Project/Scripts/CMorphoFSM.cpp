@@ -195,7 +195,7 @@ void CMorphoFSM::tick()
 
     //if (KEY_TAP(KEY::ENTER))
     //{
-    //    ChangeStateGroup(MorphoStateGroup::AtkGroundTeleport1, L"ATKG_TELEPORT_TORNADO");
+    //    ChangeStateGroup(MorphoStateGroup::AtkAir1, L"ATKA_SHOCKWAVE");
     //}
 
     // Emissive

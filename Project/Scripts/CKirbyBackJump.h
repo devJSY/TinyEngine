@@ -5,6 +5,7 @@ class CKirbyBackJump : public CState
 private:
     float m_InitSpeed;
     float m_JumpPower;
+    float m_PrevGravity;
     bool m_StateEnter;
 
 public:

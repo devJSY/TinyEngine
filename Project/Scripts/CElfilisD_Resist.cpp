@@ -2,7 +2,7 @@
 #include "CElfilisD_Resist.h"
 #include "CElfilisFSM.h"
 #include "CCameraController.h"
-#include "CFlowMgr_BossElfilis.h"
+#include "CBossLevelFlowMgr.h"
 
 CElfilisD_Resist::CElfilisD_Resist()
     : m_AccTime(0.f)
@@ -58,7 +58,10 @@ void CElfilisD_Resist::Enter_Step()
         GetOwner()->Animator()->Play(ANIMPREFIX("LastDamageStart"), false, false, 1.5f, 0.f);
         GetOwner()->Transform()->SetWorldPos(ELFFSM->GetMapFloorOffset());
         GetOwner()->Transform()->SetWorldRotation(Vec3());
-        CBossMgr::GetElfilisFlowMgr()->ChangeFlowDemo();
+
+        ELFFSM->SetGlobalState(true);
+
+        CBossMgr::GetBossFlowMgr()->ChangeFlow(BossLevelFlow::DemoPlay);
 
         // Camera : 에피리스 타겟 (진입위치, 각도 등 항상 같음)
         CAMERACTRL->SetMainTarget(BOSS);
@@ -81,7 +84,7 @@ void CElfilisD_Resist::Enter_Step()
     break;
     case StateStep::Start: {
         //GetOwner()->Animator()->Play(ANIMPREFIX("ResistStart"), false, false, 1.5f);
-        CBossMgr::GetElfilisFlowMgr()->ChangeFlowFight();
+        CBossMgr::GetBossFlowMgr()->ChangeFlow(BossLevelFlow::Fight);
         m_AccTime = 0.f;
 
         // Camera : 투타겟
@@ -170,12 +173,14 @@ void CElfilisD_Resist::Progress()
 
     if (bSuccess)
     {
+        ELFFSM->SetGlobalState(false);
         ELFFSM->ChangeStateGroup(ElfilisStateGroup::DEMO, L"DEMO_RESIST_FAIL");
     }
     else
     {
         if (m_AccTime > 10.f)
         {
+            ELFFSM->SetGlobalState(false);
             ELFFSM->ChangeStateGroup(ElfilisStateGroup::DEMO, L"DEMO_RESIST_SUCCESS");
         }
     }

@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "CMorphoDemo_Death.h"
 #include "CMorphoFSM.h"
-#include "CFlowMgr_BossMorpho.h"
+#include "CBossLevelFlowMgr.h"
 #include "CCameraController.h"
 
 CMorphoDemo_Death::CMorphoDemo_Death()
@@ -59,13 +59,10 @@ void CMorphoDemo_Death::Enter_Step()
 
         MRPFSM->SetGlobalState(true);
 
+        CBossMgr::GetBossFlowMgr()->ChangeFlow(BossLevelFlow::Death);
+
         // Camera : Àá±ñ¸ØÃã
         CAMERACTRL->SetLock(true, 0.5f);
-
-        if (CBossMgr::GetMorphoFlowMgr())
-        {
-            CBossMgr::GetMorphoFlowMgr()->ChangeFlowDeath();
-        }
     }
     break;
     case StateStep::Start: {
@@ -151,10 +148,7 @@ void CMorphoDemo_Death::End()
     {
         //@EFFECT ÅÍÁö´Â ÆÄÆ¼Å¬
 
-        if (CBossMgr::GetMorphoFlowMgr())
-        {
-            MRPFSM->SetGlobalState(false);
-            CBossMgr::GetMorphoFlowMgr()->ChangeFlowClear();
-        }
+        MRPFSM->SetGlobalState(false);
+        CBossMgr::GetBossFlowMgr()->ChangeFlow(BossLevelFlow::Clear);
     }
 }

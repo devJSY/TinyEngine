@@ -57,6 +57,7 @@ void CElfilisA_MoveR::Enter_Step()
         // move down
         Vec3 DownForce = Vec3(0.f, -1.f, 0.f) * 200.f;
         GetOwner()->Rigidbody()->SetDrag(2.f);
+        GetOwner()->Rigidbody()->SetVelocity(Vec3::Zero);
         GetOwner()->Rigidbody()->AddForce(DownForce, ForceMode::Impulse);
     }
     break;

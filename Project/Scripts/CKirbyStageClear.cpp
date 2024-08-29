@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "CKirbyStageClear.h"
-
 #include "CCameraController.h"
-
 #include "CLevelFlowMgr.h"
 
 CKirbyStageClear::CKirbyStageClear()
@@ -216,19 +214,21 @@ void CKirbyStageClear::tick()
 
 void CKirbyStageClear::Enter()
 {
+    // 애니메이션 재생
+    PLAYER->Animator()->Play(ANIMPREFIX("ClearDanceLong"), false, false, 1.7f);
+
     // @TODO StageClear Sound
+
+    // 커비 표정 세팅
+    CPlayerMgr::ClearMouthMtrl();
+    CPlayerMgr::SetPlayerMtrl(CPlayerMgr::GetPlayerMeshIdx().MouthSmileClose);
 
     // MoveController Lock
     PLAYERCTRL->LockInput();
     PLAYERCTRL->LockJump();
     PLAYERCTRL->LockMove();
 
-    // 커비 표정 세팅
-    CPlayerMgr::ClearMouthMtrl();
-    CPlayerMgr::SetPlayerMtrl(CPlayerMgr::GetPlayerMeshIdx().MouthSmileClose);
-
-    // 애니메이션 재생
-    PLAYER->Animator()->Play(ANIMPREFIX("ClearDanceLong"), false, false, 1.7f);
+    PLAYERFSM->SetInvincible(true);
 
     m_Step = 0;
     m_Duration = 2.f;
@@ -237,4 +237,9 @@ void CKirbyStageClear::Enter()
 
 void CKirbyStageClear::Exit()
 {
+    PLAYERCTRL->UnlockInput();
+    PLAYERCTRL->UnlockJump();
+    PLAYERCTRL->UnlockMove();
+
+    PLAYERFSM->SetInvincible(false);
 }

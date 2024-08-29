@@ -2,7 +2,7 @@
 #include "CElfilisD_ResistFail.h"
 #include "CElfilisFSM.h"
 #include "CCameraController.h"
-#include "CFlowMgr_BossElfilis.h"
+#include "CBossLevelFlowMgr.h"
 #include "CStageClear.h"
 
 CElfilisD_ResistFail::CElfilisD_ResistFail()
@@ -45,6 +45,7 @@ void CElfilisD_ResistFail::Enter_Step()
         m_AccTime = 0.f;
 
         ELFFSM->SetResist(true);
+        ELFFSM->SetGlobalState(true);
 
         // TimeScale & Camera Àá±ñ ¸ØÃã
         CTimeMgr::GetInst()->SetTimeScale(0.5f, 0.f);
@@ -59,7 +60,7 @@ void CElfilisD_ResistFail::Enter_Step()
         ELFFSM->DestroySumon();
 
         // Flow Mgr
-        CBossMgr::GetElfilisFlowMgr()->ChangeFlowDeath();
+        CBossMgr::GetBossFlowMgr()->ChangeFlow(BossLevelFlow::Death);
 
         // CAMERA : ¿¡ÇÇ¸®½º Å¸°Ù, ½Ã³×¸¶ºä
         CAMERACTRL->SetMainTarget(BOSS);
@@ -129,10 +130,7 @@ void CElfilisD_ResistFail::Progress()
             //@EFFECT ÅÍÁö´Â ÆÄÆ¼Å¬
         }
 
-        if (CBossMgr::GetElfilisFlowMgr())
-        {
-            ELFFSM->SetGlobalState(false);
-            CBossMgr::GetElfilisFlowMgr()->ChangeFlowClear();
-        }
+        ELFFSM->SetGlobalState(false);
+        CBossMgr::GetBossFlowMgr()->ChangeFlow(BossLevelFlow::Clear);
     }
 }

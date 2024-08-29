@@ -7,6 +7,7 @@
 
 CKirbyObject_VendingMachine::CKirbyObject_VendingMachine()
     : m_SaveJumpPower(10.f)
+    , m_SavedSpeed(0.f)
     , m_Can(nullptr)
 {
     m_Can = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\CanJuice.pref", L"prefab\\CanJuice.pref");
@@ -190,11 +191,9 @@ void CKirbyObject_VendingMachine::AttackEndExit()
 void CKirbyObject_VendingMachine::DropObjectEnter()
 {
     CKirbyObject::DropObjectEnter();
-    UnitInfo PlayerInfo = PLAYERUNIT->GetInitInfo();
-    PLAYERCTRL->SetSpeed(PlayerInfo.Speed);
-    PLAYERCTRL->SetSpeed(10.f);
+
+    PLAYERCTRL->SetSpeed(m_SavedSpeed);
     PLAYERCTRL->SetJumpPower(m_SaveJumpPower);
-    // PLAYERCTRL->SetRotSpeed(PlayerInfo.RotSpeed); //@TODO 머지후변경
 
     // 콜라이더 & 바디콜라이더 크기 세팅
     CPlayerMgr::ResetBodyColliderSetting();
@@ -207,8 +206,9 @@ void CKirbyObject_VendingMachine::ChangeObjectEnter()
 {
     CKirbyObject::ChangeObjectEnter();
 
-    PLAYERCTRL->SetSpeed(8.f);
+    m_SavedSpeed = PLAYERCTRL->GetSpeed();
     m_SaveJumpPower = PLAYERCTRL->GetJumpPower();
+    PLAYERCTRL->SetSpeed(8.f);
     PLAYERCTRL->SetJumpPower(m_SaveJumpPower * 0.8f);
 
     // 콜라이더 & 바디콜라이더 크기 세팅

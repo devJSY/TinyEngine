@@ -3,6 +3,7 @@
 
 CKirbyHovering::CKirbyHovering()
     : m_SavedGravity(0.f)
+    , m_SavedSpeed(0.f)
     , m_bFrmEnter(true)
 {
 }
@@ -57,6 +58,7 @@ void CKirbyHovering::Enter()
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyBig));
 
     m_SavedGravity = PLAYERCTRL->GetGravity();
+    m_SavedSpeed = PLAYERCTRL->GetSpeed();
     PLAYERCTRL->SetGravity(-10.f);
     PLAYERCTRL->SetSpeed(PLAYERUNIT->GetInitInfo().Speed / 3.f);
     PLAYERCTRL->ClearVelocityY();
@@ -74,7 +76,7 @@ void CKirbyHovering::Exit()
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyNormal));
 
     PLAYERCTRL->SetGravity(m_SavedGravity);
-    PLAYERCTRL->SetSpeed(PLAYERUNIT->GetInitInfo().Speed);
+    PLAYERCTRL->SetSpeed(m_SavedSpeed);
 
     PLAYERFSM->SetDroppable(false);
     PLAYERFSM->SetHovering(false);

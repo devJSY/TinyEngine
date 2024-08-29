@@ -2,7 +2,7 @@
 #include "CElfilisD_ResistSuccess.h"
 #include "CElfilisFSM.h"
 #include "CElfilisUnit.h"
-#include "CFlowMgr_BossElfilis.h"
+#include "CBossLevelFlowMgr.h"
 
 CElfilisD_ResistSuccess::CElfilisD_ResistSuccess()
 {
@@ -41,7 +41,8 @@ void CElfilisD_ResistSuccess::Enter_Step()
         GetOwner()->Animator()->Play(ANIMPREFIX("ResistSuccess"), false, false, 1.5f);
         ELFFSM->SetResist(true);
         ((CElfilisUnit*)BOSSUNIT)->ResistSuccess();
-        CBossMgr::GetElfilisFlowMgr()->ChangeFlowFight();
+
+        CBossMgr::GetBossFlowMgr()->ChangeFlow(BossLevelFlow::Fight);
     }
     break;
     case StateStep::End: {
