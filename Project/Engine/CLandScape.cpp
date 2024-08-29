@@ -154,11 +154,14 @@ void CLandScape::UpdateData()
     GetMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC2_0, vWeightMapResolution);
 
     // 타일 텍스쳐 전달
-    GetMaterial(0)->SetTexParam(TEX_PARAM::TEXARR_0, m_TileArrTex);
+    if (nullptr != m_TileArrTex)
+    {
+        GetMaterial(0)->SetTexParam(TEX_PARAM::TEXARR_0, m_TileArrTex);
 
-    // 타일 배열 개수 전달
-    float m_fTileCount = float(m_TileArrTex->GetArraySize() / 2); // 색상, 노말 합쳐져있어서 나누기 2 해줌
-    GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_0, m_fTileCount);
+        // 타일 배열 개수 전달
+        float m_fTileCount = float(m_TileArrTex->GetArraySize() / 2); // 색상, 노말 합쳐져있어서 나누기 2 해줌
+        GetMaterial(0)->SetScalarParam(SCALAR_PARAM::FLOAT_0, m_fTileCount);
+    }
 
     GetMaterial(0)->UpdateData();
 }

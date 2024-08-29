@@ -370,6 +370,9 @@
     <ClInclude Include="SimpleMath.h">
       <Filter>Module\SimpleMath</Filter>
     </ClInclude>
+    <ClInclude Include="CSoundListener.h">
+      <Filter>08. Component\SoundListener</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -725,6 +728,9 @@
     </ClCompile>
     <ClCompile Include="CLevelMgr_CreateDefaultKirbyLevel.cpp">
       <Filter>04. Manager\LevelMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CSoundListener.cpp">
+      <Filter>08. Component\SoundListener</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1156,6 +1162,9 @@
     </Filter>
     <Filter Include="ShaderCode\Kirby\UIShader\UIDefaultBluredShader">
       <UniqueIdentifier>{eec2f318-5245-4bff-9659-04c660fd91f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\SoundListener">
+      <UniqueIdentifier>{f3013da9-2792-4a5f-a8e7-d6624a8fed34}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

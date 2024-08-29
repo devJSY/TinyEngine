@@ -68,7 +68,9 @@ namespace GamePlayStatic
     void Physics_Event(CGameObject* _pObj, Physics_EVENT_TYPE _Type);
 
     void Play2DSound(const wstring& _SoundPath, int _Loop, float _Volume, bool _Overlap = true);
-    void Play2DBGM(const wstring& _SoundPath, float _Volume);
+    void Play3DSound(const wstring& _SoundPath, Vec3 _WorldPos, int _Loop, float _Volume, bool _Overlap = true, float _Mindistance = 1.f,
+                     float _Maxdistance = 500.f);
+    void PlayBGM(const wstring& _SoundPath, float _Volume);
 }
 
 int GetRandomInt(int _Min, int _Max);
