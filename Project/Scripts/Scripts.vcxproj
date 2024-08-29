@@ -427,6 +427,8 @@ call CodeGen.exe</Command>
     <ClInclude Include="CUIBossHPScript.h" />
     <ClInclude Include="CUIBurstStarSpawnEffectScript.h" />
     <ClInclude Include="CUIChangeAbilityStarEffect.h" />
+    <ClInclude Include="CUIChangeAbilityStarSpawnEffectScript.h" />
+    <ClInclude Include="CUIChangeAbilityStopStarEffect.h" />
     <ClInclude Include="CUIFlowMgr.h" />
     <ClInclude Include="CUIGlowMoveScript.h" />
     <ClInclude Include="CUIHPScript.h" />
@@ -437,9 +439,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CUITexManagerScript.h" />
     <ClInclude Include="CUITexScript.h" />
     <ClInclude Include="CUIUnitManagerScript.h" />
-    <ClInclude Include="CUIWipeScript.h" />
     <ClInclude Include="CUnitScript.h" />
-    <ClInclude Include="CWipeTriggerScript.h" />
     <ClInclude Include="define.h" />
     <ClInclude Include="CElfilisA_Idle.h" />
     <ClInclude Include="ElfilisDimensionSet.h">
@@ -772,6 +772,8 @@ call CodeGen.exe</Command>
     <ClCompile Include="CUIBossHPScript.cpp" />
     <ClCompile Include="CUIBurstStarSpawnEffectScript.cpp" />
     <ClCompile Include="CUIChangeAbilityStarEffect.cpp" />
+    <ClCompile Include="CUIChangeAbilityStarSpawnEffectScript.cpp" />
+    <ClCompile Include="CUIChangeAbilityStopStarEffect.cpp" />
     <ClCompile Include="CUIFlowMgr.cpp" />
     <ClCompile Include="CUIGlowMoveScript.cpp" />
     <ClCompile Include="CUIHPScript.cpp" />
@@ -782,7 +784,6 @@ call CodeGen.exe</Command>
     <ClCompile Include="CUITexManagerScript.cpp" />
     <ClCompile Include="CUITexScript.cpp" />
     <ClCompile Include="CUIUnitManagerScript.cpp" />
-    <ClCompile Include="CUIWipeScript.cpp" />
     <ClCompile Include="CUnitScript.cpp" />
     <ClCompile Include="CElfilisA_Idle.cpp" />
     <ClCompile Include="ElfilisDimensionSet.cpp">
@@ -793,7 +794,6 @@ call CodeGen.exe</Command>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="CWipeTriggerScript.cpp" />
     <ClCompile Include="CKirbyCantEat.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

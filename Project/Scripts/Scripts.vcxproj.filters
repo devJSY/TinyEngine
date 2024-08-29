@@ -619,12 +619,6 @@
     <ClInclude Include="CSurpriseBoardAttackScript.h">
       <Filter>Scripts\Gimmik\SupriseBoard\SurpriseAttack</Filter>
     </ClInclude>
-    <ClInclude Include="CUIWipeScript.h">
-      <Filter>Scripts\UI\UIWipe</Filter>
-    </ClInclude>
-    <ClInclude Include="CWipeTriggerScript.h">
-      <Filter>Scripts\UI\UIWipe\UIWipeTrigger</Filter>
-    </ClInclude>
     <ClInclude Include="CKirbyUnitScript.h">
       <Filter>Scripts\Character\Kirby\Unit</Filter>
     </ClInclude>
@@ -964,8 +958,14 @@
     <ClInclude Include="CUIBurstStarSpawnEffectScript.h">
       <Filter>Scripts\UI\UIEffect\UIBurstStarSpawnEffect</Filter>
     </ClInclude>
+    <ClInclude Include="CUIChangeAbilityStarSpawnEffectScript.h">
+      <Filter>Scripts\UI\UIEffect\UIChangeAbilityStarEffect\UIChangeAbilityStarSpawnEffectScript</Filter>
+    </ClInclude>
     <ClInclude Include="CUIChangeAbilityStarEffect.h">
-      <Filter>Scripts\UI\UIEffect\UIChangeAbilityStarEffect</Filter>
+      <Filter>Scripts\UI\UIEffect\UIChangeAbilityStarEffect\CUIAbilitySpiralStarEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="CUIChangeAbilityStopStarEffect.h">
+      <Filter>Scripts\UI\UIEffect\UIChangeAbilityStarEffect\CUIAbilityStopStarEffect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1596,12 +1596,6 @@
     <ClCompile Include="CSurpriseBoardAttackScript.cpp">
       <Filter>Scripts\Gimmik\SupriseBoard\SurpriseAttack</Filter>
     </ClCompile>
-    <ClCompile Include="CUIWipeScript.cpp">
-      <Filter>Scripts\UI\UIWipe</Filter>
-    </ClCompile>
-    <ClCompile Include="CWipeTriggerScript.cpp">
-      <Filter>Scripts\UI\UIWipe\UIWipeTrigger</Filter>
-    </ClCompile>
     <ClCompile Include="CKirbyUnitScript.cpp">
       <Filter>Scripts\Character\Kirby\Unit</Filter>
     </ClCompile>
@@ -1941,8 +1935,14 @@
     <ClCompile Include="CUIBurstStarSpawnEffectScript.cpp">
       <Filter>Scripts\UI\UIEffect\UIBurstStarSpawnEffect</Filter>
     </ClCompile>
+    <ClCompile Include="CUIChangeAbilityStarSpawnEffectScript.cpp">
+      <Filter>Scripts\UI\UIEffect\UIChangeAbilityStarEffect\UIChangeAbilityStarSpawnEffectScript</Filter>
+    </ClCompile>
     <ClCompile Include="CUIChangeAbilityStarEffect.cpp">
-      <Filter>Scripts\UI\UIEffect\UIChangeAbilityStarEffect</Filter>
+      <Filter>Scripts\UI\UIEffect\UIChangeAbilityStarEffect\CUIAbilitySpiralStarEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIChangeAbilityStopStarEffect.cpp">
+      <Filter>Scripts\UI\UIEffect\UIChangeAbilityStarEffect\CUIAbilityStopStarEffect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2651,12 +2651,6 @@
     <Filter Include="Scripts\Gimmik\SolarPanelObj">
       <UniqueIdentifier>{12e5453b-b78d-4702-a15c-d19a56510810}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\UI\UIWipe">
-      <UniqueIdentifier>{0444a1b1-24aa-4fd3-8e58-68300ea21f5b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\UI\UIWipe\UIWipeTrigger">
-      <UniqueIdentifier>{1154ae36-6ac7-49e2-9f7a-c42af591649d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scripts\Character\Kirby\KirbyMoveController">
       <UniqueIdentifier>{27405790-5a64-4418-891c-3f26add3e9f2}</UniqueIdentifier>
     </Filter>
@@ -3058,6 +3052,15 @@
     </Filter>
     <Filter Include="Scripts\UI\UIEffect\UIChangeAbilityStarEffect">
       <UniqueIdentifier>{6f6c5bd2-ca42-409a-9b65-bf02ee240c4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIEffect\UIChangeAbilityStarEffect\UIChangeAbilityStarSpawnEffectScript">
+      <UniqueIdentifier>{f200569b-f0be-4240-9a42-4bf9e176706f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIEffect\UIChangeAbilityStarEffect\CUIAbilitySpiralStarEffect">
+      <UniqueIdentifier>{bb64bbe6-7fe9-4a48-b5ed-a7552bd990b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIEffect\UIChangeAbilityStarEffect\CUIAbilityStopStarEffect">
+      <UniqueIdentifier>{d902e076-80eb-434d-b08a-cf75c6b725ec}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -63,8 +63,6 @@ CChangeAlphaScript
 CCrumbleScript
 CSurpriseBoardScript
 CSurpriseBoardAttackScript
-CUIWipeScript
-CWipeTriggerScript
 CKirbyUnitScript
 CSolarChargeScript
 CSolarOnceScript
@@ -121,4 +119,6 @@ CDamageStarEffect
 CMonsterDeadEffectSpawnScript
 CShcokWaveScript
 CUIBurstStarSpawnEffectScript
+CUIChangeAbilityStarSpawnEffectScript
 CUIChangeAbilityStarEffect
+CUIChangeAbilityStopStarEffect
