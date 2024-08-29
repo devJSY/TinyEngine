@@ -432,6 +432,20 @@ void CLevelFlowMgr::LevelRestart()
     // 현재 레벨을 다시 시작하기 위해 NextLevelPath 를 현재레벨의 Path로 바꿔준다.
     m_NextLevelPath = ToString(m_CurLevelPath);
 
+    // Restart 시에는 Kirby의 기본상태로 시작한다.
+    Ptr<CPrefab> KirbyPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Kirby.pref");
+    if (KirbyPref.Get())
+    {
+        KirbyPref->Save(L"prefab\\Main Player.pref");
+    }
+
+    Ptr<CPrefab> MainPlayerPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Main Player.pref");
+
+    if (MainPlayerPref.Get())
+    {
+        GamePlayStatic::DeleteAsset(ASSET_TYPE::PREFAB, MainPlayerPref.Get());
+    }
+
     // @TODO BGM 종료
 }
 
