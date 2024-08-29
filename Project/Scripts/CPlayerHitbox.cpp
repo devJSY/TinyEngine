@@ -157,7 +157,6 @@ UINT CPlayerHitbox::SaveToLevelFile(FILE* _File)
     fwrite(&m_bCallReward, 1, sizeof(bool), _File);
 
     MemoryByte += sizeof(float);
-    MemoryByte += sizeof(float);
     MemoryByte += sizeof(int);
     MemoryByte += sizeof(bool);
     MemoryByte += sizeof(float);
@@ -178,7 +177,6 @@ UINT CPlayerHitbox::LoadFromLevelFile(FILE* _File)
     fread(&m_bSummon, 1, sizeof(bool), _File);
     fread(&m_bCallReward, 1, sizeof(bool), _File);
 
-    MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(int);
     MemoryByte += sizeof(bool);
