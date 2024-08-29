@@ -88,7 +88,13 @@ public:
     void ChangeStateGroup(ElfilisStateGroup _Group, const wstring& _State = L"");
     void RepeatState(wstring _State = L"");
     ElfilisStateGroup FindNextStateGroup() const;
+
+    void OnWeaponTrigger();
+    void OffWeaponTrigger();
+    void ResetEmissive();
+
     void SpawnDropStar(Vec3 _Pos);
+    void DestroySumon();
 
 public:
     void ClearComboLevel() { m_ComboLevel = 0; }
@@ -97,10 +103,7 @@ public:
     void ProcPatternStep();
     void SetPhase(int _Phase) { m_Phase = _Phase; }
     void SetResist(bool _bResist) { m_bResist = _bResist; }
-    void ResetEmissive();
     void AddEmissive(Vec3 _Color);
-    void OnWeaponTrigger();
-    void OffWeaponTrigger();
 
     ElfilisStateGroup GetCurStateGroup() const { return m_CurStateGroup; }
     const vector<wstring>& GetCurPublicStates() const;

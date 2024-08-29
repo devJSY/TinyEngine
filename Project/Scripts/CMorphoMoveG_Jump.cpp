@@ -39,6 +39,7 @@ void CMorphoMoveG_Jump::Enter_Step()
         GetOwner()->Animator()->Play(ANIMPREFIX("Jump"), false, false, 1.5f);
 
         // Jump
+        GetOwner()->Rigidbody()->SetVelocity(Vec3::Zero);
         GetOwner()->Rigidbody()->AddForce(Vec3(0.f, 25.f, 0.f), ForceMode::Impulse);
         m_StartHeight = GetOwner()->Transform()->GetWorldPos().y;
     }

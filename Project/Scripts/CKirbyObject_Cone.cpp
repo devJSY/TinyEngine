@@ -5,6 +5,9 @@
 
 CKirbyObject_Cone::CKirbyObject_Cone()
     : m_bFrmEnter(true)
+    , m_PrevSpeed(0.f)
+    , m_PrevJumpPower(0.f)
+    , m_PrevGravity(0.f)
 {
     m_OriginObject = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Cone.pref", L"prefab\\Cone.pref");
     m_Mesh = CAssetMgr::GetInst()->Load<CMeshData>(L"meshdata\\KirbyCone.mdat", L"meshdata\\KirbyCone.mdat");
@@ -20,6 +23,9 @@ CKirbyObject_Cone::CKirbyObject_Cone()
 CKirbyObject_Cone::CKirbyObject_Cone(const CKirbyObject_Cone& _Origin)
     : CKirbyObject(_Origin)
     , m_bFrmEnter(true)
+    , m_PrevSpeed(0.f)
+    , m_PrevJumpPower(0.f)
+    , m_PrevGravity(0.f)
 {
     m_OriginObject = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Cone.pref", L"prefab\\Cone.pref");
     m_Mesh = CAssetMgr::GetInst()->Load<CMeshData>(L"meshdata\\KirbyCone.mdat", L"meshdata\\KirbyCone.mdat");
@@ -48,16 +54,13 @@ void CKirbyObject_Cone::Attack()
 
 void CKirbyObject_Cone::AttackEnter()
 {
-    PLAYER->Animator()->Play(ANIMPREFIX("TurnEnd"), false, false, 1.5f);
+    PLAYER->Animator()->Play(ANIMPREFIX("TurnEnd"), false, false, 2.f);
 
-    PLAYERCTRL->ClearVelocityY();
-    PLAYERCTRL->LockMove();
     PLAYERCTRL->LockDirection();
 }
 
 void CKirbyObject_Cone::AttackExit()
 {
-    PLAYERCTRL->UnlockMove();
     PLAYERCTRL->UnlockDirection();
 }
 
@@ -68,10 +71,11 @@ void CKirbyObject_Cone::AttackStart()
 
 void CKirbyObject_Cone::AttackStartEnter()
 {
-    PLAYER->Animator()->Play(ANIMPREFIX("Turn"), false, false, 1.5f);
+    PLAYER->Animator()->Play(ANIMPREFIX("Turn"), false, false, 2.f);
 
     // 속도세팅
     PLAYERCTRL->LockDirection();
+    PLAYERCTRL->ClearVelocityY();
     PLAYERCTRL->AddVelocity(Vec3(0.f, 15.f, 0.f));
 }
 
@@ -87,11 +91,14 @@ void CKirbyObject_Cone::AttackEnd()
 
 void CKirbyObject_Cone::AttackEndEnter()
 {
-    PLAYER->Animator()->Play(ANIMPREFIX("TurnEnd"), true, false, 1.5f);
+    PLAYER->Animator()->Play(ANIMPREFIX("TurnEnd"), true, false, 2.f);
     //@Effect 속도선
 
     PLAYERCTRL->LockDirection();
-    PLAYERCTRL->AddVelocity(Vec3(0.f, -20.f, 0.f));
+    PLAYERCTRL->LockMove();
+    PLAYERCTRL->SetLimitFallSpeed(false);
+    PLAYERCTRL->ClearVelocityY();
+    PLAYERCTRL->AddVelocity(Vec3(0.f, -30.f, 0.f));
 
     PLAYERFSM->SetInvincible(true);
 }
@@ -99,6 +106,8 @@ void CKirbyObject_Cone::AttackEndEnter()
 void CKirbyObject_Cone::AttackEndExit()
 {
     PLAYERCTRL->UnlockDirection();
+    PLAYERCTRL->UnlockMove();
+    PLAYERCTRL->SetLimitFallSpeed(true);
 
     PLAYERFSM->SetInvincible(false);
 }
@@ -115,7 +124,7 @@ void CKirbyObject_Cone::AttackCombo1()
 
 void CKirbyObject_Cone::AttackCombo1Enter()
 {
-    PLAYER->Animator()->Play(ANIMPREFIX("TurnLanding"), false, false, 1.5f);
+    PLAYER->Animator()->Play(ANIMPREFIX("TurnLanding"), false, false, 2.f);
     //@Effect 충돌이펙트
 
     // Crater 소환
@@ -156,7 +165,7 @@ void CKirbyObject_Cone::AttackCombo1End()
 
 void CKirbyObject_Cone::AttackCombo1EndEnter()
 {
-    PLAYER->Animator()->Play(ANIMPREFIX("TurnEndEnd"), false, false, 1.5f);
+    PLAYER->Animator()->Play(ANIMPREFIX("TurnEndEnd"), false, false, 2.f);
     //@Effect 충돌이펙트
 
     PLAYERCTRL->LockDirection();
@@ -182,9 +191,9 @@ void CKirbyObject_Cone::DropObjectEnter()
     // 콜라이더 & 바디콜라이더 크기 세팅
     CPlayerMgr::ResetBodyColliderSetting();
 
-    UnitInfo PlayerInfo = PLAYERUNIT->GetInitInfo();
-    PLAYERCTRL->SetSpeed(PlayerInfo.Speed);
-    PLAYERCTRL->SetRotSpeed(PlayerInfo.RotationSpeed);
+    PLAYERCTRL->SetSpeed(m_PrevSpeed);
+    PLAYERCTRL->SetJumpPower(m_PrevJumpPower);
+    PLAYERCTRL->SetGravity(m_PrevGravity);
 }
 
 // ===============
@@ -195,7 +204,11 @@ void CKirbyObject_Cone::ChangeObjectEnter()
 {
     CKirbyObject::ChangeObjectEnter();
 
-    PLAYERCTRL->SetSpeed(7.f);
+    m_PrevSpeed = PLAYERCTRL->GetSpeed();
+    m_PrevJumpPower = PLAYERCTRL->GetJumpPower();
+    m_PrevGravity = PLAYERCTRL->GetGravity();
+    PLAYERCTRL->SetJumpPower(15.f);
+    PLAYERCTRL->SetGravity(-40.f);
     PLAYERCTRL->SetSpeed(5.f);
 
     // 콜라이더 & 바디콜라이더 크기 세팅

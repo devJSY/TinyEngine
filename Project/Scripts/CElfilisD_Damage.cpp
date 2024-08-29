@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "CElfilisD_Damage.h"
 #include "CElfilisFSM.h"
-#include "CFlowMgr_BossElfilis.h"
+#include "CBossLevelFlowMgr.h"
 
 #include "CCameraController.h"
 
@@ -34,16 +34,13 @@ void CElfilisD_Damage::Enter_Step()
     switch (m_Step)
     {
     case StateStep::Start: {
-        Vec3 Dir = PLAYER->Transform()->GetWorldPos();
-        Dir.y = 0.f;
-        Dir.Normalize();
-
         GetOwner()->Animator()->Play(ANIMPREFIX("Damage"), false, false, 2.5f, 0.f);
         GetOwner()->Transform()->SetWorldPos(Vec3());
         GetOwner()->Transform()->SetWorldRotation(Vec3());
-        GetOwner()->Transform()->Slerp(Dir, 1.f);
 
-        CBossMgr::GetElfilisFlowMgr()->ChangeFlowDemo();
+        ELFFSM->SetGlobalState(true);
+
+        CBossMgr::GetBossFlowMgr()->ChangeFlow(BossLevelFlow::DemoPlay);
 
         // Camera : Fixed View
         CAMERACTRL->SetMainTarget(BOSS);
@@ -101,6 +98,7 @@ void CElfilisD_Damage::Process()
 
     if (t >= 1.f)
     {
+        ELFFSM->SetGlobalState(false);
         ELFFSM->ChangeStateGroup(ElfilisStateGroup::DEMO, L"DEMO_APPEAR2_JUMP");
     }
 }

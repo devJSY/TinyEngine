@@ -58,7 +58,6 @@ void CKirbyBodyCollider::OnTriggerEnter(CCollider* _OtherCollider)
         if (!pMonster)
             return;
         pMonster->GetDamage(HitInfo);
-        ((CUnitScript*)PLAYERUNIT)->AttackReward();
     }
 }
 float CKirbyBodyCollider::FindDamage()

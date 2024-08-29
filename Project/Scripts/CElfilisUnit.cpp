@@ -32,18 +32,14 @@ void CElfilisUnit::tick()
 {
     CUnitScript::tick();
 
-    //if (KEY_TAP(KEY::ENTER))
-    //{
-    //    m_CurInfo.HP = 10.f;
-    //}
-
     // Death & Resist
-    if (GetCurInfo().HP <= 50.f && !ELFFSM->IsResist())
+    if (m_CurInfo.HP <= m_InitInfo.MAXHP * 0.05f && !ELFFSM->IsResist())
     {
         ElfilisStateGroup CurStateGroup = ELFFSM->GetCurStateGroup();
         if ((CurStateGroup >= ElfilisStateGroup::GroundIdle || CurStateGroup <= ElfilisStateGroup::GroundAtkFar))
         {
             ELFFSM->ResetFSM();
+            m_CurInfo.HP = m_InitInfo.MAXHP * 0.05f; 
             ELFFSM->ChangeStateGroup(ElfilisStateGroup::DEMO, L"DEMO_RESIST");
         }
     }
@@ -51,18 +47,32 @@ void CElfilisUnit::tick()
     // Phase 1
     else if (ELFFSM->GetPhase() == 1)
     {
+        // Cheat : Phase 1 -> Phase 2
+        if ((KEY_PRESSED(KEY::LCTRL) && (KEY_TAP(KEY::ENTER))) || (KEY_TAP(KEY::LCTRL) && (KEY_PRESSED(KEY::ENTER))))
+        {
+            m_CurInfo.HP = m_InitInfo.HP * 0.4f;
+        }
+        
         ElfilisStateGroup CurStateGroup = ELFFSM->GetCurStateGroup();
 
         if ((CurStateGroup >= ElfilisStateGroup::GroundIdle || CurStateGroup <= ElfilisStateGroup::GroundAtkFar) &&
             GetCurInfo().HP <= GetCurInfo().MAXHP * 0.4f)
         {
-            ELFFSM->SetPhase(2);
             ELFFSM->ResetFSM();
+            ELFFSM->SetPhase(2);
             ELFFSM->ChangeStateGroup(ElfilisStateGroup::DEMO, L"DEMO_APPEAR2_DAMAGE");
         }
     }
 
     // Phase 2
+    else if (ELFFSM->GetPhase() == 2)
+    {
+        // Cheat : Death
+        if ((KEY_PRESSED(KEY::LCTRL) && (KEY_TAP(KEY::ENTER))) || (KEY_TAP(KEY::LCTRL) && (KEY_PRESSED(KEY::ENTER))))
+        {
+            m_CurInfo.HP = 0.f;
+        }
+    }
 }
 
 void CElfilisUnit::ResistSuccess()

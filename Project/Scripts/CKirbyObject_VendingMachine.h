@@ -4,6 +4,7 @@ class CKirbyObject_VendingMachine : public CKirbyObject
 {
 private:
     Ptr<CPrefab> m_Can;
+    float m_SavedSpeed;
     float m_SaveJumpPower;
 
 public:

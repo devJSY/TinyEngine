@@ -110,6 +110,8 @@ void CMorphoAtkA_DoubleSwordAtkL::Progress()
             GamePlayStatic::SpawnGameObject(m_LightningEffect, LAYER_EFFECT);
         }
 
+        CAMERACTRL->Shake(0.3f, 30.f, 30.f);
+
         // Spawn DropStar
         Vec3 SpawnPos = MRPFSM->GetWeaponL()->Transform()->GetWorldPos();
         Vec3 FrontDir = MRPFSM->GetWeaponL()->Transform()->GetWorldDir(DIR_TYPE::FRONT);

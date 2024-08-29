@@ -3,7 +3,7 @@
 #include "CBossMgr.h"
 #include "CElfilisFSM.h"
 #include "CElfilisBigFSM.h"
-#include "CFlowMgr_BossElfilis.h"
+#include "CBossLevelFlowMgr.h"
 
 #include "CCameraController.h"
 
@@ -37,6 +37,7 @@ void CElfilisD_Roar::tick()
 
     if (GetOwner()->Animator()->IsFinish())
     {
+        ELFFSM->SetGlobalState(false);
         ELFFSM->SetPattern(ElfilisPatternType::Appear2);
         ELFFSM->ProcPatternStep();
     }
@@ -46,6 +47,8 @@ void CElfilisD_Roar::Enter()
 {
     GetOwner()->Animator()->Play(ANIMPREFIX("Roar"), false);
     m_bFrmEnter = true;
+
+    ELFFSM->SetGlobalState(true);
 
     // Camera : È®´ë, ¼ÎÀÌÅ©
     CAMERACTRL->SetLock(false);
@@ -61,7 +64,7 @@ void CElfilisD_Roar::Enter()
 
 void CElfilisD_Roar::Exit()
 {
-    CBossMgr::GetElfilisFlowMgr()->ChangeFlowFight();
+    CBossMgr::GetBossFlowMgr()->ChangeFlow(BossLevelFlow::Fight);
 
     // Camera : ÇÏ´Ã ºä
     CAMERACTRL->SetElfilisSky();

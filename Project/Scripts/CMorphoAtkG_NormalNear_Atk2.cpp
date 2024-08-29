@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CMorphoAtkG_NormalNear_Atk2.h"
 #include "CMorphoFSM.h"
+#include "CCameraController.h"
 
 CMorphoAtkG_NormalNear_Atk2::CMorphoAtkG_NormalNear_Atk2()
 {
@@ -43,6 +44,8 @@ void CMorphoAtkG_NormalNear_Atk2::Enter_Step()
         m_ForceDir = PLAYER->Transform()->GetWorldPos() - GetOwner()->Transform()->GetWorldPos();
         m_ForceDir.y = 0.f;
         m_ForceDir.Normalize();
+
+        CAMERACTRL->Shake(0.3f, 20.f, 20.f);
     }
     break;
     case StateStep::End: {

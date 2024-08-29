@@ -2,10 +2,12 @@
 #include "CElfilisA_SlashCombo.h"
 #include "CElfilisFSM.h"
 #include "CMomentaryObjScript.h"
+#include "CCameraController.h"
 
 CElfilisA_SlashCombo::CElfilisA_SlashCombo()
     : m_ComboLevel(0)
     , m_SpawnDist(0.f)
+    , m_bCamShake(false)
 {
     m_StabRockPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\ElfilisSlashStone.pref", L"prefab\\ElfilisSlashStone.pref");
 }
@@ -77,6 +79,7 @@ void CElfilisA_SlashCombo::Enter_Step()
     break;
     case StateStep::Start: {
         GetOwner()->Animator()->Play(ANIMPREFIX("SlashStart"), false);
+        GetOwner()->Rigidbody()->SetVelocity(Vec3::Zero);
         GetOwner()->Rigidbody()->AddForce(Vec3(0.f, -1200.f, 1.f), ForceMode::Impulse);
         //@Effect Halberd 트레일 이펙트
     }
@@ -86,6 +89,7 @@ void CElfilisA_SlashCombo::Enter_Step()
         m_SpawnDist = 0.f;
         m_PrevPos = GetOwner()->Transform()->GetWorldPos();
         m_PrevPos.y = 0.f;
+        m_bCamShake = false;
 
         // Slash
         Vec3 Dir = PLAYER->Transform()->GetWorldPos() - GetOwner()->Transform()->GetWorldPos();
@@ -101,7 +105,7 @@ void CElfilisA_SlashCombo::Enter_Step()
         GetOwner()->Animator()->Play(ANIMPREFIX("SlashEnd"), false);
 
         // Up
-        GetOwner()->Rigidbody()->SetVelocity(Vec3());
+        GetOwner()->Rigidbody()->SetVelocity(Vec3::Zero);
         GetOwner()->Rigidbody()->AddForce(Vec3(0.f, 1000.f, 1.f), ForceMode::Impulse);
     }
     break;
@@ -160,7 +164,15 @@ void CElfilisA_SlashCombo::Progress()
     Vec3 CurPos = GetOwner()->Transform()->GetWorldPos() - ELFFSM->GetMapFloorOffset();
     CurPos.y = 0.f;
 
-    // Slash Rock 소환
+    // Camera Shake
+    Vec3 PlayerPos = PLAYER->Transform()->GetWorldPos(); 
+    if (!m_bCamShake && CurPos.Cross(PlayerPos).Dot(m_PrevPos.Cross(PlayerPos)) < 0.f)
+    {
+        m_bCamShake = true;
+        CAMERACTRL->Shake(0.5f, 20.f, 40.f);
+    }
+
+    // Spawn Slash Rock
     if (CurPos.Length() <= ELFFSM->GetMapSizeRadius())
     {
         float SpawnBetween = 5.f;

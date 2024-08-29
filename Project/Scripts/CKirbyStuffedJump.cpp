@@ -5,6 +5,7 @@ CKirbyStuffedJump::CKirbyStuffedJump()
     : m_JumpAccTime(0.f)
     , m_MinJumpTime(0.2f)
     , m_MaxJumpTime(0.3f)
+    , m_bVelocityCut(false)
 {
 }
 
@@ -21,17 +22,13 @@ void CKirbyStuffedJump::tick()
     {
         ChangeState(L"ATTACK");
     }
-    /*else if (PLAYERCTRL->IsGround())
-    {
-        ChangeState(L"STUFFED_LANDING");
-    }*/
+    //else if (PLAYERCTRL->IsGround())
+    //{
+    //    ChangeState(L"STUFFED_LANDING");
+    //}
     else if (m_JumpAccTime > m_MaxJumpTime)
     {
-        if (KEY_RELEASED(KEY_JUMP) || KEY_NONE(KEY_JUMP))
-        {
-            PLAYERFSM->SetLastJump(LastJumpType::HIGH);
-            ChangeState(L"STUFFED_JUMP_FALL");
-        }
+        ChangeState(L"STUFFED_JUMP_FALL");
     }
 
     if (m_JumpAccTime > m_MinJumpTime && m_bVelocityCut == false && ((KEY_RELEASED(KEY_JUMP) || KEY_NONE(KEY_JUMP))))

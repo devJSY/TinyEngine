@@ -66,7 +66,7 @@ void COutliner::render()
     for (UINT i = 0; i < LAYER_MAX; i++)
     {
         CLayer* layer = CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(i);
-        const vector<CGameObject*>& objs = layer->GetParentObject();
+        const vector<CGameObject*>& objs = layer->GetParentObjects();
 
         for (size_t i = 0; i < objs.size(); i++)
         {
@@ -711,6 +711,7 @@ void COutliner::DrawDetails(CGameObject* obj)
     DrawCapsuleCollider(obj);
     DrawMeshCollider(obj);
     DrawCharacterController(obj);
+    DrawSoundListener(obj);
     DrawMeshRender(obj);
     DrawTileMap(obj);
     DrawParticlesystem(obj);
@@ -2145,6 +2146,23 @@ void COutliner::DrawCharacterController(CGameObject* obj)
         if (ImGui::DragFloat(ImGui_LabelPrefix("Height").c_str(), &Height, 0.01f, 0.01f, D3D11_FLOAT32_MAX))
             pCharacterController->SetHeight(Height);
 
+        ImGui::TreePop();
+    }
+}
+
+void COutliner::DrawSoundListener(CGameObject* obj)
+{
+    CSoundListener* pSoundListener = obj->SoundListener();
+    if (nullptr == pSoundListener)
+        return;
+
+    bool open = ImGui::TreeNodeEx((void*)typeid(CSoundListener).hash_code(), m_DefaultTreeNodeFlag,
+                                  COMPONENT_TYPE_STRING[(UINT)COMPONENT_TYPE::SOUNDLISTENER]);
+
+    ComponentSettingsButton(pSoundListener);
+
+    if (open)
+    {
         ImGui::TreePop();
     }
 }

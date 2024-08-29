@@ -92,8 +92,15 @@ void CElfilisA_Stab::Enter_Step()
         Vec3 HalberdTop = Halberd->Transform()->GetWorldPos();
         HalberdTop += Halberd->Transform()->GetWorldDir(DIR_TYPE::UP) *
                       (Halberd->BoxCollider()->GetCenter().y + Halberd->BoxCollider()->GetSize().y * Halberd->Transform()->GetWorldScale().y / 2.f);
-        Vec3 Dir = (PLAYER->Transform()->GetWorldPos() - HalberdTop).Normalize();
-        GetOwner()->Rigidbody()->AddForce(Dir * 1800.f, ForceMode::Impulse);
+        m_ForceDir = (PLAYER->Transform()->GetWorldPos() - HalberdTop).Normalize();
+        
+        GetOwner()->Rigidbody()->SetVelocity(Vec3::Zero);
+        GetOwner()->Rigidbody()->AddForce(m_ForceDir * 1800.f, ForceMode::Impulse);
+
+        Vec3 ElfilisDir = m_ForceDir;
+        ElfilisDir.y = 0.f;
+        ElfilisDir.Normalize();
+        GetOwner()->Transform()->SetDirection(ElfilisDir);
     }
     break;
     case StateStep::Progress: {
@@ -131,7 +138,8 @@ void CElfilisA_Stab::Enter_Step()
             ELFFSM->SpawnDropStar(NewPos + NewDir * 100.f);
         }
 
-        // Åõ Å¸°Ù
+        // Camera : Åõ Å¸°Ù & Shake
+        CAMERACTRL->Shake(0.5f, 10.f, 50.f);
         CAMERACTRL->SetElfilisTwoTarget();
     }
     break;
@@ -177,11 +185,9 @@ void CElfilisA_Stab::Start()
 
 void CElfilisA_Stab::Progress()
 {
-    Vec3 Veloc = GetOwner()->Rigidbody()->GetVelocity();
-    if (Veloc.Length() <= 100.f)
+    if (GetOwner()->Rigidbody()->GetVelocity().Length() <= 50.f)
     {
-        Veloc = Veloc.Normalize() * 100.f;
-        GetOwner()->Rigidbody()->SetVelocity(Veloc);
+        GetOwner()->Rigidbody()->SetVelocity(m_ForceDir * 50.f);
     }
 
     if (ELFFSM->IsGround())

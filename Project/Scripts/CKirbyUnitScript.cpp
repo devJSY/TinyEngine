@@ -95,7 +95,7 @@ void CKirbyUnitScript::tick()
                 CLevelFlowMgr* FlowMgr = ManagerObj->GetScript<CLevelFlowMgr>();
                 if (FlowMgr)
                 {
-                    FlowMgr->OnRadialBlurEffect(1.f,20.f,5.f);
+                    FlowMgr->OnRadialBlurEffect(1.f, 20.f, 5.f);
                 }
             }
         }
@@ -133,10 +133,10 @@ void CKirbyUnitScript::tick()
             }
 
             NewDamage -= 5.f;
-            
+
             if (NewDamage >= 0.f)
             {
-                float Alpha = clamp((NewDamage / 5.f),0.f,1.f);
+                float Alpha = clamp((NewDamage / 5.f), 0.f, 1.f);
 
                 float CameraIntencity = Lerp(30.f, 40.f, Alpha);
                 float CameraDuration = Lerp(0.3f, 0.5f, Alpha);
@@ -166,13 +166,22 @@ void CKirbyUnitScript::tick()
 
 void CKirbyUnitScript::AttackReward()
 {
-    if (PLAYERFSM->GetCurAbilityIdx() == AbilityCopyType::SWORD)
+    // object
+    if (PLAYERFSM->GetCurObjectIdx() != ObjectCopyType::NONE)
     {
-        m_CurInfo.HP += 2.5f;
+    }
 
-        if (m_CurInfo.HP > m_CurInfo.MAXHP)
+    // ability
+    else
+    {
+        if (PLAYERFSM->GetCurAbilityIdx() == AbilityCopyType::SWORD)
         {
-            m_CurInfo.HP = m_CurInfo.MAXHP;
+            m_CurInfo.HP += 1.5f;
+
+            if (m_CurInfo.HP > m_CurInfo.MAXHP)
+            {
+                m_CurInfo.HP = m_CurInfo.MAXHP;
+            }
         }
     }
 }

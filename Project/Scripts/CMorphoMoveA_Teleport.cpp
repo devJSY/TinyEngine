@@ -33,6 +33,7 @@ void CMorphoMoveA_Teleport::Exit()
     Exit_Step();
 
     MRPFSM->EnableRender();
+    MRPFSM->EnableCollider();
     GetOwner()->Animator()->SetPlay(true);
     GetOwner()->Rigidbody()->SetUseGravity(true);
 }
@@ -73,6 +74,7 @@ void CMorphoMoveA_Teleport::Exit_Step()
     {
     case StateStep::Start: {
         MRPFSM->DisableRender();
+        MRPFSM->DisableCollider();
         MRPFSM->ResetEmissive();
     }
     break;

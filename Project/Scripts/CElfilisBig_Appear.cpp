@@ -41,10 +41,13 @@ void CElfilisBig_Appear::Enter()
 {
     GetOwner()->Animator()->Play(ANIMPREFIX("BigAppear"), false, false, 4.f, 0.f);
 
+    ELFFSM->GetBigBossFSM()->OffWeaponCollider();
+
     m_AccTime = 0.f;
     m_PrevAlpha = *(float*)(GetOwner()->MeshRender()->GetMaterial(0)->GetScalarParam(SCALAR_PARAM::FLOAT_2));
 }
 
 void CElfilisBig_Appear::Exit()
 {
+    ELFFSM->GetBigBossFSM()->OnWeaponCollider();
 }

@@ -29,6 +29,7 @@ void CKirbyHoveringLanding::Enter()
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyBig));
 
     PLAYERCTRL->LockJump();
+    m_SavedSpeed = PLAYERCTRL->GetSpeed();
     PLAYERCTRL->SetSpeed(PLAYERUNIT->GetInitInfo().Speed / 3.f);
 
     PLAYERFSM->SetHovering(true);
@@ -42,7 +43,7 @@ void CKirbyHoveringLanding::Exit()
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyNormal));
 
     PLAYERCTRL->UnlockJump();
-    PLAYERCTRL->SetSpeed(PLAYERUNIT->GetInitInfo().Speed);
+    PLAYERCTRL->SetSpeed(m_SavedSpeed);
 
     PLAYERFSM->SetHovering(false);
     PLAYERFSM->SetDroppable(false);

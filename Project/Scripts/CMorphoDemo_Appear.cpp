@@ -2,7 +2,7 @@
 #include "CMorphoDemo_Appear.h"
 #include "CMorphoFSM.h"
 #include "CChangeAlphaScript.h"
-#include "CFlowMgr_BossMorpho.h"
+#include "CBossLevelFlowMgr.h"
 #include "CCameraController.h"
 
 CMorphoDemo_Appear::CMorphoDemo_Appear()
@@ -47,11 +47,8 @@ void CMorphoDemo_Appear::Exit()
     {
         GamePlayStatic::DestroyGameObject(m_BossName);
     }
-
-    if (CBossMgr::GetMorphoFlowMgr())
-    {
-        CBossMgr::GetMorphoFlowMgr()->ChangeFlowFight();
-    }
+    
+    CBossMgr::GetBossFlowMgr()->ChangeFlow(BossLevelFlow::Fight);
 }
 
 void CMorphoDemo_Appear::Enter_Step()

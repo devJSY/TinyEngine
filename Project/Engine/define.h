@@ -40,7 +40,6 @@ public:                                                                         
     virtual type* Clone()                                                                                                                            \
     {                                                                                                                                                \
         return nullptr;                                                                                                                              \
-        assert(nullptr);                                                                                                                             \
     }                                                                                                                                                \
     type(const type& origin) = delete;
 
@@ -100,6 +99,9 @@ enum class COMPONENT_TYPE
     CAPSULECOLLIDER,
     MESHCOLLIDER,
     CHARACTERCONTROLLER,
+
+    // Sound
+    SOUNDLISTENER,
 
     // Render Component
     MESHRENDER,

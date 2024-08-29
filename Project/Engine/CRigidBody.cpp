@@ -74,7 +74,7 @@ void CRigidbody::AddForce(Vec3 _Force, ForceMode _Mode)
         break;
     case ForceMode::Impulse:
         body->addForce(physx::PxVec3(_Force.x, _Force.y, _Force.z), physx::PxForceMode::eIMPULSE);
-        break;
+    break;
     case ForceMode::VelocityChange:
         body->addForce(physx::PxVec3(_Force.x, _Force.y, _Force.z), physx::PxForceMode::eVELOCITY_CHANGE);
         break;

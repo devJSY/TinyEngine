@@ -2,6 +2,7 @@
 #include "CMorphoAtkG_NormalFar_SwordSlash.h"
 #include "CMorphoFSM.h"
 #include "CMomentaryObjScript.h"
+#include "CCameraController.h"
 
 CMorphoAtkG_NormalFar_SwordSlash::CMorphoAtkG_NormalFar_SwordSlash()
     : m_SwordSlash{nullptr,}
@@ -153,11 +154,14 @@ void CMorphoAtkG_NormalFar_SwordSlash::Combo1()
             Dir.Normalize();
             Vec3 Force = Dir * m_SlashSpeed;
 
+            GetOwner()->Rigidbody()->SetVelocity(Vec3::Zero);
             m_SwordSlash[0]->Rigidbody()->AddForce(Force, ForceMode::Impulse);
             m_SwordSlash[0]->Rigidbody()->SetFreezeRotation(AXIS_TYPE::X, true);
             m_SwordSlash[0]->Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
             m_SwordSlash[0]->Rigidbody()->SetFreezeRotation(AXIS_TYPE::Z, true);
         }
+
+        CAMERACTRL->Shake(0.3f, 20.f, 20.f);
     }
 
     // Change Step
@@ -183,11 +187,14 @@ void CMorphoAtkG_NormalFar_SwordSlash::Combo2()
             Dir.Normalize();
             Vec3 Force = Dir * m_SlashSpeed;
 
+            GetOwner()->Rigidbody()->SetVelocity(Vec3::Zero);
             m_SwordSlash[1]->Rigidbody()->AddForce(Force, ForceMode::Impulse);
             m_SwordSlash[1]->Rigidbody()->SetFreezeRotation(AXIS_TYPE::X, true);
             m_SwordSlash[1]->Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
             m_SwordSlash[1]->Rigidbody()->SetFreezeRotation(AXIS_TYPE::Z, true);
         }
+
+        CAMERACTRL->Shake(0.3f, 20.f, 20.f);
     }
 
     // Change Step
@@ -213,11 +220,14 @@ void CMorphoAtkG_NormalFar_SwordSlash::Combo3()
             Dir.Normalize();
             Vec3 Force = Dir * m_SlashSpeed * 1.6f;
 
+            GetOwner()->Rigidbody()->SetVelocity(Vec3::Zero);
             m_SwordSlash[2]->Rigidbody()->AddForce(Force, ForceMode::Impulse);
             m_SwordSlash[2]->Rigidbody()->SetFreezeRotation(AXIS_TYPE::X, true);
             m_SwordSlash[2]->Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
             m_SwordSlash[2]->Rigidbody()->SetFreezeRotation(AXIS_TYPE::Z, true);
         }
+
+        CAMERACTRL->Shake(0.3f, 20.f, 20.f);
     }
 
     // Change Step

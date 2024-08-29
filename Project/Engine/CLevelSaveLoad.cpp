@@ -377,6 +377,9 @@ CGameObject* CLevelSaveLoad::LoadGameObject(CGameObject* _ParentObj, FILE* _File
         case COMPONENT_TYPE::CHARACTERCONTROLLER:
             pComponent = new CCharacterController;
             break;
+        case COMPONENT_TYPE::SOUNDLISTENER:
+            pComponent = new CSoundListener;
+            break;
         case COMPONENT_TYPE::MESHRENDER:
             pComponent = new CMeshRender;
             break;

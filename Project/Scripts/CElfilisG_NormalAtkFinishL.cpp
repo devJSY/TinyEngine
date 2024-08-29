@@ -1,8 +1,10 @@
 #include "pch.h"
 #include "CElfilisG_NormalAtkFinishL.h"
 #include "CElfilisFSM.h"
+#include "CCameraController.h"
 
 CElfilisG_NormalAtkFinishL::CElfilisG_NormalAtkFinishL()
+    : m_bFrmEnter(true)
 {
 }
 
@@ -47,6 +49,7 @@ void CElfilisG_NormalAtkFinishL::Enter_Step()
     case StateStep::Progress: {
         GetOwner()->Animator()->Play(ANIMPREFIX("SwingFinishLeft"), false, false, 1.5f);
         ELFFSM->OnWeaponTrigger();
+        m_bFrmEnter = true;
     }
     break;
     case StateStep::End: {
@@ -105,10 +108,17 @@ void CElfilisG_NormalAtkFinishL::Progress()
     {
         if (GetOwner()->Animator()->GetClipFrameIndex() > 32 && GetOwner()->Animator()->GetClipFrameIndex() < 42)
         {
-            pHitbox->GetOwner()->SetActive(true);
-            pHitbox->Transform()->SetLocalPos(Vec3(0.f, 1.f, 0.f));
-            pHitbox->Transform()->SetLocalRotation(Vec3(0.f));
-            pHitbox->Transform()->SetLocalScale(Vec3(7.5f, 1.f, 7.5f));
+            if (m_bFrmEnter)
+            {
+                m_bFrmEnter = false;
+
+                pHitbox->GetOwner()->SetActive(true);
+                pHitbox->Transform()->SetLocalPos(Vec3(0.f, 1.f, 0.f));
+                pHitbox->Transform()->SetLocalRotation(Vec3(0.f));
+                pHitbox->Transform()->SetLocalScale(Vec3(7.5f, 1.f, 7.5f));
+
+                CAMERACTRL->Shake(0.3f, 30.f, 30.f);
+            }
         }
         else
         {

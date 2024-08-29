@@ -2,11 +2,13 @@
 #include "CKirbyHoveringSpit.h"
 
 CKirbyHoveringSpit::CKirbyHoveringSpit()
+    : m_SavedSpeed(0.f)
 {
     m_SpitSmoke = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\SpitSmoke.pref");
 }
 
 CKirbyHoveringSpit::CKirbyHoveringSpit(const CKirbyHoveringSpit& _Origin)
+    : m_SavedSpeed(0.f)
 {
     m_SpitSmoke = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\SpitSmoke.pref");
 }
@@ -44,6 +46,7 @@ void CKirbyHoveringSpit::Enter()
 
     PLAYERCTRL->LockJump();
     PLAYERCTRL->LockDirection();
+    m_SavedSpeed = PLAYERCTRL->GetSpeed();
     PLAYERCTRL->SetSpeed(PLAYERUNIT->GetInitInfo().Speed / 3.f);
 
     PLAYERFSM->SetHovering(true);
@@ -75,7 +78,7 @@ void CKirbyHoveringSpit::Exit()
 
     PLAYERCTRL->UnlockJump();
     PLAYERCTRL->UnlockDirection();
-    PLAYERCTRL->SetSpeed(PLAYERUNIT->GetInitInfo().Speed);
+    PLAYERCTRL->SetSpeed(m_SavedSpeed);
 
     PLAYERFSM->SetHovering(false);
     PLAYERFSM->SetDroppable(false);

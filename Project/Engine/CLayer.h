@@ -11,9 +11,6 @@ private:
     int m_iLayerIdx;
 
 public:
-    const vector<CGameObject*>& GetParentObject() const { return m_vecParent; }
-
-public:
     void begin();
     void tick();
     void finaltick();

@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CElfilisG_NormalAtkTeleportFinishL.h"
 #include "CElfilisFSM.h"
+#include "CCameraController.h"
 
 CElfilisG_NormalAtkTeleportFinishL::CElfilisG_NormalAtkTeleportFinishL()
     : m_BeforeObj(nullptr)
@@ -59,7 +60,6 @@ void CElfilisG_NormalAtkTeleportFinishL::Enter_Step()
     }
     break;
     case StateStep::StartEnd: {
-        GetOwner()->Rigidbody()->SetKinematic(true);
         m_bFrmEnter = true;
         SpawnTeleport();
     }
@@ -67,6 +67,7 @@ void CElfilisG_NormalAtkTeleportFinishL::Enter_Step()
     case StateStep::Progress: {
         GetOwner()->Animator()->Play(ANIMPREFIX("SwingFinishLeft"), false, false, 1.5f);
         ELFFSM->OnWeaponTrigger();
+        m_bFrmEnter = true;
     }
     break;
     case StateStep::End: {
@@ -83,8 +84,6 @@ void CElfilisG_NormalAtkTeleportFinishL::Exit_Step()
     case StateStep::Start:
         break;
     case StateStep::StartEnd: {
-        GetOwner()->Rigidbody()->SetKinematic(false);
-
         if (m_BeforeObj)
         {
             GamePlayStatic::DestroyGameObject(m_BeforeObj);
@@ -117,7 +116,7 @@ void CElfilisG_NormalAtkTeleportFinishL::Exit_Step()
             ELFFSM->SpawnDropStar(RotSpawnPos);
         }
     }
-        break;
+    break;
     case StateStep::End: {
         ELFFSM->ClearComboLevel();
     }
@@ -177,10 +176,17 @@ void CElfilisG_NormalAtkTeleportFinishL::Progress()
     {
         if (GetOwner()->Animator()->GetClipFrameIndex() > 32 && GetOwner()->Animator()->GetClipFrameIndex() < 42)
         {
-            pHitbox->GetOwner()->SetActive(true);
-            pHitbox->Transform()->SetLocalPos(Vec3(0.f, 1.f, 0.f));
-            pHitbox->Transform()->SetLocalRotation(Vec3(0.f));
-            pHitbox->Transform()->SetLocalScale(Vec3(7.5f, 1.f, 7.5f));
+            if (m_bFrmEnter)
+            {
+                m_bFrmEnter = false;
+
+                pHitbox->GetOwner()->SetActive(true);
+                pHitbox->Transform()->SetLocalPos(Vec3(0.f, 1.f, 0.f));
+                pHitbox->Transform()->SetLocalRotation(Vec3(0.f));
+                pHitbox->Transform()->SetLocalScale(Vec3(7.5f, 1.f, 7.5f));
+
+                CAMERACTRL->Shake(0.3f, 30.f, 30.f);
+            }
         }
         else
         {
