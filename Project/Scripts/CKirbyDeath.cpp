@@ -33,15 +33,8 @@ void CKirbyDeath::tick()
     {
         CPlayerMgr::SetPlayerFace(FaceType::Close);
 
-        // Camera 조작
-        CCameraController* CamCtrl = CAMERACTRL;
-        CamCtrl->Normal(false);
-        CamCtrl->SetOffset(Vec3(0.f, 0.f, 0));
-        CamCtrl->SetLookDir(Vec3(0.f, -1.f, 0.f));
-        CamCtrl->SetLookDist(100.f);
-        CamCtrl->SetZoomMinSpeed(50.f);
-        CamCtrl->SetZoomMaxSpeed(100.f);
-        CamCtrl->SetZoomThreshold(500.f);
+        // Layer Off
+        CAMERACTRL->TurnOffMonsterLayer();
 
         // 커비와 UI를 제외한 배경은 검은색으로 Fade Out
         if (m_bFadeEffect == false)
@@ -68,18 +61,8 @@ void CKirbyDeath::Enter()
     // Effect Lock
     CAMERACTRL->SetEffectLock(true);
 
-    // Death State 진입 시 몬스터와 관련된 모든 오브젝트를 삭제한다.
-    //for (int i = LAYER_MONSTER; i <= LAYER_MONSTERATK_TRIGGER; ++i)
-    //{
-    //    CLayer* CurLayer = CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(i);
-
-    //    const vector<CGameObject*>& Objects = CurLayer->GetParentObjects();
-
-    //    for (size_t j = 0; j < Objects.size(); ++j)
-    //    {
-    //        GamePlayStatic::DestroyGameObject(Objects[j]);
-    //    }
-    //}
+    PLAYERFSM->SetInvincible(true);
+    PLAYERFSM->SetEmissive(false,0.f);
 
     m_Acc = 0.f;
     m_Duration = 1.f;
@@ -100,6 +83,19 @@ void CKirbyDeath::Enter()
 
     // CameraSetting
     CCameraController* CamCtrl = CAMERACTRL;
+
+    CamCtrl->Normal(false);
+    CamCtrl->SetLock(true, m_FaceDuraion);
+
+    CamCtrl->SetOffset(Vec3(0.f, 10.f, 0.f));
+    CamCtrl->RotationLookDirRightAxis(50.f);
+
+    CamCtrl->SetLookDist(100.f);
+    CamCtrl->SetZoomMinSpeed(50.f);
+    CamCtrl->SetZoomMaxSpeed(100.f);
+    CamCtrl->SetZoomThreshold(500.f);
+
+
 
     // Camera Shake
     CamCtrl->Shake(0.5f, 50.f, 50.f);

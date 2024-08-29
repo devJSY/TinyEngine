@@ -192,8 +192,8 @@ private:
 
     void SaveSetting();
     void SaveInitSetting();
-    void LoadSetting();
-    void LoadInitSetting();
+    void LoadSetting(bool _OnlySetting = false);
+    void LoadInitSetting(bool _OnlySetting = false);
     void LoadDefaultSetting();
     CameraSetting GetSaveSetting() const { return m_SaveSetting; }
 
@@ -226,6 +226,9 @@ private:
     void EditMode();
 
 public:
+    void TurnOffMonsterLayer();
+    void TurnOffEffectLayer();
+
 
     // Interface Func
     void ResetCamera(); // 현재의 설정값들로 카메라를 바로 이동한다.

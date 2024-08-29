@@ -108,7 +108,7 @@ void CKirbyAbility_Fire::AttackCharge1()
         // Kirby의 입쪽에서 FireProjectile이 스폰되도록 위치를 계산한다. 방향은 커비가 바라보고 있는 방향으로 한다.
         Vec3 KirbyPos = PLAYER->Transform()->GetWorldPos();
         Vec3 KirbyFront = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT);
-        Vec3 Offset = Vec3(0.f, 15.f, 0.f) + KirbyFront * 5.f;
+        Vec3 Offset = Vec3(0.f, 25.f, 0.f) + KirbyFront * 5.f;
 
         FireProjectileObj->Transform()->SetWorldPos(KirbyPos + Offset);
         FireProjectileObj->Transform()->SetDirection(KirbyFront);
@@ -209,7 +209,7 @@ void CKirbyAbility_Fire::AttackCharge1Run()
         // Kirby의 입쪽에서 FireProjectile이 스폰되도록 위치를 계산한다. 방향은 커비가 바라보고 있는 방향으로 한다.
         Vec3 KirbyPos = PLAYER->Transform()->GetWorldPos();
         Vec3 KirbyFront = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT);
-        Vec3 Offset = Vec3(0.f, 15.f, 0.f) + KirbyFront * 5.f;
+        Vec3 Offset = Vec3(0.f, 25.f, 0.f) + KirbyFront * 5.f;
 
         FireProjectileObj->Transform()->SetWorldPos(KirbyPos + Offset);
         FireProjectileObj->Transform()->SetDirection(KirbyFront);

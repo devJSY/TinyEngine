@@ -69,6 +69,8 @@ void CStageClear::OnTriggerEnter(CCollider* _OtherCollider)
     // PLAYER와 충돌한 경우
     if (_OtherCollider->GetOwner()->GetLayerIdx() == LAYER_PLAYER)
     {
+
+        // Object 상태일 때는 Drop UI를 띄워주고 스테이트를 바꾸지 않는다.
         if (PLAYERFSM->GetCurObjectIdx() != ObjectCopyType::NONE)
         {
             CGameObject* ManagerObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager");
@@ -85,21 +87,6 @@ void CStageClear::OnTriggerEnter(CCollider* _OtherCollider)
             m_KirbyDir.y = 0.f;
             m_KirbyDir.Normalize();
 
-            // UI 다 끄기
-            CGameObject* ManagerObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager");
-
-            CLevelFlowMgr* FlowMgrScript = ManagerObj->GetScript<CLevelFlowMgr>();
-            FlowMgrScript->TurnOffBossHP();
-            FlowMgrScript->TurnOffPlayerHP();
-            FlowMgrScript->ActiveOffDropUI();
-
-            // CameraSetting
-            CCameraController* CamCtrl = CAMERACTRL;
-            CamCtrl->SetOffset(Vec3(0.f, 50.f, 0));
-            CamCtrl->SetTargetOffset(Vec3(0.f, 0.f, 0.f));
-            CamCtrl->SetLookDir(-m_KirbyDir);
-            CamCtrl->SetLookDist(300.f);
-            CamCtrl->RotationLookDirRightAxis(5.f);
 
             PLAYERCTRL->ForcePos(m_KirbyPos);
             PLAYERCTRL->ForceDir({ForceDirType::STAGEEVENT, m_KirbyDir, true});

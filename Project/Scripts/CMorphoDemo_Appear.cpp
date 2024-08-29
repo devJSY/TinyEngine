@@ -74,7 +74,7 @@ void CMorphoDemo_Appear::Enter_Step()
         GetOwner()->Animator()->Play(ANIMPREFIX("DemoBirthEnd"), false, false, 1.5f);
 
         // Camera : ÅõÅ¸°Ù
-        CAMERACTRL->LoadInitSetting();
+        CAMERACTRL->LoadInitSetting(true);
         CAMERACTRL->SetMorphoTwoTarget();
     }
     break;

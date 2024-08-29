@@ -2,6 +2,7 @@
 #include "CCameraController.h"
 
 #include <Engine/CLevelMgr.h>
+#include <Engine/CGameObjectEx.h>
 
 #include "CPlayerMgr.h"
 #include "CKirbyMoveController.h"
@@ -14,8 +15,8 @@ CCameraController::CCameraController()
     : CScript(CAMERACONTROLLER)
     , m_Setup(CameraSetup::NORMAL)
     , m_Target(nullptr)
-    , m_Offset(Vec3(0.f,50.f,0.f))
-    , m_TargetPos(Vec3(0.f,0.f,0.f))
+    , m_Offset(Vec3(0.f, 50.f, 0.f))
+    , m_TargetPos(Vec3(0.f, 0.f, 0.f))
     , m_SubTarget(nullptr)
     , m_LookDir(0.f, -1.f, 1.f)
     , m_LookDist(200.f)
@@ -57,8 +58,6 @@ CCameraController::CCameraController()
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_MaxDegreeY, "MaxDirY");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_MaxBetweenTargetDist, "MaxBetweenTargetDist");
 
-
-
     // Edit Mode
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_EditMode, "Edit Mode");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_EditRotSpeed, "Edit Rotation Speed");
@@ -93,8 +92,8 @@ void CCameraController::begin()
     }
 
     // Effect 초기화
-    m_Effect[(UINT)EFFECT_TYPE::TILT_ANGLE] = {EFFECT_TYPE::TILT_ANGLE,false, 0.f, 0.f};
-    m_Effect[(UINT)EFFECT_TYPE::SHAKE] = {EFFECT_TYPE::SHAKE,false, 0.f, 0.f};
+    m_Effect[(UINT)EFFECT_TYPE::TILT_ANGLE] = {EFFECT_TYPE::TILT_ANGLE, false, 0.f, 0.f};
+    m_Effect[(UINT)EFFECT_TYPE::SHAKE] = {EFFECT_TYPE::SHAKE, false, 0.f, 0.f};
 
     // 카메라 세팅
     SaveSetting();
@@ -102,7 +101,6 @@ void CCameraController::begin()
 
     m_Setup = CameraSetup::NORMAL;
     m_bEffectLock = false;
-
 }
 
 void CCameraController::tick()
@@ -149,20 +147,18 @@ void CCameraController::tick()
     // Effect 처리
     ProcessEffet();
 
-
     // ========================= Eye Pos Update =========================
     // ==================== Camera Transform Update ====================
     Transform()->SetWorldRotation(m_LookDirQuat);
     m_LookEyePos = CalCamPos(m_CurLookAtPos, m_CurLookDir, m_CurDistance);
     Transform()->SetWorldPos(m_LookEyePos);
-    //Transform()->SetDirection(m_CurLookDir);
-
+    // Transform()->SetDirection(m_CurLookDir);
 
     // @DEBUG
-    //GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), 200.f, Vec3(1.f, 0.f, 0.f), true);
-    //GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::RIGHT), 200.f, Vec3(0.f, 1.f, 0.f), true);
-    //GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::UP), 200.f, Vec3(0.f, 0.f, 1.f), true);
-    //GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), m_CurLookDir, m_LookDist, Vec3(0.f, 0.f, 0.f), true);
+    // GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), 200.f, Vec3(1.f, 0.f, 0.f), true);
+    // GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::RIGHT), 200.f, Vec3(0.f, 1.f, 0.f), true);
+    // GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::UP), 200.f, Vec3(0.f, 0.f, 1.f), true);
+    // GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), m_CurLookDir, m_LookDist, Vec3(0.f, 0.f, 0.f), true);
 }
 
 void CCameraController::SetUpProc()
@@ -234,7 +230,6 @@ void CCameraController::UpdateTargetPos()
     {
         m_SubTargetPos = m_SubTarget->Transform()->GetWorldPos();
     }
-
 }
 
 void CCameraController::ApplyTargetOffset()
@@ -321,9 +316,9 @@ void CCameraController::UpdateLookDir()
         }
         else
         {
-            
+
             float MaxRotationStep = m_RotationSpeed * XM_PI / 180.f * DT_ENGINE;
-            //float t = min(MaxRotationStep / degrees, 1.0f); // 등속 운동
+            // float t = min(MaxRotationStep / degrees, 1.0f); // 등속 운동
 
             Quat PrevQuat = VectorToQuaternion(m_PrevLookDir);
             Quat LookQuat = VectorToQuaternion(m_LookDir);
@@ -350,7 +345,6 @@ void CCameraController::UpdateLookDistance()
     float DiffDist = fabs(m_LookDist - m_PrevDistance);
     float Ratio = clamp((DiffDist / m_ZoomThreshold), 0.f, 1.f) * XM_PI * 0.5f;
     float ZoomSpeed = m_ZoomMinSpeed + (m_ZoomMaxSpeed - m_ZoomMinSpeed) * sinf(Ratio);
-
 
     // Zoom In인 경우 ZoomSpeed를 반대로 한다.
     if (m_PrevDistance > m_LookDist)
@@ -432,32 +426,40 @@ void CCameraController::SaveInitSetting()
     m_InitSetting.ZoomThreshold = m_ZoomThreshold;
 }
 
-void CCameraController::LoadSetting()
+void CCameraController::LoadSetting(bool _OnlySetting)
 {
-    m_LookDir = m_SaveSetting.LookDir;
-    m_LookDist = m_SaveSetting.LookDist;
+    if (!_OnlySetting)
+    {
+        m_LookDir = m_SaveSetting.LookDir;
+        m_LookDist = m_SaveSetting.LookDist;
+        m_Offset = m_SaveSetting.Offset;
+    }
+
     m_MaxSpeed = m_SaveSetting.MaxSpeed;
     m_MinSpeed = m_SaveSetting.MinSpeed;
-    m_Offset = m_SaveSetting.Offset;
     m_RotationSpeed = m_SaveSetting.RotationSpeed;
     m_ThresholdDistance = m_SaveSetting.ThresholdDistance;
     m_ZoomMaxSpeed = m_SaveSetting.ZoomMaxSpeed;
     m_ZoomMinSpeed = m_SaveSetting.ZoomMinSpeed;
-    m_ZoomThreshold = m_SaveSetting.ZoomThreshold;  
+    m_ZoomThreshold = m_SaveSetting.ZoomThreshold;
 }
 
-void CCameraController::LoadInitSetting()
+void CCameraController::LoadInitSetting(bool _OnlySetting)
 {
-    m_LookDir = m_InitSetting.LookDir;
-    m_LookDist = m_InitSetting.LookDist;
+    if (!_OnlySetting)
+    {
+        m_LookDir = m_SaveSetting.LookDir;
+        m_LookDist = m_SaveSetting.LookDist;
+        m_Offset = m_InitSetting.Offset;
+    }
+
     m_MaxSpeed = m_InitSetting.MaxSpeed;
     m_MinSpeed = m_InitSetting.MinSpeed;
-    m_Offset = m_InitSetting.Offset;
     m_RotationSpeed = m_InitSetting.RotationSpeed;
     m_ThresholdDistance = m_InitSetting.ThresholdDistance;
     m_ZoomMaxSpeed = m_InitSetting.ZoomMaxSpeed;
     m_ZoomMinSpeed = m_InitSetting.ZoomMinSpeed;
-    m_ZoomThreshold = m_InitSetting.ZoomThreshold;  
+    m_ZoomThreshold = m_InitSetting.ZoomThreshold;
 }
 
 void CCameraController::LoadDefaultSetting()
@@ -533,13 +535,41 @@ void CCameraController::EditMode()
     }
 }
 
+void CCameraController::TurnOffMonsterLayer()
+{
+    Camera()->LayerMask(LAYER_MONSTER, false);
+    Camera()->LayerMask(LAYER_MONSTER_TRIGGER, false);
+    Camera()->LayerMask(LAYER_MONSTERATK, false);
+    Camera()->LayerMask(LAYER_MONSTERATK_TRIGGER, false);
+
+    // 광원 그림자 제거
+    CGameObject* pLightObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Dynamic Directional Light");
+    if (nullptr != pLightObj)
+    {
+        CGameObjectEx* pLightCamObj = pLightObj->Light()->GetLightCam();
+        if (nullptr != pLightCamObj)
+        {
+            pLightCamObj->Camera()->LayerMask(LAYER_MONSTER, false);
+            pLightCamObj->Camera()->LayerMask(LAYER_MONSTER_TRIGGER, false);
+            pLightCamObj->Camera()->LayerMask(LAYER_MONSTERATK, false);
+            pLightCamObj->Camera()->LayerMask(LAYER_MONSTERATK_TRIGGER, false);
+        }
+    }
+}
+
+void CCameraController::TurnOffEffectLayer()
+{
+    Camera()->LayerMask(LAYER_EFFECT, false);
+    Camera()->LayerMask(LAYER_FIREBULLET, false);
+}
+
 void CCameraController::Normal()
 {
     m_LookAtPos = m_TargetPos;
 }
 
 void CCameraController::Progress()
-{    
+{
     m_LookAtPos = m_TargetPos;
 
     // Start와 End 사이에서 LookAtPos에 수직인 점을 찾기
@@ -555,20 +585,18 @@ void CCameraController::Progress()
         return;
     }
 
-   float t = DotRes / LengthSquared;
-   
-   // t에 맞게 각 값들을 보간한다.
-   m_ProgressStartDir.Normalize();
-   m_ProgressEndDir.Normalize();
+    float t = DotRes / LengthSquared;
 
-   Quat StartQuat = VectorToQuaternion(m_ProgressStartDir);
-   Quat EndQuat = VectorToQuaternion(m_ProgressEndDir);
-   Quat SlerpQuat = Quat::Slerp(StartQuat, EndQuat, t);
-   m_Offset = Vector3::Lerp(m_ProgressStartOffset, m_ProgressEndOffset, t);
-   m_LookDir = QuaternionToVector(SlerpQuat);
-   m_LookDist = Lerp(m_ProgressStartDist, m_ProgressEndDist, t);
+    // t에 맞게 각 값들을 보간한다.
+    m_ProgressStartDir.Normalize();
+    m_ProgressEndDir.Normalize();
 
-   
+    Quat StartQuat = VectorToQuaternion(m_ProgressStartDir);
+    Quat EndQuat = VectorToQuaternion(m_ProgressEndDir);
+    Quat SlerpQuat = Quat::Slerp(StartQuat, EndQuat, t);
+    m_Offset = Vector3::Lerp(m_ProgressStartOffset, m_ProgressEndOffset, t);
+    m_LookDir = QuaternionToVector(SlerpQuat);
+    m_LookDist = Lerp(m_ProgressStartDist, m_ProgressEndDist, t);
 }
 
 void CCameraController::TwoTarget()
@@ -605,7 +633,7 @@ void CCameraController::TwoTarget()
     // 카메라의 거리 중 더 큰 값을 선택
     float RequiredDistance = max(RequiredHorizontalDistance, RequiredVerticalDistance);
 
-    m_LookDist = RequiredDistance + DepthDistance / 2.f + m_DistanceOffset; 
+    m_LookDist = RequiredDistance + DepthDistance / 2.f + m_DistanceOffset;
 
     if (m_LookDist < m_MinDist)
     {
@@ -614,7 +642,6 @@ void CCameraController::TwoTarget()
 
     m_LookAtPos = Center;
 }
-
 
 void CCameraController::Boss()
 {
@@ -633,9 +660,9 @@ void CCameraController::Boss()
     Vec3 RightDir = Transform()->GetWorldDir(DIR_TYPE::RIGHT);
     Vec3 UpDir = Transform()->GetWorldDir(DIR_TYPE::UP);
 
-    //Vec3 LookDir = m_LookDir;
-    //Vec3 RightDir = Vec3(0.f, 1.f, 0.f).Cross(LookDir).Normalize();
-    //Vec3 UpDir = LookDir.Cross(RightDir).Normalize();
+    // Vec3 LookDir = m_LookDir;
+    // Vec3 RightDir = Vec3(0.f, 1.f, 0.f).Cross(LookDir).Normalize();
+    // Vec3 UpDir = LookDir.Cross(RightDir).Normalize();
 
     // 두 물체 사이의 가로, 세로, 깊이 거리 계산
     float HorizontalDistanceToTarget1 = fabs(ToTarget1.Dot(RightDir));
@@ -699,7 +726,6 @@ void CCameraController::Boss()
         Dir = Vector3::Transform(Dir, rotation);
     }
 
-
     Dir.Normalize();
     m_LookDir = Dir;
 
@@ -715,7 +741,7 @@ void CCameraController::Boss()
 
 void CCameraController::FixedView()
 {
-    // 카메라의 위치는 고정되고 
+    // 카메라의 위치는 고정되고
     Vec3 ToTargetFromCamera = m_TargetPos - m_FixedViewPos;
 
     m_LookAtPos = m_TargetPos;
@@ -727,7 +753,6 @@ float simpleNoise(float t)
 {
     return sin(t) * (rand() / float(RAND_MAX));
 }
-
 
 void CCameraController::ProcessEffet()
 {
@@ -745,8 +770,7 @@ void CCameraController::ProcessEffet()
 
         switch (CurEffet.EffetType)
         {
-        case EFFECT_TYPE::TILT_ANGLE: 
-        {
+        case EFFECT_TYPE::TILT_ANGLE: {
             Transform()->SetDirection(m_CurLookDir);
 
             float tiltDuration = 0.5f;        // 초기 회전 시간
@@ -791,21 +815,21 @@ void CCameraController::ProcessEffet()
 
             Transform()->SetWorldRotation(m_LookDirQuat);
             /*m_LookDir = QuaternionToVector(m_LookDirQuat);*/
-            //m_LookEyePos = CalCamPos(m_CurLookAtPos, Transform()->GetLocalDir(DIR_TYPE::FRONT), m_CurDistance);
+            // m_LookEyePos = CalCamPos(m_CurLookAtPos, Transform()->GetLocalDir(DIR_TYPE::FRONT), m_CurDistance);
         }
         break;
 
-        case EFFECT_TYPE::SHAKE: 
-        {
-            m_LookDirQuat = m_LookDirQuat *
-                            Quaternion::CreateFromAxisAngle(Transform()->GetWorldDir(DIR_TYPE::RIGHT),
+        case EFFECT_TYPE::SHAKE: {
+            m_LookDirQuat =
+                m_LookDirQuat *
+                Quaternion::CreateFromAxisAngle(Transform()->GetWorldDir(DIR_TYPE::RIGHT),
                                                 XMConvertToRadians(simpleNoise(CurEffet.Acc * m_ShakeFrequency.x) * m_ShakeIntencity * DT_ENGINE)) *
-                            Quaternion::CreateFromAxisAngle(Transform()->GetWorldDir(DIR_TYPE::UP),
+                Quaternion::CreateFromAxisAngle(Transform()->GetWorldDir(DIR_TYPE::UP),
                                                 XMConvertToRadians(simpleNoise(CurEffet.Acc * m_ShakeFrequency.y) * m_ShakeIntencity * DT_ENGINE)) *
-                            Quaternion::CreateFromAxisAngle(Transform()->GetWorldDir(DIR_TYPE::FRONT),
+                Quaternion::CreateFromAxisAngle(Transform()->GetWorldDir(DIR_TYPE::FRONT),
                                                 XMConvertToRadians(simpleNoise(CurEffet.Acc * m_ShakeFrequency.z) * m_ShakeIntencity * DT_ENGINE));
         }
-            break;
+        break;
 
         default:
             break;
@@ -818,9 +842,7 @@ void CCameraController::ProcessEffet()
             CurEffet.Duration = 0.f;
         }
     }
-
 }
-
 
 void CCameraController::ResetCamera()
 {
@@ -844,7 +866,6 @@ void CCameraController::ResetCamera()
 
     Transform()->SetWorldPos(ResetPos);
     Transform()->SetDirection(m_LookDir);
-
 }
 
 void CCameraController::ChangeMainTarget(CGameObject* _Target)
@@ -876,27 +897,27 @@ void CCameraController::ChangeFollwSpeedSetting(float _MinSpeed, float _MaxSpeed
 
 void CCameraController::Normal(bool _IsImmediate)
 {
-   SetCameraSetup(CameraSetup::NORMAL);
+    SetCameraSetup(CameraSetup::NORMAL);
 
-   if (_IsImmediate)
-   {
-       ResetCamera();
-   }
+    if (_IsImmediate)
+    {
+        ResetCamera();
+    }
 }
 
 void CCameraController::ProgressSetup(Vec3 _StartPos, Vec3 _EndPos, Vec3 _StartOffset, Vec3 _EndOffset, Vec3 _StartDir, Vec3 _EndDir,
                                       float _StartDist, float _EndDist)
-{   
+{
     SetCameraSetup(CameraSetup::PROGRESS);
 
     m_ProgressStartOffset = _StartOffset;
     m_ProgressEndOffset = _EndOffset;
 
     m_ProgressStartPos = _StartPos;
-    m_ProgressStartDir =_StartDir;
+    m_ProgressStartDir = _StartDir;
     m_ProgressStartDist = _StartDist;
     m_ProgressEndPos = _EndPos;
-    m_ProgressEndDir =_EndDir;
+    m_ProgressEndDir = _EndDir;
     m_ProgressEndDist = _EndDist;
 }
 
@@ -996,7 +1017,7 @@ void CCameraController::FixedView(bool _IsImmediate, Vec3 _FixedViewPos)
 
 void CCameraController::SetElfilisTwoTarget()
 {
-    LoadInitSetting();
+    LoadInitSetting(true);
 
     SetMainTarget(PLAYER);
     Boss(BOSS, 100.f, 0.5f);
@@ -1023,8 +1044,6 @@ void CCameraController::SetElfilisTwoTarget()
     SetZoomMinSpeed(0.f);
     SetZoomMaxSpeed(1000.f);
     SetZoomThreshold(300.f);
-
-
 }
 
 void CCameraController::SetElfilisSky()
@@ -1057,7 +1076,7 @@ void CCameraController::SetElfilisGround()
 {
     SetMainTarget(PLAYER);
     Normal(false);
-    
+
     SetTargetOffset(Vec3(0.f, 0.f, 0.f));
     SetOffset(Vec3(0.f, 0.f, 0.f));
     SetLookDir(Vec3(0.f, -0.707f, 0.707f));
@@ -1073,12 +1092,11 @@ void CCameraController::SetElfilisGround()
     SetZoomMinSpeed(0.f);
     SetZoomMaxSpeed(1000.f);
     SetZoomThreshold(300.f);
-
 }
 
 void CCameraController::SetMorphoTwoTarget()
 {
-    LoadInitSetting();
+    LoadInitSetting(true);
 
     SetMainTarget(PLAYER);
     Boss(BOSS, 100.f, 0.5f);
@@ -1103,7 +1121,6 @@ void CCameraController::SetMorphoTwoTarget()
     SetMaxDistBetweenTarget(400.f);
 
     SetMinDist(200.f);
-
 }
 
 void CCameraController::Shake(float _Duration, float _Frequency, float _Intencity)
@@ -1134,8 +1151,6 @@ void CCameraController::Tilt(float _Duration, float _Frequency)
 
     m_TiltFrequency = _Frequency;
 }
-
-
 
 Vec3 CCameraController::CalCamPos(Vec3 _TargetWorldPos, Vec3 _LookDir, float _CamDist)
 {
@@ -1214,7 +1229,7 @@ UINT CCameraController::LoadFromLevelFile(FILE* _File)
     MemoryByte += sizeof(float);
 
     MemoryByte += sizeof(float);
-    
+
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);

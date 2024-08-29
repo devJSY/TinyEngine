@@ -126,5 +126,5 @@ void CKirbyBurning::Exit()
     PLAYERFSM->SetInvincible(false);
 
         // Camera Setting Return
-    CAMERACTRL->LoadSetting();
+    CAMERACTRL->LoadSetting(true);
 }

@@ -39,7 +39,7 @@ void CMorphoDemo_Phase2::Exit()
     CBossMgr::GetBossFlowMgr()->ChangeFlow(BossLevelFlow::Fight);
 
     // Camera : º¹±¸
-    CAMERACTRL->LoadInitSetting();
+    CAMERACTRL->LoadInitSetting(true);
     CAMERACTRL->SetMorphoTwoTarget();
 }
 

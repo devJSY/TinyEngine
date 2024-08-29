@@ -63,7 +63,7 @@ void CElfilisD_Jump::Enter_Step()
         // Camera : Àá±ñ°íÁ¤
         CAMERACTRL->Normal(false);
 
-        CAMERACTRL->SetLookDir(Vec3(0.f, 0.f, -1.f));
+        CAMERACTRL->SetLookDir(-BOSS->Transform()->GetWorldDir(DIR_TYPE::FRONT));
         CAMERACTRL->SetLookDist(300.f);
 
         CAMERACTRL->SetOffset(Vec3(0.f, 0.f, 0.f));
