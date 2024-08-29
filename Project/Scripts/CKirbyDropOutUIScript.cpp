@@ -16,7 +16,7 @@ CKirbyDropOutUIScript::CKirbyDropOutUIScript()
     , m_bFailed(false)
     , m_fAccTime(0.f)
     , m_fAppearTime(0.f)
-    , m_fWaitTime(1.f)
+    , m_fWaitTime(0.1f)
     , m_fDisappearTime(0.f)
     , m_bInterAppear(false)
 {
@@ -33,7 +33,7 @@ CKirbyDropOutUIScript::CKirbyDropOutUIScript(const CKirbyDropOutUIScript& Origin
     , m_vOffset(Origin.m_vOffset)
     , m_bFailed(false)
     , m_fAccTime(0.f)
-    , m_fWaitTime(1.5f)
+    , m_fWaitTime(0.1f)
     , m_fAppearTime(Origin.m_fAppearTime)
     , m_fDisappearTime(Origin.m_fDisappearTime)
     , m_bInterAppear(false)
@@ -50,10 +50,17 @@ CKirbyDropOutUIScript::~CKirbyDropOutUIScript()
 void CKirbyDropOutUIScript::begin()
 {
     m_pProgressUI = GetOwner()->GetChildObject();
+
     m_pCircleProgressUI = GetOwner()->GetChildObject(L"UI_CircleProgress");
 
     GetOwner()->Transform()->SetWorldPos(Vec3(0.f, 0.f, 0.f));
     GetOwner()->Transform()->SetLocalScale(Vec3(2.f, 2.f, 1.f));
+
+    m_pCircleProgressUI->Transform()->SetLocalScale(Vec3(46.f, 46.f, 1.f));
+    m_pCircleProgressUI->Transform()->SetLocalPos(Vec3(-49.f, 10.f, 0.f));
+
+    GetOwner()->GetChildObject(L"UI_CircleProgressOutLine1")->Transform()->SetLocalScale(Vec3(132.f, 64.f, 1.f));
+    GetOwner()->GetChildObject(L"UI_CircleProgressOutLine1")->Transform()->SetLocalPos(Vec3(-5.f, 0.f, 0.f));
 
     for (size_t i = 0; i < m_pProgressUI.size(); i++)
     {
@@ -70,7 +77,7 @@ void CKirbyDropOutUIScript::begin()
         }
     }
 
-    m_fAppearTime = m_fDisappearTime = 1.f;
+    m_fAppearTime = m_fDisappearTime = 0.5f;
 }
 
 void CKirbyDropOutUIScript::tick()
