@@ -501,14 +501,14 @@ void CLevelEditor::render_Toolbar()
 
     ImGui::SameLine();
 
-    // Play, Simulate, Stop
+    // Play, Simulate, Stop Button
     ImGui::SetCursorPosX((ImGui::GetWindowContentRegionMax().x * 0.5f) - (size * 0.5f));
 
     CLevel* pCurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
+    const LEVEL_STATE CurLevelState = pCurLevel->GetState();
 
-    if (LEVEL_STATE::PLAY == pCurLevel->GetState() || LEVEL_STATE::SIMULATE == pCurLevel->GetState())
+    if (LEVEL_STATE::PLAY == CurLevelState || LEVEL_STATE::SIMULATE == CurLevelState)
     {
-
         if (ImGui::ImageButton((void*)m_PauseButtonTex->GetSRV().Get(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0, BGColor, tintColor))
         {
             ImGui::SetWindowFocus(NULL);
@@ -523,7 +523,7 @@ void CLevelEditor::render_Toolbar()
             GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(pCurLevel->GetName()), LEVEL_STATE::STOP);
         }
     }
-    else if (LEVEL_STATE::PAUSE == pCurLevel->GetState())
+    else if (LEVEL_STATE::PAUSE == CurLevelState)
     {
         if (CLevelMgr::GetInst()->GetCurrentLevel()->GetPrevState() == LEVEL_STATE::PLAY)
         {
@@ -560,7 +560,7 @@ void CLevelEditor::render_Toolbar()
             GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(pCurLevel->GetName()), LEVEL_STATE::STOP);
         }
     }
-    else if (LEVEL_STATE::STOP == pCurLevel->GetState())
+    else if (LEVEL_STATE::STOP == CurLevelState)
     {
         if (ImGui::ImageButton((void*)m_PlayButtonTex->GetSRV().Get(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0, BGColor, tintColor))
         {
@@ -582,6 +582,54 @@ void CLevelEditor::render_Toolbar()
     ImGui::PopStyleVar(2);
     ImGui::PopStyleColor(3);
     ImGui::End();
+
+    // Level Play, Stop 단축키
+    // 시작 / 정지
+    if (KEY_TAP(KEY::F5))
+    {
+        if (LEVEL_STATE::PLAY == CurLevelState)
+        {
+            GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(pCurLevel->GetName()), LEVEL_STATE::STOP);
+        }
+        else if (LEVEL_STATE::STOP == CurLevelState)
+        {
+            CLevelSaveLoad::SaveLevel(pCurLevel, pCurLevel->GetName());
+            GamePlayStatic::ChangeLevelState(pCurLevel, LEVEL_STATE::PLAY);
+        }
+    }
+    // 시뮬레이션 시작 / 정지
+    else if (KEY_TAP(KEY::F6))
+    {
+        if (LEVEL_STATE::SIMULATE == CurLevelState)
+        {
+            GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(pCurLevel->GetName()), LEVEL_STATE::STOP);
+        }
+        else if (LEVEL_STATE::STOP == CurLevelState)
+        {
+            CLevelSaveLoad::SaveLevel(pCurLevel, pCurLevel->GetName());
+            GamePlayStatic::ChangeLevelState(pCurLevel, LEVEL_STATE::SIMULATE);
+        }
+    }
+    // 일시 정지
+    else if (KEY_TAP(KEY::F7))
+    {
+        if (LEVEL_STATE::PLAY == CurLevelState || LEVEL_STATE::SIMULATE == CurLevelState)
+        {
+            GamePlayStatic::ChangeLevelState(pCurLevel, LEVEL_STATE::PAUSE);
+        }
+        else
+        {
+            GamePlayStatic::ChangeLevelState(pCurLevel, pCurLevel->GetPrevState());
+        }
+    }
+    // Step
+    else if (KEY_TAP(KEY::F8))
+    {
+        if (LEVEL_STATE::PAUSE == CurLevelState)
+        {
+            pCurLevel->Step();
+        }
+    }
 }
 
 void CLevelEditor::render_Assets()
@@ -798,6 +846,32 @@ void CLevelEditor::render_Viewport()
 
                 if (nullptr != pLoadedLevel)
                     GamePlayStatic::ChangeLevel(pLoadedLevel, LEVEL_STATE::STOP);
+            }
+
+            CGameObject* pObj = nullptr;
+
+            // Prefab
+            if (L".pref" == fileNameStr.extension())
+            {
+                Ptr<CPrefab> pPrefab = CAssetMgr::GetInst()->Load<CPrefab>(fileNameStr, fileNameStr);
+                pObj = pPrefab->Instantiate();
+            }
+            else if (L".mdat" == fileNameStr.extension())
+            {
+                Ptr<CMeshData> pMeshData = CAssetMgr::GetInst()->Load<CMeshData>(fileNameStr, fileNameStr);
+                pObj = pMeshData->Instantiate();
+            }
+
+            if (nullptr != pObj)
+            {
+                // 카메라위치 기준 생성
+                CCamera* pCam = CRenderMgr::GetInst()->GetMainCamera();
+                Vec3 pos = pCam->Transform()->GetWorldPos();
+                Vec3 dir = pCam->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+                pos += dir.Normalize() * 5.f * CPhysicsMgr::GetInst()->GetPPM();
+                pObj->Transform()->SetLocalPos(pos);
+
+                GamePlayStatic::SpawnGameObject(pObj, pObj->GetLayerIdx());
             }
         }
 
