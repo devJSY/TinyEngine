@@ -252,6 +252,8 @@ void CMorphoAtkA_DoubleSwordAtkLR::Progress()
             m_SwipeOriginScale = m_FireSwipe[0]->Transform()->GetLocalScale();
             GamePlayStatic::SpawnGameObject(m_FireSwipe[1], LAYER_MONSTERATK_TRIGGER);
         }
+
+        CAMERACTRL->Shake(0.6f, 30.f, 55.f);
     }
 
     // Spawn FireSwipe
@@ -345,6 +347,8 @@ void CMorphoAtkA_DoubleSwordAtkLR::EndWait()
                 }
             }
         }
+
+        CAMERACTRL->Shake(0.3f, 20.f, 20.f);
     }
 
     if (Sim >= 1.f - 1e-5f)

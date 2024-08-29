@@ -2,6 +2,7 @@
 #include "CMorphoAtkG_NormalFar_SwordSlash.h"
 #include "CMorphoFSM.h"
 #include "CMomentaryObjScript.h"
+#include "CCameraController.h"
 
 CMorphoAtkG_NormalFar_SwordSlash::CMorphoAtkG_NormalFar_SwordSlash()
     : m_SwordSlash{nullptr,}
@@ -158,6 +159,8 @@ void CMorphoAtkG_NormalFar_SwordSlash::Combo1()
             m_SwordSlash[0]->Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
             m_SwordSlash[0]->Rigidbody()->SetFreezeRotation(AXIS_TYPE::Z, true);
         }
+
+        CAMERACTRL->Shake(0.3f, 20.f, 20.f);
     }
 
     // Change Step
@@ -188,6 +191,8 @@ void CMorphoAtkG_NormalFar_SwordSlash::Combo2()
             m_SwordSlash[1]->Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
             m_SwordSlash[1]->Rigidbody()->SetFreezeRotation(AXIS_TYPE::Z, true);
         }
+
+        CAMERACTRL->Shake(0.3f, 20.f, 20.f);
     }
 
     // Change Step
@@ -218,6 +223,8 @@ void CMorphoAtkG_NormalFar_SwordSlash::Combo3()
             m_SwordSlash[2]->Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
             m_SwordSlash[2]->Rigidbody()->SetFreezeRotation(AXIS_TYPE::Z, true);
         }
+
+        CAMERACTRL->Shake(0.3f, 20.f, 20.f);
     }
 
     // Change Step

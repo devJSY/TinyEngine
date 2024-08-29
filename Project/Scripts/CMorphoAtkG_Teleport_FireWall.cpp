@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CMorphoAtkG_Teleport_FireWall.h"
 #include "CMorphoFSM.h"
+#include "CCameraController.h"
 
 CMorphoAtkG_Teleport_FireWall::CMorphoAtkG_Teleport_FireWall()
     : m_FireWall(nullptr)
@@ -126,6 +127,8 @@ void CMorphoAtkG_Teleport_FireWall::Progress()
             m_FireWall->Animator()->Play(ANIMPREFIX("Main"), false, false, 1.f, 0.f);
             GamePlayStatic::SpawnGameObject(m_FireWall, LAYER_MONSTERATK_TRIGGER);
         }
+
+        CAMERACTRL->Shake(0.3f, 30.f, 30.f);
     }
 
     if (GetOwner()->Animator()->IsFinish())

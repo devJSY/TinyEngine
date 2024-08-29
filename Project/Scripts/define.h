@@ -113,5 +113,6 @@ enum class BossLevelFlow
 enum class BossDemoType
 {
     Encounter,
+    StartPhase2,
     NONE,
 };
