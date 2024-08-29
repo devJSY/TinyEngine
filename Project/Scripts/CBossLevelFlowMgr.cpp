@@ -161,11 +161,10 @@ void CBossLevelFlowMgr::EnterClear()
     BOSS->SetActive(false);
 
     PLAYERCTRL->LockInput();
-    PLAYERFSM->ChangeState(L"STAGE_CLEAR");
     
     CAMERACTRL->SetMainTarget(PLAYER);
-    CAMERACTRL->Normal(true);
     CAMERACTRL->SetImmediate(false);
+    PLAYERFSM->ChangeState(L"STAGE_CLEAR");
 }
 
 // --------------------

@@ -40,7 +40,7 @@ CPlayerHitbox::CPlayerHitbox(const CPlayerHitbox& _Origin)
     , m_bRepeatDamage(_Origin.m_bRepeatDamage)
     , m_bRepeatEnter(false)
     , m_bRepeat(false)
-    , m_bTimeScaling(false)
+    , m_bTimeScaling(_Origin.m_bTimeScaling)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Damage, "Damage");
     AddScriptParam(SCRIPT_PARAM::INT, &m_DamageTypeIdx, "Damage Type");
@@ -115,7 +115,11 @@ void CPlayerHitbox::OnTriggerEnter(CCollider* _OtherCollider)
     m_AccTime = 0.f;
     AddDamage(pMonster);
 
-    CTimeMgr::GetInst()->SetTimeScale(0.1f, 0.f);
+
+    if (m_bTimeScaling)
+    {
+        CTimeMgr::GetInst()->SetTimeScale(0.1f, 0.f);
+    }
 }
 
 void CPlayerHitbox::AddDamage(CGameObject* _Monster)
