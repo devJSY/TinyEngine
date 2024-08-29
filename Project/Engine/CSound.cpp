@@ -98,7 +98,7 @@ int CSound::Play3D(Vec3 _WorldPos, int _iRoopCount, float _fVolume, bool _bOverl
         std::swap(_Mindistance, _Maxdistance);
     }
 
-    FMOD_VECTOR pos = {_WorldPos.z, _WorldPos.y, _WorldPos.z};
+    FMOD_VECTOR pos = {_WorldPos.x, _WorldPos.y, _WorldPos.z};
     pChannel->set3DAttributes(&pos, nullptr);
     pChannel->set3DMinMaxDistance(_Mindistance, _Maxdistance);
 

@@ -260,7 +260,6 @@ void CLevel::ChangeState(LEVEL_STATE _NextState)
             CPhysics2DMgr::GetInst()->OnPhysics2DStart();
             CPhysicsMgr::GetInst()->OnPhysicsStart();
             CRenderMgr::GetInst()->render_StaticShadowDepth();
-            CSound::g_pFMOD->set3DSettings(1.f, CPhysicsMgr::GetInst()->GetPPM(), 1.f);
             begin();
 
             if (LEVEL_STATE::PLAY == _NextState)
