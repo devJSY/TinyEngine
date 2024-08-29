@@ -7,8 +7,13 @@
 
 float4 main(PS_IN _in) : SV_Target
 {
+    if ((_in.vUV0.x <= 0.001f) && (_in.vUV0.y <= 0.5f) || (_in.vUV0.x >= 0.999f && _in.vUV0.y >= 0.5f))
+    {
+        discard;
+    }
+    
     float4 output = _in.vUV0.x >= g_float_0 ? g_vec4_1 : g_vec4_0;
- 
+
     if (_in.vUV0.x >= g_float_1)
     {
         output = float4(0.f, 0.f, 0.f, 0.f);

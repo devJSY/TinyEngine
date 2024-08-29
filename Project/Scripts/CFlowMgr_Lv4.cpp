@@ -45,6 +45,9 @@ void CFlowMgr_Lv4::begin()
     }
 
     SetFadeEffectColor(Vec3(164.f, 44.f, 174.f));
+
+    // TODO BGM
+    // GamePlayStatic::Play2DBGM(L"sound\\stream\\K15_Park5.marker.wav", 0.2f);
 }
 
 void CFlowMgr_Lv4::tick()
@@ -115,11 +118,19 @@ void CFlowMgr_Lv4::LightOut()
     {
         if (m_pLight[i])
         {
-            m_fRatio -= m_fAccTime / m_fLightOutTime;
+            m_fRatio = (1.f - m_fAccTime / m_fLightOutTime);
+
+            if (m_fAccTime / m_fLightOutTime >= 1.f)
+            {
+                m_fRatio = 0.f;
+            }
 
             m_pLight[i]->SetFallOffEnd(m_pLight[i]->GetFallOffEnd() * m_fRatio);
         }
     }
+
+    if (m_fRatio >= 1.f)
+        m_eState = Lv4State::Idle;
 }
 
 UINT CFlowMgr_Lv4::SaveToLevelFile(FILE* _File)

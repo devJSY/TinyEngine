@@ -4,6 +4,8 @@
 enum class MonsterBurstStarSpawnState
 {
     Enter,
+    BurstWait,
+    StarEnter,
     End,
 };
 
@@ -17,7 +19,7 @@ public:
 
 private:
     void ChangeState(MonsterBurstStarSpawnState _eState) { m_eState = _eState; }
-    void Enter();
+    void StarEnter();
     void End();
 
 public:

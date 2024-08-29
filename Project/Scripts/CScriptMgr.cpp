@@ -66,8 +66,6 @@
 #include "CCrumbleScript.h"
 #include "CSurpriseBoardScript.h"
 #include "CSurpriseBoardAttackScript.h"
-#include "CUIWipeScript.h"
-#include "CWipeTriggerScript.h"
 #include "CKirbyUnitScript.h"
 #include "CSolarChargeScript.h"
 #include "CSolarOnceScript.h"
@@ -124,6 +122,9 @@
 #include "CMonsterDeadEffectSpawnScript.h"
 #include "CShcokWaveScript.h"
 #include "CUIBurstStarSpawnEffectScript.h"
+#include "CUIChangeAbilityStarSpawnEffectScript.h"
+#include "CUIChangeAbilityStarEffect.h"
+#include "CUIChangeAbilityStopStarEffect.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -192,8 +193,6 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CCrumbleScript");
 	_vec.push_back(L"CSurpriseBoardScript");
 	_vec.push_back(L"CSurpriseBoardAttackScript");
-	_vec.push_back(L"CUIWipeScript");
-	_vec.push_back(L"CWipeTriggerScript");
 	_vec.push_back(L"CKirbyUnitScript");
 	_vec.push_back(L"CSolarChargeScript");
 	_vec.push_back(L"CSolarOnceScript");
@@ -250,6 +249,9 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CMonsterDeadEffectSpawnScript");
 	_vec.push_back(L"CShcokWaveScript");
 	_vec.push_back(L"CUIBurstStarSpawnEffectScript");
+	_vec.push_back(L"CUIChangeAbilityStarSpawnEffectScript");
+	_vec.push_back(L"CUIChangeAbilityStarEffect");
+	_vec.push_back(L"CUIChangeAbilityStopStarEffect");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -384,10 +386,6 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CSurpriseBoardScript;
 	if (L"CSurpriseBoardAttackScript" == _strScriptName)
 		return new CSurpriseBoardAttackScript;
-	if (L"CUIWipeScript" == _strScriptName)
-		return new CUIWipeScript;
-	if (L"CWipeTriggerScript" == _strScriptName)
-		return new CWipeTriggerScript;
 	if (L"CKirbyUnitScript" == _strScriptName)
 		return new CKirbyUnitScript;
 	if (L"CSolarChargeScript" == _strScriptName)
@@ -500,6 +498,12 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CShcokWaveScript;
 	if (L"CUIBurstStarSpawnEffectScript" == _strScriptName)
 		return new CUIBurstStarSpawnEffectScript;
+	if (L"CUIChangeAbilityStarSpawnEffectScript" == _strScriptName)
+		return new CUIChangeAbilityStarSpawnEffectScript;
+	if (L"CUIChangeAbilityStarEffect" == _strScriptName)
+		return new CUIChangeAbilityStarEffect;
+	if (L"CUIChangeAbilityStopStarEffect" == _strScriptName)
+		return new CUIChangeAbilityStopStarEffect;
 	return nullptr;
 }
 
@@ -637,10 +641,6 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CSurpriseBoardScript;
 	case (UINT)SCRIPT_TYPE::SURPRISEBOARDATTACKSCRIPT:
 		return new CSurpriseBoardAttackScript;
-	case (UINT)SCRIPT_TYPE::UIWIPESCRIPT:
-		return new CUIWipeScript;
-	case (UINT)SCRIPT_TYPE::WIPETRIGGERSCRIPT:
-		return new CWipeTriggerScript;
 	case (UINT)SCRIPT_TYPE::KIRBYUNITSCRIPT:
 		return new CKirbyUnitScript;
 	case (UINT)SCRIPT_TYPE::SOLARCHARGESCRIPT:
@@ -753,6 +753,12 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CShcokWaveScript;
 	case (UINT)SCRIPT_TYPE::UIBURSTSTARSPAWNEFFECTSCRIPT:
 		return new CUIBurstStarSpawnEffectScript;
+	case (UINT)SCRIPT_TYPE::UICHANGEABILITYSTARSPAWNEFFECTSCRIPT:
+		return new CUIChangeAbilityStarSpawnEffectScript;
+	case (UINT)SCRIPT_TYPE::UICHANGEABILITYSTAREFFECT:
+		return new CUIChangeAbilityStarEffect;
+	case (UINT)SCRIPT_TYPE::UICHANGEABILITYSTOPSTAREFFECT:
+		return new CUIChangeAbilityStopStarEffect;
 	}
 	return nullptr;
 }
@@ -891,10 +897,6 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CSurpriseBoardScript";
 	case SCRIPT_TYPE::SURPRISEBOARDATTACKSCRIPT:
 		return L"CSurpriseBoardAttackScript";
-	case SCRIPT_TYPE::UIWIPESCRIPT:
-		return L"CUIWipeScript";
-	case SCRIPT_TYPE::WIPETRIGGERSCRIPT:
-		return L"CWipeTriggerScript";
 	case SCRIPT_TYPE::KIRBYUNITSCRIPT:
 		return L"CKirbyUnitScript";
 	case SCRIPT_TYPE::SOLARCHARGESCRIPT:
@@ -1007,6 +1009,12 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CShcokWaveScript";
 	case SCRIPT_TYPE::UIBURSTSTARSPAWNEFFECTSCRIPT:
 		return L"CUIBurstStarSpawnEffectScript";
+	case SCRIPT_TYPE::UICHANGEABILITYSTARSPAWNEFFECTSCRIPT:
+		return L"CUIChangeAbilityStarSpawnEffectScript";
+	case SCRIPT_TYPE::UICHANGEABILITYSTAREFFECT:
+		return L"CUIChangeAbilityStarEffect";
+	case SCRIPT_TYPE::UICHANGEABILITYSTOPSTAREFFECT:
+		return L"CUIChangeAbilityStopStarEffect";
 	}
 	return nullptr;
 }
