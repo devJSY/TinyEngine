@@ -6,6 +6,8 @@ class CKirbyObject_Lightbulb : public CKirbyObject
 {
 private:
     float m_Speed;
+    float m_SavedSpeed;
+    float m_SavedRotSpeed;
     float m_BrightSpeed;
     Ptr<CGraphicsShader> m_LightShader;
     Ptr<CGraphicsShader> m_PrevShader;

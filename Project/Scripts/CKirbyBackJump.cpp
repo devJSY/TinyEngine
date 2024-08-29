@@ -5,6 +5,7 @@
 CKirbyBackJump::CKirbyBackJump()
     : m_JumpPower(8.f)
     , m_InitSpeed(9.f)
+    , m_PrevGravity(0.f)
     , m_StateEnter(true)
 {
 }
@@ -70,6 +71,7 @@ void CKirbyBackJump::Enter()
     PLAYERCTRL->AddVelocity({0.f, m_JumpPower, 0.f});
     PLAYERCTRL->AddVelocity(KnockBackDir * m_InitSpeed);
     
+    m_PrevGravity = PLAYERCTRL->GetGravity();
     PLAYERCTRL->SetGravity(-35.f);
 
     m_StateEnter = true;
@@ -93,5 +95,5 @@ void CKirbyBackJump::Exit()
     PLAYERCTRL->SetFriction(1.f);
     PLAYERCTRL->SetFrictionMode(false);
 
-    PLAYERCTRL->SetGravity(PLAYERCTRL->GetInitGravity());
+    PLAYERCTRL->SetGravity(m_PrevGravity);
 }

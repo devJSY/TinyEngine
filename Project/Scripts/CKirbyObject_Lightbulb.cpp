@@ -6,6 +6,8 @@
 CKirbyObject_Lightbulb::CKirbyObject_Lightbulb()
     : m_Speed(8.f)
     , m_BrightSpeed(3.f)
+    , m_SavedSpeed(0.f)
+    , m_SavedRotSpeed(0.f)
 {
     m_OriginObject = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Lightbulb.pref", L"prefab\\Lightbulb.pref");
     m_Mesh = CAssetMgr::GetInst()->Load<CMeshData>(L"meshdata\\KirbyLightbulb.mdat", L"meshdata\\KirbyLightbulb.mdat");
@@ -243,9 +245,8 @@ void CKirbyObject_Lightbulb::DropObjectEnter()
     // 콜라이더 & 바디콜라이더 크기 세팅
     CPlayerMgr::ResetBodyColliderSetting();
 
-    UnitInfo PlayerInfo = PLAYERUNIT->GetInitInfo();
-    PLAYERCTRL->SetSpeed(PlayerInfo.Speed);
-    PLAYERCTRL->SetRotSpeed(PlayerInfo.RotationSpeed);
+    PLAYERCTRL->SetSpeed(m_SavedSpeed);
+    PLAYERCTRL->SetRotSpeed(m_SavedRotSpeed);
     PLAYERCTRL->AddVelocity(Vec3(0.f, 3.5f, 0.f));
 
     // 포인트라이트
@@ -280,6 +281,8 @@ void CKirbyObject_Lightbulb::ChangeObjectEnter()
     BodyCol->SetRadius(1.f);
     BodyCol->SetHeight(2.71f);
 
+    m_SavedSpeed = PLAYERCTRL->GetSpeed();
+    m_SavedRotSpeed = PLAYERCTRL->GetRotSpeed();
     PLAYERCTRL->SetSpeed(m_Speed);
     PLAYERCTRL->SetRotSpeed(m_Speed);
 
