@@ -10,6 +10,8 @@ CKirbyLightScript::CKirbyLightScript()
     , m_TurnOffTime(0.6f)
     , m_AccTime(0.f)
     , m_State(KirbyLightState::NONE)
+    , m_RadianceRed(Vec3(400.f, 100.f, 100.f) / 255.f)
+    , m_RadianceWhite(Vec3(1000.f, 1000.f, 1000.f) / 255.f)
 {
 }
 
@@ -40,7 +42,7 @@ void CKirbyLightScript::tick()
 
         GetOwner()->Light()->SetFallOffEnd(NewRadius);
         GetOwner()->Light()->SetFallOffStart(NewRadius * m_FallRatio);
-        GetOwner()->Light()->SetLightRadiance(Vec3(1000.f, 1000.f, 1000.f) / 255.f);
+        GetOwner()->Light()->SetLightRadiance(m_RadianceWhite);
 
         if (m_AccTime > m_TurnOnTime)
         {
@@ -55,7 +57,7 @@ void CKirbyLightScript::tick()
 
         GetOwner()->Light()->SetFallOffEnd(NewRadius);
         GetOwner()->Light()->SetFallOffStart(NewRadius * m_FallRatio);
-        GetOwner()->Light()->SetLightRadiance(Vec3(500.f, 50.f, 50.f) / 255.f);
+        GetOwner()->Light()->SetLightRadiance(m_RadianceRed);
 
         if (m_AccTime > m_TurnOffTime)
         {
@@ -75,7 +77,7 @@ void CKirbyLightScript::tick()
 
         GetOwner()->Light()->SetFallOffEnd(NewRadius);
         GetOwner()->Light()->SetFallOffStart(NewRadius * m_FallRatio);
-        GetOwner()->Light()->SetLightRadiance(Vec3(1500.f, 100.f, 100.f) / 255.f);
+        GetOwner()->Light()->SetLightRadiance(m_RadianceRed);
 
         if (m_AccTime > m_TurnOffTime)
         {
@@ -90,7 +92,7 @@ void CKirbyLightScript::Init()
     GetOwner()->SetActive(true);
     GetOwner()->Light()->SetFallOffEnd(m_MinFallOfEnd);
     GetOwner()->Light()->SetFallOffStart(m_MinFallOfEnd * m_FallRatio);
-    GetOwner()->Light()->SetLightRadiance(Vec3(500.f, 50.f, 50.f) / 255.f);
+    GetOwner()->Light()->SetLightRadiance(m_RadianceRed);
 }
 
 void CKirbyLightScript::Drop()

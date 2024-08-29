@@ -18,6 +18,8 @@ private:
     float m_TurnOnTime;
     float m_TurnOffTime;
     float m_AccTime;
+    Vec3 m_RadianceRed;
+    Vec3 m_RadianceWhite;
     KirbyLightState m_State;
 
 public:
