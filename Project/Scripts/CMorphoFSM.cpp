@@ -193,10 +193,10 @@ void CMorphoFSM::tick()
 {
     CFSMScript::tick();
 
-    //if (KEY_TAP(KEY::ENTER))
-    //{
-    //    ChangeStateGroup(MorphoStateGroup::AtkGroundNormalFar, L"ATKG_NORMALFAR_SWORDSLASH");
-    //}
+    if (KEY_TAP(KEY::ENTER))
+    {
+        ChangeStateGroup(MorphoStateGroup::AtkAir1, L"ATKA_SHOCKWAVE");
+    }
 
     // Emissive
     if (m_TeleportAppearTime > 0.f)
