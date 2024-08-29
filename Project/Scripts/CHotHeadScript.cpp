@@ -251,7 +251,7 @@ void CHotHeadScript::EnterState(HotHeadState _state)
             TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\HotHead\\FaceTexturePattern.03.png",
                                                         L"fbx\\Characters\\Monster\\HotHead\\FaceTexturePattern.03.png"));
 
-        // child 없애주기
+        GamePlayStatic::DestroyGameObject(GetOwner()->GetChildObject(L"FlameRot Object"));
 
         SetSparkle(true);
 

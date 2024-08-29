@@ -964,6 +964,9 @@
     <ClInclude Include="CUIBurstStarSpawnEffectScript.h">
       <Filter>Scripts\UI\UIEffect\UIBurstStarSpawnEffect</Filter>
     </ClInclude>
+    <ClInclude Include="CUIChangeAbilityStarEffect.h">
+      <Filter>Scripts\UI\UIEffect\UIChangeAbilityStarEffect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1937,6 +1940,9 @@
     </ClCompile>
     <ClCompile Include="CUIBurstStarSpawnEffectScript.cpp">
       <Filter>Scripts\UI\UIEffect\UIBurstStarSpawnEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIChangeAbilityStarEffect.cpp">
+      <Filter>Scripts\UI\UIEffect\UIChangeAbilityStarEffect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -3049,6 +3055,9 @@
     </Filter>
     <Filter Include="Scripts\UI\UIEffect\UIBurstStarSpawnEffect">
       <UniqueIdentifier>{a4db04cb-9f57-49de-8e78-9a7d135f7110}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIEffect\UIChangeAbilityStarEffect">
+      <UniqueIdentifier>{6f6c5bd2-ca42-409a-9b65-bf02ee240c4c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
