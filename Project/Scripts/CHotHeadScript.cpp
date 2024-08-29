@@ -6,7 +6,6 @@
 
 CHotHeadScript::CHotHeadScript()
     : CMonsterUnitScript(HOTHEADSCRIPT)
-    , m_pFlameRotObject(nullptr)
     , m_eState(HotHeadState::Idle)
     , m_vDamageDir{}
     , m_fAimingTime(0.f)
@@ -25,7 +24,6 @@ CHotHeadScript::CHotHeadScript()
 
 CHotHeadScript::CHotHeadScript(const CHotHeadScript& _Origin)
     : CMonsterUnitScript(_Origin)
-    , m_pFlameRotObject(nullptr)
     , m_eState(HotHeadState::Idle)
     , m_vDamageDir{}
     , m_fAimingTime(_Origin.m_fAccTime)
@@ -167,17 +165,6 @@ void CHotHeadScript::OnTriggerExit(CCollider* _OtherCollider)
 
 void CHotHeadScript::InitSetting()
 {
-    m_pFlameRotObject = GetOwner()->GetChildObject(L"FlameRot Object");
-
-    if (nullptr == m_pFlameRotObject)
-    {
-        MessageBox(nullptr, L"FlameRot Object Does Not Exist", L"FlameRot Object Issue", MB_OK);
-        return;
-        // TODO : 위치 정해지면 코드로 생성해주기
-    }
-
-    m_pFlameRotObject->SetActive(false);
-
     GetOwner()->MeshRender()->GetDynamicMaterial(0);
 }
 
@@ -219,22 +206,28 @@ void CHotHeadScript::EnterState(HotHeadState _state)
     break;
     case HotHeadState::AttackFlameRotStart: {
         Animator()->Play(ANIMPREFIX("AttackFlameRotStart"), false, false, 1.5f);
+
+        // prefab 소환하기
+        CGameObject* pStarEffect =
+            CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\FlameRot Object.pref", L"prefab\\FlameRot Object.pref")->Instantiate();
+
+        GamePlayStatic::AddChildObject(GetOwner(), pStarEffect);
     }
     break;
     case HotHeadState::AttackFlameRot: {
         GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
             TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\HotHead\\FaceTexturePattern.00.png",
                                                         L"fbx\\Characters\\Monster\\HotHead\\FaceTexturePattern.00.png"));
-        // 현재 Radian 가져오기
-        m_fRotRadian = m_pFlameRotObject->Transform()->GetLocalRotation().y;
-        // TODO : 앞에 Attack Area 키기
-        m_pFlameRotObject->SetActive(true);
+
+        GamePlayStatic::LayerChange(GetOwner()->GetChildObject(L"FlameRot Object")->GetChildObject(L"Collider"), LAYER_MONSTER_TRIGGER);
+
         Animator()->Play(ANIMPREFIX("AttackFlameRot"), false, false, 1.5f);
     }
     break;
     case HotHeadState::AttackFlameRotEnd: {
-        // TODO : 앞에 Attack Area 끄기
-        m_pFlameRotObject->SetActive(false);
+        // addchild 빼고 없애주기
+        GamePlayStatic::DestroyGameObject(GetOwner()->GetChildObject(L"FlameRot Object"));
+
         Animator()->Play(ANIMPREFIX("AttackFlameRotEnd"), false);
     }
     break;
@@ -257,6 +250,8 @@ void CHotHeadScript::EnterState(HotHeadState _state)
         GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
             TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\HotHead\\FaceTexturePattern.03.png",
                                                         L"fbx\\Characters\\Monster\\HotHead\\FaceTexturePattern.03.png"));
+
+        GamePlayStatic::DestroyGameObject(GetOwner()->GetChildObject(L"FlameRot Object"));
 
         SetSparkle(true);
 
@@ -364,7 +359,6 @@ void CHotHeadScript::FSM()
     }
     break;
     case HotHeadState::Damage: {
-        m_pFlameRotObject->SetActive(false);
         Damage();
     }
     break;
@@ -416,9 +410,6 @@ void CHotHeadScript::ExitState(HotHeadState _state)
     }
     break;
     case HotHeadState::AttackFlameRot: {
-        // 원래 Rotation으로 초기화
-        m_fRotRadian = 0.f;
-        m_pFlameRotObject->Transform()->SetLocalRotation(Vec3(0.f, 0.f, 0.f));
     }
     break;
     case HotHeadState::AttackFlameRotEnd:
@@ -577,11 +568,13 @@ void CHotHeadScript::AttackFlameRotStart()
 #pragma region ATTACKFLAMEROT
 void CHotHeadScript::AttackFlameRot()
 {
-    Vec3 vRadian = m_pFlameRotObject->Transform()->GetLocalRotation();
+    CGameObject* pRotObject = GetOwner()->GetChildObject(L"FlameRot Object");
+    // child 이름으로 하기
+    Vec3 vRadian = pRotObject->Transform()->GetLocalRotation();
 
     vRadian.y += GetCurInfo().RotationSpeed * DT;
 
-    m_pFlameRotObject->Transform()->SetLocalRotation(vRadian);
+    pRotObject->Transform()->SetLocalRotation(vRadian);
 
     if (Animator()->IsFinish())
     {

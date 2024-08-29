@@ -25,6 +25,9 @@ void CFlowMgr_Lv3::begin()
     SetToneMappingParam(true, false, 0.4f, 0.f);
 
     SetFadeEffectColor(Vec3(164.f, 44.f, 174.f));
+
+    // TODO BGM
+    // GamePlayStatic::Play2DBGM(L"sound\\stream\\K15_Park3.wav", 0.2f);
 }
 
 void CFlowMgr_Lv3::LevelEnd()
