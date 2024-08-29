@@ -125,7 +125,7 @@ void CFlowMgr_BossMorpho::FlowDemoPlay()
         if (t >= BlurStart)
         {
             t = (t - BlurStart) / (1.f - BlurStart);
-            float BlurPow = 7.5f * sinf(XM_PI * t);
+            float BlurPow = 5.f * sinf(XM_PI * t);
             float BlurRadius = 10.f + clamp(sinf(XM_PI * t) * 1.5f, 0.f, 1.f);
 
             SetRadialBlurEffect(BlurRadius, BlurPow, Vec2(0.5f));
