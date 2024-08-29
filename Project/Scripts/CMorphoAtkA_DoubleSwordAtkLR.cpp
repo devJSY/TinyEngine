@@ -4,6 +4,7 @@
 #include "CPlayerMgr.h"
 #include "CCameraController.h"
 #include "CChangeAlphaScript.h"
+#include "CDestroyParticleScript.h"
 
 CMorphoAtkA_DoubleSwordAtkLR::CMorphoAtkA_DoubleSwordAtkLR()
     : m_LightningEffect{nullptr,}
@@ -192,7 +193,7 @@ void CMorphoAtkA_DoubleSwordAtkLR::Progress()
 {
     int SpawnFrm = 20;
 
-    //@EFFECT 번개, 나비, 충격파
+    // Spawn Effect
     if (m_bFrmEnter && CHECK_ANIMFRM(GetOwner(), SpawnFrm))
     {
         m_bFrmEnter = false;
@@ -224,6 +225,32 @@ void CMorphoAtkA_DoubleSwordAtkLR::Progress()
             GamePlayStatic::SpawnGameObject(m_LightningEffect[1], LAYER_EFFECT);
         }
 
+        // Spawn Particle Butterfly
+        Vec3 SpawnPos = MRPFSM->GetWeaponR()->Transform()->GetWorldPos();
+        Vec3 FrontDir = MRPFSM->GetWeaponR()->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+        FrontDir.y = 0.f;
+        FrontDir.Normalize();
+
+        for (int i = 0; i < 6; ++i)
+        {
+            Vec3 OffsetSpawnPos = SpawnPos;
+            OffsetSpawnPos += FrontDir * (50.f * i);
+            SpawnButterfly(OffsetSpawnPos);
+        }
+
+        SpawnPos = MRPFSM->GetWeaponL()->Transform()->GetWorldPos();
+        FrontDir = MRPFSM->GetWeaponL()->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+        FrontDir.y = 0.f;
+        FrontDir.Normalize();
+
+        for (int i = 0; i < 6; ++i)
+        {
+            Vec3 OffsetSpawnPos = SpawnPos;
+            OffsetSpawnPos += FrontDir * (50.f * i);
+            SpawnButterfly(OffsetSpawnPos);
+        }
+
+        // Spawn FireSwipe
         if (m_FireSwipePref != nullptr)
         {
             Vec3 Pos = GetOwner()->Transform()->GetWorldPos();
@@ -366,4 +393,49 @@ void CMorphoAtkA_DoubleSwordAtkLR::EndEnd()
     {
         MRPFSM->Move();
     }
+}
+
+void CMorphoAtkA_DoubleSwordAtkLR::SpawnButterfly(Vec3 _Pos)
+{
+    CGameObject* Butterfly = new CGameObject;
+    CParticleSystem* Particle = nullptr;
+    int Rand = GetRandomInt(0, 2);
+
+    if (Rand == 0)
+    {
+        Particle = MRPFSM->GetParticleButterflyPink()->ParticleSystem()->Clone();
+    }
+    else if (Rand == 1)
+    {
+        Particle = MRPFSM->GetParticleButterflyYellow()->ParticleSystem()->Clone();
+    }
+    else if (Rand == 2)
+    {
+        Particle = MRPFSM->GetParticleButterflyYellowPink()->ParticleSystem()->Clone();
+    }
+
+    if (Particle)
+    {
+        tParticleModule Module = Particle->GetParticleModule();
+        Module.vSpawnMinScale = Vec3(20.f, 20.f, 1.f);
+        Module.vSpawnMaxScale = Vec3(40.f, 40.f, 1.f);
+        Module.vScaleRatio = Vec3::Zero;
+        Module.MinSpeed = 30.f;
+        Module.MaxSpeed = 80.f;
+        Module.VelocityAlignment = GetRandomInt(0, 1);
+        Module.AlphaBasedLife = 1;
+
+        Particle->SetParticleModule(Module);
+        Butterfly->AddComponent(Particle);
+    }
+
+    _Pos.y = GetRandomfloat(0.f, 50.f);
+    Butterfly->AddComponent(new CTransform);
+    Butterfly->Transform()->SetWorldPos(_Pos);
+
+    CDestroyParticleScript* Script = new CDestroyParticleScript;
+    Script->SetSpawnTime(0.5f);
+    Butterfly->AddComponent(Script);
+
+    GamePlayStatic::SpawnGameObject(Butterfly, LAYER_EFFECT);
 }

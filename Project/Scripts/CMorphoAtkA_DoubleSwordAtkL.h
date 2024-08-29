@@ -21,6 +21,8 @@ private:
     void Progress();
     void End();
 
+    void SpawnButterfly(Vec3 _Pos);
+
 public:
     CLONE(CMorphoAtkA_DoubleSwordAtkL)
     CMorphoAtkA_DoubleSwordAtkL();

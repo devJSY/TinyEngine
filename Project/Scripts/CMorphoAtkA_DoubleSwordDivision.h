@@ -4,6 +4,8 @@
 class CMorphoAtkA_DoubleSwordDivision : public CBossState
 {
 private:
+    Ptr<CPrefab> m_ChargingParticlePref;
+    CGameObject* m_ChargingParticle;
     float m_AccTime;
     float m_WaitTime;
     float m_ChargeTime;

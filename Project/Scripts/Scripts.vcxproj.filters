@@ -970,6 +970,9 @@
     <ClInclude Include="CUIChangeAbilityStopStarEffect.h">
       <Filter>Scripts\UI\UIEffect\UIChangeAbilityStarEffect\CUIAbilityStopStarEffect</Filter>
     </ClInclude>
+    <ClInclude Include="CDestroyParticleScript.h">
+      <Filter>Scripts\Gimmik\DestroyParticle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1949,6 +1952,9 @@
     </ClCompile>
     <ClCompile Include="CBossLevelFlowMgr.cpp">
       <Filter>Module\FlowMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CDestroyParticleScript.cpp">
+      <Filter>Scripts\Gimmik\DestroyParticle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -3068,5 +3074,11 @@
     <Filter Include="Scripts\Manager\FlowManager\5. Morpho Level Flow Manager">
       <UniqueIdentifier>{ab75756a-0394-44c4-8fd0-78d24de70a78}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scripts\Gimmik\DestroyParticle">
+      <UniqueIdentifier>{e5509396-59e3-4845-a1d3-17503b984e8e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>

@@ -126,6 +126,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CCanJuice.h" />
     <ClInclude Include="CCutterProjectileScript.h" />
     <ClInclude Include="CDamageStarEffect.h" />
+    <ClInclude Include="CDestroyParticleScript.h" />
     <ClInclude Include="CElfilisAirArrow.h" />
     <ClInclude Include="CElfilisArrowScript.h" />
     <ClInclude Include="CElfilisArrowSetScript.h" />
@@ -472,6 +473,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CCanJuice.cpp" />
     <ClCompile Include="CCutterProjectileScript.cpp" />
     <ClCompile Include="CDamageStarEffect.cpp" />
+    <ClCompile Include="CDestroyParticleScript.cpp" />
     <ClCompile Include="CElfilisAirArrow.cpp" />
     <ClCompile Include="CElfilisArrowScript.cpp" />
     <ClCompile Include="CElfilisArrowSetScript.cpp" />
@@ -806,6 +808,9 @@ call CodeGen.exe</Command>
     <ClCompile Include="CUIFlowScript.cpp" />
     <ClCompile Include="CFlowMgr_Lv0.cpp" />
     <ClCompile Include="CSmokeScript.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

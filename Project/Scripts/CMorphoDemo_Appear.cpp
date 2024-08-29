@@ -47,7 +47,7 @@ void CMorphoDemo_Appear::Exit()
     {
         GamePlayStatic::DestroyGameObject(m_BossName);
     }
-    
+
     CBossMgr::GetBossFlowMgr()->ChangeFlow(BossLevelFlow::Fight);
 }
 
@@ -72,6 +72,10 @@ void CMorphoDemo_Appear::Enter_Step()
     break;
     case StateStep::End: {
         GetOwner()->Animator()->Play(ANIMPREFIX("DemoBirthEnd"), false, false, 1.5f);
+        m_AccTime = 0.f;
+
+        // Particle On
+        MRPFSM->EnableTeleportParticle(true);
 
         // Camera : 투타겟
         CAMERACTRL->LoadInitSetting(true);
@@ -85,8 +89,13 @@ void CMorphoDemo_Appear::Exit_Step()
 {
     switch (m_Step)
     {
-    case StateStep::Start:
-        break;
+    case StateStep::Start: {
+        // Particle Off
+        MRPFSM->GetParticleButterflyPink()->ParticleSystem()->EnableModule(PARTICLE_MODULE::SPAWN, false);
+        MRPFSM->GetParticleButterflyYellowPink()->ParticleSystem()->EnableModule(PARTICLE_MODULE::SPAWN, false);
+        MRPFSM->GetParticleCircleDust()->ParticleSystem()->EnableModule(PARTICLE_MODULE::SPAWN, false);
+    }
+    break;
     case StateStep::Progress: {
         if (m_BossName)
         {
@@ -96,8 +105,11 @@ void CMorphoDemo_Appear::Exit_Step()
         }
     }
     break;
-    case StateStep::End:
-        break;
+    case StateStep::End: {
+        // Particle Off
+        MRPFSM->EnableTeleportParticle(false);
+    }
+    break;
     }
 }
 
@@ -135,6 +147,11 @@ void CMorphoDemo_Appear::Start()
             GamePlayStatic::SpawnGameObject(m_BossName, LAYER_STATIC);
         }
 
+        // Particle On
+        MRPFSM->GetParticleButterflyPink()->ParticleSystem()->EnableModule(PARTICLE_MODULE::SPAWN, true);
+        MRPFSM->GetParticleButterflyYellowPink()->ParticleSystem()->EnableModule(PARTICLE_MODULE::SPAWN, true);
+        MRPFSM->GetParticleCircleDust()->ParticleSystem()->EnableModule(PARTICLE_MODULE::SPAWN, true);
+
         // Camera : 뒤로 이동(고정)
         CAMERACTRL->SetLookDir(Vec3(0.f, 0.35f, -0.937f));
         CAMERACTRL->SetLookDist(100.f);
@@ -146,7 +163,7 @@ void CMorphoDemo_Appear::Start()
 
         m_bFrmEnter2 = true;
     }
-    
+
     if (GetOwner()->Animator()->IsFinish())
     {
         ChangeStep(StateStep::Progress);
