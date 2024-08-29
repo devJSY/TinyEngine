@@ -52,7 +52,7 @@ void CKirbyFireBullet::begin()
     if (m_bFirstTime)
     {
         m_Dir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
-        Rigidbody()->AddForce(m_Dir * 20.f, ForceMode::Impulse);
+        Rigidbody()->AddForce(m_Dir * 15.f, ForceMode::Impulse);
         m_bFirstTime = false;
     }
 }

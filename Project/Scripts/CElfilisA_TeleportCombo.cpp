@@ -1,10 +1,9 @@
 #include "pch.h"
 #include "CElfilisA_TeleportCombo.h"
 #include "CElfilisFSM.h"
+#include "CCameraController.h"
 #include <Engine\CAssetMgr.h>
 #include <Engine\CPrefab.h>
-
-#include "CCameraController.h"
 
 CElfilisA_TeleportCombo::CElfilisA_TeleportCombo()
     : m_BeforeObj(nullptr)
@@ -39,7 +38,33 @@ void CElfilisA_TeleportCombo::Enter()
 {
     m_ComboLevel = 0;
     m_Step = StateStep::Start;
+
+    // @CAMERA : Teleport Camera Set
+
     Enter_Step();
+}
+
+void CElfilisA_TeleportCombo::Exit()
+{
+    Exit_Step();
+
+    GetOwner()->Animator()->SetPlay(true);
+
+    if (m_BeforeObj)
+    {
+        GamePlayStatic::DestroyGameObject(m_BeforeObj);
+    }
+    if (m_BeforeEffect)
+    {
+        GamePlayStatic::DestroyGameObject(m_BeforeEffect);
+    }
+    if (m_AfterEffect)
+    {
+        GamePlayStatic::DestroyGameObject(m_AfterEffect);
+    }
+
+    // Camera : 투 타겟
+    CAMERACTRL->SetElfilisTwoTarget();
 }
 
 void CElfilisA_TeleportCombo::Enter_Step()
@@ -49,7 +74,6 @@ void CElfilisA_TeleportCombo::Enter_Step()
     case StateStep::Start: {
         GetOwner()->Animator()->Play(ANIMPREFIX("Wait"));
         GetOwner()->Animator()->SetPlay(false);
-        GetOwner()->Rigidbody()->SetKinematic(true);
 
         //@Effect 일부분만 그리는 셰이더 작성 필요
 
@@ -131,10 +155,8 @@ void CElfilisA_TeleportCombo::Exit_Step()
 {
     switch (m_Step)
     {
-    case StateStep::Start: {
-        GetOwner()->Rigidbody()->SetKinematic(false);
-    }
-    break;
+    case StateStep::Start:
+        break;
     case StateStep::End: {
         GetOwner()->Animator()->SetPlay(true);
 
@@ -190,10 +212,6 @@ void CElfilisA_TeleportCombo::End()
         {
             ElfilisStateGroup NextState = ELFFSM->FindNextStateGroup();
             ELFFSM->ChangeStateGroup(NextState);
-
-            // 투 타겟
-            CAMERACTRL->SetElfilisTwoTarget();
-
         }
     }
 }

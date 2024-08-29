@@ -25,7 +25,10 @@ void CLandScape::Init()
     // m_TileArrTex = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\tile\\TILE_ARRR.dds", L"texture\\tile\\TILE_ARRR.dds");
     // m_TileArrTex = CAssetMgr::GetInst()->LoadTexture(L"texture\\tile\\TILE_ARRR.dds", L"texture\\tile\\TILE_ARRR.dds", 8);
     m_TileArrTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"Texture\\tile\\TILE_ARRR.dds");
-    m_TileArrTex->GenerateMip(8);
+    if (nullptr != m_TileArrTex)
+    {
+        m_TileArrTex->GenerateMip(8);
+    }
 }
 
 void CLandScape::CreateMesh()

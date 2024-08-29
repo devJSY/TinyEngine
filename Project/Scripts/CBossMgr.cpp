@@ -2,16 +2,12 @@
 #include "CBossMgr.h"
 #include "CUnitScript.h"
 #include "CFSMScript.h"
-#include "CLevelFlowMgr.h"
-#include "CFlowMgr_BossMorpho.h"
-#include "CFlowMgr_BossElfilis.h"
+#include "CBossLevelFlowMgr.h"
 
 CGameObject* CBossMgr::m_Boss = nullptr;
 CUnitScript* CBossMgr::m_BossUnit = nullptr;
 CFSMScript* CBossMgr::m_BossFSM = nullptr;
-CLevelFlowMgr* CBossMgr::m_FlowMgr = nullptr;
-CFlowMgr_BossMorpho* CBossMgr::m_FlowMgrMorpho = nullptr;
-CFlowMgr_BossElfilis* CBossMgr::m_FlowMgrElfilis = nullptr;
+CBossLevelFlowMgr* CBossMgr::m_FlowMgr = nullptr;
 
 CBossMgr::CBossMgr()
     : CScript(BOSSMGR)
@@ -26,8 +22,6 @@ CBossMgr::~CBossMgr()
     m_BossUnit = nullptr;
     m_BossFSM = nullptr;
     m_FlowMgr = nullptr;
-    m_FlowMgrMorpho = nullptr;
-    m_FlowMgrElfilis = nullptr;
 }
 
 void CBossMgr::begin()
@@ -37,12 +31,7 @@ void CBossMgr::begin()
         SetBoss();
     }
 
-    m_FlowMgr = GetOwner()->GetScript<CLevelFlowMgr>();
-    if (m_FlowMgr)
-    {
-        m_FlowMgrMorpho = dynamic_cast<CFlowMgr_BossMorpho*>(m_FlowMgr);
-        m_FlowMgrElfilis = dynamic_cast<CFlowMgr_BossElfilis*>(m_FlowMgr);
-    }
+    m_FlowMgr = GetOwner()->GetScript<CBossLevelFlowMgr>();
 }
 
 void CBossMgr::SetBoss()

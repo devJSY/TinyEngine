@@ -85,7 +85,7 @@ void CSoundEditor::DrawDetails()
                 m_Sound->Pause(false);
             else
             {
-                m_Sound->Play(1, m_Volume, false);
+                m_Sound->Play2D(1, m_Volume, false);
                 m_Sound->SetPosition(m_PlayPosition);
             }
         }

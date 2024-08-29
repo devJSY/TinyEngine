@@ -64,7 +64,6 @@ void CKirbySmoke::begin()
         m_OriginalSize = 0.9f;
         m_SplitSize = 0.2f;
         m_TailSize = 0.4f;
-        m_Speed = 40.f;
     }
         break;
 

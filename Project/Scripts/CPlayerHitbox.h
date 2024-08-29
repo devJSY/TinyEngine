@@ -19,6 +19,7 @@ private:
     bool m_bRepeatDamage;
     bool m_bRepeatEnter;
     bool m_bRepeat;
+    bool m_bTimeScaling;
 
 public:
     virtual void begin() override;

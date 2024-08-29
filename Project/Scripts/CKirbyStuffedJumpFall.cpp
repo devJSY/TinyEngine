@@ -16,7 +16,7 @@ void CKirbyStuffedJumpFall::tick()
     {
         ChangeState(L"ATTACK");
     }
-    if (PLAYERCTRL->IsGround())
+    else if (PLAYERCTRL->IsGround())
     {
         ChangeState(L"STUFFED_LANDING");
     }

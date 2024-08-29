@@ -3,6 +3,9 @@
 
 class CKirbyHoveringLanding : public CState
 {
+private:
+    float m_SavedSpeed;
+
 public:
     virtual void tick();
     virtual void Enter();

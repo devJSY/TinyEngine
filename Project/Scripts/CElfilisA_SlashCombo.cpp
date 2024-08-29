@@ -79,6 +79,7 @@ void CElfilisA_SlashCombo::Enter_Step()
     break;
     case StateStep::Start: {
         GetOwner()->Animator()->Play(ANIMPREFIX("SlashStart"), false);
+        GetOwner()->Rigidbody()->SetVelocity(Vec3::Zero);
         GetOwner()->Rigidbody()->AddForce(Vec3(0.f, -1200.f, 1.f), ForceMode::Impulse);
         //@Effect Halberd 트레일 이펙트
     }
@@ -104,7 +105,7 @@ void CElfilisA_SlashCombo::Enter_Step()
         GetOwner()->Animator()->Play(ANIMPREFIX("SlashEnd"), false);
 
         // Up
-        GetOwner()->Rigidbody()->SetVelocity(Vec3());
+        GetOwner()->Rigidbody()->SetVelocity(Vec3::Zero);
         GetOwner()->Rigidbody()->AddForce(Vec3(0.f, 1000.f, 1.f), ForceMode::Impulse);
     }
     break;

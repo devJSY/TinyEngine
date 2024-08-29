@@ -41,7 +41,6 @@ void CElfilisG_ToAirTeleport::Enter_Step()
     case StateStep::Start: {
         GetOwner()->Animator()->Play(ANIMPREFIX("Wait"));
         GetOwner()->Animator()->SetPlay(false);
-        GetOwner()->Rigidbody()->SetKinematic(true);
 
         SpawnTeleport();
 
@@ -58,10 +57,8 @@ void CElfilisG_ToAirTeleport::Exit_Step()
 {
     switch (m_Step)
     {
-    case StateStep::Start: {
-        GetOwner()->Rigidbody()->SetKinematic(false);
-    }
-    break;
+    case StateStep::Start:
+        break;
     case StateStep::End: {
         GetOwner()->Animator()->SetPlay(true);
 

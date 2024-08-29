@@ -138,7 +138,7 @@ void CKirbyUnitScript::tick()
             {
                 float Alpha = clamp((NewDamage / 5.f), 0.f, 1.f);
 
-                float CameraIntencity = Lerp(30.f, 60.f, Alpha);
+                float CameraIntencity = Lerp(30.f, 40.f, Alpha);
                 float CameraDuration = Lerp(0.3f, 0.5f, Alpha);
 
                 CAMERACTRL->Shake(CameraDuration, 60.f, CameraIntencity);

@@ -5,6 +5,7 @@ class CKirbyHoveringSpit : public CState
 {
 private:
     Ptr<CPrefab> m_SpitSmoke;
+    float m_SavedSpeed;
 
 public:
     virtual void tick();    

@@ -40,6 +40,7 @@ private:
     void DrawCapsuleCollider(CGameObject* obj);
     void DrawMeshCollider(CGameObject* obj);
     void DrawCharacterController(CGameObject* obj);
+    void DrawSoundListener(CGameObject* obj);
     void DrawMeshRender(CGameObject* obj);
     void DrawTileMap(CGameObject* obj);
     void DrawParticlesystem(CGameObject* obj);

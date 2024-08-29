@@ -5,6 +5,7 @@
 CKirbyBackJump::CKirbyBackJump()
     : m_JumpPower(8.f)
     , m_InitSpeed(9.f)
+    , m_PrevGravity(0.f)
     , m_StateEnter(true)
 {
 }
@@ -17,14 +18,6 @@ void CKirbyBackJump::tick()
 {
     if (PLAYERFSM->GetCurObjectIdx() != ObjectCopyType::NONE)
     {
-        //@TODO 회전시켜주기
-        // Vec3 Rot = PLAYER->Transform()->GetLocalRotation();
-        // Rot.x += DT * 10.f;
-        // if (Rot.x >= XMConvertToRadians(360.f))
-        //{
-        //    Rot.x = XMConvertToRadians(360.f);
-        //}
-
         if (PLAYERCTRL->IsGround())
         {
             if (m_StateEnter)
@@ -42,9 +35,16 @@ void CKirbyBackJump::tick()
     }
     else
     {
-        if (PLAYER->Animator()->IsFinish() && PLAYERCTRL->IsGround())
+        if (PLAYER->Animator()->IsFinish())
         {
-            ChangeState(L"IDLE");
+            if (PLAYERCTRL->IsGround())
+            {
+                ChangeState(L"IDLE");
+            }
+            else
+            {
+                ChangeState(L"JUMP_FALL");
+            }
         }
     }
 }
@@ -58,6 +58,7 @@ void CKirbyBackJump::Enter()
 
     Vec3 KnockBackDir = PLAYERFSM->GetKnockBackDir();
     PLAYERFSM->SetKnockBackDir(Vec3());
+    PLAYERFSM->SetInvincible(true);
 
     PLAYERCTRL->LockMove();
     PLAYERCTRL->LockDirection();
@@ -68,7 +69,8 @@ void CKirbyBackJump::Enter()
 
     PLAYERCTRL->AddVelocity({0.f, m_JumpPower, 0.f});
     PLAYERCTRL->AddVelocity(KnockBackDir * m_InitSpeed);
-
+    
+    m_PrevGravity = PLAYERCTRL->GetGravity();
     PLAYERCTRL->SetGravity(-35.f);
 
     m_StateEnter = true;
@@ -83,6 +85,8 @@ void CKirbyBackJump::Exit()
         CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));
     }
 
+    PLAYERFSM->SetInvincible(false);
+
     PLAYERCTRL->UnlockMove();
     PLAYERCTRL->UnlockDirection();
     PLAYERCTRL->UnlockJump();
@@ -90,5 +94,5 @@ void CKirbyBackJump::Exit()
     PLAYERCTRL->SetFriction(1.f);
     PLAYERCTRL->SetFrictionMode(false);
 
-    PLAYERCTRL->SetGravity(PLAYERCTRL->GetInitGravity());
+    PLAYERCTRL->SetGravity(m_PrevGravity);
 }

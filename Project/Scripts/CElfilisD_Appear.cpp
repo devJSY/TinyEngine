@@ -3,7 +3,7 @@
 #include "CBossMgr.h"
 #include "CElfilisFSM.h"
 #include "CChangeAlphaScript.h"
-#include "CFlowMgr_BossElfilis.h"
+#include "CBossLevelFlowMgr.h"
 
 #include "CCameraController.h"
 
@@ -40,10 +40,7 @@ void CElfilisD_Appear::Exit()
 {
     Exit_Step();
 
-    if (CBossMgr::GetElfilisFlowMgr())
-    {
-        CBossMgr::GetElfilisFlowMgr()->ChangeFlowFight();
-    }
+    CBossMgr::GetBossFlowMgr()->ChangeFlow(BossLevelFlow::Fight);
 }
 
 void CElfilisD_Appear::Enter_Step()
@@ -125,7 +122,7 @@ void CElfilisD_Appear::Exit_Step()
         }
 
         // Camera : ÅõÅ¸°Ù
-        CAMERACTRL->LoadInitSetting();
+        CAMERACTRL->LoadInitSetting(true);
         CAMERACTRL->SetElfilisTwoTarget();
     }
     break;

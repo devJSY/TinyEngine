@@ -14,9 +14,17 @@ CKirbyBurningWallEnd::~CKirbyBurningWallEnd()
 
 void CKirbyBurningWallEnd::tick()
 {
-    if (PLAYER->Animator()->IsFinish() && PLAYERCTRL->IsGround())
+
+    if (PLAYER->Animator()->IsFinish())
     {
-        ChangeState(L"JUMP_FALL");
+        if (PLAYERCTRL->IsGround())
+        {
+            ChangeState(L"IDLE");
+        }
+        else
+        {
+            ChangeState(L"JUMP_FALL");
+        }
     }
 }
 
@@ -25,7 +33,7 @@ void CKirbyBurningWallEnd::Enter()
     // @TODO smoke 이펙트 커비 이미시브
 
     // 애니메이션 재생
-    PLAYER->Animator()->Play(ANIMPREFIX("BurningWallEnd"), false, false, 1.5f);
+    PLAYER->Animator()->Play(ANIMPREFIX("BurningWallEnd"), false, false, 2.5f);
 
     Vec3 KnockBackDir = GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT);
     KnockBackDir.y = 0.f;
@@ -46,7 +54,6 @@ void CKirbyBurningWallEnd::Enter()
     PLAYERCTRL->SetGravity(-35.f);
 
     m_StateEnter = true;
-
 }
 
 void CKirbyBurningWallEnd::Exit()

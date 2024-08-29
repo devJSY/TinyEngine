@@ -4,17 +4,19 @@
 
 CElfilisBigFSM::CElfilisBigFSM()
     : CFSMScript(ELFILISBIGFSM)
-    , m_ComboLevel(0)
-    , m_PositionOffset(1500.f)
     , m_ReverseState(L"")
+    , m_ComboLevel(0)
+    , m_Weapon(nullptr)
+    , m_PositionOffset(1500.f)
 {
 }
 
 CElfilisBigFSM::CElfilisBigFSM(const CElfilisBigFSM& _Origin)
     : CFSMScript(_Origin)
-    , m_ComboLevel(0)
-    , m_PositionOffset(_Origin.m_PositionOffset)
     , m_ReverseState(L"")
+    , m_ComboLevel(0)
+    , m_Weapon(nullptr)
+    , m_PositionOffset(_Origin.m_PositionOffset)
 {
 }
 
@@ -46,13 +48,14 @@ void CElfilisBigFSM::begin()
         m_vecMtrls.push_back(MeshRender()->GetMaterial(i));
     }
     
-    CGameObject* Weapon = GetOwner()->GetChildObject(L"Halberd");
-    if (Weapon)
+    m_Weapon = GetOwner()->GetChildObject(L"Halberd");
+
+    if (m_Weapon)
     {
-        MtrlCount = Weapon->MeshRender()->GetMtrlCount();
+        MtrlCount = m_Weapon->MeshRender()->GetMtrlCount();
         for (int i = 0; i < MtrlCount; ++i)
         {
-            m_vecMtrls.push_back(Weapon->MeshRender()->GetMaterial(i));
+            m_vecMtrls.push_back(m_Weapon->MeshRender()->GetMaterial(i));
         }
     }
 }
@@ -73,6 +76,22 @@ void CElfilisBigFSM::Activate()
     SetMtrlTransparent(0.8f);
 
     ChangeState(L"IDLE");
+}
+
+void CElfilisBigFSM::OnWeaponCollider()
+{
+    if (!m_Weapon)
+        return;
+
+    m_Weapon->BoxCollider()->SetEnabled(true);
+}
+
+void CElfilisBigFSM::OffWeaponCollider()
+{
+    if (!m_Weapon)
+        return;
+
+    m_Weapon->BoxCollider()->SetEnabled(false);
 }
 
 void CElfilisBigFSM::ChangeState(const wstring& _strState)
