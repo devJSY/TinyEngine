@@ -99,6 +99,8 @@ void CFlowMgr_BossMorpho::EnterDemoPlay()
 
 void CFlowMgr_BossMorpho::FlowDemoPlay()
 {
+    CBossLevelFlowMgr::FlowDemoPlay();
+
     switch (m_DemoType)
     {
     case BossDemoType::Encounter: {
@@ -116,7 +118,44 @@ void CFlowMgr_BossMorpho::FlowDemoPlay()
         }
     }
     break;
+    case BossDemoType::StartPhase2: {
+        float t = BOSS->Animator()->IsChainging() ? 0.f : BOSS->Animator()->GetClipPlayRatio();
+        float BlurStart = 0.5f;
+
+        if (t >= BlurStart)
+        {
+            t = (t - BlurStart) / (1.f - BlurStart);
+            float BlurPow = 7.5f * sinf(XM_PI * t);
+            float BlurRadius = 10.f + clamp(sinf(XM_PI * t) * 1.5f, 0.f, 1.f);
+
+            SetRadialBlurEffect(BlurRadius, BlurPow, Vec2(0.5f));
+            GetRadialBlurEffect()->SetActive(true);
+        }
     }
+    break;
+    }
+}
+
+void CFlowMgr_BossMorpho::ExitDemoPlay()
+{
+    switch (m_DemoType)
+    {
+    case BossDemoType::Encounter: {
+        float SpawnBarricadeTime = 3.f;
+
+        if (m_Barricade && m_AccTime >= SpawnBarricadeTime)
+        {
+            m_Barricade->Transform()->SetWorldScale(m_BarricadeScale);
+        }
+    }
+    break;
+    case BossDemoType::StartPhase2: {
+        GetRadialBlurEffect()->SetActive(false);
+    }
+    break;
+    }
+
+    CBossLevelFlowMgr::ExitDemoPlay();
 }
 
 void CFlowMgr_BossMorpho::EnterFight()

@@ -22,6 +22,7 @@ private:
     virtual void EnterFight() override;
     virtual void EnterDemoPlay() override;
     virtual void FlowDemoPlay() override;
+    virtual void ExitDemoPlay() override;
     virtual void EnterDeath() override;
     virtual void ExitDeath() override;
     virtual void EnterClear() override;

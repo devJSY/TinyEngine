@@ -650,6 +650,14 @@ void CLevelFlowMgr::OffRadialBlurEffect()
     }
 }
 
+void CLevelFlowMgr::SetRadialBlurEffect(float _Radius, float _BlurPower, Vec2 _UV)
+{
+    static Ptr<CMaterial> pRadialBlurMtrl = CAssetMgr::GetInst()->Load<CMaterial>(L"RadialBlurMtrl");
+    pRadialBlurMtrl->SetScalarParam(FLOAT_0, _Radius);
+    pRadialBlurMtrl->SetScalarParam(FLOAT_1, _BlurPower);
+    pRadialBlurMtrl->SetScalarParam(VEC2_0, _UV);
+}
+
 void CLevelFlowMgr::SetFadeEffectColor(Vec3 _Color)
 {
     if (!m_FadeEffectScript)

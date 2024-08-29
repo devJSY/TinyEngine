@@ -67,7 +67,6 @@ void CMorphoDemo_Phase2::Enter_Step()
 
         CBossMgr::GetBossFlowMgr()->SetDemoType(BossDemoType::StartPhase2);
         CBossMgr::GetBossFlowMgr()->ChangeFlow(BossLevelFlow::DemoPlay);
-        //CBossMgr::GetBossFlowMgr()->OnRadialBlurEffect(1.f, 1.f, 0.5f);
 
         // Camera : ¸ôÆ÷ Å¸°Ù Distortion
         CAMERACTRL->SetMainTarget(BOSS);
