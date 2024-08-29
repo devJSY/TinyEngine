@@ -43,6 +43,7 @@ public:
     GET_OTHER_COMPONENT(CapsuleCollider);
     GET_OTHER_COMPONENT(MeshCollider);
     GET_OTHER_COMPONENT(CharacterController);
+    GET_OTHER_COMPONENT(SoundListener);
     GET_OTHER_COMPONENT(MeshRender);
     GET_OTHER_COMPONENT(TileMap);
     GET_OTHER_COMPONENT(ParticleSystem);

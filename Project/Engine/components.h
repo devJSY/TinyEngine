@@ -23,6 +23,8 @@
 #include "CMeshCollider.h"
 #include "CCharacterController.h"
 
+#include "CSoundListener.h"
+
 #include "CMeshRender.h"
 #include "CTileMap.h"
 #include "CParticleSystem.h"

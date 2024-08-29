@@ -22,8 +22,6 @@ CLevelMgr::CLevelMgr()
 
 CLevelMgr::~CLevelMgr()
 {
-    ThreadRelease();
-
     if (nullptr != m_CurLevel)
     {
         delete m_CurLevel;

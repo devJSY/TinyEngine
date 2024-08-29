@@ -26,8 +26,6 @@ CAssetMgr::CAssetMgr()
 
 CAssetMgr::~CAssetMgr()
 {
-    ThreadRelease();
-
     // Asset Release
     for (UINT i = 0; i < (UINT)ASSET_TYPE::END; ++i)
     {
@@ -67,6 +65,7 @@ void CAssetMgr::initSound()
 
     // 32개 채널 생성
     CSound::g_pFMOD->init(32, FMOD_DEFAULT, nullptr);
+    CSound::g_pFMOD->set3DSettings(1.f, 1.f, 1.f); // Default
 }
 
 void CAssetMgr::tick()
