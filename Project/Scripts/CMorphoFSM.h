@@ -31,6 +31,14 @@ enum class MorphoPatternType
     TrackingSoulCombo,
     ShockWaveCombo,
 };
+//
+//enum class MorphoParticleType
+//{
+//    ButterflyYellow,
+//    ButterflyPink,
+//    ButterflyYellowPink,
+//    CircleDust
+//};
 
 class CMorphoFSM : public CFSMScript
 {
@@ -51,6 +59,10 @@ private:
     CGameObject* m_WeaponL;
     CGameObject* m_WeaponR;
     vector<CGameObject*> m_vecShockWave;
+    CGameObject* m_ParticleButterfly_Yellow;
+    CGameObject* m_ParticleButterfly_Pink;
+    CGameObject* m_ParticleButterfly_YellowPink;
+    CGameObject* m_ParticleCircleDust;
 
     // materials
     vector<Ptr<CMaterial>> m_listBodyMtrl;
@@ -104,6 +116,7 @@ public:
     void SetTeleportTime(bool _Emissive);
     void AddEmissive(Vec3 _Color);
     void SetWeaponEmissive(Vec3 _Color);
+    void EnableTeleportParticle(bool _Enable = true);
 
     MorphoStateGroup GetCurStateGroup() const { return m_CurStateGroup; }
     UINT GetPhase() const { return m_Phase; }
@@ -118,7 +131,11 @@ public:
     CGameObject* GetWeaponL() const { return m_WeaponL; }
     CGameObject* GetWeaponR() const { return m_WeaponR; }
     const vector<CGameObject*>& GetShockWave() const { return m_vecShockWave; }
-    float GetEmissiveTime() { return m_EmissiveTime; }
+    CGameObject* GetParticleButterflyYellow() const { return m_ParticleButterfly_Yellow; }
+    CGameObject* GetParticleButterflyPink() const { return m_ParticleButterfly_Pink; }
+    CGameObject* GetParticleButterflyYellowPink() const { return m_ParticleButterfly_YellowPink; }
+    CGameObject* GetParticleCircleDust() const { return m_ParticleCircleDust; }
+    float GetEmissiveTime() const { return m_EmissiveTime; }
     Vec3 GetMapSize() const { return m_MapSize; }
     Vec3 GetMapFloorOffset() const { return m_MapFloorOffset; }
 
