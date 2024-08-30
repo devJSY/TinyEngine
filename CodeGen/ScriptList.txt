@@ -122,4 +122,5 @@ CUIBurstStarSpawnEffectScript
 CUIChangeAbilityStarSpawnEffectScript
 CUIChangeAbilityStarEffect
 CUIChangeAbilityStopStarEffect
+CKirbySoundListener
 CUIDashEffectScript

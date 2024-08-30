@@ -970,6 +970,9 @@
     <ClInclude Include="CUIChangeAbilityStopStarEffect.h">
       <Filter>Scripts\UI\UIEffect\UIChangeAbilityStarEffect\CUIAbilityStopStarEffect</Filter>
     </ClInclude>
+    <ClInclude Include="CKirbySoundListener.h">
+      <Filter>Scripts\Character\Kirby\KirbySoundListener</Filter>
+    </ClInclude>
     <ClInclude Include="CUIDashEffectScript.h">
       <Filter>Scripts\UI\UIEffect\UIDashEffectScript</Filter>
     </ClInclude>
@@ -1952,6 +1955,9 @@
     </ClCompile>
     <ClCompile Include="CBossLevelFlowMgr.cpp">
       <Filter>Module\FlowMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbySoundListener.cpp">
+      <Filter>Scripts\Character\Kirby\KirbySoundListener</Filter>
     </ClCompile>
     <ClCompile Include="CUIDashEffectScript.cpp">
       <Filter>Scripts\UI\UIEffect\UIDashEffectScript</Filter>
@@ -3073,6 +3079,9 @@
     </Filter>
     <Filter Include="Scripts\Manager\FlowManager\5. Morpho Level Flow Manager">
       <UniqueIdentifier>{ab75756a-0394-44c4-8fd0-78d24de70a78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Kirby\KirbySoundListener">
+      <UniqueIdentifier>{6dd0f1be-15b6-432b-b29e-83a1ad412a2d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\UI\UIEffect\UIDashEffectScript">
       <UniqueIdentifier>{db700e69-a5c5-4146-9034-ca207f100942}</UniqueIdentifier>

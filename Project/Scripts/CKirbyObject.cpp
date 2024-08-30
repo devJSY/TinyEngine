@@ -142,8 +142,16 @@ void CKirbyObject::DropObjectEnter()
         GamePlayStatic::AddChildObject(PLAYER, PLAYERFSM->GetCurWeapon(), L"Weapon");
     }
 
-    // animation & move controller
-    PLAYER->Animator()->Play(ANIMPREFIX("SpitDeform"), false, false, 1.5f);
+    CGameObject* Wing = PLAYER->GetChildObject(L"KirbyDragon");
+
+    if (Wing != nullptr)
+    {
+        GamePlayStatic::AddChildObject(PLAYER, Wing, L"Wing");
+    }
+
+        // animation & move controller
+        PLAYER->Animator()
+        ->Play(ANIMPREFIX("SpitDeform"), false, false, 1.5f);
 
     PLAYERCTRL->LockMove();
     PLAYERCTRL->LockDirection();

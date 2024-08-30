@@ -222,7 +222,6 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
         pShader->AddTexParam(TEX_2, "Skin MRA Texture");
         pShader->AddTexParam(TEX_3, "Skin Emissive Texture");
 
-        pShader->AddScalarParam(INT_0, "Rim Inverse");
         pShader->AddScalarParam(VEC4_0, "Rim Color");
         pShader->AddScalarParam(FLOAT_1, "Rim Power");
 

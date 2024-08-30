@@ -10,7 +10,7 @@ CKirbyLightScript::CKirbyLightScript()
     , m_TurnOffTime(0.6f)
     , m_AccTime(0.f)
     , m_State(KirbyLightState::NONE)
-    , m_RadianceRed(Vec3(400.f, 100.f, 100.f) / 255.f)
+    , m_RadianceRed(Vec3(255, 30, 0.f) / 255.f)
     , m_RadianceWhite(Vec3(1000.f, 1000.f, 1000.f) / 255.f)
 {
 }

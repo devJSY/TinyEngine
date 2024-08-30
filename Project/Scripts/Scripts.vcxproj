@@ -215,6 +215,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CKirbyLightScript.h" />
     <ClInclude Include="CKirbyObjDetectCollider.h" />
     <ClInclude Include="CKirbySmoke.h" />
+    <ClInclude Include="CKirbySoundListener.h" />
     <ClInclude Include="CKirbyStuffedDamage.h" />
     <ClInclude Include="CKirbyVacuum1.h" />
     <ClInclude Include="CKirbyVacuum1End.h" />
@@ -562,6 +563,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CKirbyLightScript.cpp" />
     <ClCompile Include="CKirbyObjDetectCollider.cpp" />
     <ClCompile Include="CKirbySmoke.cpp" />
+    <ClCompile Include="CKirbySoundListener.cpp" />
     <ClCompile Include="CKirbyStuffedDamage.cpp" />
     <ClCompile Include="CKirbyVacuum1.cpp" />
     <ClCompile Include="CKirbyVacuum1End.cpp" />

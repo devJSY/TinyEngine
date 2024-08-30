@@ -102,11 +102,13 @@ void CFlowMgr_Lv0::TriggerEvent(UINT _Idx)
     // Post Effect Enter Trigger
     case 1: {
         m_FogCastMode = 1;
+        FadeInBGM(L"sound\\wav\\EnvTownForest\\0000.wav", 0.f, 0.5f, 1.f);
     }
     //  Post Effect Exit Trigger
     break;
     case 2: {
         m_FogCastMode = 2;
+        FadeOutBGM(1.f);
     }
     break;
     // ToneMapping Enter Trigger
@@ -118,6 +120,7 @@ void CFlowMgr_Lv0::TriggerEvent(UINT _Idx)
         {
             pLensFlareObj->SetActive(true);
         }
+        FadeInBGM(L"sound\\stream\\K15_Grassland1\\K15_Grassland1.marker.wav", 0.f, 0.5f, 1.f);
     }
     break;
     // ToneMapping Exit Trigger
