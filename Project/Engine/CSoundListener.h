@@ -10,7 +10,7 @@ public:
     virtual UINT SaveToLevelFile(FILE* _File) override;
     virtual UINT LoadFromLevelFile(FILE* _File) override;
 
-    CLONE_DISABLE(CSoundListener);
+    CLONE(CSoundListener);
 
 public:
     CSoundListener();
