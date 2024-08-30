@@ -6,8 +6,8 @@ CChangeAlphaScript::CChangeAlphaScript()
     , m_AlphaParamIdx(SCALAR_PARAM::FLOAT_2)
     , m_Event(ChangeAlphaEvent::NONE)
     , m_PlayTime(0.f)
+    , m_MinPlayTime(0.f)
     , m_AccTime(0.f)
-
 {
 }
 
@@ -48,7 +48,7 @@ void CChangeAlphaScript::tick()
 
     switch (m_Event)
     {
-    case ChangeAlphaEvent::FADE_IN: {
+    case ChangeAlphaEvent::FadeIn: {
         float Alpha = clamp(m_AccTime / m_PlayTime, 0.f, 1.f);
         SetAlpha(Alpha);
 
@@ -58,7 +58,17 @@ void CChangeAlphaScript::tick()
         }
     }
     break;
-    case ChangeAlphaEvent::FADE_OUT: {
+    case ChangeAlphaEvent::FadeIn_Random: {
+        float Alpha = clamp(m_AccTime / m_PlayTime, 0.f, 1.f);
+        SetRandAlpha(Alpha);
+
+        if (m_AccTime > m_PlayTime)
+        {
+            ClearEvent();
+        }
+    }
+    break;
+    case ChangeAlphaEvent::FadeOut: {
         float Alpha = 1.f - clamp(m_AccTime / m_PlayTime, 0.f, 1.f);
         SetAlpha(Alpha);
 

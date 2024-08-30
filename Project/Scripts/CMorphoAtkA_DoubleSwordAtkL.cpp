@@ -101,13 +101,17 @@ void CMorphoAtkA_DoubleSwordAtkL::Progress()
         if (m_LightningEffectPref != nullptr)
         {
             m_LightningEffect = m_LightningEffectPref->Instantiate();
+
             Vec3 Pos = MRPFSM->GetWeaponL()->GetChildObject()[0]->Transform()->GetWorldPos();
-            Pos.y = 0.f;
             Vec3 Dir = CPlayerMgr::GetCameraController()->GetLookDir() * -1.f;
+            Pos.y = 0.f;
             Dir.y = 0.f;
 
             m_LightningEffect->Transform()->SetWorldPos(Pos);
             m_LightningEffect->Transform()->Slerp(Dir.Normalize(), 1.f);
+
+            CChangeAlphaScript* Script = m_LightningEffect->GetScript<CChangeAlphaScript>();
+            Script->FadeIn(1.f);
 
             GamePlayStatic::SpawnGameObject(m_LightningEffect, LAYER_EFFECT);
         }
