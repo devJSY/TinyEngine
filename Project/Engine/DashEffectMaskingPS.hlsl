@@ -40,7 +40,7 @@ PS_OUT_DEFERRED main(PS_IN input)
     
     float Ratio = albedo0.r * 0.7 + 0.3;
     
-    albedo = DashColor * Ratio;
+    albedo = DashColor.rgb * Ratio;
     
     if (0.f >= length(albedo))
     {

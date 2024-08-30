@@ -177,6 +177,7 @@ UINT CUIChangeAbilityStarSpawnEffectScript::SaveToLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;
 
+    fwrite(&m_vCenterPosOffset, sizeof(Vec3), 1, _File);
     fwrite(&m_vBigStarScale, sizeof(Vec3), 1, _File);
     fwrite(&m_vLittleStarScale, sizeof(Vec3), 1, _File);
     fwrite(&m_fOriginRadius, sizeof(float), 1, _File);
@@ -188,6 +189,7 @@ UINT CUIChangeAbilityStarSpawnEffectScript::SaveToLevelFile(FILE* _File)
     fwrite(&m_fStarSpawnTime, sizeof(float), 1, _File);
     fwrite(&m_fBeginDegree, sizeof(float), 1, _File);
 
+    MemoryByte += sizeof(Vec3);
     MemoryByte += sizeof(Vec3);
     MemoryByte += sizeof(Vec3);
     MemoryByte += sizeof(float);
@@ -206,6 +208,7 @@ UINT CUIChangeAbilityStarSpawnEffectScript::LoadFromLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;
 
+    fread(&m_vCenterPosOffset, sizeof(Vec3), 1, _File);
     fread(&m_vBigStarScale, sizeof(Vec3), 1, _File);
     fread(&m_vLittleStarScale, sizeof(Vec3), 1, _File);
     fread(&m_fOriginRadius, sizeof(float), 1, _File);
@@ -217,6 +220,7 @@ UINT CUIChangeAbilityStarSpawnEffectScript::LoadFromLevelFile(FILE* _File)
     fread(&m_fStarSpawnTime, sizeof(float), 1, _File);
     fread(&m_fBeginDegree, sizeof(float), 1, _File);
 
+    MemoryByte += sizeof(Vec3);
     MemoryByte += sizeof(Vec3);
     MemoryByte += sizeof(Vec3);
     MemoryByte += sizeof(float);
