@@ -3078,7 +3078,4 @@
       <UniqueIdentifier>{e5509396-59e3-4845-a1d3-17503b984e8e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="cpp.hint" />
-  </ItemGroup>
 </Project>

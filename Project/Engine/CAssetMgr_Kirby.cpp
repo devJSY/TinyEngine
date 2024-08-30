@@ -814,6 +814,8 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
 
+        pShader->AddScalarParam(INT_0, "Use Alpha");
+        pShader->AddScalarParam(FLOAT_2, "Alpha", 0.1f);
         pShader->AddScalarParam(FLOAT_0, "UV Scale", 0.1f);
 
         pShader->AddTexParam(TEX_0, "Albedo Texture");

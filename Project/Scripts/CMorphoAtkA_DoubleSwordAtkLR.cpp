@@ -198,7 +198,7 @@ void CMorphoAtkA_DoubleSwordAtkLR::Progress()
     {
         m_bFrmEnter = false;
 
-        // spawn lightning
+        // spawn lightning & dust
         if (m_LightningEffectPref != nullptr)
         {
             Vec3 Dir = CPlayerMgr::GetCameraController()->GetLookDir() * -1.f;
@@ -212,7 +212,11 @@ void CMorphoAtkA_DoubleSwordAtkLR::Progress()
             m_LightningEffect[0]->Transform()->SetWorldPos(Pos);
             m_LightningEffect[0]->Transform()->Slerp(Dir.Normalize(), 1.f);
 
+            CChangeAlphaScript* Script = m_LightningEffect[0]->GetScript<CChangeAlphaScript>();
+            Script->FadeIn_RandomDelay(0.f, 0.4f);
+
             GamePlayStatic::SpawnGameObject(m_LightningEffect[0], LAYER_EFFECT);
+            SpawnCircleDust(Pos);
 
             // Right
             m_LightningEffect[1] = m_LightningEffectPref->Instantiate();
@@ -222,7 +226,11 @@ void CMorphoAtkA_DoubleSwordAtkLR::Progress()
             m_LightningEffect[1]->Transform()->SetWorldPos(Pos);
             m_LightningEffect[1]->Transform()->Slerp(Dir.Normalize(), 1.f);
 
+            Script = m_LightningEffect[1]->GetScript<CChangeAlphaScript>();
+            Script->FadeIn_RandomDelay(0.f, 0.4f);
+
             GamePlayStatic::SpawnGameObject(m_LightningEffect[1], LAYER_EFFECT);
+            SpawnCircleDust(Pos);
         }
 
         // Spawn Particle Butterfly
@@ -395,6 +403,24 @@ void CMorphoAtkA_DoubleSwordAtkLR::EndEnd()
     }
 }
 
+void CMorphoAtkA_DoubleSwordAtkLR::SpawnCircleDust(Vec3 _Pos)
+{
+    CGameObject* Dust = new CGameObject;
+    CParticleSystem* Particle = MRPFSM->GetParticleCircleDust()->ParticleSystem()->Clone();
+    Dust->AddComponent(Particle);
+
+    _Pos.y = GetRandomfloat(0.f, 10.f);
+    Dust->AddComponent(new CTransform);
+    Dust->Transform()->SetWorldPos(_Pos);
+
+    CDestroyParticleScript* Script = new CDestroyParticleScript;
+    Script->SetSpawnTime(0.5f);
+    Dust->AddComponent(Script);
+
+    Dust->SetName(L"Particle_CircleDust");
+    GamePlayStatic::SpawnGameObject(Dust, LAYER_EFFECT);
+}
+
 void CMorphoAtkA_DoubleSwordAtkLR::SpawnButterfly(Vec3 _Pos)
 {
     CGameObject* Butterfly = new CGameObject;
@@ -437,5 +463,6 @@ void CMorphoAtkA_DoubleSwordAtkLR::SpawnButterfly(Vec3 _Pos)
     Script->SetSpawnTime(0.5f);
     Butterfly->AddComponent(Script);
 
+    Butterfly->SetName(L"Particle_Butterfly");
     GamePlayStatic::SpawnGameObject(Butterfly, LAYER_EFFECT);
 }
