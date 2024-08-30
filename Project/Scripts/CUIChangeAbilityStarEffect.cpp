@@ -6,15 +6,21 @@
 CUIChangeAbilityStarEffect::CUIChangeAbilityStarEffect()
     : CScript(UICHANGEABILITYSTAREFFECT)
     , m_vCenterPos{}
+    , m_vOriginScale{}
     , m_eState(UIChangeAbilityStarState::GrowUp)
+    , m_fSpawnStarDeleteTime(0.f)
     , m_fOriginRadius(0.f)
     , m_fRadiusSpeed(0.f)
     , m_fTheta(0.f)
     , m_fOriginTheta(0.f)
     , m_fThetaSpeed(0.f)
-    , m_fPrevTheta(0.f)
+    , m_fMaxThreshHold(0.f)
+    , m_fStarSpawnTime(0.f)
+    , m_fAccTime(0.f)
+    , m_fBeginTheta(0.f)
     , m_bLittleStar(false)
 {
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fBeginTheta, "Begin Theta", 0.01f);
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_vCenterPos, "CenterPos", 1.f);
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fOriginRadius, "Origin Radius", 1.f);
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fRadiusSpeed, "Grow Radius Speed", 1.f);
@@ -26,15 +32,21 @@ CUIChangeAbilityStarEffect::CUIChangeAbilityStarEffect()
 CUIChangeAbilityStarEffect::CUIChangeAbilityStarEffect(const CUIChangeAbilityStarEffect& Origin)
     : CScript(Origin)
     , m_vCenterPos{}
+    , m_vOriginScale{}
     , m_eState(UIChangeAbilityStarState::GrowUp)
+    , m_fSpawnStarDeleteTime(Origin.m_fSpawnStarDeleteTime)
     , m_fOriginRadius(m_fOriginRadius)
     , m_fRadiusSpeed(Origin.m_fRadiusSpeed)
     , m_fTheta(0.f)
     , m_fOriginTheta(0.f)
     , m_fThetaSpeed(Origin.m_fThetaSpeed)
-    , m_fPrevTheta(0.f)
+    , m_fMaxThreshHold(Origin.m_fMaxThreshHold)
+    , m_fStarSpawnTime(Origin.m_fStarSpawnTime)
+    , m_fAccTime(0.f)
+    , m_fBeginTheta(Origin.m_fBeginTheta)
     , m_bLittleStar(Origin.m_bLittleStar)
 {
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fBeginTheta, "Begin Theta", 0.01f);
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_vCenterPos, "CenterPos", 1.f);
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fOriginRadius, "Origin Radius", 1.f);
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fRadiusSpeed, "Grow Radius Speed", 1.f);
@@ -47,14 +59,28 @@ CUIChangeAbilityStarEffect::~CUIChangeAbilityStarEffect()
 {
 }
 
+void CUIChangeAbilityStarEffect::InitializeSetting(const Vec3 _vCenterPos, const float _fOriginRadius, const float _fRadiusSpeed, const float _fTheta,
+                                                   const float _fThetaSpeed, const float _fSpawnStarDeleteTime, const float _fMaxThresholdStar,
+                                                   const float _fStarSpawnTime, const float _fBeginTheta)
+{
+    m_vCenterPos = _vCenterPos;
+    m_fOriginRadius = _fOriginRadius;
+    m_fRadiusSpeed = _fRadiusSpeed;
+    m_fTheta = _fTheta;
+    m_fThetaSpeed = _fThetaSpeed;
+    m_fSpawnStarDeleteTime = _fSpawnStarDeleteTime;
+    m_fMaxThreshHold = _fMaxThresholdStar;
+    m_fStarSpawnTime = _fStarSpawnTime;
+    m_fBeginTheta = _fBeginTheta;
+}
+
 void CUIChangeAbilityStarEffect::begin()
 {
     CTransform* pTr = Transform();
     if (nullptr != pTr)
         m_vOriginScale = pTr->GetWorldScale();
 
-    m_fTheta = XMConvertToRadians(m_fTheta);
-    m_fPrevTheta = m_fTheta;
+    m_fTheta = XMConvertToRadians(m_fTheta + m_fBeginTheta);
     m_fOriginTheta = m_fTheta;
 }
 
@@ -152,9 +178,6 @@ void CUIChangeAbilityStarEffect::SpawnStar()
     if (m_fStarSpawnTime <= m_fAccTime)
     {
         m_fAccTime = 0.f;
-
-        m_fPrevTheta = m_fTheta;
-
         CGameObject* pStarEffect = nullptr;
 
         if (m_bLittleStar)
@@ -206,8 +229,10 @@ UINT CUIChangeAbilityStarEffect::SaveToLevelFile(FILE* _File)
     fwrite(&m_fRadiusSpeed, sizeof(float), 1, _File);
     fwrite(&m_fTheta, sizeof(float), 1, _File);
     fwrite(&m_fThetaSpeed, sizeof(float), 1, _File);
+    fwrite(&m_fBeginTheta, sizeof(float), 1, _File);
     fwrite(&m_bLittleStar, sizeof(bool), 1, _File);
 
+    MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
@@ -225,8 +250,10 @@ UINT CUIChangeAbilityStarEffect::LoadFromLevelFile(FILE* _File)
     fread(&m_fRadiusSpeed, sizeof(float), 1, _File);
     fread(&m_fTheta, sizeof(float), 1, _File);
     fread(&m_fThetaSpeed, sizeof(float), 1, _File);
+    fread(&m_fBeginTheta, sizeof(float), 1, _File);
     fread(&m_bLittleStar, sizeof(bool), 1, _File);
 
+    MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);

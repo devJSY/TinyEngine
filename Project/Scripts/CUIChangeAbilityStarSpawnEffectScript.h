@@ -25,6 +25,7 @@ private:
     float m_fSpawnStarDeleteTime;
     float m_fThreshHoldStar;
     float m_fStarSpawnTime;
+    float m_fBeginDegree;
 
     float m_fGrowthScale;
 
