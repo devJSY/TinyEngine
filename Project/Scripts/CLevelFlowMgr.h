@@ -96,7 +96,8 @@ public:
     void PauseFadeEffect(bool _bPause);
     void SetFadeEffect(Vec3 _Color, bool _bReverse, float _Duration, float _Speed, bool _CenterMode);
 
-    void PlayBGM(const wstring& _SoundPath, float _StartVolume, float _EndVolume, float _Duration);
+    void FadeInBGM(const wstring& _SoundPath, float _StartVolume, float _EndVolume, float _Duration);
+    void FadeOutBGM(float _Duration);
 
 public:
     virtual void LevelStart();

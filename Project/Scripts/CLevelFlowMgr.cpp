@@ -260,19 +260,12 @@ void CLevelFlowMgr::tick()
     }
 
     // BGM
-    if (nullptr != m_BGM)
+    if (nullptr != m_BGM && m_BGMAcc <= m_BGMDuration)
     {
         m_BGMAcc += DT_ENGINE;
 
-        if (m_BGMAcc > m_BGMDuration)
-        {
-            m_BGM = nullptr;
-        }
-        else
-        {
-            float Volume = Lerp(m_StartBGMVolume, m_EndBGMVolume, m_BGMAcc / m_BGMDuration);
-            GamePlayStatic::PlayBGM(m_BGM->GetRelativePath(), Volume);
-        }
+        float Volume = Lerp(m_StartBGMVolume, m_EndBGMVolume, m_BGMAcc / m_BGMDuration);
+        GamePlayStatic::PlayBGM(m_BGM->GetRelativePath(), Volume);
     }
 
     // tick마다 넣어줘야 하는 Param setting
@@ -425,7 +418,7 @@ void CLevelFlowMgr::LevelEnd()
 
     // FadeIn 초기화
 
-    // @TODO BGM 종료
+    FadeOutBGM(1.f);
 }
 
 void CLevelFlowMgr::LevelExit()
@@ -455,7 +448,8 @@ void CLevelFlowMgr::LevelRestart()
 
     // 현재 레벨을 다시 시작하기 위해 NextLevelPath 를 현재레벨의 Path로 바꿔준다.
     m_NextLevelPath = ToString(m_CurLevelPath);
-    // @TODO BGM 종료
+
+    FadeOutBGM(1.f);
 }
 
 void CLevelFlowMgr::RobbyLevel()
@@ -477,7 +471,7 @@ void CLevelFlowMgr::RobbyLevel()
     // 현재 레벨을 다시 시작하기 위해 NextLevelPath 를 현재레벨의 Path로 바꿔준다.
     m_NextLevelPath = "Robby Level.tLevel";
 
-    // @TODO BGM 종료s
+    FadeOutBGM(1.f);
 }
 
 void CLevelFlowMgr::MtrlParamUpdate()
@@ -736,7 +730,7 @@ void CLevelFlowMgr::SetFadeEffect(Vec3 _Color, bool _bReverse, float _Duration, 
     m_FadeEffectScript->SetCenterMode(_CenterMode);
 }
 
-void CLevelFlowMgr::PlayBGM(const wstring& _SoundPath, float _StartVolume, float _EndVolume, float _Duration)
+void CLevelFlowMgr::FadeInBGM(const wstring& _SoundPath, float _StartVolume, float _EndVolume, float _Duration)
 {
     m_BGM = CAssetMgr::GetInst()->Load<CSound>(_SoundPath, _SoundPath);
     if (nullptr == m_BGM)
@@ -744,6 +738,17 @@ void CLevelFlowMgr::PlayBGM(const wstring& _SoundPath, float _StartVolume, float
 
     m_StartBGMVolume = _StartVolume;
     m_EndBGMVolume = _EndVolume;
+    m_BGMAcc = 0.f;
+    m_BGMDuration = _Duration;
+}
+
+void CLevelFlowMgr::FadeOutBGM(float _Duration)
+{
+    if (nullptr == m_BGM)
+        return;
+
+    m_StartBGMVolume = m_EndBGMVolume;
+    m_EndBGMVolume = 0.f;
     m_BGMAcc = 0.f;
     m_BGMDuration = _Duration;
 }

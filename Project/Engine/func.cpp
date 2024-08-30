@@ -803,7 +803,7 @@ float GetRandomfloat(float _Min, float _Max)
     std::random_device rd;
     std::mt19937 mt(rd());
     std::uniform_real_distribution<float> dist(_Min, _Max);
-    return floor(dist(mt)); // (숫자가 클 경우 정밀도 문제 발생 -> floor로 절삭)
+    return dist(mt);
 }
 
 float Lerp(float A, float B, float Alpha)

@@ -38,7 +38,7 @@ void CFlowMgr_Lv1::tick()
 void CFlowMgr_Lv1::LevelStart()
 {
     CLevelFlowMgr::LevelStart();
-    GamePlayStatic::PlayBGM(L"sound\\stream\\K15_Grassland1\\K15_Grassland1.marker.wav", 0.5f);
+    FadeInBGM(L"sound\\stream\\K15_Grassland1\\K15_Grassland1.marker.wav", 0.f, 0.5f, 1.f);
 }
 
 void CFlowMgr_Lv1::LevelEnd()
