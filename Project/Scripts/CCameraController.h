@@ -30,6 +30,8 @@ enum class CameraSetup
 struct CameraSetting
 {
     Vec3 Offset; // LookAtPos에 대한 Offset
+    Vec3 MainOffset;
+    Vec3 SubOffset;
 
     Vec3 LookDir;    // 카메라가 바라보는 각도
     float LookDist; // 카메라와 타겟 사이의 거리

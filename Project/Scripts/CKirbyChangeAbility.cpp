@@ -107,6 +107,7 @@ void CKirbyChangeAbility::Enter()
     DirToKirby.Normalize();
 
     CamCtrl->SetOffset(Vec3(0.f, 15.f, 0));
+    CamCtrl->SetTargetOffset(Vec3(0.f, 0.f, 0.f));
     CamCtrl->SetLookDir(DirToKirby);
     CamCtrl->SetLookDist(250.f);
 
@@ -142,7 +143,6 @@ void CKirbyChangeAbility::Exit()
     // CameraSetting
     CCameraController* CamCtrl = CAMERACTRL;
     CamCtrl->LoadSetting();
-
     CamCtrl->SetCameraSetup((CameraSetup)m_SaveSetup);
 
     // 배경 블러 효과 복구

@@ -406,6 +406,8 @@ void CCameraController::SaveSetting()
     m_SaveSetting.MaxSpeed = m_MaxSpeed;
     m_SaveSetting.MinSpeed = m_MinSpeed;
     m_SaveSetting.Offset = m_Offset;
+    m_SaveSetting.MainOffset = m_TargetOffset;
+    m_SaveSetting.SubOffset = m_SubTargetOffset;
     m_SaveSetting.RotationSpeed = m_RotationSpeed;
     m_SaveSetting.ThresholdDistance = m_ThresholdDistance;
     m_SaveSetting.ZoomMaxSpeed = m_ZoomMaxSpeed;
@@ -420,6 +422,8 @@ void CCameraController::SaveInitSetting()
     m_InitSetting.MaxSpeed = m_MaxSpeed;
     m_InitSetting.MinSpeed = m_MinSpeed;
     m_InitSetting.Offset = m_Offset;
+    m_SaveSetting.MainOffset = m_TargetOffset;
+    m_SaveSetting.SubOffset = m_SubTargetOffset;
     m_InitSetting.RotationSpeed = m_RotationSpeed;
     m_InitSetting.ThresholdDistance = m_ThresholdDistance;
     m_InitSetting.ZoomMaxSpeed = m_ZoomMaxSpeed;
@@ -434,6 +438,8 @@ void CCameraController::LoadSetting(bool _OnlySetting)
         m_LookDir = m_SaveSetting.LookDir;
         m_LookDist = m_SaveSetting.LookDist;
         m_Offset = m_SaveSetting.Offset;
+        m_TargetOffset = m_SaveSetting.MainOffset;
+        m_SubTargetOffset = m_SaveSetting.SubOffset;
     }
 
     m_MaxSpeed = m_SaveSetting.MaxSpeed;
@@ -451,7 +457,9 @@ void CCameraController::LoadInitSetting(bool _OnlySetting)
     {
         m_LookDir = m_SaveSetting.LookDir;
         m_LookDist = m_SaveSetting.LookDist;
-        m_Offset = m_InitSetting.Offset;
+        m_Offset = m_SaveSetting.Offset;
+        m_TargetOffset = m_SaveSetting.MainOffset;
+        m_SubTargetOffset = m_SaveSetting.SubOffset;
     }
 
     m_MaxSpeed = m_InitSetting.MaxSpeed;
