@@ -7,7 +7,6 @@ CMorphoAtkA_DoubleSwordDivision::CMorphoAtkA_DoubleSwordDivision()
     , m_ChargeTime(1.5f)
     , m_WaitTime(0.5f)
 {
-    m_ChargingParticlePref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Particle_MorphoDoubleSwordCharging.pref");
 }
 
 CMorphoAtkA_DoubleSwordDivision::~CMorphoAtkA_DoubleSwordDivision()
@@ -52,12 +51,6 @@ void CMorphoAtkA_DoubleSwordDivision::Exit()
     {
         MRPFSM->ResetEmissive();
     }
-
-    if (m_ChargingParticle)
-    {
-        GamePlayStatic::DestroyGameObject(m_ChargingParticle);
-        m_ChargingParticle = nullptr;
-    }
 }
 
 void CMorphoAtkA_DoubleSwordDivision::Enter_Step()
@@ -72,18 +65,6 @@ void CMorphoAtkA_DoubleSwordDivision::Enter_Step()
     case StateStep::ChargeWait: {
         GetOwner()->Animator()->Play(ANIMPREFIX("DoubleSwordDivisionCharge"), true, false, 1.5f);
         m_AccTime = 0.f;
-
-        // Particle On
-        if (m_ChargingParticlePref != nullptr)
-        {
-            m_ChargingParticle = m_ChargingParticlePref->Instantiate();
-
-            Vec3 Pos = GetOwner()->Transform()->GetWorldPos();
-            Pos.y += 20.f;
-            m_ChargingParticle->Transform()->SetWorldPos(Pos);
-
-            GamePlayStatic::SpawnGameObject(m_ChargingParticle, LAYER_EFFECT);
-        }
     }
     break;
     case StateStep::Progress: {
@@ -106,13 +87,8 @@ void CMorphoAtkA_DoubleSwordDivision::Exit_Step()
     {
     case StateStep::Charge:
         break;
-    case StateStep::ChargeWait: {
-        if (m_ChargingParticle)
-        {
-            m_ChargingParticle->ParticleSystem()->EnableModule(PARTICLE_MODULE::SPAWN, false);
-        }
-    }
-    break;
+    case StateStep::ChargeWait:
+        break;
     case StateStep::Progress: {
         MRPFSM->ResetEmissive();
     }
