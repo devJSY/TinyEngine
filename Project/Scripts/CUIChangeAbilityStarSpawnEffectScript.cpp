@@ -8,6 +8,7 @@
 
 CUIChangeAbilityStarSpawnEffectScript::CUIChangeAbilityStarSpawnEffectScript()
     : CScript(UICHANGEABILITYSTARSPAWNEFFECTSCRIPT)
+    , m_vCenterPosOffset{}
     , m_vCenterPos{}
     , m_vBigStarScale{}
     , m_vLittleStarScale{}
@@ -21,6 +22,7 @@ CUIChangeAbilityStarSpawnEffectScript::CUIChangeAbilityStarSpawnEffectScript()
     , m_fStarSpawnTime(0.f)
     , m_fBeginDegree(0.f)
 {
+    AddScriptParam(SCRIPT_PARAM::VEC3, &m_vCenterPosOffset, "CenterPos Offset");
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_vBigStarScale, "Big Star Scale");
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_vLittleStarScale, "Little Star Scale");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fOriginRadius, "Origin Radius");
@@ -35,6 +37,7 @@ CUIChangeAbilityStarSpawnEffectScript::CUIChangeAbilityStarSpawnEffectScript()
 
 CUIChangeAbilityStarSpawnEffectScript::CUIChangeAbilityStarSpawnEffectScript(const CUIChangeAbilityStarSpawnEffectScript& Origin)
     : CScript(Origin)
+    , m_vCenterPosOffset(Origin.m_vCenterPosOffset)
     , m_vCenterPos{}
     , m_vBigStarScale(Origin.m_vBigStarScale)
     , m_vLittleStarScale(Origin.m_vLittleStarScale)
@@ -48,6 +51,7 @@ CUIChangeAbilityStarSpawnEffectScript::CUIChangeAbilityStarSpawnEffectScript(con
     , m_fStarSpawnTime(Origin.m_fStarSpawnTime)
     , m_fBeginDegree(Origin.m_fBeginDegree)
 {
+    AddScriptParam(SCRIPT_PARAM::VEC3, &m_vCenterPosOffset, "CenterPos Offset");
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_vBigStarScale, "Big Star Scale");
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_vLittleStarScale, "Little Star Scale");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fOriginRadius, "Origin Radius");
@@ -87,8 +91,7 @@ void CUIChangeAbilityStarSpawnEffectScript::tick()
 
 void CUIChangeAbilityStarSpawnEffectScript::Enter()
 {
-    // PLAYER
-    if (true)
+    if (TRUE)
     {
         CaculateTargetPos();
         ChangeState(UIChangeAbilityStarSpawnEffectState::Progress);
@@ -156,12 +159,18 @@ void CUIChangeAbilityStarSpawnEffectScript::CaculateTargetPos()
     Vec3 _vPlayerNDCPos = Vector3::Transform(vPlayerPos, _VPMatrix);
 
     // UICam
-    _pCam = CRenderMgr::GetInst()->GetCamera(2);
+    _pCam = CRenderMgr::GetInst()->GetCamera(1);
+
+    if (nullptr == _pCam)
+        return;
 
     // NDC -> WorldPos
     Matrix _VPInverseMatrix = _pCam->GetProjInvMat() * _pCam->GetViewInvMat();
 
     m_vCenterPos = Vector3::Transform(_vPlayerNDCPos, _VPInverseMatrix);
+
+    // Offset Ãß°¡
+    m_vCenterPos += m_vCenterPosOffset;
 }
 
 UINT CUIChangeAbilityStarSpawnEffectScript::SaveToLevelFile(FILE* _File)

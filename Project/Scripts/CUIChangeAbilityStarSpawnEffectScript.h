@@ -11,6 +11,7 @@ enum class UIChangeAbilityStarSpawnEffectState
 class CUIChangeAbilityStarSpawnEffectScript : public CScript
 {
 private:
+    Vec3 m_vCenterPosOffset;
     Vec3 m_vCenterPos;
 
     Vec3 m_vBigStarScale;
@@ -26,8 +27,6 @@ private:
     float m_fThreshHoldStar;
     float m_fStarSpawnTime;
     float m_fBeginDegree;
-
-    float m_fGrowthScale;
 
 public:
     virtual void tick() override;

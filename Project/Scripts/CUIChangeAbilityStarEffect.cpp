@@ -120,6 +120,7 @@ void CUIChangeAbilityStarEffect::GrowUp()
 
         vPos.x = m_vCenterPos.x + m_fOriginRadius * cosf(m_fTheta);
         vPos.y = m_vCenterPos.y + m_fOriginRadius * sinf(m_fTheta);
+        vPos.z = m_vCenterPos.z;
 
         pTr->SetWorldPos(vPos);
 
