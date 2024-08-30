@@ -122,5 +122,6 @@ CUIBurstStarSpawnEffectScript
 CUIChangeAbilityStarSpawnEffectScript
 CUIChangeAbilityStarEffect
 CUIChangeAbilityStopStarEffect
+CKirbySoundListener
 CDestroyParticleScript
 CMorphoShockWaveWave

@@ -32,6 +32,7 @@ CCameraController::CCameraController()
     , m_EditMode(false)
     , m_Weight(0.3f)
     , m_bEffectLock(false)
+    , m_bSetupLock(false)
 {
 
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_Offset, "Offset");
@@ -405,6 +406,8 @@ void CCameraController::SaveSetting()
     m_SaveSetting.MaxSpeed = m_MaxSpeed;
     m_SaveSetting.MinSpeed = m_MinSpeed;
     m_SaveSetting.Offset = m_Offset;
+    m_SaveSetting.MainOffset = m_TargetOffset;
+    m_SaveSetting.SubOffset = m_SubTargetOffset;
     m_SaveSetting.RotationSpeed = m_RotationSpeed;
     m_SaveSetting.ThresholdDistance = m_ThresholdDistance;
     m_SaveSetting.ZoomMaxSpeed = m_ZoomMaxSpeed;
@@ -419,6 +422,8 @@ void CCameraController::SaveInitSetting()
     m_InitSetting.MaxSpeed = m_MaxSpeed;
     m_InitSetting.MinSpeed = m_MinSpeed;
     m_InitSetting.Offset = m_Offset;
+    m_SaveSetting.MainOffset = m_TargetOffset;
+    m_SaveSetting.SubOffset = m_SubTargetOffset;
     m_InitSetting.RotationSpeed = m_RotationSpeed;
     m_InitSetting.ThresholdDistance = m_ThresholdDistance;
     m_InitSetting.ZoomMaxSpeed = m_ZoomMaxSpeed;
@@ -433,6 +438,8 @@ void CCameraController::LoadSetting(bool _OnlySetting)
         m_LookDir = m_SaveSetting.LookDir;
         m_LookDist = m_SaveSetting.LookDist;
         m_Offset = m_SaveSetting.Offset;
+        m_TargetOffset = m_SaveSetting.MainOffset;
+        m_SubTargetOffset = m_SaveSetting.SubOffset;
     }
 
     m_MaxSpeed = m_SaveSetting.MaxSpeed;
@@ -450,7 +457,9 @@ void CCameraController::LoadInitSetting(bool _OnlySetting)
     {
         m_LookDir = m_SaveSetting.LookDir;
         m_LookDist = m_SaveSetting.LookDist;
-        m_Offset = m_InitSetting.Offset;
+        m_Offset = m_SaveSetting.Offset;
+        m_TargetOffset = m_SaveSetting.MainOffset;
+        m_SubTargetOffset = m_SaveSetting.SubOffset;
     }
 
     m_MaxSpeed = m_InitSetting.MaxSpeed;
@@ -897,6 +906,10 @@ void CCameraController::ChangeFollwSpeedSetting(float _MinSpeed, float _MaxSpeed
 
 void CCameraController::Normal(bool _IsImmediate)
 {
+    // Lock 걸려있는 경우에는 바꾸지 않는다.
+    if (m_bSetupLock)
+        return;
+
     SetCameraSetup(CameraSetup::NORMAL);
 
     if (_IsImmediate)
@@ -908,6 +921,10 @@ void CCameraController::Normal(bool _IsImmediate)
 void CCameraController::ProgressSetup(Vec3 _StartPos, Vec3 _EndPos, Vec3 _StartOffset, Vec3 _EndOffset, Vec3 _StartDir, Vec3 _EndDir,
                                       float _StartDist, float _EndDist)
 {
+    // Lock 걸려있는 경우에는 바꾸지 않는다.
+    if (m_bSetupLock)
+        return;
+
     SetCameraSetup(CameraSetup::PROGRESS);
 
     m_ProgressStartOffset = _StartOffset;
@@ -923,10 +940,14 @@ void CCameraController::ProgressSetup(Vec3 _StartPos, Vec3 _EndPos, Vec3 _StartO
 
 void CCameraController::TwoTarget(CGameObject* _SubTarget, bool _bChangeLookDir, Vec3 _LookDir, float _DistanceOffset, float _MinDist)
 {
+    // Lock 걸려있는 경우에는 바꾸지 않는다.
+    if (m_bSetupLock)
+        return;
+
     if (_SubTarget == nullptr)
         return;
 
-    m_Setup = CameraSetup::TWOTARGET;
+    SetCameraSetup(CameraSetup::TWOTARGET);
 
     m_SubTarget = _SubTarget;
     m_SubTargetPos = m_SubTarget->Transform()->GetWorldPos();
@@ -942,7 +963,11 @@ void CCameraController::TwoTarget(CGameObject* _SubTarget, bool _bChangeLookDir,
 
 void CCameraController::TwoTarget(wstring _SubTargetName, Vec3 _LookDir, float _DistanceOffset, float _MinDist)
 {
-    m_Setup = CameraSetup::TWOTARGET;
+    // Lock 걸려있는 경우에는 바꾸지 않는다.
+    if (m_bSetupLock)
+        return;
+
+    SetCameraSetup(CameraSetup::TWOTARGET);
 
     m_SubTarget = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(_SubTargetName);
 
@@ -961,6 +986,10 @@ void CCameraController::TwoTarget(wstring _SubTargetName, Vec3 _LookDir, float _
 
 void CCameraController::Boss(CGameObject* _SubTarget, float _DistanceOffset, float _Weight)
 {
+    // Lock 걸려있는 경우에는 바꾸지 않는다.
+    if (m_bSetupLock)
+        return;
+
     if (_SubTarget == nullptr)
         return;
 
@@ -975,6 +1004,10 @@ void CCameraController::Boss(CGameObject* _SubTarget, float _DistanceOffset, flo
 
 void CCameraController::Boss(wstring _SubTargetName, float _DistanceOffset, float _Weight)
 {
+    // Lock 걸려있는 경우에는 바꾸지 않는다.
+    if (m_bSetupLock)
+        return;
+
     m_Setup = CameraSetup::BOSSSETUP;
 
     m_SubTarget = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(_SubTargetName);
@@ -998,6 +1031,10 @@ void CCameraController::Boss(wstring _SubTargetName, float _DistanceOffset, floa
 
 void CCameraController::FixedView(bool _IsImmediate, Vec3 _FixedViewPos)
 {
+    // Lock 걸려있는 경우에는 바꾸지 않는다.
+    if (m_bSetupLock)
+        return;
+
     SetCameraSetup(CameraSetup::FIXEDVIEW);
 
     if (_FixedViewPos == Vec3(0.f, 0.f, 0.f))

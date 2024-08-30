@@ -27,6 +27,11 @@ CLevelFlowMgr::CLevelFlowMgr(UINT _Type)
     , m_UIFlowScript(nullptr)
     , m_ToneMappingMtrl(nullptr)
     , m_RadialBlurEffect(nullptr)
+    , m_BGM(nullptr)
+    , m_StartBGMVolume(0.f)
+    , m_EndBGMVolume(0.f)
+    , m_BGMAcc(0.f)
+    , m_BGMDuration(0.f)
     , m_pLoadingUI(nullptr)
     , m_pPlayerHP(nullptr)
     , m_pBossHP(nullptr)
@@ -53,6 +58,10 @@ CLevelFlowMgr::CLevelFlowMgr(const CLevelFlowMgr& _Origin)
     , m_FadeEffectScript(nullptr)
     , m_UIFlowScript(nullptr)
     , m_ToneMappingMtrl(nullptr)
+    , m_BGM(nullptr)
+    , m_StartBGMVolume(0.f)
+    , m_EndBGMVolume(0.f)
+    , m_BGMAcc(0.f)
     , m_pLoadingUI(nullptr)
     , m_pEnterUIScript(nullptr)
     , m_pPlayerHP(nullptr)
@@ -226,7 +235,7 @@ void CLevelFlowMgr::tick()
     if (m_bRadialBlurEffect)
     {
         m_RadialBlurAcc += DT_ENGINE;
-        
+
         if (m_RadialBlurAcc > m_RadialBlurDuration)
         {
             OffRadialBlurEffect();
@@ -248,6 +257,15 @@ void CLevelFlowMgr::tick()
                 m_bDimensionalFade = false;
             }
         }
+    }
+
+    // BGM
+    if (nullptr != m_BGM && m_BGMAcc <= m_BGMDuration)
+    {
+        m_BGMAcc += DT_ENGINE;
+
+        float Volume = Lerp(m_StartBGMVolume, m_EndBGMVolume, m_BGMAcc / m_BGMDuration);
+        GamePlayStatic::PlayBGM(m_BGM->GetRelativePath(), Volume);
     }
 
     // tick마다 넣어줘야 하는 Param setting
@@ -400,13 +418,12 @@ void CLevelFlowMgr::LevelEnd()
 
     // FadeIn 초기화
 
-    // @TODO BGM 종료
+    FadeOutBGM(1.f);
 }
 
 void CLevelFlowMgr::LevelExit()
 {
     // Loding UI 시작
-
 
     // Level Change
     GamePlayStatic::ChangeLevelAsync(ToWstring(m_NextLevelPath), LEVEL_STATE::PLAY);
@@ -431,6 +448,21 @@ void CLevelFlowMgr::LevelRestart()
 
     // 현재 레벨을 다시 시작하기 위해 NextLevelPath 를 현재레벨의 Path로 바꿔준다.
     m_NextLevelPath = ToString(m_CurLevelPath);
+
+    // Restart 시에는 Kirby의 기본상태로 시작한다.
+    Ptr<CPrefab> KirbyPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Kirby.pref");
+    if (KirbyPref.Get())
+    {
+        KirbyPref->Save(L"prefab\\Main Player.pref");
+    }
+
+    Ptr<CPrefab> MainPlayerPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Main Player.pref");
+
+    if (MainPlayerPref.Get())
+    {
+        GamePlayStatic::DeleteAsset(ASSET_TYPE::PREFAB, MainPlayerPref.Get());
+    }
+
     // @TODO BGM 종료
 }
 
@@ -453,7 +485,7 @@ void CLevelFlowMgr::RobbyLevel()
     // 현재 레벨을 다시 시작하기 위해 NextLevelPath 를 현재레벨의 Path로 바꿔준다.
     m_NextLevelPath = "Robby Level.tLevel";
 
-    // @TODO BGM 종료s
+    FadeOutBGM(1.f);
 }
 
 void CLevelFlowMgr::MtrlParamUpdate()
@@ -491,7 +523,7 @@ void CLevelFlowMgr::MtrlParamUpdate()
                 float t = m_RadialBlurAcc / OnOffTime;
                 BlurPower *= t;
             }
-        
+
             // end
             if (m_RadialBlurAcc >= m_RadialBlurDuration - OnOffTime)
             {
@@ -710,6 +742,29 @@ void CLevelFlowMgr::SetFadeEffect(Vec3 _Color, bool _bReverse, float _Duration, 
     m_FadeEffectScript->SetDuration(_Duration);
     m_FadeEffectScript->SetRotateSpeed(_Speed);
     m_FadeEffectScript->SetCenterMode(_CenterMode);
+}
+
+void CLevelFlowMgr::FadeInBGM(const wstring& _SoundPath, float _StartVolume, float _EndVolume, float _Duration)
+{
+    m_BGM = CAssetMgr::GetInst()->Load<CSound>(_SoundPath, _SoundPath);
+    if (nullptr == m_BGM)
+        return;
+
+    m_StartBGMVolume = _StartVolume;
+    m_EndBGMVolume = _EndVolume;
+    m_BGMAcc = 0.f;
+    m_BGMDuration = _Duration;
+}
+
+void CLevelFlowMgr::FadeOutBGM(float _Duration)
+{
+    if (nullptr == m_BGM)
+        return;
+
+    m_StartBGMVolume = m_EndBGMVolume;
+    m_EndBGMVolume = 0.f;
+    m_BGMAcc = 0.f;
+    m_BGMDuration = _Duration;
 }
 
 void CLevelFlowMgr::SetToneMappingParam(bool _bBloomEnable, bool _bBlendMode, float _BloomStrength, float _Threshold, float _FilterRadius,

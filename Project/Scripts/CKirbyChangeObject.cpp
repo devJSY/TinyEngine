@@ -63,6 +63,7 @@ void CKirbyChangeObject::Enter()
     DirToKirby.Normalize();
 
     CamCtrl->SetOffset(Vec3(0.f, 15.f, 0));
+    CamCtrl->SetTargetOffset(Vec3(0.f, 0.f, 0.f));
     CamCtrl->SetLookDir(DirToKirby);
     CamCtrl->SetLookDist(250.f);
 

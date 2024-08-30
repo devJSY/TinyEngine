@@ -331,6 +331,7 @@ void CKirbyFSM::begin()
         }
         else if (ObjName == L"KirbyDragon")
         {
+            KirbyChildObject[i]->SetActive(false);
             GamePlayStatic::AddChildObject(GetOwner(), KirbyChildObject[i], L"Wing");
         }
         else if (ObjName == L"SleepSnotBubble")

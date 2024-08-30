@@ -92,6 +92,7 @@ PS_OUT_FORWARD main(PS_IN input)
         {
             float fDot = dot(normalWorld, pixelToEye);
             fDot = saturate(smoothstep(0.0, 1.0, fDot)); // saturate() 0 ~ 1 Climp 
+            fDot = pow(fDot, 2.f);
             
             float3 lightVec = LightInfo.vWorldPos - input.vPosWorld;
             float lightDist = length(lightVec);
@@ -100,8 +101,12 @@ PS_OUT_FORWARD main(PS_IN input)
             // Distance attenuation
             float att = saturate((LightInfo.fallOffEnd - lightDist)
                          / (LightInfo.fallOffEnd - LightInfo.fallOffStart));
+            
+            // 외부으로 갈수록 albedo 색상
+            // 내부로 갈수록 Radiance 색상
+            float3 ApplyColor = albedo * (1.f - fDot) + LightInfo.vRadiance.rgb * fDot;
     
-            InnerLighting += albedo * LightInfo.vRadiance.rgb * fDot * att;
+            InnerLighting += ApplyColor * att;
         }
     }
     

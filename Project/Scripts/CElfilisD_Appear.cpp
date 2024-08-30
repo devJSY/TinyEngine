@@ -67,6 +67,8 @@ void CElfilisD_Appear::Enter_Step()
         CAMERACTRL->SetZoomThreshold(50.f);
         CAMERACTRL->SetTargetOffset(Vec3(0.f, 75.f, 0.f));
 
+        CAMERACTRL->SaveSetting();
+
         CAMERACTRL->ResetCamera();
     }
     break;
