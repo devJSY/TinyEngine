@@ -52,6 +52,7 @@ private:
     CameraSetting               m_SaveSetting;
 
     CameraSetup                 m_Setup;             // 현재 카메라의 Setup
+    bool                        m_bSetupLock;
 
     // Effect
     CamEffect                   m_Effect[(UINT)EFFECT_TYPE::END];
@@ -153,7 +154,11 @@ private:
     float GetZoomMaxSpeed() const { return m_ZoomMaxSpeed; }
     float GetZoomThreshold() const { return m_ZoomThreshold; }
 
-    void SetCameraSetup(CameraSetup _Setup) { m_Setup = _Setup; }
+    void SetCameraSetup(CameraSetup _Setup)
+    {
+        if (m_bSetupLock == false)
+            m_Setup = _Setup;
+    }
     void SetMainTarget(CGameObject* _Target) { m_Target = _Target; } 
     void SetMainTarget(wstring _TargetName);
     void SetSubTarget(CGameObject* _SubTarget) { m_SubTarget = _SubTarget; }
@@ -188,6 +193,7 @@ private:
     }
     void RotationLookDirRightAxis(float _Degree);
     void SetEffectLock(bool _Lock) { m_bEffectLock = _Lock; }
+    void LockSetup(bool _Lock) { m_bSetupLock = _Lock; }
 
 
     void SaveSetting();
