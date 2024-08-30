@@ -35,11 +35,9 @@ void CMorphoShockWave::tick()
 
 void CMorphoShockWave::Activate()
 {
-    m_AccTime = 0.f;
+    m_AccTime = m_SpawnDuration;
     m_bSpawnWave = true;
     GetOwner()->SetActive(true);
-
-    SpawnWave();
 }
 
 void CMorphoShockWave::Deactivate()
