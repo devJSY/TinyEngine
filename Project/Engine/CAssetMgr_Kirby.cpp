@@ -1036,4 +1036,28 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
         pShader->SetName(L"ParticleRenderColorMapShader");
         AddAsset(L"ParticleRenderColorMapShader", pShader);
     }
+
+    // =================================
+    // Effect Quad Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\UnrealPBRVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\EffectQuadPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::NO_WRITE); // 깊이 테스트는 진행, 깊이는 기록 X
+        pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
+
+        pShader->AddScalarParam(SCALAR_PARAM::FLOAT_2, "Alpha");
+        pShader->AddScalarParam(SCALAR_PARAM::INT_0, "Use Change Color");
+        pShader->AddScalarParam(SCALAR_PARAM::VEC4_0, "Change Color");
+        pShader->AddTexParam(TEX_0, "Quad Texture");
+
+        pShader->SetName(L"EffectQuadShader");
+        AddAsset(L"EffectQuadShader", pShader);
+    }
 }

@@ -123,3 +123,4 @@ CUIChangeAbilityStarSpawnEffectScript
 CUIChangeAbilityStarEffect
 CUIChangeAbilityStopStarEffect
 CDestroyParticleScript
+CMorphoShockWaveWave
