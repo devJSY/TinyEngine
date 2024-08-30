@@ -13,6 +13,7 @@ public:
     virtual UINT LoadFromLevelFile(FILE* _File) override;
 
 public:
+    virtual void LevelStart() override;
     virtual void LevelEnd() override;
     virtual void LevelRestart() override;
 

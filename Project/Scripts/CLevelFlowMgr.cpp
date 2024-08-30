@@ -27,6 +27,11 @@ CLevelFlowMgr::CLevelFlowMgr(UINT _Type)
     , m_UIFlowScript(nullptr)
     , m_ToneMappingMtrl(nullptr)
     , m_RadialBlurEffect(nullptr)
+    , m_BGM(nullptr)
+    , m_StartBGMVolume(0.f)
+    , m_EndBGMVolume(0.f)
+    , m_BGMAcc(0.f)
+    , m_BGMDuration(0.f)
     , m_pLoadingUI(nullptr)
     , m_pPlayerHP(nullptr)
     , m_pBossHP(nullptr)
@@ -53,6 +58,10 @@ CLevelFlowMgr::CLevelFlowMgr(const CLevelFlowMgr& _Origin)
     , m_FadeEffectScript(nullptr)
     , m_UIFlowScript(nullptr)
     , m_ToneMappingMtrl(nullptr)
+    , m_BGM(nullptr)
+    , m_StartBGMVolume(0.f)
+    , m_EndBGMVolume(0.f)
+    , m_BGMAcc(0.f)
     , m_pLoadingUI(nullptr)
     , m_pEnterUIScript(nullptr)
     , m_pPlayerHP(nullptr)
@@ -226,7 +235,7 @@ void CLevelFlowMgr::tick()
     if (m_bRadialBlurEffect)
     {
         m_RadialBlurAcc += DT_ENGINE;
-        
+
         if (m_RadialBlurAcc > m_RadialBlurDuration)
         {
             OffRadialBlurEffect();
@@ -247,6 +256,22 @@ void CLevelFlowMgr::tick()
             {
                 m_bDimensionalFade = false;
             }
+        }
+    }
+
+    // BGM
+    if (nullptr != m_BGM)
+    {
+        m_BGMAcc += DT_ENGINE;
+
+        if (m_BGMAcc > m_BGMDuration)
+        {
+            m_BGM = nullptr;
+        }
+        else
+        {
+            float Volume = Lerp(m_StartBGMVolume, m_EndBGMVolume, m_BGMAcc / m_BGMDuration);
+            GamePlayStatic::PlayBGM(m_BGM->GetRelativePath(), Volume);
         }
     }
 
@@ -407,7 +432,6 @@ void CLevelFlowMgr::LevelExit()
 {
     // Loding UI ½ÃÀÛ
 
-
     // Level Change
     GamePlayStatic::ChangeLevelAsync(ToWstring(m_NextLevelPath), LEVEL_STATE::PLAY);
 }
@@ -491,7 +515,7 @@ void CLevelFlowMgr::MtrlParamUpdate()
                 float t = m_RadialBlurAcc / OnOffTime;
                 BlurPower *= t;
             }
-        
+
             // end
             if (m_RadialBlurAcc >= m_RadialBlurDuration - OnOffTime)
             {
@@ -710,6 +734,18 @@ void CLevelFlowMgr::SetFadeEffect(Vec3 _Color, bool _bReverse, float _Duration, 
     m_FadeEffectScript->SetDuration(_Duration);
     m_FadeEffectScript->SetRotateSpeed(_Speed);
     m_FadeEffectScript->SetCenterMode(_CenterMode);
+}
+
+void CLevelFlowMgr::PlayBGM(const wstring& _SoundPath, float _StartVolume, float _EndVolume, float _Duration)
+{
+    m_BGM = CAssetMgr::GetInst()->Load<CSound>(_SoundPath, _SoundPath);
+    if (nullptr == m_BGM)
+        return;
+
+    m_StartBGMVolume = _StartVolume;
+    m_EndBGMVolume = _EndVolume;
+    m_BGMAcc = 0.f;
+    m_BGMDuration = _Duration;
 }
 
 void CLevelFlowMgr::SetToneMappingParam(bool _bBloomEnable, bool _bBlendMode, float _BloomStrength, float _Threshold, float _FilterRadius,
