@@ -11,7 +11,6 @@ CMorphoDemo_Appear::CMorphoDemo_Appear()
     , m_AccTime(0.f)
     , m_BossName(nullptr)
     , m_bFrmEnter(false)
-    , m_bFrmEnter2(false)
 {
     m_BossNamePref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\BossName_Morpho.pref", L"prefab\\BossName_Morpho.pref");
 }
@@ -60,10 +59,20 @@ void CMorphoDemo_Appear::Enter_Step()
         GetOwner()->Animator()->SetClipFrameIndex(400);
         GetOwner()->Transform()->SetWorldPos(m_StartPos);
         GetOwner()->Transform()->SetWorldRotation(Vec3());
-        m_AccTime = 0.f;
 
-        m_bFrmEnter = false;
-        m_bFrmEnter2 = false;
+        m_AccTime = 0.f;
+        m_bFrmEnter = true;
+
+        // Camera : 점점 몰포 가까이
+        CGameObject* Target = BOSS->GetChildObject(L"CameraTarget");
+
+        CAMERACTRL->SetMainTarget(Target);
+        CAMERACTRL->SetOffset(Vec3(0.f, 0.f, 0.f));
+        CAMERACTRL->SetTargetOffset(Vec3(0.f, 0.f, 0.f));
+        CAMERACTRL->SetLookDir(Vec3(0.f, 0.f, -1.f));
+        CAMERACTRL->SetLookDist(60.f);
+
+        CAMERACTRL->ResetCamera();
     }
     break;
     case StateStep::Progress: {
@@ -115,23 +124,7 @@ void CMorphoDemo_Appear::Exit_Step()
 
 void CMorphoDemo_Appear::Start()
 {
-    if (m_bFrmEnter == false && CHECK_ANIMFRM(GetOwner(), 412))
-    {
-        // Camera : 점점 몰포 가까이
-        CGameObject* Target = BOSS->GetChildObject(L"CameraTarget");
-
-        CAMERACTRL->SetMainTarget(Target);
-        CAMERACTRL->SetOffset(Vec3(0.f, 0.f, 0.f));
-        CAMERACTRL->SetTargetOffset(Vec3(0.f, 0.f, 0.f));
-        CAMERACTRL->SetLookDir(Vec3(0.f, 0.f, -1.f));
-        CAMERACTRL->SetLookDist(60.f);
-
-        CAMERACTRL->ResetCamera();
-
-        m_bFrmEnter = true;
-    }
-
-    if (m_bFrmEnter2 == false && CHECK_ANIMFRM(GetOwner(), 603))
+    if (m_bFrmEnter && CHECK_ANIMFRM(GetOwner(), 603))
     {
         // spawn BossName
         if (m_BossNamePref != nullptr)
@@ -161,7 +154,7 @@ void CMorphoDemo_Appear::Start()
         CAMERACTRL->SetZoomThreshold(500.f);
         CAMERACTRL->SetRotationSpeed(150.f);
 
-        m_bFrmEnter2 = true;
+        m_bFrmEnter = false;
     }
 
     if (GetOwner()->Animator()->IsFinish())
