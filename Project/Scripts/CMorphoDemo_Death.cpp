@@ -3,10 +3,14 @@
 #include "CMorphoFSM.h"
 #include "CBossLevelFlowMgr.h"
 #include "CCameraController.h"
+#include "CDestroyParticleScript.h"
 
 CMorphoDemo_Death::CMorphoDemo_Death()
     : m_AccTime(0.f)
+    , m_bFrmEnter(true)
 {
+    m_ParticleMorphoDeath = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Particle_MorphoDeath.pref");
+    m_ParticleMorphoDust = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Particle_MorphoCircleDust.pref");
 }
 
 CMorphoDemo_Death::~CMorphoDemo_Death()
@@ -83,11 +87,13 @@ void CMorphoDemo_Death::Enter_Step()
     case StateStep::Wait: {
         GetOwner()->Animator()->Play(ANIMPREFIX("Damage2Wait"), true, false, 1.5f);
         m_AccTime = 0.f;
-        //@EFFECT 뿜어져나오는 빛, 모이는 파티클
+        m_bFrmEnter = true;
     }
     break;
     case StateStep::End: {
         GetOwner()->Animator()->Play(ANIMPREFIX("DeathFloatAll"), false, false, 1.5f);
+        m_AccTime = 0.f;
+        m_bFrmEnter = true;
     }
     break;
     }
@@ -144,10 +150,37 @@ void CMorphoDemo_Death::Wait()
 
 void CMorphoDemo_Death::End()
 {
+    m_AccTime += DT;
+
+    // Spawn Particle Effect
+    if (m_bFrmEnter && m_AccTime > 6.f)
+    {
+        m_bFrmEnter = false;
+        Vec3 CurPos = GetOwner()->GetChildObject(L"CameraTarget")->Transform()->GetWorldPos();
+
+        if (m_ParticleMorphoDeath != nullptr)
+        {
+            CGameObject* Particle = m_ParticleMorphoDeath->Instantiate();
+            Particle->Transform()->SetWorldPos(CurPos);
+
+            GamePlayStatic::SpawnGameObject(Particle, LAYER_EFFECT);
+        }
+
+        if (m_ParticleMorphoDust != nullptr)
+        {
+            CGameObject* Particle = m_ParticleMorphoDust->Instantiate();
+            Particle->Transform()->SetWorldPos(CurPos);
+
+            CDestroyParticleScript* Script = new CDestroyParticleScript;
+            Script->SetSpawnTime(0.5f);
+            Particle->AddComponent(Script);
+
+            GamePlayStatic::SpawnGameObject(Particle, LAYER_EFFECT);
+        }
+    }
+
     if (GetOwner()->Animator()->IsFinish())
     {
-        //@EFFECT 터지는 파티클
-
         MRPFSM->SetGlobalState(false);
         CBossMgr::GetBossFlowMgr()->ChangeFlow(BossLevelFlow::Clear);
     }
