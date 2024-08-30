@@ -146,6 +146,10 @@ void CBossLevelFlowMgr::EnterFight()
 void CBossLevelFlowMgr::EnterDemoPlay()
 {
     SetPlayerPos(m_DefaultDemoPos, -m_DefaultDemoPos);
+
+    TurnOffPlayerHP();
+    TurnOffBossHP();
+
     PLAYERCTRL->LockInput();
     PLAYERFSM->ChangeState(L"IDLE");
 }
@@ -161,7 +165,7 @@ void CBossLevelFlowMgr::EnterClear()
     BOSS->SetActive(false);
 
     PLAYERCTRL->LockInput();
-    
+
     CAMERACTRL->SetMainTarget(PLAYER);
     CAMERACTRL->SetImmediate(false);
     PLAYERFSM->ChangeState(L"STAGE_CLEAR");

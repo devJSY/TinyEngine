@@ -40,7 +40,7 @@ void CFlowMgr_Lv4::begin()
         {
             m_pLight[i] = pObj->Light();
             if (m_pLight[i])
-                m_pLight[i]->SetFallOffEnd(4000.f);
+                m_pLight[i]->SetFallOffEnd(1200.f);
         }
     }
 

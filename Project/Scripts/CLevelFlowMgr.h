@@ -30,6 +30,13 @@ private:
     wstring m_CurLevelPath;
     string m_NextLevelPath;
 
+    // BGM
+    Ptr<CSound> m_BGM;
+    float m_StartBGMVolume;
+    float m_EndBGMVolume;
+    float m_BGMAcc;
+    float m_BGMDuration;
+
     // UI
     CGameObject* m_DimensionFadeEffect;
     CGameObject* m_RadialBlurEffect;
@@ -50,7 +57,6 @@ private:
     bool m_bUILevel;
     bool m_bLoadingUIWait;
     bool m_bAlreayEnterBossUI;
-    // UI
 
     CFadeEffectScript* m_FadeEffectScript;
 
@@ -89,6 +95,9 @@ public:
     void ActiveFadeEffect(bool _bEnable);
     void PauseFadeEffect(bool _bPause);
     void SetFadeEffect(Vec3 _Color, bool _bReverse, float _Duration, float _Speed, bool _CenterMode);
+
+    void FadeInBGM(const wstring& _SoundPath, float _StartVolume, float _EndVolume, float _Duration);
+    void FadeOutBGM(float _Duration);
 
 public:
     virtual void LevelStart();

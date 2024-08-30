@@ -260,14 +260,20 @@ void CTransform::SetLocalRotation(Vec3 _Radian)
 
 void CTransform::SetWorldRotation(Vec3 _Radian)
 {
+    Matrix NewMatRot = Matrix::CreateFromAxisAngle(Vec3(1.f, 0.f, 0.f), _Radian.x) * Matrix::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), _Radian.y) *
+                       Matrix::CreateFromAxisAngle(Vec3(0.f, 0.f, 1.f), _Radian.z);
+
+    Quat NewQuaternion = Quat::CreateFromRotationMatrix(NewMatRot);
+
     CGameObject* pParent = GetOwner()->GetParent();
     if (nullptr != pParent)
     {
-        Vec3 ParentWorldRot = pParent->Transform()->GetWorldRotation();
-        _Radian -= ParentWorldRot;
+        Quat ParentQuat = pParent->Transform()->GetWorldQuaternion();
+        ParentQuat.Inverse(ParentQuat);
+        NewQuaternion = NewQuaternion * ParentQuat;
     }
 
-    SetLocalRotation(_Radian);
+    SetLocalRotation(NewQuaternion);
 }
 
 UINT CTransform::SaveToLevelFile(FILE* _File)
