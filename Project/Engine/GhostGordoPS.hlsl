@@ -28,19 +28,8 @@
 
 #define sparklyEffect g_float_0
 
-#define RimColor g_vec4_0
-#define RimPower g_float_1
-
-#define RimInverse g_int_0
-
-float3 RimLightInverse(float3 NormalWorld, float3 toEye, float3 rimColor, float rimPower)
-{
-    float rim = dot(NormalWorld, toEye); // Fresnel's formulas
-    rim = saturate(smoothstep(0.0, 1.0, rim)); // saturate() 0 ~ 1 Climp 
-    rim = pow(abs(rim), rimPower);
-    float3 strength = float3(1, 1, 1); // strength option
-    return rim * rimColor * strength;
-}
+#define RIM_COLOR g_vec4_0
+#define RIM_POWER g_float_1
 
 struct PS_OUT
 {
@@ -76,12 +65,16 @@ PS_OUT main(PS_IN input)
     }
     float3 emission = g_btex_3 ? g_tex_3.Sample(g_LinearWrapSampler, input.vUV0).rgb
                                      : MtrlEmission.rgb;
+        
+    // Rim
+    float3 pixelToEye = normalize(g_eyeWorld - input.vPosWorld);
+    float3 RimColor = RimLight(input.vNormalWorld, pixelToEye, RIM_COLOR.rgb, RIM_POWER);
     
     output.vColor = float4(albedo, 1.f);
     output.vPosition = float4(input.vPosWorld, 1.f);
     output.vTangent = float4(input.vTangentWorld, 1.f);
     output.vBitangent = float4(normalize(cross(input.vNormalWorld.xyz, input.vTangentWorld.xyz)), 1.f);
-    output.vEmissive = MtrlEmission + g_int_0 ? float4(RimLightInverse(output.vNormal.xyz, g_eyeWorld, RimColor.rgb, RimPower), 0.f) : float4(RimLight(output.vNormal.xyz, g_eyeWorld, RimColor.rgb, RimPower), 0.f);
+    output.vEmissive = MtrlEmission + float4(RimColor, 1.f);
     output.vMRA = float4(metallic, roughness, ao, 1.f);
    
     return output;
