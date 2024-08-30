@@ -86,6 +86,7 @@ void CKirbyDeath::Enter()
 
     CamCtrl->Normal(false);
     CamCtrl->SetLock(true, m_FaceDuraion);
+    CamCtrl->LockSetup(true);
 
     CamCtrl->SetOffset(Vec3(0.f, 10.f, 0.f));
     CamCtrl->RotationLookDirRightAxis(50.f);
