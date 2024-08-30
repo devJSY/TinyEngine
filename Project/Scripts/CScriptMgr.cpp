@@ -125,6 +125,7 @@
 #include "CUIChangeAbilityStarSpawnEffectScript.h"
 #include "CUIChangeAbilityStarEffect.h"
 #include "CUIChangeAbilityStopStarEffect.h"
+#include "CUIDashEffectScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -252,6 +253,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CUIChangeAbilityStarSpawnEffectScript");
 	_vec.push_back(L"CUIChangeAbilityStarEffect");
 	_vec.push_back(L"CUIChangeAbilityStopStarEffect");
+	_vec.push_back(L"CUIDashEffectScript");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -504,6 +506,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CUIChangeAbilityStarEffect;
 	if (L"CUIChangeAbilityStopStarEffect" == _strScriptName)
 		return new CUIChangeAbilityStopStarEffect;
+	if (L"CUIDashEffectScript" == _strScriptName)
+		return new CUIDashEffectScript;
 	return nullptr;
 }
 
@@ -759,6 +763,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CUIChangeAbilityStarEffect;
 	case (UINT)SCRIPT_TYPE::UICHANGEABILITYSTOPSTAREFFECT:
 		return new CUIChangeAbilityStopStarEffect;
+	case (UINT)SCRIPT_TYPE::UIDASHEFFECTSCRIPT:
+		return new CUIDashEffectScript;
 	}
 	return nullptr;
 }
@@ -1015,6 +1021,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CUIChangeAbilityStarEffect";
 	case SCRIPT_TYPE::UICHANGEABILITYSTOPSTAREFFECT:
 		return L"CUIChangeAbilityStopStarEffect";
+	case SCRIPT_TYPE::UIDASHEFFECTSCRIPT:
+		return L"CUIDashEffectScript";
 	}
 	return nullptr;
 }

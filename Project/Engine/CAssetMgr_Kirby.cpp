@@ -74,6 +74,33 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
     }
 
     // =================================
+    // Dash Effect Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\UnrealPBRVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\DashEffectMaskingPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetDSType(DS_TYPE::LESS);
+        pShader->SetBSType(BS_TYPE::DEFAULT);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEFERRED);
+
+        pShader->AddTexParam(TEX_0, "Masking Texture1");
+        pShader->AddTexParam(TEX_1, "Masking Texture2");
+
+        pShader->AddTexParam(TEX_5, "Normal Wind Masking Texture1");
+
+        pShader->AddScalarParam(INT_0, "Invert NormalMapping");
+        pShader->AddScalarParam(VEC4_0, "Dash Color", 0.1f);
+        pShader->AddScalarParam(FLOAT_0, "UV Value", 0.1f);
+
+        pShader->SetName(L"DashEffectMaskingShader");
+        AddAsset(L"DashEffectMaskingShader", pShader);
+    }
+
+    // =================================
     // Normal Enemy Body Shader
     // =================================
     {

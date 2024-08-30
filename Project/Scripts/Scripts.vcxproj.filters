@@ -970,6 +970,9 @@
     <ClInclude Include="CUIChangeAbilityStopStarEffect.h">
       <Filter>Scripts\UI\UIEffect\UIChangeAbilityStarEffect\CUIAbilityStopStarEffect</Filter>
     </ClInclude>
+    <ClInclude Include="CUIDashEffectScript.h">
+      <Filter>Scripts\UI\UIEffect\UIDashEffectScript</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1949,6 +1952,9 @@
     </ClCompile>
     <ClCompile Include="CBossLevelFlowMgr.cpp">
       <Filter>Module\FlowMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIDashEffectScript.cpp">
+      <Filter>Scripts\UI\UIEffect\UIDashEffectScript</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -3067,6 +3073,9 @@
     </Filter>
     <Filter Include="Scripts\Manager\FlowManager\5. Morpho Level Flow Manager">
       <UniqueIdentifier>{ab75756a-0394-44c4-8fd0-78d24de70a78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIEffect\UIDashEffectScript">
+      <UniqueIdentifier>{db700e69-a5c5-4146-9034-ca207f100942}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
