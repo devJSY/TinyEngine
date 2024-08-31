@@ -4,7 +4,10 @@
 class CMorphoDemo_Death : public CBossState
 {
 private:
+    Ptr<CPrefab> m_ParticleMorphoDeath;
+    Ptr<CPrefab> m_ParticleMorphoDust;
     float m_AccTime;
+    bool m_bFrmEnter;
 
 public:
     virtual void tick() override;

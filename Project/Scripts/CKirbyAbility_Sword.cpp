@@ -13,6 +13,7 @@ CKirbyAbility_Sword::CKirbyAbility_Sword()
 {
     m_Hat = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordHat.pref", L"prefab\\KirbySwordHat.pref");
     m_Weapon = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordWeapon.pref", L"prefab\\KirbySwordWeapon.pref");
+    //m_KirbySwordSlashPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordSlash.pref");
     m_ComboSuccessTime = 0.5f;
     m_Charge1Time = 1.f;
     m_Charge2Time = 1.f;
@@ -29,6 +30,7 @@ CKirbyAbility_Sword::CKirbyAbility_Sword(const CKirbyAbility_Sword& _Origin)
 {
     m_Hat = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordHat.pref", L"prefab\\KirbySwordHat.pref");
     m_Weapon = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordWeapon.pref", L"prefab\\KirbySwordWeapon.pref");
+    // m_KirbySwordSlashPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordSlash.pref");
     m_ComboSuccessTime = 0.5f;
     m_Charge1Time = 1.f;
     m_Charge2Time = 1.f;
@@ -68,18 +70,13 @@ void CKirbyAbility_Sword::IdleEnter()
 // ===============
 // 칼휘두르기 (Lv0)
 
+#include "CMomentaryObjScript.h"
 void CKirbyAbility_Sword::Attack()
 {
     if (CHECK_ANIMFRM(PLAYER, 7) && m_bFrmEnter)
     {
         m_bFrmEnter = false;
-
-        //@TODO 검기 날리기
-        //Ptr<CPrefab> BulletPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbyBullet.pref", L"prefab\\KirbyBullet.pref");
-        //if (nullptr != BulletPref)
-        //{
-        //    CGameObject* BulletInst = BulletPref->Instantiate();
-        //}
+        SpawnSwordSlash();
     }
 }
 
@@ -118,13 +115,7 @@ void CKirbyAbility_Sword::AttackCombo1()
     if (CHECK_ANIMFRM(PLAYER, 9) && m_bFrmEnter)
     {
         m_bFrmEnter = false;
-
-        //@TODO 검기 날리기
-        // Ptr<CPrefab> BulletPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbyBullet.pref", L"prefab\\KirbyBullet.pref");
-        // if (nullptr != BulletPref)
-        //{
-        //    CGameObject* BulletInst = BulletPref->Instantiate();
-        //}
+        SpawnSwordSlash();
     }
 }
 
@@ -164,13 +155,7 @@ void CKirbyAbility_Sword::AttackCombo2()
     if (CHECK_ANIMFRM(PLAYER, 17) && m_bFrmEnter)
     {
         m_bFrmEnter = false;
-
-        //@TODO 검기 날리기
-        // Ptr<CPrefab> BulletPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbyBullet.pref", L"prefab\\KirbyBullet.pref");
-        // if (nullptr != BulletPref)
-        //{
-        //    CGameObject* BulletInst = BulletPref->Instantiate();
-        //}
+        SpawnSwordSlash();
     }
 }
 
@@ -471,7 +456,7 @@ void CKirbyAbility_Sword::AttackCharge3EndExit()
 // ===============
 // Jump
 // ===============
-// 점프 
+// 점프
 void CKirbyAbility_Sword::JumpFallEnter()
 {
     PLAYER->Animator()->Play(ANIMPREFIX("JumpFall"), false, false, 2.5f, 0.3f);
@@ -574,7 +559,6 @@ void CKirbyAbility_Sword::LandingEnter()
 
 void CKirbyAbility_Sword::LandingExit()
 {
-    PLAYERFSM->SetSlideComboLevel(0);
     PLAYERCTRL->UnlockJump();
 
     PLAYERFSM->SetInvincible(false);
@@ -758,4 +742,26 @@ void CKirbyAbility_Sword::ChangeAbilityEnter()
 
 void CKirbyAbility_Sword::ChangeAbilityExit()
 {
+}
+
+void CKirbyAbility_Sword::SpawnSwordSlash()
+{
+    if (m_KirbySwordSlashPref == nullptr || PLAYERUNIT->GetCurInfo().HP < PLAYERUNIT->GetCurInfo().MAXHP)
+        return;
+
+    CGameObject* SwordSlash = m_KirbySwordSlashPref->Instantiate();
+    Vec3 Dir = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+    Vec3 Pos = PLAYER->Transform()->GetWorldPos() + Dir * 10.f;
+    SwordSlash->Transform()->SetWorldPos(Pos);
+
+    Dir.y = 0.f;
+    Dir.Normalize();
+    SwordSlash->Transform()->SetDirection(Dir);
+
+    CMomentaryObjScript* Script = SwordSlash->GetScript<CMomentaryObjScript>();
+    Script->SetInitVelocity(Dir * 140.f);
+    Script->SetPlayTime(1.5f);
+
+    SwordSlash->SetName(L"KirbyAttack_SwordSlash");
+    GamePlayStatic::SpawnGameObject(SwordSlash, LAYER_PLAYERATK);
 }

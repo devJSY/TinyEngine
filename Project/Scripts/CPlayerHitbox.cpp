@@ -14,7 +14,6 @@ CPlayerHitbox::CPlayerHitbox()
     , m_AccTime(0.f)
     , m_RepeatTime(2.f)
     , m_bRepeatDamage(true)
-    , m_bRepeatEnter(false)
     , m_bRepeat(false)
     , m_bTimeScaling(false)
 {
@@ -38,7 +37,6 @@ CPlayerHitbox::CPlayerHitbox(const CPlayerHitbox& _Origin)
     , m_AccTime(0.f)
     , m_RepeatTime(_Origin.m_RepeatTime)
     , m_bRepeatDamage(_Origin.m_bRepeatDamage)
-    , m_bRepeatEnter(false)
     , m_bRepeat(false)
     , m_bTimeScaling(_Origin.m_bTimeScaling)
 {
@@ -63,30 +61,28 @@ void CPlayerHitbox::begin()
 
 void CPlayerHitbox::tick()
 {
-    if (m_bRepeat)
-    {
-        m_bRepeat = false;
-        m_bRepeatEnter = false;
-        m_Collider->SetEnabled(true);
-    }
-
     // case : repeat
-    if (!m_Instigator || !m_bRepeatDamage || !m_bRepeatEnter)
+    if (!m_Instigator || !m_bRepeatDamage)
         return;
 
     m_AccTime += DT;
 
+    // On Repeat flag
     if (m_AccTime > m_RepeatTime)
     {
         m_AccTime = 0.f;
         m_bRepeat = true;
-        m_Collider->SetEnabled(false);
+    }
+
+    // Off Repeat flag (after repeat tick)
+    else if (m_AccTime < m_RepeatTime && m_bRepeat)
+    {
+        m_bRepeat = false;
     }
 }
 
 void CPlayerHitbox::OnTriggerEnter(CCollider* _OtherCollider)
 {
-
     UINT Layer = _OtherCollider->GetOwner()->GetLayerIdx();
     wstring Name = _OtherCollider->GetOwner()->GetName();
     CGameObject* pMonster = nullptr;
@@ -111,11 +107,50 @@ void CPlayerHitbox::OnTriggerEnter(CCollider* _OtherCollider)
         return;
     }
 
-    m_bRepeatEnter = true;
     m_AccTime = 0.f;
     AddDamage(pMonster);
 
+    if (m_bTimeScaling)
+    {
+        CTimeMgr::GetInst()->SetTimeScale(0.1f, 0.f);
+    }
+}
 
+// Trigger와 계속 충돌하고 있는 경우, Repeat Damage 처리
+void CPlayerHitbox::OnTriggerStay(CCollider* _OtherCollider)
+{
+    if (!m_Instigator || !m_bRepeatDamage || !m_bRepeat)
+        return;
+
+    UINT Layer = _OtherCollider->GetOwner()->GetLayerIdx();
+    wstring Name = _OtherCollider->GetOwner()->GetName();
+    CGameObject* pMonster = nullptr;
+
+    // Find Monster (Attack Target)
+    if (Layer == LAYER_MONSTER)
+    {
+        pMonster = _OtherCollider->GetOwner();
+    }
+    else if (Layer == LAYER_MONSTER_TRIGGER)
+    {
+        if (Name == L"Body Collider")
+        {
+            pMonster = _OtherCollider->GetOwner()->GetParent();
+        }
+        else
+        {
+            return;
+        }
+    }
+    else
+    {
+        return;
+    }
+
+    // Add Damage
+    AddDamage(pMonster);
+
+    // 약경직
     if (m_bTimeScaling)
     {
         CTimeMgr::GetInst()->SetTimeScale(0.1f, 0.f);

@@ -54,11 +54,15 @@ void CKirbyBackJump::Enter()
     if (PLAYERFSM->GetCurObjectIdx() == ObjectCopyType::NONE)
     {
         PLAYER->Animator()->Play(ANIMPREFIX("BackJump"), false, false, 2.f);
+
+        if (PLAYERFSM->GetCurAbilityIdx() == AbilityCopyType::SWORD && PLAYERFSM->GetSlideComboLevel() == 2)
+        {
+            PLAYERFSM->SetInvincible(true);
+        }
     }
 
     Vec3 KnockBackDir = PLAYERFSM->GetKnockBackDir();
     PLAYERFSM->SetKnockBackDir(Vec3());
-    PLAYERFSM->SetInvincible(true);
 
     PLAYERCTRL->LockMove();
     PLAYERCTRL->LockDirection();
@@ -69,7 +73,7 @@ void CKirbyBackJump::Enter()
 
     PLAYERCTRL->AddVelocity({0.f, m_JumpPower, 0.f});
     PLAYERCTRL->AddVelocity(KnockBackDir * m_InitSpeed);
-    
+
     m_PrevGravity = PLAYERCTRL->GetGravity();
     PLAYERCTRL->SetGravity(-35.f);
 
@@ -85,7 +89,16 @@ void CKirbyBackJump::Exit()
         CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));
     }
 
-    PLAYERFSM->SetInvincible(false);
+    if (PLAYERFSM->GetCurObjectIdx() == ObjectCopyType::NONE)
+    {
+        PLAYER->Animator()->Play(ANIMPREFIX("BackJump"), false, false, 2.f);
+
+        if (PLAYERFSM->GetCurAbilityIdx() == AbilityCopyType::SWORD && PLAYERFSM->GetSlideComboLevel() == 2)
+        {
+            PLAYERFSM->SetSlideComboLevel(0);
+            PLAYERFSM->SetInvincible(false);
+        }
+    }
 
     PLAYERCTRL->UnlockMove();
     PLAYERCTRL->UnlockDirection();
