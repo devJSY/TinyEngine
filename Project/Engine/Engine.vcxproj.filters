@@ -1512,9 +1512,6 @@
     <FxCompile Include="UIMaskingAnimPS.hlsl">
       <Filter>ShaderCode\Kirby\UIShader\UIAnimShader</Filter>
     </FxCompile>
-    <FxCompile Include="MaskingPS.hlsl">
-      <Filter>ShaderCode\Kirby\Characters\Boss\Elfilis</Filter>
-    </FxCompile>
     <FxCompile Include="TransparentElfilisPS.hlsl">
       <Filter>ShaderCode\Kirby\Characters\Boss\Elfilis</Filter>
     </FxCompile>
@@ -1562,6 +1559,15 @@
     </FxCompile>
     <FxCompile Include="EffectQuadPS.hlsl">
       <Filter>ShaderCode\Kirby\Common</Filter>
+    </FxCompile>
+    <FxCompile Include="MaskingPS.hlsl">
+      <Filter>ShaderCode\Kirby\Common</Filter>
+    </FxCompile>
+    <FxCompile Include="CutMaskingPS.hlsl">
+      <Filter>ShaderCode\Kirby\Common</Filter>
+    </FxCompile>
+    <FxCompile Include="MeshDistortionPS.hlsl">
+      <Filter>ShaderCode\Kirby\Postprocess</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>
