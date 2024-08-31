@@ -1572,5 +1572,8 @@
     <FxCompile Include="TextureDistortion.hlsl">
       <Filter>ShaderCode\Kirby\Common</Filter>
     </FxCompile>
+    <FxCompile Include="ElfilisBodyPS.hlsl">
+      <Filter>ShaderCode\Kirby\Characters\Boss\Elfilis</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
