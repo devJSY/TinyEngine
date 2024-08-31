@@ -412,8 +412,8 @@ void CTackleEnemyScript::DashEffectOn()
     m_pDashEffect->Transform()->SetLocalPos(Vec3(0.f, 2.f, 1.f));
     m_pDashEffect->Transform()->SetLocalRotation(Vec3(XM_PIDIV2, 0.f, 0.f));
     m_pDashEffect->GetScript<CUIDashEffectScript>()->SetDashTime(1.f);
-    m_pDashEffect->GetScript<CUIDashEffectScript>()->SetRatioSpeed(0.005f);
-    m_pDashEffect->GetScript<CUIDashEffectScript>()->SetTextureSpeed(3.f);
+    m_pDashEffect->GetScript<CUIDashEffectScript>()->SetRatioSpeed(0.008f);
+    m_pDashEffect->GetScript<CUIDashEffectScript>()->SetTextureSpeed(5.f);
     m_pDashEffect->GetScript<CUIDashEffectScript>()->SetBackGroundAlpha(0.1f);
 
     GamePlayStatic::AddChildObject(GetOwner(), m_pDashEffect);

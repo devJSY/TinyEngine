@@ -99,7 +99,7 @@ void CGhostGordoScript::EnterState(GhostGordoState _state)
     }
     break;
     case GhostGordoState::Find: {
-        Animator()->Play(ANIMPREFIX("LowToHighSub"), false, false, 1.5f);
+        Animator()->Play(ANIMPREFIX("LowToHighSub"), false, false, 3.f);
     }
     break;
     case GhostGordoState::Track: {
@@ -347,6 +347,6 @@ void CGhostGordoScript::EyeCloseStart()
 void CGhostGordoScript::TrackWait()
 {
     m_fAccTime += DT;
-    m_fAccTime >= 2.f ? ChangeState(GhostGordoState::EyeOpenWait) : void();
+    m_fAccTime >= 0.5f ? ChangeState(GhostGordoState::EyeOpenWait) : void();
 }
 #pragma endregion
