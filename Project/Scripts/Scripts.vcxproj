@@ -431,6 +431,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CUIChangeAbilityStarEffect.h" />
     <ClInclude Include="CUIChangeAbilityStarSpawnEffectScript.h" />
     <ClInclude Include="CUIChangeAbilityStopStarEffect.h" />
+    <ClInclude Include="CUIDashEffectScript.h" />
     <ClInclude Include="CUIFlowMgr.h" />
     <ClInclude Include="CUIGlowMoveScript.h" />
     <ClInclude Include="CUIHPScript.h" />
@@ -778,6 +779,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CUIChangeAbilityStarEffect.cpp" />
     <ClCompile Include="CUIChangeAbilityStarSpawnEffectScript.cpp" />
     <ClCompile Include="CUIChangeAbilityStopStarEffect.cpp" />
+    <ClCompile Include="CUIDashEffectScript.cpp" />
     <ClCompile Include="CUIFlowMgr.cpp" />
     <ClCompile Include="CUIGlowMoveScript.cpp" />
     <ClCompile Include="CUIHPScript.cpp" />

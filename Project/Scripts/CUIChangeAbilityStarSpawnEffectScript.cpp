@@ -8,6 +8,7 @@
 
 CUIChangeAbilityStarSpawnEffectScript::CUIChangeAbilityStarSpawnEffectScript()
     : CScript(UICHANGEABILITYSTARSPAWNEFFECTSCRIPT)
+    , m_vCenterPosOffset{}
     , m_vCenterPos{}
     , m_vBigStarScale{}
     , m_vLittleStarScale{}
@@ -19,7 +20,9 @@ CUIChangeAbilityStarSpawnEffectScript::CUIChangeAbilityStarSpawnEffectScript()
     , m_fSpawnStarDeleteTime(0.f)
     , m_fThreshHoldStar(0.f)
     , m_fStarSpawnTime(0.f)
+    , m_fBeginDegree(0.f)
 {
+    AddScriptParam(SCRIPT_PARAM::VEC3, &m_vCenterPosOffset, "CenterPos Offset");
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_vBigStarScale, "Big Star Scale");
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_vLittleStarScale, "Little Star Scale");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fOriginRadius, "Origin Radius");
@@ -29,10 +32,12 @@ CUIChangeAbilityStarSpawnEffectScript::CUIChangeAbilityStarSpawnEffectScript()
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fSpawnStarDeleteTime, "Spawn Star Delete Time");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fThreshHoldStar, "Max Thresh Hold Star");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fStarSpawnTime, "Star Spawn Time");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fBeginDegree, "Begin Degree");
 }
 
 CUIChangeAbilityStarSpawnEffectScript::CUIChangeAbilityStarSpawnEffectScript(const CUIChangeAbilityStarSpawnEffectScript& Origin)
     : CScript(Origin)
+    , m_vCenterPosOffset(Origin.m_vCenterPosOffset)
     , m_vCenterPos{}
     , m_vBigStarScale(Origin.m_vBigStarScale)
     , m_vLittleStarScale(Origin.m_vLittleStarScale)
@@ -44,7 +49,9 @@ CUIChangeAbilityStarSpawnEffectScript::CUIChangeAbilityStarSpawnEffectScript(con
     , m_fSpawnStarDeleteTime(Origin.m_fSpawnStarDeleteTime)
     , m_fThreshHoldStar(Origin.m_fThreshHoldStar)
     , m_fStarSpawnTime(Origin.m_fStarSpawnTime)
+    , m_fBeginDegree(Origin.m_fBeginDegree)
 {
+    AddScriptParam(SCRIPT_PARAM::VEC3, &m_vCenterPosOffset, "CenterPos Offset");
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_vBigStarScale, "Big Star Scale");
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_vLittleStarScale, "Little Star Scale");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fOriginRadius, "Origin Radius");
@@ -54,6 +61,7 @@ CUIChangeAbilityStarSpawnEffectScript::CUIChangeAbilityStarSpawnEffectScript(con
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fSpawnStarDeleteTime, "Spawn Star Delete Time");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fThreshHoldStar, "Max Thresh Hold Star");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fStarSpawnTime, "Star Spawn Time");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fBeginDegree, "Begin Degree");
 }
 
 CUIChangeAbilityStarSpawnEffectScript::~CUIChangeAbilityStarSpawnEffectScript()
@@ -83,8 +91,7 @@ void CUIChangeAbilityStarSpawnEffectScript::tick()
 
 void CUIChangeAbilityStarSpawnEffectScript::Enter()
 {
-    // PLAYER
-    if (true)
+    if (TRUE)
     {
         CaculateTargetPos();
         ChangeState(UIChangeAbilityStarSpawnEffectState::Progress);
@@ -120,16 +127,10 @@ void CUIChangeAbilityStarSpawnEffectScript::Progress()
 
         CGameObject* pStarEffect = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\" + prefabName, L"prefab\\" + prefabName)->Instantiate();
 
-        pStarEffect->GetScript<CUIChangeAbilityStarEffect>()->SetCenterPos(m_vCenterPos);
-        pStarEffect->GetScript<CUIChangeAbilityStarEffect>()->SetOriginRadius(m_fOriginRadius);
-        pStarEffect->GetScript<CUIChangeAbilityStarEffect>()->SetRadiusSpeed(fRadiusSpeed);
-        pStarEffect->GetScript<CUIChangeAbilityStarEffect>()->SetTheta(fTheta);
-        pStarEffect->GetScript<CUIChangeAbilityStarEffect>()->SetThetaSpeed(m_fThetaSpeed);
-        pStarEffect->GetScript<CUIChangeAbilityStarEffect>()->SetSpawnStarDeleteTime(m_fSpawnStarDeleteTime);
-        pStarEffect->GetScript<CUIChangeAbilityStarEffect>()->SetMaxThreshHoldStar(m_fThreshHoldStar);
-        pStarEffect->GetScript<CUIChangeAbilityStarEffect>()->SetStarSpawnTime(m_fStarSpawnTime);
-
         pStarEffect->Transform()->SetWorldScale(vStarScale);
+        pStarEffect->GetScript<CUIChangeAbilityStarEffect>()->InitializeSetting(m_vCenterPos, m_fOriginRadius, fRadiusSpeed, fTheta, m_fThetaSpeed,
+                                                                                m_fSpawnStarDeleteTime, m_fThreshHoldStar, m_fStarSpawnTime,
+                                                                                m_fBeginDegree);
 
         GamePlayStatic::SpawnGameObject(pStarEffect, pStarEffect->GetLayerIdx());
     }
@@ -158,18 +159,25 @@ void CUIChangeAbilityStarSpawnEffectScript::CaculateTargetPos()
     Vec3 _vPlayerNDCPos = Vector3::Transform(vPlayerPos, _VPMatrix);
 
     // UICam
-    _pCam = CRenderMgr::GetInst()->GetCamera(2);
+    _pCam = CRenderMgr::GetInst()->GetCamera(1);
+
+    if (nullptr == _pCam)
+        return;
 
     // NDC -> WorldPos
     Matrix _VPInverseMatrix = _pCam->GetProjInvMat() * _pCam->GetViewInvMat();
 
     m_vCenterPos = Vector3::Transform(_vPlayerNDCPos, _VPInverseMatrix);
+
+    // Offset Ãß°¡
+    m_vCenterPos += m_vCenterPosOffset;
 }
 
 UINT CUIChangeAbilityStarSpawnEffectScript::SaveToLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;
 
+    fwrite(&m_vCenterPosOffset, sizeof(Vec3), 1, _File);
     fwrite(&m_vBigStarScale, sizeof(Vec3), 1, _File);
     fwrite(&m_vLittleStarScale, sizeof(Vec3), 1, _File);
     fwrite(&m_fOriginRadius, sizeof(float), 1, _File);
@@ -179,9 +187,12 @@ UINT CUIChangeAbilityStarSpawnEffectScript::SaveToLevelFile(FILE* _File)
     fwrite(&m_fSpawnStarDeleteTime, sizeof(float), 1, _File);
     fwrite(&m_fThreshHoldStar, sizeof(float), 1, _File);
     fwrite(&m_fStarSpawnTime, sizeof(float), 1, _File);
+    fwrite(&m_fBeginDegree, sizeof(float), 1, _File);
 
     MemoryByte += sizeof(Vec3);
     MemoryByte += sizeof(Vec3);
+    MemoryByte += sizeof(Vec3);
+    MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
@@ -197,6 +208,7 @@ UINT CUIChangeAbilityStarSpawnEffectScript::LoadFromLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;
 
+    fread(&m_vCenterPosOffset, sizeof(Vec3), 1, _File);
     fread(&m_vBigStarScale, sizeof(Vec3), 1, _File);
     fread(&m_vLittleStarScale, sizeof(Vec3), 1, _File);
     fread(&m_fOriginRadius, sizeof(float), 1, _File);
@@ -206,9 +218,12 @@ UINT CUIChangeAbilityStarSpawnEffectScript::LoadFromLevelFile(FILE* _File)
     fread(&m_fSpawnStarDeleteTime, sizeof(float), 1, _File);
     fread(&m_fThreshHoldStar, sizeof(float), 1, _File);
     fread(&m_fStarSpawnTime, sizeof(float), 1, _File);
+    fread(&m_fBeginDegree, sizeof(float), 1, _File);
 
     MemoryByte += sizeof(Vec3);
     MemoryByte += sizeof(Vec3);
+    MemoryByte += sizeof(Vec3);
+    MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);

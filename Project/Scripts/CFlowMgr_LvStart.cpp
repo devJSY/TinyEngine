@@ -63,7 +63,7 @@ void CFlowMgr_LvStart::LevelStart()
     }
 
     // BGM
-    // GamePlayStatic::Play2DBGM(L"sound\\stream\\K15_TitleNewWorld1.marker.wav", 0.2f);
+    GamePlayStatic::PlayBGM(L"sound\\stream\\K15_TitleNewWorld1\\K15_TitleNewWorld1.marker.wav", 0.5f);
 }
 
 void CFlowMgr_LvStart::LevelEnd()

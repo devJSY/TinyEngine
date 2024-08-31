@@ -973,6 +973,9 @@
     <ClInclude Include="CKirbySoundListener.h">
       <Filter>Scripts\Character\Kirby\KirbySoundListener</Filter>
     </ClInclude>
+    <ClInclude Include="CUIDashEffectScript.h">
+      <Filter>Scripts\UI\UIEffect\UIDashEffectScript</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1955,6 +1958,9 @@
     </ClCompile>
     <ClCompile Include="CKirbySoundListener.cpp">
       <Filter>Scripts\Character\Kirby\KirbySoundListener</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIDashEffectScript.cpp">
+      <Filter>Scripts\UI\UIEffect\UIDashEffectScript</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -3076,6 +3082,9 @@
     </Filter>
     <Filter Include="Scripts\Character\Kirby\KirbySoundListener">
       <UniqueIdentifier>{6dd0f1be-15b6-432b-b29e-83a1ad412a2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIEffect\UIDashEffectScript">
+      <UniqueIdentifier>{db700e69-a5c5-4146-9034-ca207f100942}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
