@@ -3,6 +3,7 @@
 #include "CElfilisFSM.h"
 #include "CElfilisBigFSM.h"
 #include "CMomentaryObjScript.h"
+#include "CCameraController.h"
 
 CElfilisBig_SwingR::CElfilisBig_SwingR()
     : m_bComboSuccess(false)
@@ -113,6 +114,9 @@ void CElfilisBig_SwingR::Progress()
             // pScript->AddEffect(MomentaryEffectType::AppearScaling);
             pScript->SetPlayTime(3.5f);
             GamePlayStatic::SpawnGameObject(pRock, LAYER_DYNAMIC);
+
+            // Camera Shake
+            CAMERACTRL->Shake(0.3f, 15.f, 120.f);
         }
 
         m_bFrmEnter = false;
