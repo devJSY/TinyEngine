@@ -25,11 +25,18 @@ private:
     float m_fMaxThreshHold;
 
 public:
+    void SetRatioSpeed(const float _fValue) { m_fRatioSpeed = _fValue; }
+    void SetDashTime(const float _fValue) { m_fDashTime = _fValue; }
+    void SetTextureSpeed(const float _fValue) { m_fTextureValueSpeed = _fValue; }
+    void SetBackGroundAlpha(const float _fValue);
+
+public:
     virtual void begin() override;
     virtual void tick() override;
 
-private:
     void ChangeState(DashEffectState _eState);
+
+private:
     void Enter();
     void Exit();
 

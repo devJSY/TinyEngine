@@ -39,6 +39,14 @@ CUIDashEffectScript::~CUIDashEffectScript()
 {
 }
 
+void CUIDashEffectScript::SetBackGroundAlpha(const float _fValue)
+{
+    if (MeshRender())
+    {
+        MeshRender()->GetMaterial(0)->SetScalarParam(FLOAT_2, _fValue);
+    }
+}
+
 void CUIDashEffectScript::begin()
 {
     ChangeState(DashEffectState::Start);
