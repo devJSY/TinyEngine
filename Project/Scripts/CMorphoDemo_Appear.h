@@ -10,7 +10,6 @@ private:
     float m_DownSpeed;
     float m_AccTime;
     bool m_bFrmEnter;
-    bool m_bFrmEnter2;
 
 public:
     virtual void tick() override;

@@ -173,10 +173,10 @@
       <Filter>Scripts\Character\Kirby\KirbyVacuumCollider</Filter>
     </ClInclude>
     <ClInclude Include="CKirbyCopyAbilityScript.h">
-      <Filter>Scripts\Gimmik\KirbyCopyAbility</Filter>
+      <Filter>Scripts\Common\KirbyCopyAbility</Filter>
     </ClInclude>
     <ClInclude Include="CKirbyCopyObjScript.h">
-      <Filter>Scripts\Gimmik\KirbyCopyObj</Filter>
+      <Filter>Scripts\Common\KirbyCopyObj</Filter>
     </ClInclude>
     <ClInclude Include="CKirbyBodyCollider.h">
       <Filter>Scripts\Character\Kirby\KirbyBodyCollider</Filter>
@@ -374,7 +374,7 @@
       <Filter>State\KirbyObject\Lightbulb</Filter>
     </ClInclude>
     <ClInclude Include="CDeformObjectScript.h">
-      <Filter>Scripts\Gimmik\DeformObject</Filter>
+      <Filter>Scripts\Common\DeformObject</Filter>
     </ClInclude>
     <ClInclude Include="CKirbyAbility_Cutter.h">
       <Filter>State\KirbyAbility\Cutter</Filter>
@@ -413,7 +413,7 @@
       <Filter>Scripts\Projectile</Filter>
     </ClInclude>
     <ClInclude Include="CMomentaryObjScript.h">
-      <Filter>Scripts\Gimmik\MomentaryObj</Filter>
+      <Filter>Scripts\Common\MomentaryObj</Filter>
     </ClInclude>
     <ClInclude Include="CKirbyWeaponHitbox.h">
       <Filter>Scripts\Character\Kirby\KirbyWeaponHitbox</Filter>
@@ -608,7 +608,7 @@
       <Filter>State\ElfilisState\Demo_Appear1</Filter>
     </ClInclude>
     <ClInclude Include="CChangeAlphaScript.h">
-      <Filter>Scripts\Gimmik\ChangeAlpha</Filter>
+      <Filter>Scripts\Common\ChangeAlpha</Filter>
     </ClInclude>
     <ClInclude Include="CCrumbleScript.h">
       <Filter>Scripts\Gimmik\Crumble</Filter>
@@ -851,7 +851,7 @@
       <Filter>Scripts\Manager\FlowManager\5. Morpho Level Flow Manager</Filter>
     </ClInclude>
     <ClInclude Include="CFollowPlayerScript.h">
-      <Filter>Scripts\Gimmik\FollowPlayer</Filter>
+      <Filter>Scripts\Common\FollowPlayer</Filter>
     </ClInclude>
     <ClInclude Include="CStageClear.h">
       <Filter>Scripts\Trigger\StageClear</Filter>
@@ -905,10 +905,10 @@
       <Filter>Scripts\Character\Kirby\KirbyObjDetectCollider</Filter>
     </ClInclude>
     <ClInclude Include="CSmokeScript.h">
-      <Filter>Scripts\Gimmik\Smoke</Filter>
+      <Filter>Scripts\Common\Smoke</Filter>
     </ClInclude>
     <ClInclude Include="CSmokeSpawner.h">
-      <Filter>Scripts\Gimmik\Smoke\Spawner</Filter>
+      <Filter>Scripts\Common\Smoke\Spawner</Filter>
     </ClInclude>
     <ClInclude Include="CUIBossHPScript.h">
       <Filter>Scripts\UI\UIUnit\UIBossHPScript</Filter>
@@ -935,7 +935,7 @@
       <Filter>State\ElfilisState\Demo_Death\1. ResistSuccess</Filter>
     </ClInclude>
     <ClInclude Include="CBossDropStarScript.h">
-      <Filter>Scripts\Gimmik\BossDropStar</Filter>
+      <Filter>Scripts\Common\BossDropStar</Filter>
     </ClInclude>
     <ClInclude Include="CKirbyFireBullet.h">
       <Filter>Scripts\Projectile</Filter>
@@ -975,6 +975,12 @@
     </ClInclude>
     <ClInclude Include="CUIDashEffectScript.h">
       <Filter>Scripts\UI\UIEffect\UIDashEffectScript</Filter>
+    </ClInclude>
+    <ClInclude Include="CDestroyParticleScript.h">
+      <Filter>Scripts\Common\DestroyParticle</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphoShockWaveWave.h">
+      <Filter>Scripts\Character\Boss\Morpho\ShockWave</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1159,10 +1165,10 @@
       <Filter>Scripts\Character\Kirby\KirbyVacuumCollider</Filter>
     </ClCompile>
     <ClCompile Include="CKirbyCopyAbilityScript.cpp">
-      <Filter>Scripts\Gimmik\KirbyCopyAbility</Filter>
+      <Filter>Scripts\Common\KirbyCopyAbility</Filter>
     </ClCompile>
     <ClCompile Include="CKirbyCopyObjScript.cpp">
-      <Filter>Scripts\Gimmik\KirbyCopyObj</Filter>
+      <Filter>Scripts\Common\KirbyCopyObj</Filter>
     </ClCompile>
     <ClCompile Include="CKirbyBodyCollider.cpp">
       <Filter>Scripts\Character\Kirby\KirbyBodyCollider</Filter>
@@ -1360,7 +1366,7 @@
       <Filter>State\KirbyObject\Lightbulb</Filter>
     </ClCompile>
     <ClCompile Include="CDeformObjectScript.cpp">
-      <Filter>Scripts\Gimmik\DeformObject</Filter>
+      <Filter>Scripts\Common\DeformObject</Filter>
     </ClCompile>
     <ClCompile Include="CKirbyAbility_Cutter.cpp">
       <Filter>State\KirbyAbility\Cutter</Filter>
@@ -1399,7 +1405,7 @@
       <Filter>Scripts\Projectile</Filter>
     </ClCompile>
     <ClCompile Include="CMomentaryObjScript.cpp">
-      <Filter>Scripts\Gimmik\MomentaryObj</Filter>
+      <Filter>Scripts\Common\MomentaryObj</Filter>
     </ClCompile>
     <ClCompile Include="CKirbyWeaponHitbox.cpp">
       <Filter>Scripts\Character\Kirby\KirbyWeaponHitbox</Filter>
@@ -1594,7 +1600,7 @@
       <Filter>State\ElfilisState\Demo_Appear1</Filter>
     </ClCompile>
     <ClCompile Include="CChangeAlphaScript.cpp">
-      <Filter>Scripts\Gimmik\ChangeAlpha</Filter>
+      <Filter>Scripts\Common\ChangeAlpha</Filter>
     </ClCompile>
     <ClCompile Include="CCrumbleScript.cpp">
       <Filter>Scripts\Gimmik\Crumble</Filter>
@@ -1837,7 +1843,7 @@
       <Filter>Scripts\Manager\FlowManager\5. Morpho Level Flow Manager</Filter>
     </ClCompile>
     <ClCompile Include="CFollowPlayerScript.cpp">
-      <Filter>Scripts\Gimmik\FollowPlayer</Filter>
+      <Filter>Scripts\Common\FollowPlayer</Filter>
     </ClCompile>
     <ClCompile Include="CUIRotateScript.cpp">
       <Filter>Scripts\UI\UIAnimation\CUIRotateScript</Filter>
@@ -1891,10 +1897,10 @@
       <Filter>Scripts\Character\Kirby\KirbyObjDetectCollider</Filter>
     </ClCompile>
     <ClCompile Include="CSmokeScript.cpp">
-      <Filter>Scripts\Gimmik\Smoke</Filter>
+      <Filter>Scripts\Common\Smoke</Filter>
     </ClCompile>
     <ClCompile Include="CSmokeSpawner.cpp">
-      <Filter>Scripts\Gimmik\Smoke\Spawner</Filter>
+      <Filter>Scripts\Common\Smoke\Spawner</Filter>
     </ClCompile>
     <ClCompile Include="CUIBossHPScript.cpp">
       <Filter>Scripts\UI\UIUnit\UIBossHPScript</Filter>
@@ -1921,7 +1927,7 @@
       <Filter>State\ElfilisState\Demo_Death\1. ResistSuccess</Filter>
     </ClCompile>
     <ClCompile Include="CBossDropStarScript.cpp">
-      <Filter>Scripts\Gimmik\BossDropStar</Filter>
+      <Filter>Scripts\Common\BossDropStar</Filter>
     </ClCompile>
     <ClCompile Include="CKirbyFireBullet.cpp">
       <Filter>Scripts\Projectile</Filter>
@@ -1961,6 +1967,12 @@
     </ClCompile>
     <ClCompile Include="CUIDashEffectScript.cpp">
       <Filter>Scripts\UI\UIEffect\UIDashEffectScript</Filter>
+    </ClCompile>
+    <ClCompile Include="CDestroyParticleScript.cpp">
+      <Filter>Scripts\Common\DestroyParticle</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphoShockWaveWave.cpp">
+      <Filter>Scripts\Character\Boss\Morpho\ShockWave</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2164,12 +2176,6 @@
     </Filter>
     <Filter Include="Scripts\Gimmik">
       <UniqueIdentifier>{977bb9b5-06d8-4fce-9807-97e387e1f75f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Gimmik\KirbyCopyAbility">
-      <UniqueIdentifier>{ccd2e5fe-6f92-44e5-aaab-d0a54148233c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Gimmik\KirbyCopyObj">
-      <UniqueIdentifier>{f6e182c3-e6d9-47aa-83e9-323f9cdeff16}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\Character\Kirby\KirbyBodyCollider">
       <UniqueIdentifier>{cd06ec9f-70d0-4d2f-bbbb-ebdf1cbf6d74}</UniqueIdentifier>
@@ -2378,9 +2384,6 @@
     <Filter Include="State\KirbyObject\Lightbulb">
       <UniqueIdentifier>{f25f684e-c448-4f1d-bcd8-bcbf640268ad}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Gimmik\DeformObject">
-      <UniqueIdentifier>{0e321129-ad6a-45ad-a064-acda5a40664c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="State\KirbyAbility\Cutter">
       <UniqueIdentifier>{200c3d54-d11e-407b-ae6e-42599fa24023}</UniqueIdentifier>
     </Filter>
@@ -2419,9 +2422,6 @@
     </Filter>
     <Filter Include="State\KirbyState\AttackFailed\AttackFailed">
       <UniqueIdentifier>{56cfc668-12dd-46ab-bc39-152b82aba376}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Gimmik\MomentaryObj">
-      <UniqueIdentifier>{8462be62-b53e-4e84-9b27-1b6d41dd925a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\Character\Kirby\KirbyWeaponHitbox">
       <UniqueIdentifier>{ec970dbc-2c16-4dd8-8e07-43039d4151fa}</UniqueIdentifier>
@@ -2662,9 +2662,6 @@
     </Filter>
     <Filter Include="State\ElfilisState\Ground_AttackNear\NormalAtkTeleport\FinishL">
       <UniqueIdentifier>{cd51cbfe-3bb6-40d5-a82c-ea49c1cb4df3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Gimmik\ChangeAlpha">
-      <UniqueIdentifier>{6dbe3d5e-397d-4803-ba27-43858b57d0fc}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\Gimmik\SolarPanelObj">
       <UniqueIdentifier>{12e5453b-b78d-4702-a15c-d19a56510810}</UniqueIdentifier>
@@ -2966,9 +2963,6 @@
     <Filter Include="Scripts\Character\Boss\Hitbox">
       <UniqueIdentifier>{02399b6d-20ae-4eca-a3ce-69a4ae02b80c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Gimmik\FollowPlayer">
-      <UniqueIdentifier>{583a05de-dbe3-4485-a0d8-9de3ff6048bf}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scripts\Trigger\StageClear">
       <UniqueIdentifier>{b8bf8ba3-2f5f-44dc-a5c2-404de1531e2c}</UniqueIdentifier>
     </Filter>
@@ -3011,12 +3005,6 @@
     <Filter Include="Scripts\Character\Kirby\KirbyObjDetectCollider">
       <UniqueIdentifier>{f8c285e2-7d2a-41d5-89f3-09d733cb85e3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Gimmik\Smoke">
-      <UniqueIdentifier>{f3f2a186-aa97-409b-9cb3-ed1a2b33c170}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Gimmik\Smoke\Spawner">
-      <UniqueIdentifier>{45fc46b8-2998-496c-b145-69c7a48d8386}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scripts\UI\UIUnit\UIBossHPScript">
       <UniqueIdentifier>{5a0ead60-c6e5-493c-8a3c-82cc0959f4a8}</UniqueIdentifier>
     </Filter>
@@ -3043,9 +3031,6 @@
     </Filter>
     <Filter Include="State\ElfilisState\Demo_Death\1. ResistFail">
       <UniqueIdentifier>{5c1b69cf-cc80-4c9b-a518-837ddd0a5c00}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Gimmik\BossDropStar">
-      <UniqueIdentifier>{b4e00075-1777-4b85-a3a2-76c54ae2eabf}</UniqueIdentifier>
     </Filter>
     <Filter Include="State\KirbyState\Burning\BurningWallEnd">
       <UniqueIdentifier>{9748a399-b31b-44df-98d5-9da3dfcf244f}</UniqueIdentifier>
@@ -3085,6 +3070,39 @@
     </Filter>
     <Filter Include="Scripts\UI\UIEffect\UIDashEffectScript">
       <UniqueIdentifier>{db700e69-a5c5-4146-9034-ca207f100942}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Common">
+      <UniqueIdentifier>{8da979c1-68f6-40da-8153-67bf34a3b073}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Common\BossDropStar">
+      <UniqueIdentifier>{b4e00075-1777-4b85-a3a2-76c54ae2eabf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Common\ChangeAlpha">
+      <UniqueIdentifier>{6dbe3d5e-397d-4803-ba27-43858b57d0fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Common\DestroyParticle">
+      <UniqueIdentifier>{e5509396-59e3-4845-a1d3-17503b984e8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Common\DeformObject">
+      <UniqueIdentifier>{0e321129-ad6a-45ad-a064-acda5a40664c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Common\KirbyCopyAbility">
+      <UniqueIdentifier>{ccd2e5fe-6f92-44e5-aaab-d0a54148233c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Common\KirbyCopyObj">
+      <UniqueIdentifier>{f6e182c3-e6d9-47aa-83e9-323f9cdeff16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Common\MomentaryObj">
+      <UniqueIdentifier>{8462be62-b53e-4e84-9b27-1b6d41dd925a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Common\Smoke">
+      <UniqueIdentifier>{f3f2a186-aa97-409b-9cb3-ed1a2b33c170}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Common\Smoke\Spawner">
+      <UniqueIdentifier>{45fc46b8-2998-496c-b145-69c7a48d8386}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Common\FollowPlayer">
+      <UniqueIdentifier>{583a05de-dbe3-4485-a0d8-9de3ff6048bf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

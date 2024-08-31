@@ -8,6 +8,7 @@ private:
     float m_AccTime;
     float m_WaitTime;
     float m_Height;
+    bool m_bParticleSpawn;
 
 public:
     virtual void tick() override;

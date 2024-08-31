@@ -1,9 +1,11 @@
 #pragma once
 #include "CBossState.h"
+class CMorphoShockWave;
 
 class CMorphoAtkA_ShockWave : public CBossState
 {
 private:
+    vector<CMorphoShockWave*> m_vecShockWave;
     float m_AccTime;
     float m_ChargeTime;
     float m_WaitTime;

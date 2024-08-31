@@ -1,5 +1,6 @@
 #pragma once
 #include "CBossState.h"
+#include "CElfilisFSM.h"
 class CElfilisAirArrow;
 
 class CElfilisA_RayArrowUp : public CBossState

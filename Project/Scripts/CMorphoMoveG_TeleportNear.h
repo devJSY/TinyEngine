@@ -7,6 +7,7 @@ private:
     Vec3 m_AfterPos;
     float m_AccTime;
     float m_WaitTime;
+    bool m_bParticleSpawn;
 
 public:
     virtual void tick() override;

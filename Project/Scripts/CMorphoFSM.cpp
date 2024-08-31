@@ -141,6 +141,10 @@ void CMorphoFSM::begin()
     m_BodyCollider = GetOwner()->GetChildObject(L"Body Collider")->CapsuleCollider();
     m_WeaponL = GetOwner()->GetChildObject(L"BossMorphoSwordL");
     m_WeaponR = GetOwner()->GetChildObject(L"BossMorphoSwordR");
+    m_ParticleButterfly_Yellow = GetOwner()->GetChildObject(L"Particle_MorphoButterfly_Yellow");
+    m_ParticleButterfly_Pink = GetOwner()->GetChildObject(L"Particle_MorphoButterfly_Pink");
+    m_ParticleButterfly_YellowPink = GetOwner()->GetChildObject(L"Particle_MorphoButterfly_YellowPink");
+    m_ParticleCircleDust = GetOwner()->GetChildObject(L"Particle_MorphoCircleDust");
     m_vecShockWave.push_back(GetOwner()->GetChildObject(L"ShockWaveL"));
     m_vecShockWave.push_back(GetOwner()->GetChildObject(L"ShockWaveR"));
 
@@ -706,6 +710,16 @@ void CMorphoFSM::SetWeaponEmissive(Vec3 _Color)
     {
         iter->SetEmission(Vec4(_Color.x, _Color.y, _Color.z, 0.f));
     }
+}
+
+void CMorphoFSM::EnableTeleportParticle(bool _Enable)
+{
+    if (!m_ParticleButterfly_Yellow || !m_ParticleButterfly_YellowPink || !m_ParticleCircleDust)
+        return;
+
+    m_ParticleButterfly_Yellow->ParticleSystem()->EnableModule(PARTICLE_MODULE::SPAWN, _Enable);
+    m_ParticleButterfly_YellowPink->ParticleSystem()->EnableModule(PARTICLE_MODULE::SPAWN, _Enable);
+    m_ParticleCircleDust->ParticleSystem()->EnableModule(PARTICLE_MODULE::SPAWN, _Enable);
 }
 
 void CMorphoFSM::EnableRender()

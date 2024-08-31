@@ -95,6 +95,17 @@ void CFlowMgr_BossMorpho::EnterDemoPlay()
 {
     CBossLevelFlowMgr::EnterDemoPlay();
     m_AccTime = 0.f;
+
+    switch (m_DemoType)
+    {
+    case BossDemoType::Encounter: {
+        //SetToneMappingParam(true, 1, 0.5f, 0.27f, 1.3f, 1.2f, 1.7f);
+        SetToneMappingParam(true, 1, 0.5f, 0.27f, 1.3f, 1.26f, 1.973f);
+    }
+    break;
+    case BossDemoType::StartPhase2:
+        break;
+    }
 }
 
 void CFlowMgr_BossMorpho::FlowDemoPlay()
@@ -147,6 +158,8 @@ void CFlowMgr_BossMorpho::ExitDemoPlay()
         {
             m_Barricade->Transform()->SetWorldScale(m_BarricadeScale);
         }
+
+        SetToneMappingParam(true, 1, 0.85f, 0.27f, 1.3f, 1.26f, 1.963f);
     }
     break;
     case BossDemoType::StartPhase2: {

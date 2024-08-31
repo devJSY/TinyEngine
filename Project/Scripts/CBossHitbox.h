@@ -19,7 +19,6 @@ private:
     float m_AccTime;
     float m_RepeatTime;
     bool m_bRepeatDamage;
-    bool m_bRepeatEnter;
     bool m_bRepeat;
 
 public:
@@ -28,6 +27,7 @@ public:
 
 private:
     virtual void OnTriggerEnter(CCollider* _OtherCollider);
+    virtual void OnTriggerStay(CCollider* _OtherCollider);
 
     float GetRandDamage();
     void AddDamage();

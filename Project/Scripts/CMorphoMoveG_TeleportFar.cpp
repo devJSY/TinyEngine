@@ -5,6 +5,7 @@
 CMorphoMoveG_TeleportFar::CMorphoMoveG_TeleportFar()
     : m_AccTime(0.f)
     , m_WaitTime(0.5f)
+    , m_bParticleSpawn(false)
 {
 }
 
@@ -44,6 +45,7 @@ void CMorphoMoveG_TeleportFar::Enter_Step()
     case StateStep::Start: {
         GetOwner()->Animator()->SetPlay(false);
         m_AccTime = 0.f;
+        m_bParticleSpawn = false;
 
         // teleport pos
         Vec3 MapSize = MRPFSM->GetMapSize();
@@ -61,7 +63,7 @@ void CMorphoMoveG_TeleportFar::Enter_Step()
         GetOwner()->Transform()->Slerp(Dir, 1.f);
         m_AccTime = 0.f;
     }
-        break;
+    break;
     }
 }
 
@@ -75,9 +77,9 @@ void CMorphoMoveG_TeleportFar::Exit_Step()
         MRPFSM->ResetEmissive();
         GetOwner()->Rigidbody()->SetUseGravity(false);
     }
-        break;
-    case StateStep::End:
     break;
+    case StateStep::End:
+        break;
     }
 }
 
@@ -94,6 +96,13 @@ void CMorphoMoveG_TeleportFar::Start()
 
     MRPFSM->AddEmissive(Color);
 
+    // Particle On
+    if (!m_bParticleSpawn && m_AccTime > MRPFSM->GetEmissiveTime() - 0.25f)
+    {
+        m_bParticleSpawn = true;
+        MRPFSM->EnableTeleportParticle(true);
+    }
+
     if (m_AccTime > MRPFSM->GetEmissiveTime())
     {
         ChangeStep(StateStep::End);
@@ -103,6 +112,13 @@ void CMorphoMoveG_TeleportFar::Start()
 void CMorphoMoveG_TeleportFar::End()
 {
     m_AccTime += DT;
+
+    // Particle Off
+    if (m_bParticleSpawn && m_AccTime > 0.25f)
+    {
+        m_bParticleSpawn = false;
+        MRPFSM->EnableTeleportParticle(false);
+    }
 
     if (m_AccTime > m_WaitTime)
     {

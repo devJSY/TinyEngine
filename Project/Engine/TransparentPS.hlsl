@@ -14,6 +14,8 @@
 #define MtrlRoughness g_vRoughness
 #define MtrlEmission g_vEmission
 
+#define UseAlpha g_int_0
+#define Alpha g_float_2
 #define UVScale g_float_0
 
 float4 main(PS_IN input) : SV_TARGET
@@ -60,7 +62,8 @@ float4 main(PS_IN input) : SV_TARGET
     }
     
     float4 output = float4(0.f, 0.f, 0.f, 1.f);
-    output = float4(ambientLighting + directLighting + emission, albedo.a);
+    float outAlpha = UseAlpha ? albedo.a * Alpha : albedo.a;
+    output = float4(ambientLighting + directLighting + emission, outAlpha);
     output = clamp(output, 0.0, 1000.0);
 
     return output;

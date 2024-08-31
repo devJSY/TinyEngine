@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CMorphoAtkA_ShockWave.h"
 #include "CMorphoFSM.h"
+#include "CMorphoShockWave.h"
 
 CMorphoAtkA_ShockWave::CMorphoAtkA_ShockWave()
     : m_AccTime(0.f)
@@ -43,17 +44,26 @@ void CMorphoAtkA_ShockWave::tick()
 void CMorphoAtkA_ShockWave::Enter()
 {
     m_Step = StateStep::Charge;
+
+    // shockwave
+    m_vecShockWave.clear();
+
+    const vector<CGameObject*>& vecShockWave = MRPFSM->GetShockWave();
+    for (CGameObject* iter : vecShockWave)
+    {
+        CMorphoShockWave* Script = iter->GetScript<CMorphoShockWave>();
+        m_vecShockWave.push_back(Script);
+    }
+
     Enter_Step();
 }
 
 void CMorphoAtkA_ShockWave::Exit()
 {
     // shockwave
-    const vector<CGameObject*>& vecShockWave = MRPFSM->GetShockWave();
-    for (CGameObject* iter : vecShockWave)
+    for (CMorphoShockWave* iter : m_vecShockWave)
     {
-        iter->SetActive(false);
-        //@EFFECT 충격파 이펙트
+        iter->Deactivate();
     }
 
     GetOwner()->Rigidbody()->SetUseGravity(true);
@@ -79,11 +89,9 @@ void CMorphoAtkA_ShockWave::Enter_Step()
         GetOwner()->Animator()->Play(ANIMPREFIX("ButterflyScalesAttackStart"), false, false, 1.5f);
 
         // shockwave
-        const vector<CGameObject*>& vecShockWave = MRPFSM->GetShockWave();
-        for (CGameObject* iter : vecShockWave)
+        for (CMorphoShockWave* iter : m_vecShockWave)
         {
-            iter->SetActive(true);
-            //@EFFECT 충격파 이펙트
+            iter->Activate();
         }
 
         // Spawn DropStar
@@ -118,8 +126,14 @@ void CMorphoAtkA_ShockWave::Exit_Step()
         break;
     case StateStep::Start:
         break;
-    case StateStep::Wait:
-        break;
+    case StateStep::Wait: {
+        // shockwave
+        for (CMorphoShockWave* iter : m_vecShockWave)
+        {
+            iter->SetSpawnWave(false);
+        }
+    }
+    break;
     case StateStep::End:
         break;
     }

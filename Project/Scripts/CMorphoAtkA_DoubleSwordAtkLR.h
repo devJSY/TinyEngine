@@ -28,6 +28,9 @@ private:
     void EndWait();
     void EndEnd();
 
+    void SpawnCircleDust(Vec3 _Pos);
+    void SpawnButterfly(Vec3 _Pos);
+
 public:
     CLONE(CMorphoAtkA_DoubleSwordAtkLR)
     CMorphoAtkA_DoubleSwordAtkLR();
