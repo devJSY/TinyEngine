@@ -35,5 +35,8 @@ float4 main(PS_IN input) : SV_Target
         vOutColor *= SampleColor;
     }
     
+    if (vOutColor.a <= 0.f)
+        clip(-1);
+    
     return vOutColor;
 }
