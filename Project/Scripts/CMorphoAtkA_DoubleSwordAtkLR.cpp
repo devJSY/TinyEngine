@@ -4,6 +4,7 @@
 #include "CPlayerMgr.h"
 #include "CCameraController.h"
 #include "CChangeAlphaScript.h"
+#include "CDestroyParticleScript.h"
 
 CMorphoAtkA_DoubleSwordAtkLR::CMorphoAtkA_DoubleSwordAtkLR()
     : m_LightningEffect{nullptr,}
@@ -192,12 +193,12 @@ void CMorphoAtkA_DoubleSwordAtkLR::Progress()
 {
     int SpawnFrm = 20;
 
-    //@EFFECT 번개, 나비, 충격파
+    // Spawn Effect
     if (m_bFrmEnter && CHECK_ANIMFRM(GetOwner(), SpawnFrm))
     {
         m_bFrmEnter = false;
 
-        // spawn lightning
+        // spawn lightning & dust
         if (m_LightningEffectPref != nullptr)
         {
             Vec3 Dir = CPlayerMgr::GetCameraController()->GetLookDir() * -1.f;
@@ -211,7 +212,11 @@ void CMorphoAtkA_DoubleSwordAtkLR::Progress()
             m_LightningEffect[0]->Transform()->SetWorldPos(Pos);
             m_LightningEffect[0]->Transform()->Slerp(Dir.Normalize(), 1.f);
 
+            CChangeAlphaScript* Script = m_LightningEffect[0]->GetScript<CChangeAlphaScript>();
+            Script->FadeIn_RandomDelay(0.f, 0.4f);
+
             GamePlayStatic::SpawnGameObject(m_LightningEffect[0], LAYER_EFFECT);
+            SpawnCircleDust(Pos);
 
             // Right
             m_LightningEffect[1] = m_LightningEffectPref->Instantiate();
@@ -221,9 +226,39 @@ void CMorphoAtkA_DoubleSwordAtkLR::Progress()
             m_LightningEffect[1]->Transform()->SetWorldPos(Pos);
             m_LightningEffect[1]->Transform()->Slerp(Dir.Normalize(), 1.f);
 
+            Script = m_LightningEffect[1]->GetScript<CChangeAlphaScript>();
+            Script->FadeIn_RandomDelay(0.f, 0.4f);
+
             GamePlayStatic::SpawnGameObject(m_LightningEffect[1], LAYER_EFFECT);
+            SpawnCircleDust(Pos);
         }
 
+        // Spawn Particle Butterfly
+        Vec3 SpawnPos = MRPFSM->GetWeaponR()->Transform()->GetWorldPos();
+        Vec3 FrontDir = MRPFSM->GetWeaponR()->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+        FrontDir.y = 0.f;
+        FrontDir.Normalize();
+
+        for (int i = 0; i < 6; ++i)
+        {
+            Vec3 OffsetSpawnPos = SpawnPos;
+            OffsetSpawnPos += FrontDir * (50.f * i);
+            SpawnButterfly(OffsetSpawnPos);
+        }
+
+        SpawnPos = MRPFSM->GetWeaponL()->Transform()->GetWorldPos();
+        FrontDir = MRPFSM->GetWeaponL()->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+        FrontDir.y = 0.f;
+        FrontDir.Normalize();
+
+        for (int i = 0; i < 6; ++i)
+        {
+            Vec3 OffsetSpawnPos = SpawnPos;
+            OffsetSpawnPos += FrontDir * (50.f * i);
+            SpawnButterfly(OffsetSpawnPos);
+        }
+
+        // Spawn FireSwipe
         if (m_FireSwipePref != nullptr)
         {
             Vec3 Pos = GetOwner()->Transform()->GetWorldPos();
@@ -366,4 +401,68 @@ void CMorphoAtkA_DoubleSwordAtkLR::EndEnd()
     {
         MRPFSM->Move();
     }
+}
+
+void CMorphoAtkA_DoubleSwordAtkLR::SpawnCircleDust(Vec3 _Pos)
+{
+    CGameObject* Dust = new CGameObject;
+    CParticleSystem* Particle = MRPFSM->GetParticleCircleDust()->ParticleSystem()->Clone();
+    Dust->AddComponent(Particle);
+
+    _Pos.y = GetRandomfloat(0.f, 10.f);
+    Dust->AddComponent(new CTransform);
+    Dust->Transform()->SetWorldPos(_Pos);
+
+    CDestroyParticleScript* Script = new CDestroyParticleScript;
+    Script->SetSpawnTime(0.5f);
+    Dust->AddComponent(Script);
+
+    Dust->SetName(L"Particle_CircleDust");
+    GamePlayStatic::SpawnGameObject(Dust, LAYER_EFFECT);
+}
+
+void CMorphoAtkA_DoubleSwordAtkLR::SpawnButterfly(Vec3 _Pos)
+{
+    CGameObject* Butterfly = new CGameObject;
+    CParticleSystem* Particle = nullptr;
+    int Rand = GetRandomInt(0, 2);
+
+    if (Rand == 0)
+    {
+        Particle = MRPFSM->GetParticleButterflyPink()->ParticleSystem()->Clone();
+    }
+    else if (Rand == 1)
+    {
+        Particle = MRPFSM->GetParticleButterflyYellow()->ParticleSystem()->Clone();
+    }
+    else if (Rand == 2)
+    {
+        Particle = MRPFSM->GetParticleButterflyYellowPink()->ParticleSystem()->Clone();
+    }
+
+    if (Particle)
+    {
+        tParticleModule Module = Particle->GetParticleModule();
+        Module.vSpawnMinScale = Vec3(20.f, 20.f, 1.f);
+        Module.vSpawnMaxScale = Vec3(40.f, 40.f, 1.f);
+        Module.vScaleRatio = Vec3::Zero;
+        Module.MinSpeed = 30.f;
+        Module.MaxSpeed = 80.f;
+        Module.VelocityAlignment = GetRandomInt(0, 1);
+        Module.AlphaBasedLife = 1;
+
+        Particle->SetParticleModule(Module);
+        Butterfly->AddComponent(Particle);
+    }
+
+    _Pos.y = GetRandomfloat(0.f, 50.f);
+    Butterfly->AddComponent(new CTransform);
+    Butterfly->Transform()->SetWorldPos(_Pos);
+
+    CDestroyParticleScript* Script = new CDestroyParticleScript;
+    Script->SetSpawnTime(0.5f);
+    Butterfly->AddComponent(Script);
+
+    Butterfly->SetName(L"Particle_Butterfly");
+    GamePlayStatic::SpawnGameObject(Butterfly, LAYER_EFFECT);
 }

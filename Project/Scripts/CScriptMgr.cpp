@@ -127,6 +127,8 @@
 #include "CUIChangeAbilityStopStarEffect.h"
 #include "CKirbySoundListener.h"
 #include "CUIDashEffectScript.h"
+#include "CDestroyParticleScript.h"
+#include "CMorphoShockWaveWave.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -256,6 +258,8 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CUIChangeAbilityStopStarEffect");
 	_vec.push_back(L"CKirbySoundListener");
 	_vec.push_back(L"CUIDashEffectScript");
+	_vec.push_back(L"CDestroyParticleScript");
+	_vec.push_back(L"CMorphoShockWaveWave");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -512,6 +516,10 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CKirbySoundListener;
 	if (L"CUIDashEffectScript" == _strScriptName)
 		return new CUIDashEffectScript;
+	if (L"CDestroyParticleScript" == _strScriptName)
+		return new CDestroyParticleScript;
+	if (L"CMorphoShockWaveWave" == _strScriptName)
+		return new CMorphoShockWaveWave;
 	return nullptr;
 }
 
@@ -771,6 +779,10 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CKirbySoundListener;
 	case (UINT)SCRIPT_TYPE::UIDASHEFFECTSCRIPT:
 		return new CUIDashEffectScript;
+	case (UINT)SCRIPT_TYPE::DESTROYPARTICLESCRIPT:
+		return new CDestroyParticleScript;
+	case (UINT)SCRIPT_TYPE::MORPHOSHOCKWAVEWAVE:
+		return new CMorphoShockWaveWave;
 	}
 	return nullptr;
 }
@@ -1031,6 +1043,10 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CKirbySoundListener";
 	case SCRIPT_TYPE::UIDASHEFFECTSCRIPT:
 		return L"CUIDashEffectScript";
+	case SCRIPT_TYPE::DESTROYPARTICLESCRIPT:
+		return L"CDestroyParticleScript";
+	case SCRIPT_TYPE::MORPHOSHOCKWAVEWAVE:
+		return L"CMorphoShockWaveWave";
 	}
 	return nullptr;
 }

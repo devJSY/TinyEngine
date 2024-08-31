@@ -17,7 +17,6 @@ private:
     float m_AccTime;
     float m_RepeatTime;
     bool m_bRepeatDamage;
-    bool m_bRepeatEnter;
     bool m_bRepeat;
     bool m_bTimeScaling;
 
@@ -27,6 +26,7 @@ public:
 
 private:
     virtual void OnTriggerEnter(CCollider* _OtherCollider);
+    virtual void OnTriggerStay(CCollider* _OtherCollider);
     void AddDamage(CGameObject* _Monster);
 
 public:

@@ -6,6 +6,7 @@ CMorphoMoveA_Teleport::CMorphoMoveA_Teleport()
     : m_AccTime(0.f)
     , m_WaitTime(0.5f)
     , m_Height(60.f)
+    , m_bParticleSpawn(false)
 {
 }
 
@@ -46,6 +47,7 @@ void CMorphoMoveA_Teleport::Enter_Step()
         GetOwner()->Animator()->SetPlay(false);
         GetOwner()->Rigidbody()->SetUseGravity(false);
         m_AccTime = 0.f;
+        m_bParticleSpawn = false;
 
         // teleport pos
         Vec3 MapSize = MRPFSM->GetMapSize();
@@ -96,6 +98,14 @@ void CMorphoMoveA_Teleport::Start()
 
     MRPFSM->AddEmissive(Color);
 
+    // Particle On
+    if (!m_bParticleSpawn && m_AccTime > MRPFSM->GetEmissiveTime() - 0.25f)
+    {
+        m_bParticleSpawn = true;
+        MRPFSM->EnableTeleportParticle(true);
+    }
+
+    // Change State
     if (m_AccTime > MRPFSM->GetEmissiveTime())
     {
         ChangeStep(StateStep::End);
@@ -106,6 +116,14 @@ void CMorphoMoveA_Teleport::End()
 {
     m_AccTime += DT;
 
+    // Particle Off
+    if (m_bParticleSpawn && m_AccTime > 0.25f)
+    {
+        m_bParticleSpawn = false;
+        MRPFSM->EnableTeleportParticle(false);
+    }
+
+    // Change Stated
     if (m_AccTime > m_WaitTime)
     {
         MRPFSM->SetTeleportTime(true);

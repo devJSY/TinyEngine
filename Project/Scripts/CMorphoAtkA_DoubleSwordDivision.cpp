@@ -45,7 +45,7 @@ void CMorphoAtkA_DoubleSwordDivision::Enter()
 void CMorphoAtkA_DoubleSwordDivision::Exit()
 {
     Exit_Step();
-    
+
     GetOwner()->Rigidbody()->SetUseGravity(true);
     if (m_Step < StateStep::Progress)
     {
@@ -60,7 +60,6 @@ void CMorphoAtkA_DoubleSwordDivision::Enter_Step()
     case StateStep::Charge: {
         GetOwner()->Animator()->Play(ANIMPREFIX("DoubleSwordDivisionChargeStart"), false, false, 1.5f);
         GetOwner()->Rigidbody()->SetUseGravity(false);
-        //@EFFECT 차징오라(LSword쪽), 파티클
     }
     break;
     case StateStep::ChargeWait: {
@@ -93,7 +92,7 @@ void CMorphoAtkA_DoubleSwordDivision::Exit_Step()
     case StateStep::Progress: {
         MRPFSM->ResetEmissive();
     }
-        break;
+    break;
     case StateStep::End:
         break;
     }

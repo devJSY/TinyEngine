@@ -17,7 +17,6 @@ CBossHitbox::CBossHitbox()
     , m_AccTime(0.f)
     , m_RepeatTime(2.f)
     , m_bRepeatDamage(true)
-    , m_bRepeatEnter(false)
     , m_bRepeat(false)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RandMin, "Damage (min)");
@@ -42,7 +41,6 @@ CBossHitbox::CBossHitbox(const CBossHitbox& _Origin)
     , m_AccTime(0.f)
     , m_RepeatTime(_Origin.m_RepeatTime)
     , m_bRepeatDamage(_Origin.m_bRepeatDamage)
-    , m_bRepeatEnter(false)
     , m_bRepeat(false)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_RandMin, "Damage (min)");
@@ -67,14 +65,7 @@ void CBossHitbox::begin()
 
 void CBossHitbox::tick()
 {
-    if (m_bRepeat)
-    {
-        m_bRepeat = false;
-        m_bRepeatEnter = false;
-        m_Collider->SetEnabled(true);
-    }
-
-    if (!m_Instigator || !m_Target || !m_bRepeatDamage || !m_bRepeatEnter)
+    if (!m_Instigator || !m_Target || !m_bRepeatDamage)
         return;
 
     m_AccTime += DT;
@@ -83,10 +74,17 @@ void CBossHitbox::tick()
     {
         m_AccTime = 0.f;
         m_bRepeat = true;
-        m_Collider->SetEnabled(false);
     }
 }
 
+// 예상문제 : 제일 마지막에 충돌된 몬스터 기준으로 데미지 반복됨
+// 시나리오 : 
+// - 으르르피랑 먼저 부딪힘
+// - 4초 지나는 시점에 황소랑 충돌
+// - 데미지 반복해주려고 체크하던 m_AccTime 초기화됨
+// - 마지막으로 충돌한 몬스터(황소) 이후 5초 지나서야
+// - 충돌했던 모든 몬스터(으르르피, 황소) 모두 데미지 다시 받을 수 있음
+// 종합의견 : 데미지 반복 시간이 짧으니 (0.1초~) 문제 뚜렷이 드러나기 전까진 그냥 쓰자 
 void CBossHitbox::OnTriggerEnter(CCollider* _OtherCollider)
 {
     UINT Layer = _OtherCollider->GetOwner()->GetLayerIdx();
@@ -94,9 +92,22 @@ void CBossHitbox::OnTriggerEnter(CCollider* _OtherCollider)
     if (!(Layer == LAYER_PLAYER && Name == L"Main Player") && !(Layer == LAYER_PLAYER_TRIGGER && Name == L"Body Collider"))
         return;
 
-    m_bRepeatEnter = true;
     m_AccTime = 0.f;
     AddDamage();
+}
+
+void CBossHitbox::OnTriggerStay(CCollider* _OtherCollider)
+{
+    UINT Layer = _OtherCollider->GetOwner()->GetLayerIdx();
+    wstring Name = _OtherCollider->GetOwner()->GetName();
+    if (!(Layer == LAYER_PLAYER && Name == L"Main Player") && !(Layer == LAYER_PLAYER_TRIGGER && Name == L"Body Collider"))
+        return;
+
+    if (m_bRepeat)
+    {
+        m_bRepeat = false;
+        AddDamage();
+    }
 }
 
 float CBossHitbox::GetRandDamage()

@@ -325,7 +325,6 @@ float4 PS_ParticleRender_Fire(GS_Output _in) : SV_Target
         // base color의 검은부분 색 변경
         if (MaskColor)
         {
-            //float WhiteRatio = length(vSampleColor);
             float WhiteRatio = dot(vSampleColor.rgb, float3(1.f, 1.f, 1.f)) / 3.f;
             vSampleColor = vSampleColor * (WhiteRatio) + MtrlAlbedo * (1.f - WhiteRatio);
             
@@ -399,6 +398,42 @@ float4 PS_ParticleRender_Distortion(GS_Output _in) : SV_Target
     }
     
     return vColor;
+}
+
+#define WhiteMappingColor g_vec4_0
+#define MappingTex g_tex_0
+
+// USAGE : 흑백 텍스쳐의 흰색과 검은색을 각각 2개의 컬러로 매핑하는 셰이더
+float4 PS_ParticleRender_ColorMap(GS_Output _in) : SV_Target
+{
+    tParticle particle = g_ParticleBuffer[_in.iInstID];
+    tParticleModule module = g_ParticleModule[0];
+    float4 vOutColor = (float4) 0.f;
+    
+    // Color Mapping
+    if (g_btex_0)
+    {
+        float4 vSampleColor = MappingTex.Sample(g_LinearWrapSampler, _in.vUV);
+        float WhiteRatio = dot(vSampleColor.rgb, float3(1.f, 1.f, 1.f)) / 3.f;
+        vOutColor = WhiteMappingColor * WhiteRatio + MtrlAlbedo * (1.f - WhiteRatio);
+        vOutColor.a *= vSampleColor.a;
+    }
+
+    // 렌더모듈이 켜져 있으면
+    if (module.arrModuleCheck[RENDER_MODULE])
+    {
+        if (1 == module.AlphaBasedLife) // Normalize Age
+        {
+            vOutColor.a *= saturate(1.f - clamp(particle.NormalizeAge, 0.f, 1.f));
+        }
+        else if (2 == module.AlphaBasedLife) // Max Age
+        {
+            float fRatio = particle.Age / module.AlphaMaxAge;
+            vOutColor.a *= saturate(1.f - clamp(fRatio, 0.f, 1.f));
+        }
+    }
+    
+    return vOutColor;
 }
 
 #endif
