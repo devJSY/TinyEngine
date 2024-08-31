@@ -68,11 +68,17 @@ CElfilisFSM::~CElfilisFSM()
 
 void CElfilisFSM::ResetFSM()
 {
+    // FSM setting clear
     SetGlobalState(false);
     SetPattern(ElfilisPatternType::NONE);
-    ClearComboLevel();
-    OffWeaponTrigger();
     SetResist(false);
+    ClearComboLevel();
+
+    // attack collider clear
+    OffWeaponTrigger();
+    m_Hitbox->BoxCollider()->SetSize(Vec3(1.f, 1.f, 1.f));
+    m_Hitbox->BoxCollider()->SetCenter(Vec3::Zero);
+    m_Hitbox->SetEnabled(false);
 }
 
 // USAGE : 안전하게 State Group을 변경

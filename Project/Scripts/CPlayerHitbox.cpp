@@ -181,7 +181,6 @@ void CPlayerHitbox::AddDamage(CGameObject* _Monster)
 
     // Damage & Reward
     pUnit->GetDamage(HitInfo);
-    LOG(Log, ToString(_Monster->GetName()).c_str());
 
     if (m_bCallReward)
     {
