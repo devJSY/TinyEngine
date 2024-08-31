@@ -53,7 +53,7 @@ void CTackleEnemyScript::begin()
     ChangeState(TackleEnemyState::Idle);
 
     SetInfo(UnitInfo{67.f, 67.f, 70.f, 8.f, 1.f, 5.f});
-    m_fMaxSpeed = m_fSpeed = 16.f;
+    m_fMaxSpeed = m_fSpeed = 21.5f;
     m_fRushLerp = 0.8f;
     m_fRushSpeedLerp = 0.2f;
     m_fThreshHoldRushLerp = 0.1f;
@@ -408,13 +408,13 @@ void CTackleEnemyScript::DashEffectOn()
 {
     m_pDashEffect = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Effect_DashEffect.pref", L"prefab\\Effect_DashEffect.pref")->Instantiate();
     m_pDashEffect->Transform()->SetAbsolute(false);
-    m_pDashEffect->Transform()->SetLocalScale(Vec3(2.f, 2.f, 3.f));
+    m_pDashEffect->Transform()->SetLocalScale(Vec3(2.2f, 2.2f, 2.2f));
     m_pDashEffect->Transform()->SetLocalPos(Vec3(0.f, 2.f, 1.f));
     m_pDashEffect->Transform()->SetLocalRotation(Vec3(XM_PIDIV2, 0.f, 0.f));
     m_pDashEffect->GetScript<CUIDashEffectScript>()->SetDashTime(1.f);
     m_pDashEffect->GetScript<CUIDashEffectScript>()->SetRatioSpeed(0.008f);
-    m_pDashEffect->GetScript<CUIDashEffectScript>()->SetTextureSpeed(5.f);
-    m_pDashEffect->GetScript<CUIDashEffectScript>()->SetBackGroundAlpha(0.1f);
+    m_pDashEffect->GetScript<CUIDashEffectScript>()->SetTextureSpeed(4.5f);
+    m_pDashEffect->GetScript<CUIDashEffectScript>()->SetBackGroundAlpha(0.15f);
 
     GamePlayStatic::AddChildObject(GetOwner(), m_pDashEffect);
 }
