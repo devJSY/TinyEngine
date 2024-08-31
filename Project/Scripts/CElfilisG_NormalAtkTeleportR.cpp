@@ -7,7 +7,7 @@ CElfilisG_NormalAtkTeleportR::CElfilisG_NormalAtkTeleportR()
     : m_BeforeObj(nullptr)
     , m_BeforeEffect(nullptr)
     , m_AfterEffect(nullptr)
-    , m_EffectSpeed(400.f)
+    , m_EffectSpeed(200.f)
     , m_bComboSuccess(false)
     , m_bFrmEnter(true)
 {
