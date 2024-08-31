@@ -1168,6 +1168,29 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
         pShader->SetName(L"EffectQuadShader");
         AddAsset(L"EffectQuadShader", pShader);
     }
+
+    // =================================
+    // Effect Texture Distortion Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\UnrealPBRVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\TextureDistortion.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::NO_WRITE);
+        pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
+
+        pShader->AddScalarParam(SCALAR_PARAM::VEC2_0, "Distortion Speed");
+        pShader->AddScalarParam(SCALAR_PARAM::VEC2_1, "Distortion Scale");
+        pShader->AddScalarParam(SCALAR_PARAM::VEC4_0, "Use VtxColor Scale");
+        pShader->AddTexParam(TEX_0, "Mask Texture");
+        pShader->AddTexParam(TEX_1, "Noise Texture");
+
+        pShader->SetName(L"EffectTextureDistortionShader");
+        AddAsset(L"EffectTextureDistortionShader", pShader);
+    }
     
     // =================================
     // Mesh Distortion Shader

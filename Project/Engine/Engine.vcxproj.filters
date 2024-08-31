@@ -1569,5 +1569,8 @@
     <FxCompile Include="MeshDistortionPS.hlsl">
       <Filter>ShaderCode\Kirby\Postprocess</Filter>
     </FxCompile>
+    <FxCompile Include="TextureDistortion.hlsl">
+      <Filter>ShaderCode\Kirby\Common</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
