@@ -30,6 +30,7 @@ CKirbyFSM::CKirbyFSM()
     , m_StuffedObj(nullptr)
     , m_BodyCollider(nullptr)
     , m_VacuumCollider(nullptr)
+    , m_PointLight(nullptr)
     , m_HoveringLimitTime(7.f)
     , m_HoveringAccTime(0.f)
     , m_bHovering(false)
@@ -59,6 +60,7 @@ CKirbyFSM::CKirbyFSM()
     , m_bCanBladeAttack(true)
     , m_GlidingDuration(1.7f)
     , m_GlidingAcc(0.f)
+    , m_GlidingGravity(0.f)
     , m_LeftCanCount(0)
     , m_bEscapeLadder(false)
     , m_bInCollisionLadder(false)
@@ -107,6 +109,7 @@ CKirbyFSM::CKirbyFSM(const CKirbyFSM& _Origin)
     , m_bStuffed(false)
     , m_bUnstuffReverse(false)
     , m_BodyCollider(nullptr)
+    , m_PointLight(nullptr)
     , m_KnockbackDir{}
     , m_YPressedTime(0.f)
     , m_Vacuum1MaxTime(_Origin.m_Vacuum1MaxTime)
@@ -124,6 +127,7 @@ CKirbyFSM::CKirbyFSM(const CKirbyFSM& _Origin)
     , m_bCanBladeAttack(true)
     , m_GlidingDuration(_Origin.m_GlidingDuration)
     , m_GlidingAcc(0.f)
+    , m_GlidingGravity(0.f)
     , m_LeftCanCount(0)
     , m_bEscapeLadder(false)
     , m_bInCollisionLadder(false)
@@ -527,6 +531,14 @@ void CKirbyFSM::tick()
         if (m_ComboAccTime >= GetCurAbility()->GetComboSuccessTime())
         {
             SetComboLevel(0);
+        }
+    }
+
+    if (m_SlideComboLevel != 0)
+    {
+        if (!m_bSlideComboLock)
+        {
+            m_SlideComboLevel = 0;
         }
     }
 

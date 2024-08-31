@@ -460,6 +460,15 @@ void CKirbyAbility_Sword::AttackCharge3EndExit()
 void CKirbyAbility_Sword::JumpFallEnter()
 {
     PLAYER->Animator()->Play(ANIMPREFIX("JumpFall"), false, false, 2.5f, 0.3f);
+    
+    PLAYERFSM->LockSlideCombo();
+}
+
+void CKirbyAbility_Sword::JumpFallExit()
+{
+    CKirbyAbility::JumpFallExit();
+
+    PLAYERFSM->UnlockSlideCombo();
 }
 
 // ===============
@@ -481,6 +490,14 @@ void CKirbyAbility_Sword::JumpAttack()
         }
         m_bFrmEnter = false;
     }
+
+    if (PLAYER->Animator()->IsFinish())
+    {
+        if (PLAYERFSM->GetSlideComboLevel())
+        {
+            PLAYERFSM->SetSlideComboLevel(2);
+        }
+    }
 }
 
 void CKirbyAbility_Sword::JumpAttackEnter()
@@ -495,6 +512,7 @@ void CKirbyAbility_Sword::JumpAttackEnter()
 
     PLAYERFSM->SetInvincible(true);
     PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(true);
+    PLAYERFSM->LockSlideCombo();
     m_bFrmEnter = true;
 }
 
@@ -505,6 +523,7 @@ void CKirbyAbility_Sword::JumpAttackExit()
 
     PLAYERFSM->SetInvincible(false);
     PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(false);
+    PLAYERFSM->UnlockSlideCombo();
 }
 
 // Start
@@ -521,6 +540,7 @@ void CKirbyAbility_Sword::JumpAttackStartEnter()
 
     PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(true);
     PLAYERFSM->SetInvincible(true);
+    PLAYERFSM->LockSlideCombo();
 }
 
 void CKirbyAbility_Sword::JumpAttackStartExit()
@@ -529,6 +549,7 @@ void CKirbyAbility_Sword::JumpAttackStartExit()
 
     PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(false);
     PLAYERFSM->SetInvincible(false);
+    PLAYERFSM->UnlockSlideCombo();
 }
 
 // ===============
@@ -546,6 +567,8 @@ void CKirbyAbility_Sword::LandingEnter()
         PLAYER->Animator()->Play(ANIMPREFIX("Landing"), false);
     }
 
+    PLAYERFSM->LockSlideCombo();
+
     if (PLAYERFSM->GetSlideComboLevel())
     {
         PLAYERFSM->SetKnockBackDir(-PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT));
@@ -562,6 +585,7 @@ void CKirbyAbility_Sword::LandingExit()
     PLAYERCTRL->UnlockJump();
 
     PLAYERFSM->SetInvincible(false);
+    PLAYERFSM->UnlockSlideCombo();
 }
 
 // ===============

@@ -50,7 +50,6 @@ private:
     UINT                    m_ComboLevel;
     float                   m_ComboAccTime;
     float                   m_ChargeAccTime;
-    UINT                    m_SlideComboLevel;
     bool                    m_bAttackEvent;
 
     LastJumpType            m_LastJump;
@@ -77,6 +76,11 @@ private:
     bool                    m_bEmissive;
     bool                    m_bIsSkrr;
 
+    // Sword
+    UINT                    m_SlideComboLevel;
+    bool                    m_bSlideComboLock;
+   
+    // Blade
     bool                    m_bCanBladeAttack;
 
     // Fire Gliding Timer
@@ -115,6 +119,8 @@ public:
     void SetHovering(bool _bHovering);
     void SetDodgeType(DodgeType _Type) { m_DodgeType = _Type; }
     void SetSlideComboLevel(UINT _bCombo) { m_SlideComboLevel = _bCombo; }
+    void LockSlideCombo() { m_bSlideComboLock = true; }
+    void UnlockSlideCombo() { m_bSlideComboLock = false; }
     void SetKnockBackDir(Vec3 _Dir) { m_KnockbackDir = _Dir; }
     void SetInvincible(bool _Invincible, float _Duration = -1.f);
     void SetNearDeformObj(bool _bNearObj) { m_bNearDeformObject = _bNearObj; }
