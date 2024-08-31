@@ -559,7 +559,6 @@ void CKirbyAbility_Sword::LandingEnter()
 
 void CKirbyAbility_Sword::LandingExit()
 {
-    PLAYERFSM->SetSlideComboLevel(0);
     PLAYERCTRL->UnlockJump();
 
     PLAYERFSM->SetInvincible(false);
