@@ -74,6 +74,10 @@ void CElfilisFSM::ResetFSM()
     SetResist(false);
     ClearComboLevel();
 
+    // Big Elfilis
+    m_BigElfilisFSM->ChangeState(L"IDLE");
+    m_BigElfilis->SetActive(false);
+
     // attack collider clear
     OffWeaponTrigger();
     m_Hitbox->BoxCollider()->SetSize(Vec3(1.f, 1.f, 1.f));
@@ -508,20 +512,18 @@ void CElfilisFSM::tick()
     //{
     //    Rigidbody()->SetVelocity(Vec3());
     //    Rigidbody()->SetAngularVelocity(Vec3());
-    //    ChangeStateGroup(ElfilisStateGroup::AirToGround, L"AIR_TOGROUND_TELEPORT");
+    //    ChangeStateGroup(ElfilisStateGroup::AirToGround, L"AIR_TOGROUND_TELEPORTCOMBO");
     //}
     //if (KEY_TAP(KEY::ENTER))
     //{
     //    Rigidbody()->SetVelocity(Vec3());
     //    Rigidbody()->SetAngularVelocity(Vec3());
-    //    ChangeStateGroup(ElfilisStateGroup::GroundAtkNear);
+    //    ChangeStateGroup(ElfilisStateGroup::GroundToAir);
     //}
 }
 
 void CElfilisFSM::OnCollisionEnter(CCollider* _OtherCollider)
 {
-    // static vector<wstring> vecCollision{L"World Static", L"World Dynamic"};
-    // RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(GetOwner()->Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), 100.f, vecCollision);
     int LayerIdx = _OtherCollider->GetOwner()->GetLayerIdx();
 
     if (m_CurStateGroup == ElfilisStateGroup::AirToGround)

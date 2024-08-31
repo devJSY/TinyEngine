@@ -34,6 +34,29 @@ void CElfilisA_Teleport::tick()
     }
 }
 
+void CElfilisA_Teleport::Exit()
+{
+    Exit_Step();
+
+    GetOwner()->Animator()->SetPlay(true);
+
+    if (m_BeforeObj)
+    {
+        GamePlayStatic::DestroyGameObject(m_BeforeObj);
+    }
+    if (m_BeforeEffect)
+    {
+        GamePlayStatic::DestroyGameObject(m_BeforeEffect);
+    }
+    if (m_AfterEffect)
+    {
+        GamePlayStatic::DestroyGameObject(m_AfterEffect);
+    }
+
+    // Åõ Å¸°Ù
+    CAMERACTRL->SetElfilisTwoTarget();
+}
+
 void CElfilisA_Teleport::Enter_Step()
 {
     switch (m_Step)
@@ -89,26 +112,8 @@ void CElfilisA_Teleport::Exit_Step()
     {
     case StateStep::Start:
         break;
-    case StateStep::End: {
-        GetOwner()->Animator()->SetPlay(true);
-
-        if (m_BeforeObj)
-        {
-            GamePlayStatic::DestroyGameObject(m_BeforeObj);
-        }
-        if (m_BeforeEffect)
-        {
-            GamePlayStatic::DestroyGameObject(m_BeforeEffect);
-        }
-        if (m_AfterEffect)
-        {
-            GamePlayStatic::DestroyGameObject(m_AfterEffect);
-        }
-
-        // Åõ Å¸°Ù
-        CAMERACTRL->SetElfilisTwoTarget();
-    }
-    break;
+    case StateStep::End:
+        break;
     }
 }
 

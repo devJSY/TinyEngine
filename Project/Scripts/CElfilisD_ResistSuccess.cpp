@@ -29,8 +29,8 @@ void CElfilisD_ResistSuccess::tick()
 
 void CElfilisD_ResistSuccess::Exit()
 {
-    Exit_Step();
     ELFFSM->SetResist(false);
+    Exit_Step();
 }
 
 void CElfilisD_ResistSuccess::Enter_Step()

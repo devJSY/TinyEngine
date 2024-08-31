@@ -32,6 +32,29 @@ void CElfilisG_Teleport::tick()
     }
 }
 
+void CElfilisG_Teleport::Exit()
+{
+    Exit_Step();
+
+    GetOwner()->Animator()->SetPlay(true);
+
+    if (m_BeforeObj)
+    {
+        GamePlayStatic::DestroyGameObject(m_BeforeObj);
+        m_BeforeObj = nullptr;
+    }
+    if (m_BeforeEffect)
+    {
+        GamePlayStatic::DestroyGameObject(m_BeforeEffect);
+        m_BeforeEffect = nullptr;
+    }
+    if (m_AfterEffect)
+    {
+        GamePlayStatic::DestroyGameObject(m_AfterEffect);
+        m_AfterEffect = nullptr;
+    }
+}
+
 void CElfilisG_Teleport::Enter_Step()
 {
     switch (m_Step)
@@ -82,25 +105,8 @@ void CElfilisG_Teleport::Exit_Step()
     {
     case StateStep::Start:
         break;
-    case StateStep::End: {
-        GetOwner()->Animator()->SetPlay(true);
-
-        if (m_BeforeObj)
-        {
-            GamePlayStatic::DestroyGameObject(m_BeforeObj);
-            m_BeforeObj = nullptr;
-        }
-        if (m_BeforeEffect)
-        {
-            GamePlayStatic::DestroyGameObject(m_BeforeEffect);
-            m_BeforeEffect = nullptr;
-        }
-        if (m_AfterEffect)
-        {
-            GamePlayStatic::DestroyGameObject(m_AfterEffect);
-            m_AfterEffect = nullptr;
-        }
-    }
+    case StateStep::End:
+        break;
     break;
     }
 }
