@@ -973,6 +973,9 @@
     <ClInclude Include="CKirbySoundListener.h">
       <Filter>Scripts\Character\Kirby\KirbySoundListener</Filter>
     </ClInclude>
+    <ClInclude Include="CUIDashEffectScript.h">
+      <Filter>Scripts\UI\UIEffect\UIDashEffectScript</Filter>
+    </ClInclude>
     <ClInclude Include="CDestroyParticleScript.h">
       <Filter>Scripts\Common\DestroyParticle</Filter>
     </ClInclude>
@@ -1961,6 +1964,9 @@
     </ClCompile>
     <ClCompile Include="CKirbySoundListener.cpp">
       <Filter>Scripts\Character\Kirby\KirbySoundListener</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIDashEffectScript.cpp">
+      <Filter>Scripts\UI\UIEffect\UIDashEffectScript</Filter>
     </ClCompile>
     <ClCompile Include="CDestroyParticleScript.cpp">
       <Filter>Scripts\Common\DestroyParticle</Filter>
@@ -3061,6 +3067,9 @@
     </Filter>
     <Filter Include="Scripts\Character\Kirby\KirbySoundListener">
       <UniqueIdentifier>{6dd0f1be-15b6-432b-b29e-83a1ad412a2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIEffect\UIDashEffectScript">
+      <UniqueIdentifier>{db700e69-a5c5-4146-9034-ca207f100942}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\Common">
       <UniqueIdentifier>{8da979c1-68f6-40da-8153-67bf34a3b073}</UniqueIdentifier>

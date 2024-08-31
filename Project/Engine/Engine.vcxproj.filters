@@ -1166,6 +1166,9 @@
     <Filter Include="08. Component\SoundListener">
       <UniqueIdentifier>{f3013da9-2792-4a5f-a8e7-d6624a8fed34}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ShaderCode\Kirby\UIShader\DashEffectMaskingShader">
+      <UniqueIdentifier>{70507765-f9da-4c56-b8bd-04eb4e384943}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="global.hlsli">
@@ -1553,6 +1556,9 @@
     </FxCompile>
     <FxCompile Include="KirbyUIDefaultBluredPS.hlsl">
       <Filter>ShaderCode\Kirby\UIShader\UIDefaultBluredShader</Filter>
+    </FxCompile>
+    <FxCompile Include="DashEffectMaskingPS.hlsl">
+      <Filter>ShaderCode\Kirby\UIShader\DashEffectMaskingShader</Filter>
     </FxCompile>
     <FxCompile Include="EffectQuadPS.hlsl">
       <Filter>ShaderCode\Kirby\Common</Filter>
