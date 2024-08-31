@@ -7,15 +7,19 @@
 CEngineTestScript::CEngineTestScript()
     : CScript(ENGINETESTSCRIPT)
     , TestParam1(1.f)
+    , TestParam2(1.f)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &TestParam1, "TestParam1");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &TestParam2, "TestParam2");
 }
 
 CEngineTestScript::CEngineTestScript(const CEngineTestScript& origin)
     : CScript(origin)
     , TestParam1(origin.TestParam1)
+    , TestParam2(origin.TestParam2)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &TestParam1, "TestParam1");
+    AddScriptParam(SCRIPT_PARAM::FLOAT, &TestParam2, "TestParam2");
 }
 
 CEngineTestScript::~CEngineTestScript()
@@ -28,15 +32,15 @@ void CEngineTestScript::begin()
 
 void CEngineTestScript::tick()
 {
-    Vec3 rot = Transform()->GetWorldRotation();
-    rot.z += TestParam1 * g_Global.g_DT;
-    Transform()->SetWorldRotation(rot);
+    if (KEY_TAP(KEY::ENTER))
+    {
+        GamePlayStatic::Play3DSound(L"sound\\wav\\HeroBasic\\0000.wav", Transform()->GetWorldPos(), 1, 1.f, true, TestParam1, TestParam2);
+    }
     // CharacterControllerTest();
 
-    //GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), 1000.f, Vec3(0.f, 0.f, 1.f), true);
-    //GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::UP), 1000.f, Vec3(0.f, 1.f, 0.f), true);
-    //GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::RIGHT), 1000.f, Vec3(1.f, 0.f, 0.f), true);
-
+    // GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), 1000.f, Vec3(0.f, 0.f, 1.f), true);
+    // GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::UP), 1000.f, Vec3(0.f, 1.f, 0.f), true);
+    // GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::RIGHT), 1000.f, Vec3(1.f, 0.f, 0.f), true);
 
     // AnimatorTest();
     // QuaternionExample();

@@ -51,7 +51,7 @@ int CSound::Play2D(int _iRoopCount, float _fVolume, bool _bOverlap)
     pChannel->setCallback(CHANNEL_CALLBACK);
     pChannel->setUserData(this);
 
-    pChannel->setMode(FMOD_LOOP_NORMAL);
+    pChannel->setMode(FMOD_LOOP_NORMAL | FMOD_2D);
     pChannel->setLoopCount(_iRoopCount);
 
     m_listChannel.push_back(pChannel);
@@ -107,7 +107,7 @@ int CSound::Play3D(Vec3 _WorldPos, int _iRoopCount, float _fVolume, bool _bOverl
     pChannel->setCallback(CHANNEL_CALLBACK);
     pChannel->setUserData(this);
 
-    pChannel->setMode(FMOD_LOOP_NORMAL);
+    pChannel->setMode(FMOD_LOOP_NORMAL | FMOD_3D);
     pChannel->setLoopCount(_iRoopCount);
 
     m_listChannel.push_back(pChannel);

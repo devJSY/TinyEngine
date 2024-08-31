@@ -138,7 +138,7 @@ void CFlowMgr_LvRobby::LevelStart()
     SetFadeEffect(Vec3(252.f, 75.f, 129.f), true, 1.f, 1.25f, true);
 
     // BGM
-    GamePlayStatic::PlayBGM(L"sound\\stream\\K15_TownNewWorld1\\K15_TownNewWorld1.marker.wav", 0.5f);
+    FadeInBGM(L"sound\\stream\\K15_TownNewWorld1\\K15_TownNewWorld1.marker.wav", 0.f, 0.5f, 1.f);
 }
 
 void CFlowMgr_LvRobby::tick()
