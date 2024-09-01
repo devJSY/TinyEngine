@@ -163,9 +163,9 @@ public:
     virtual void GuardRunEnter(){};
     virtual void GuardRunExit(){};
 
-    //virtual void DropAbility();
-    //virtual void DropAbilityEnter();
-    //virtual void DropAbilityExit();
+    virtual void DropAbility(){};
+    virtual void DropAbilityEnter(){};
+    virtual void DropAbilityExit(){};
 
     // º¯½Å
     virtual void ChangeAbility() = 0;

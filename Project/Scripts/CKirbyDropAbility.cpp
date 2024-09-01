@@ -15,6 +15,12 @@ CKirbyDropAbility::~CKirbyDropAbility()
 
 void CKirbyDropAbility::tick()
 {
+    // Change State
+    // ---------------
+    PLAYERFSM->GetPrevAbility()->DropAbility();
+
+    // Common Process
+    // ---------------
     if (m_FrmEnter && CHECK_ANIMFRM(GetOwner(), 11))
     {
         // spawn ability bubble
@@ -88,6 +94,12 @@ void CKirbyDropAbility::tick()
 
 void CKirbyDropAbility::Enter()
 {
+    // Change State
+    // ---------------
+    PLAYERFSM->GetCurAbility()->DropAbilityEnter();
+
+    // Common Process
+    // ---------------
     PLAYERFSM->SetGlobalState(true);
     PLAYERFSM->SetInvincible(true);
     PLAYERFSM->ChangeAbilityCopy(AbilityCopyType::NORMAL);
@@ -108,6 +120,12 @@ void CKirbyDropAbility::Enter()
 
 void CKirbyDropAbility::Exit()
 {
+    // Change State
+    // ---------------
+    PLAYERFSM->GetPrevAbility()->DropAbilityExit();
+
+    // Common Process
+    // ---------------
     CPlayerMgr::SetPlayerFace(FaceType::Normal);
 
     PLAYERCTRL->UnlockDirection();
