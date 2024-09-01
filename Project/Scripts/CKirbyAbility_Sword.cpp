@@ -2,6 +2,7 @@
 #include "CKirbyAbility_Sword.h"
 #include "CKirbyMoveController.h"
 #include "CState.h"
+#include "CDestroyParticleScript.h"
 
 CKirbyAbility_Sword::CKirbyAbility_Sword()
     : m_KirbySwordSlashPref(nullptr)
@@ -763,6 +764,23 @@ void CKirbyAbility_Sword::ChangeAbilityEnter()
 void CKirbyAbility_Sword::ChangeAbilityExit()
 {
 }
+
+// ===============
+// Drop Ability
+// ===============
+
+void CKirbyAbility_Sword::DropAbilityEnter()
+{
+    CGameObject* pTwinkleParticle = PLAYER->GetChildObject(L"KirbySwordTwinkleParticle");
+    if (nullptr != pTwinkleParticle)
+    {
+        GamePlayStatic::DestroyGameObject(pTwinkleParticle);
+    }
+}
+
+// ===============
+// Custom Func
+// ===============
 
 void CKirbyAbility_Sword::SpawnSwordSlash(Vec3 _SlashScale, bool _bVertical)
 {

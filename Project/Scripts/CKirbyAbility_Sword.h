@@ -115,6 +115,9 @@ public:
     virtual void ChangeAbilityEnter() override;
     virtual void ChangeAbilityExit() override;
 
+    // 변신 해제
+    virtual void DropAbilityEnter() override;
+
 private:
     void SpawnSwordSlash(Vec3 _SlashScale, bool _bVertical = false);
 
