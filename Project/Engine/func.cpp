@@ -1736,3 +1736,26 @@ void ImGui_SetWindowClass(EDITOR_TYPE _Type)
 
     ImGui::SetNextWindowClass(&window_class);
 }
+
+Vec3 QuaternionToEulerAngles(Quaternion q)
+{
+    q.Normalize();
+    Vec3 retAngles;
+
+    // roll (x-axis rotation)
+    float sinr_cosp = 2.f * (q.w * q.x + q.y * q.z);
+    float cosr_cosp = 1.f - 2.f * (q.x * q.x + q.y * q.y);
+    retAngles.x = std::atan2f(sinr_cosp, cosr_cosp);
+
+    // pitch (y-axis rotation)
+    float sinp = std::sqrt(1.f + 2.f * (q.w * q.y - q.x * q.z));
+    float cosp = std::sqrt(1.f - 2.f * (q.w * q.y - q.x * q.z));
+    retAngles.y = 2.f * std::atan2f(sinp, cosp) - XM_PI / 2.f;
+
+    // yaw (z-axis rotation)
+    float siny_cosp = 2.f * (q.w * q.z + q.x * q.y);
+    float cosy_cosp = 1.f - 2.f * (q.y * q.y + q.z * q.z);
+    retAngles.z = std::atan2f(siny_cosp, cosy_cosp);
+
+    return retAngles;
+}

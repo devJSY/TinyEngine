@@ -32,10 +32,11 @@ void CEngineTestScript::begin()
 
 void CEngineTestScript::tick()
 {
-    if (KEY_TAP(KEY::ENTER))
-    {
-        GamePlayStatic::Play3DSound(L"sound\\wav\\HeroBasic\\0000.wav", Transform()->GetWorldPos(), 1, 1.f, true, TestParam1, TestParam2);
-    }
+    GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), 1000.f, Vec3(1.f, 1.f, 0.f), true);
+
+    Quat AxisQuat = Quat::CreateFromAxisAngle(Transform()->GetWorldDir(DIR_TYPE::FRONT), DT);
+    Transform()->SetWorldRotation(Transform()->GetWorldQuaternion() * AxisQuat);
+
     // CharacterControllerTest();
 
     // GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), 1000.f, Vec3(0.f, 0.f, 1.f), true);

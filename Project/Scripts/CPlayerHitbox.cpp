@@ -16,6 +16,7 @@ CPlayerHitbox::CPlayerHitbox()
     , m_bRepeatDamage(true)
     , m_bRepeat(false)
     , m_bTimeScaling(false)
+    , m_bDestroyCollision(false)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Damage, "Damage");
     AddScriptParam(SCRIPT_PARAM::INT, &m_DamageTypeIdx, "Damage Type");
@@ -24,6 +25,7 @@ CPlayerHitbox::CPlayerHitbox()
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bCallReward, "Call Reward");
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bSummon, "Summon");
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bTimeScaling, "Time Scaling");
+    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bDestroyCollision, "Destroy Collision");
 }
 
 CPlayerHitbox::CPlayerHitbox(const CPlayerHitbox& _Origin)
@@ -39,6 +41,7 @@ CPlayerHitbox::CPlayerHitbox(const CPlayerHitbox& _Origin)
     , m_bRepeatDamage(_Origin.m_bRepeatDamage)
     , m_bRepeat(false)
     , m_bTimeScaling(_Origin.m_bTimeScaling)
+    , m_bDestroyCollision(_Origin.m_bDestroyCollision)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Damage, "Damage");
     AddScriptParam(SCRIPT_PARAM::INT, &m_DamageTypeIdx, "Damage Type");
@@ -47,6 +50,7 @@ CPlayerHitbox::CPlayerHitbox(const CPlayerHitbox& _Origin)
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bCallReward, "Call Reward");
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bSummon, "Summon");
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bTimeScaling, "Time Scaling");
+    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bDestroyCollision, "Destroy Collision");
 }
 
 CPlayerHitbox::~CPlayerHitbox()
@@ -114,6 +118,12 @@ void CPlayerHitbox::OnTriggerEnter(CCollider* _OtherCollider)
     {
         CTimeMgr::GetInst()->SetTimeScale(0.1f, 0.f);
     }
+
+    // Destroy
+    if (m_bDestroyCollision)
+    {
+        GamePlayStatic::DestroyGameObject(GetOwner());
+    }
 }
 
 // Trigger와 계속 충돌하고 있는 경우, Repeat Damage 처리
@@ -154,6 +164,12 @@ void CPlayerHitbox::OnTriggerStay(CCollider* _OtherCollider)
     if (m_bTimeScaling)
     {
         CTimeMgr::GetInst()->SetTimeScale(0.1f, 0.f);
+    }
+
+    // Destroy
+    if (m_bDestroyCollision)
+    {
+        GamePlayStatic::DestroyGameObject(GetOwner());
     }
 }
 
@@ -199,11 +215,13 @@ UINT CPlayerHitbox::SaveToLevelFile(FILE* _File)
     fwrite(&m_bSummon, 1, sizeof(bool), _File);
     fwrite(&m_bCallReward, 1, sizeof(bool), _File);
     fwrite(&m_bTimeScaling, 1, sizeof(bool), _File);
+    fwrite(&m_bDestroyCollision, 1, sizeof(bool), _File);
 
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(int);
     MemoryByte += sizeof(bool);
     MemoryByte += sizeof(float);
+    MemoryByte += sizeof(bool);
     MemoryByte += sizeof(bool);
     MemoryByte += sizeof(bool);
     MemoryByte += sizeof(bool);
@@ -222,11 +240,13 @@ UINT CPlayerHitbox::LoadFromLevelFile(FILE* _File)
     fread(&m_bSummon, 1, sizeof(bool), _File);
     fread(&m_bCallReward, 1, sizeof(bool), _File);
     fread(&m_bTimeScaling, 1, sizeof(bool), _File);
+    fread(&m_bDestroyCollision, 1, sizeof(bool), _File);
 
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(int);
     MemoryByte += sizeof(bool);
     MemoryByte += sizeof(float);
+    MemoryByte += sizeof(bool);
     MemoryByte += sizeof(bool);
     MemoryByte += sizeof(bool);
     MemoryByte += sizeof(bool);

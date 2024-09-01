@@ -153,23 +153,23 @@ void CTransform::UpdateData()
     pCB->UpdateData();
 }
 
-void CTransform::SetDirection(Vec3 _Forward)
+void CTransform::SetDirection(Vec3 _Forward, Vec3 _Up)
 {
     if (_Forward == Vec3::Zero)
         return;
 
     _Forward.Normalize();
-    Vec3 Up = Vec3(0.f, 1.f, 0.f);
+    _Up.Normalize();
 
-    Vec3 Right = Up.Cross(_Forward);
+    Vec3 Right = _Up.Cross(_Forward);
     Right.Normalize();
 
-    Up = _Forward.Cross(Right);
-    Up.Normalize();
+    _Up = _Forward.Cross(Right);
+    _Up.Normalize();
 
     Matrix rotationMatrix = Matrix();
     rotationMatrix.Forward(-_Forward);
-    rotationMatrix.Up(Up);
+    rotationMatrix.Up(_Up);
     rotationMatrix.Right(Right);
 
     Quat Rot = Quat::CreateFromRotationMatrix(rotationMatrix);
@@ -260,20 +260,22 @@ void CTransform::SetLocalRotation(Vec3 _Radian)
 
 void CTransform::SetWorldRotation(Vec3 _Radian)
 {
-    Matrix NewMatRot = Matrix::CreateFromAxisAngle(Vec3(1.f, 0.f, 0.f), _Radian.x) * Matrix::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), _Radian.y) *
-                       Matrix::CreateFromAxisAngle(Vec3(0.f, 0.f, 1.f), _Radian.z);
-
-    Quat NewQuaternion = Quat::CreateFromRotationMatrix(NewMatRot);
-
     CGameObject* pParent = GetOwner()->GetParent();
     if (nullptr != pParent)
     {
+        Matrix NewMatRot = Matrix::CreateFromAxisAngle(Vec3(1.f, 0.f, 0.f), _Radian.x) * Matrix::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), _Radian.y) *
+                           Matrix::CreateFromAxisAngle(Vec3(0.f, 0.f, 1.f), _Radian.z);
+
+        Quat NewQuaternion = Quat::CreateFromRotationMatrix(NewMatRot);
+
         Quat ParentQuat = pParent->Transform()->GetWorldQuaternion();
         ParentQuat.Inverse(ParentQuat);
         NewQuaternion = NewQuaternion * ParentQuat;
+        SetLocalRotation(NewQuaternion);
+        return;
     }
 
-    SetLocalRotation(NewQuaternion);
+    SetLocalRotation(_Radian);
 }
 
 UINT CTransform::SaveToLevelFile(FILE* _File)

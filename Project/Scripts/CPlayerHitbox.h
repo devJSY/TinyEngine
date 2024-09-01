@@ -20,6 +20,9 @@ private:
     bool m_bRepeat;
     bool m_bTimeScaling;
 
+    // Destroy Collision
+    bool m_bDestroyCollision;
+
 public:
     virtual void begin() override;
     virtual void tick() override;

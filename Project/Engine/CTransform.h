@@ -1,5 +1,4 @@
 #pragma once
-#pragma once
 #include "CComponent.h"
 
 class CTransform : public CComponent
@@ -32,7 +31,7 @@ public:
     virtual void UpdateData() override;
 
 public:
-    void SetDirection(Vec3 _Forward);
+    void SetDirection(Vec3 _Forward, Vec3 _Up = Vec3(0.f, 1.f, 0.f));
     void Slerp(Vec3 _TowardDir, float _t);
 
 public:
@@ -43,11 +42,11 @@ public:
 
     Vec3 GetLocalRotation() const { return m_LocalRotation; }
     void SetLocalRotation(Vec3 _Radian);
-    void SetLocalRotation(Quat _Quaternion) { SetLocalRotation(_Quaternion.ToEuler()); };
+    void SetLocalRotation(Quat _Quaternion) { SetLocalRotation(QuaternionToEulerAngles(_Quaternion)); };
 
     Vec3 GetWorldRotation() const { return m_WorldRotation; }
     void SetWorldRotation(Vec3 _Radian);
-    void SetWorldRotation(Quat _Quaternion) { SetWorldRotation(_Quaternion.ToEuler()); };
+    void SetWorldRotation(Quat _Quaternion) { SetWorldRotation(QuaternionToEulerAngles(_Quaternion)); };
 
     Quat GetLocalQuaternion() const { return m_LocalQuaternion; }
     Quat GetWorldQuaternion() const { return m_WorldQuaternion; }

@@ -96,6 +96,8 @@ FbxAMatrix GetFbxMatrixFromMatrix(Matrix& _mat);
 // DXGI_FORMAT -> Size(Byte)
 int GetSizeofFormat(DXGI_FORMAT _eFormat);
 
+Vec3 QuaternionToEulerAngles(Quaternion q);
+
 // =====================================
 // Save / Load
 // =====================================

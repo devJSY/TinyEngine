@@ -13,7 +13,7 @@ CKirbyAbility_Sword::CKirbyAbility_Sword()
 {
     m_Hat = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordHat.pref", L"prefab\\KirbySwordHat.pref");
     m_Weapon = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordWeapon.pref", L"prefab\\KirbySwordWeapon.pref");
-    //m_KirbySwordSlashPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordSlash.pref");
+    m_KirbySwordSlashPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordSlash.pref");
     m_ComboSuccessTime = 0.5f;
     m_Charge1Time = 1.f;
     m_Charge2Time = 1.f;
@@ -30,7 +30,7 @@ CKirbyAbility_Sword::CKirbyAbility_Sword(const CKirbyAbility_Sword& _Origin)
 {
     m_Hat = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordHat.pref", L"prefab\\KirbySwordHat.pref");
     m_Weapon = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordWeapon.pref", L"prefab\\KirbySwordWeapon.pref");
-    // m_KirbySwordSlashPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordSlash.pref");
+    m_KirbySwordSlashPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordSlash.pref");
     m_ComboSuccessTime = 0.5f;
     m_Charge1Time = 1.f;
     m_Charge2Time = 1.f;
@@ -76,7 +76,7 @@ void CKirbyAbility_Sword::Attack()
     if (CHECK_ANIMFRM(PLAYER, 7) && m_bFrmEnter)
     {
         m_bFrmEnter = false;
-        SpawnSwordSlash();
+        SpawnSwordSlash(Vec3(30.f, 30.f, 30.f));
     }
 }
 
@@ -115,7 +115,7 @@ void CKirbyAbility_Sword::AttackCombo1()
     if (CHECK_ANIMFRM(PLAYER, 9) && m_bFrmEnter)
     {
         m_bFrmEnter = false;
-        SpawnSwordSlash();
+        SpawnSwordSlash(Vec3(50.f, 30.f, 30.f));
     }
 }
 
@@ -155,7 +155,7 @@ void CKirbyAbility_Sword::AttackCombo2()
     if (CHECK_ANIMFRM(PLAYER, 17) && m_bFrmEnter)
     {
         m_bFrmEnter = false;
-        SpawnSwordSlash();
+        SpawnSwordSlash(Vec3(50.f, 30.f, 30.f));
     }
 }
 
@@ -496,6 +496,7 @@ void CKirbyAbility_Sword::JumpAttackEnter()
     PLAYERFSM->SetInvincible(true);
     PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(true);
     m_bFrmEnter = true;
+    SpawnSwordSlash(Vec3(50.f, 30.f, 30.f), true);
 }
 
 void CKirbyAbility_Sword::JumpAttackExit()
@@ -744,7 +745,7 @@ void CKirbyAbility_Sword::ChangeAbilityExit()
 {
 }
 
-void CKirbyAbility_Sword::SpawnSwordSlash()
+void CKirbyAbility_Sword::SpawnSwordSlash(Vec3 _SlashScale, bool _bVertical)
 {
     if (m_KirbySwordSlashPref == nullptr || PLAYERUNIT->GetCurInfo().HP < PLAYERUNIT->GetCurInfo().MAXHP)
         return;
@@ -754,14 +755,23 @@ void CKirbyAbility_Sword::SpawnSwordSlash()
     Vec3 Pos = PLAYER->Transform()->GetWorldPos() + Dir * 10.f;
     SwordSlash->Transform()->SetWorldPos(Pos);
 
-    Dir.y = 0.f;
-    Dir.Normalize();
-    SwordSlash->Transform()->SetDirection(Dir);
+    SwordSlash->Transform()->SetWorldScale(_SlashScale);
+    float ImpulsePower = (_SlashScale.x + _SlashScale.y + _SlashScale.z) / 3.f;
+    ImpulsePower *= 1.2f;
+
+    if (_bVertical)
+    {
+        SwordSlash->Transform()->SetDirection(Dir, PLAYER->Transform()->GetWorldDir(DIR_TYPE::RIGHT));
+    }
+    else
+    {
+        SwordSlash->Transform()->SetDirection(Dir);
+    }
 
     CMomentaryObjScript* Script = SwordSlash->GetScript<CMomentaryObjScript>();
-    Script->SetInitVelocity(Dir * 140.f);
+    Script->SetInitVelocity(Dir * ImpulsePower);
     Script->SetPlayTime(1.5f);
 
     SwordSlash->SetName(L"KirbyAttack_SwordSlash");
-    GamePlayStatic::SpawnGameObject(SwordSlash, LAYER_PLAYERATK);
+    GamePlayStatic::SpawnGameObject(SwordSlash, LAYER_PLAYERATK_TRIGGER);
 }

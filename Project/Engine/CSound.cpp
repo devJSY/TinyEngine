@@ -262,7 +262,6 @@ int CSound::Load(const wstring& _strFilePath)
 {
     if (FMOD_OK != g_pFMOD->createSound(ToString(_strFilePath).c_str(), FMOD_DEFAULT | FMOD_3D, nullptr, &m_pSound))
     {
-        assert(nullptr);
         return E_FAIL;
     }
 
