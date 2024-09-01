@@ -108,6 +108,8 @@ void CKirbyDropAbility::Enter()
 
 void CKirbyDropAbility::Exit()
 {
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\DropAbility.wav", 1, 50.f);
+
     CPlayerMgr::SetPlayerFace(FaceType::Normal);
 
     PLAYERCTRL->UnlockDirection();

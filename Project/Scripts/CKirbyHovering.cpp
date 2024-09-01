@@ -18,6 +18,8 @@ void CKirbyHovering::tick()
 
     if (m_bFrmEnter && FrameIdx == 0)
     {
+        GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\Hovering.wav", 1, 50.f);
+
         PLAYERCTRL->ClearVelocityY();
         PLAYERCTRL->AddVelocity(Vec3(0.f, 7.f, 0.f));
         m_bFrmEnter = false;

@@ -31,6 +31,8 @@ void CKirbyHoveringSpit::tick()
 
 void CKirbyHoveringSpit::Enter()
 {
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\Spit.wav", 1, 50.f);
+
     GetOwner()->Animator()->Play(ANIMPREFIX("SpitAir"), false);
     CPlayerMgr::ClearBodyMtrl();
     CPlayerMgr::ClearMouthMtrl();

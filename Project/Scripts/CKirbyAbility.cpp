@@ -78,6 +78,8 @@ void CKirbyAbility::LandingEnter()
     }
     else
     {
+        GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\Landing.wav", 1, 50.f);
+
         PLAYER->Animator()->Play(ANIMPREFIX("Landing"), false, false, 1.5f);
 
         // Smoke Spawn

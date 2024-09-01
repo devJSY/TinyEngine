@@ -38,6 +38,8 @@ void CKirbySlideStart::tick()
 
 void CKirbySlideStart::Enter()
 {
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\Sliding.wav", 1, 50.f);
+
     // 애니메이션 재생
     CKirbyFSM* KirbyFSM = CPlayerMgr::GetPlayerFSM();
     KirbyFSM->GetCurAbility()->SlideStartEnter();

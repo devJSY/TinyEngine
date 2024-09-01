@@ -63,6 +63,8 @@ void CKirbyDodge1::tick()
 
 void CKirbyDodge1::Enter()
 {
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\Dodge.wav", 1, 50.f);
+
     Vec3 Front = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT);
     Vec3 Right = PLAYER->Transform()->GetWorldDir(DIR_TYPE::RIGHT);
 

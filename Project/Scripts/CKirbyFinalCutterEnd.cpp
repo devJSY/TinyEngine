@@ -22,6 +22,8 @@ void CKirbyFinalCutterEnd::tick()
 
 void CKirbyFinalCutterEnd::Enter()
 {
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroCutterBaisc\\Cutter_Slash3.wav", 1, 50.f);
+
     PLAYER->Animator()->Play(ANIMPREFIX("FinalCutterEnd"), false, false, 1.5f, 0);
 
     // 방향, 점프, 이동 Lock
@@ -61,7 +63,7 @@ void CKirbyFinalCutterEnd::Enter()
 
     // Transform
     InstObj->Transform()->SetWorldPos(KirbyPos + Offset);
-    InstObj->Transform()->SetDirection(-KirbyFront);
+    InstObj->Transform()->SetDirection(KirbyFront);
 
     GamePlayStatic::SpawnGameObject(InstObj, InstObj->GetLayerIdx());
 

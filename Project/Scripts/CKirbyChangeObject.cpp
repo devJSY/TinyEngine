@@ -34,6 +34,8 @@ void CKirbyChangeObject::tick()
 
 void CKirbyChangeObject::Enter()
 {
+    GamePlayStatic::StopSound(L"sound\\wav\\HeroBasic\\Vacuum.wav");
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\Skrr.wav", 1, 50.f);
 
     PLAYERFSM->SetGlobalState(true);
     PLAYERFSM->GetNextObject()->ChangeObjectEnter();

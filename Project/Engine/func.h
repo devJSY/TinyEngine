@@ -71,6 +71,8 @@ namespace GamePlayStatic
     void Play3DSound(const wstring& _SoundPath, Vec3 _WorldPos, int _Loop, float _Volume, bool _Overlap = true, float _Mindistance = 1.f,
                      float _Maxdistance = 500.f);
     void PlayBGM(const wstring& _SoundPath, float _Volume);
+
+    void StopSound(const wstring& _SoundPath);
 }
 
 int GetRandomInt(int _Min, int _Max);

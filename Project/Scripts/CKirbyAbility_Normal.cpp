@@ -63,6 +63,8 @@ void CKirbyAbility_Normal::Attack()
 
 void CKirbyAbility_Normal::AttackEnter()
 {
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\AttackNormal.wav", 1, 50.f);
+
     if (PLAYERCTRL->IsGround())
     {
         PLAYER->Animator()->Play(ANIMPREFIX("Spit"), false);
