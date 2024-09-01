@@ -181,6 +181,7 @@ void CHotHeadScript::EnterState(HotHeadState _state)
     }
     break;
     case HotHeadState::Find: {
+        FindSound();
         Animator()->Play(ANIMPREFIX("Find"), false, false, 1.5f);
     }
     break;

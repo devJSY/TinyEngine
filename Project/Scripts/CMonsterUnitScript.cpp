@@ -99,6 +99,15 @@ void CMonsterUnitScript::SpawnDeadEffect(int _iSize)
     GamePlayStatic::SpawnGameObject(pSpawnEffect, pSpawnEffect->GetLayerIdx());
 }
 
+void CMonsterUnitScript::FindSound()
+{
+    CTransform* pTr = Transform();
+    if (nullptr != pTr)
+    {
+        GamePlayStatic::Play3DSound(L"sound\\wav\\CharaBasic\\0017.wav", pTr->GetWorldPos(), 1, 0.5f);
+    }
+}
+
 void CMonsterUnitScript::begin()
 {
     CUnitScript::begin();

@@ -155,6 +155,7 @@ void CTackleEnemyScript::EnterState(TackleEnemyState _state)
     }
     break;
     case TackleEnemyState::Find: {
+        FindSound();
         Animator()->Play(ANIMPREFIX("Find"), false, false, 1.5f);
     }
     break;

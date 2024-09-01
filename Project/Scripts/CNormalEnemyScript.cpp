@@ -246,6 +246,7 @@ void CNormalEnemyScript::EnterState(NormalEnemyState _state)
     }
     break;
     case NormalEnemyState::Find: {
+        FindSound();
         GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
             TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemyEye.00.png",
                                                         L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemyEye.00.png"));

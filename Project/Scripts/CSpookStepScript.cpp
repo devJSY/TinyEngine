@@ -100,6 +100,7 @@ void CSpookStepScript::EnterState()
     }
     break;
     case SpookStepState::Find: {
+        FindSound();
         Animator()->Play(ANIMPREFIX("Find"), false, false, 1.5f);
     }
     break;

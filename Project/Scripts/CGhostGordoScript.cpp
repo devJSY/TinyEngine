@@ -99,6 +99,7 @@ void CGhostGordoScript::EnterState(GhostGordoState _state)
     }
     break;
     case GhostGordoState::Find: {
+        FindSound();
         Animator()->Play(ANIMPREFIX("LowToHighSub"), false, false, 3.f);
     }
     break;

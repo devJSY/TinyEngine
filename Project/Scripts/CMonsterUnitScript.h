@@ -34,10 +34,12 @@ public:
 
     void SpawnDeadEffect(int _iSize);
 
+    void FindSound();
+
 public:
     virtual void begin() override;
     virtual void tick() override;
-
+    
 protected:
     void SetTarget(CGameObject* _pObj) { m_pTargetObj = _pObj; }
     CGameObject* GetTarget() const { return m_pTargetObj; }

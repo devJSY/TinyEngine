@@ -228,6 +228,7 @@ void CBladeKnightScript::EnterState()
     }
     break;
     case BLADEKNIGHT_STATE::Find: {
+        FindSound();
         Animator()->Play(ANIMPREFIX("Find"), false, false, 1.f);
     }
     break;
