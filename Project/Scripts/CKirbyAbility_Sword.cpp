@@ -13,7 +13,7 @@ CKirbyAbility_Sword::CKirbyAbility_Sword()
 {
     m_Hat = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordHat.pref", L"prefab\\KirbySwordHat.pref");
     m_Weapon = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordWeapon.pref", L"prefab\\KirbySwordWeapon.pref");
-    //m_KirbySwordSlashPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordSlash.pref");
+    // m_KirbySwordSlashPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordSlash.pref");
     m_ComboSuccessTime = 0.5f;
     m_Charge1Time = 1.f;
     m_Charge2Time = 1.f;
@@ -743,6 +743,25 @@ void CKirbyAbility_Sword::ChangeAbilityEnter()
 void CKirbyAbility_Sword::ChangeAbilityExit()
 {
 }
+
+// ===============
+// Drop Ability
+// ===============
+
+void CKirbyAbility_Sword::DropAbilityEnter()
+{
+    // 파티클 해제할 때에는 바로 없애는거보다 DestroyParticle Script를 쓴다면 예쁘게 사라집니다 (스폰 끝난 후 삭제)
+    // --------------------
+    // 예시코드:
+    // CDestroyParticleScript* Script = new CDestroyParticleScript;
+    // Script->SetSpawnTime(0.f);           // 추가적으로 Spawn 기다릴 시간
+    // 파티클객체->AddComponent(Script);
+    // (이렇게만 하면 script 안에서 알아서 삭제처리)
+}
+
+// ===============
+// Custom Func
+// ===============
 
 void CKirbyAbility_Sword::SpawnSwordSlash()
 {
