@@ -753,7 +753,6 @@ void CKirbyAbility_Sword::SpawnSwordSlash(Vec3 _SlashScale, bool _bVertical)
     CGameObject* SwordSlash = m_KirbySwordSlashPref->Instantiate();
     Vec3 Dir = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT);
     Vec3 Pos = PLAYER->Transform()->GetWorldPos() + Dir * 10.f;
-    SwordSlash->Transform()->SetWorldPos(Pos);
 
     SwordSlash->Transform()->SetWorldScale(_SlashScale);
     float ImpulsePower = (_SlashScale.x + _SlashScale.y + _SlashScale.z) / 3.f;
@@ -761,10 +760,12 @@ void CKirbyAbility_Sword::SpawnSwordSlash(Vec3 _SlashScale, bool _bVertical)
 
     if (_bVertical)
     {
+        SwordSlash->Transform()->SetWorldPos(Pos);
         SwordSlash->Transform()->SetDirection(Dir, PLAYER->Transform()->GetWorldDir(DIR_TYPE::RIGHT));
     }
     else
     {
+        SwordSlash->Transform()->SetWorldPos(Pos + Vec3(0.f, 20.f, 0.f));
         SwordSlash->Transform()->SetDirection(Dir);
     }
 
