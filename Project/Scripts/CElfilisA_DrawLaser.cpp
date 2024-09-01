@@ -53,7 +53,7 @@ void CElfilisA_DrawLaser::Exit()
 
     if (m_LaserScript)
     {
-        GamePlayStatic::DestroyGameObject(m_LaserScript->GetOwner());
+        m_LaserScript->SafeDestroy();
         m_LaserScript = nullptr;
     }
 }
@@ -101,6 +101,7 @@ void CElfilisA_DrawLaser::Enter_Step()
         if (m_LaserScript)
         {
             m_LaserScript->SetEnd();
+            m_LaserScript = nullptr;
         }
     }
     break;
