@@ -91,7 +91,10 @@ public:
 
     void OnWeaponTrigger();
     void OffWeaponTrigger();
+    void Teleport(UINT _Flag, float _WorldY = 0.f) { Teleport(GetOwner(), _Flag, _WorldY); }
+    void Teleport(CGameObject* _TeleportObject, UINT _Flag, float _WorldY = 0.f);
     void ResetEmissive();
+    void ReleaseDynamicMtrl();
 
     void SpawnDropStar(Vec3 _Pos);
     void DestroySumon();

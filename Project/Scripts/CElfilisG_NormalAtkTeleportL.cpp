@@ -109,6 +109,8 @@ void CElfilisG_NormalAtkTeleportL::Exit_Step()
     case StateStep::Wait:
         break;
     case StateStep::StartEnd: {
+        ELFFSM->ReleaseDynamicMtrl();
+
         if (m_BeforeObj)
         {
             GamePlayStatic::DestroyGameObject(m_BeforeObj);
@@ -271,8 +273,6 @@ void CElfilisG_NormalAtkTeleportL::End()
 
 void CElfilisG_NormalAtkTeleportL::SpawnTeleport()
 {
-    //@Effect 일부분만 그리는 셰이더 작성 필요
-
     // copy object
     m_BeforeObj = new CGameObject;
     m_BeforeObj->AddComponent(GetOwner()->Transform()->Clone());
@@ -300,16 +300,17 @@ void CElfilisG_NormalAtkTeleportL::SpawnTeleport()
         m_AfterPos = MapFloorOffset + Dir * MapSizeRadius;
     }
 
-    //@Effect 텔레포드 이펙트
     Vec3 Pos = GetOwner()->Transform()->GetWorldPos();
     Pos.y += 100.f;
     m_BeforeEffect = m_Effect->Instantiate();
     m_BeforeEffect->Transform()->SetWorldPos(Pos);
     GamePlayStatic::SpawnGameObject(m_BeforeEffect, LAYER_EFFECT);
+    ELFFSM->Teleport(m_BeforeObj, 2, Pos.y);
 
     Pos = m_AfterPos;
     Pos.y += 100.f;
     m_AfterEffect = m_Effect->Instantiate();
     m_AfterEffect->Transform()->SetWorldPos(Pos);
     GamePlayStatic::SpawnGameObject(m_AfterEffect, LAYER_EFFECT);
+    ELFFSM->Teleport(1, Pos.y);
 }

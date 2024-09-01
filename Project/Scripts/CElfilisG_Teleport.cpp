@@ -36,6 +36,7 @@ void CElfilisG_Teleport::Exit()
 {
     Exit_Step();
 
+    ELFFSM->ReleaseDynamicMtrl();
     GetOwner()->Animator()->SetPlay(true);
 
     if (m_BeforeObj)
@@ -63,8 +64,6 @@ void CElfilisG_Teleport::Enter_Step()
         GetOwner()->Animator()->Play(ANIMPREFIX("Wait"));
         GetOwner()->Animator()->SetPlay(false);
 
-        //@Effect 일부분만 그리는 셰이더 작성 필요
-
         // copy object
         m_BeforeObj = new CGameObject;
         m_BeforeObj->AddComponent(GetOwner()->Transform()->Clone());
@@ -80,18 +79,19 @@ void CElfilisG_Teleport::Enter_Step()
         m_AfterPos.z = GetRandomfloat(-MapSizeRadius, MapSizeRadius);
         m_AfterPos = ELFFSM->GetMapFloorOffset() + m_AfterPos.Normalize() * GetRandomfloat(0.f, MapSizeRadius);
 
-        //@Effect 텔레포드 이펙트
         Vec3 Pos = GetOwner()->Transform()->GetWorldPos();
         Pos.y += 100.f;
         m_BeforeEffect = m_Effect->Instantiate();
         m_BeforeEffect->Transform()->SetWorldPos(Pos);
         GamePlayStatic::SpawnGameObject(m_BeforeEffect, LAYER_EFFECT);
+        ELFFSM->Teleport(m_BeforeObj, 2, Pos.y);
 
         Pos = m_AfterPos;
         Pos.y += 100.f;
         m_AfterEffect = m_Effect->Instantiate();
         m_AfterEffect->Transform()->SetWorldPos(Pos);
         GamePlayStatic::SpawnGameObject(m_AfterEffect, LAYER_EFFECT);
+        ELFFSM->Teleport(1, Pos.y);
     }
     break;
     case StateStep::End:
@@ -131,10 +131,12 @@ void CElfilisG_Teleport::End()
     float ChangeHeight = Pos.y - m_EffectSpeed * DT;
     Pos.y = ChangeHeight;
     m_BeforeEffect->Transform()->SetWorldPos(Pos);
+    ELFFSM->Teleport(m_BeforeObj, 2, Pos.y);
 
     Pos = m_AfterEffect->Transform()->GetWorldPos();
     Pos.y = ChangeHeight;
     m_AfterEffect->Transform()->SetWorldPos(Pos);
+    ELFFSM->Teleport(1, Pos.y);
 
     if (ChangeHeight <= 0.f)
     {

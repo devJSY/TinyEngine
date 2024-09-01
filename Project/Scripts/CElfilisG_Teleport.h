@@ -22,7 +22,7 @@ private:
     // tick
     void Start();
     void End();
-
+      
 public:
     CLONE(CElfilisG_Teleport)
     CElfilisG_Teleport();

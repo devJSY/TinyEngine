@@ -518,7 +518,7 @@ void CElfilisFSM::tick()
     //{
     //    Rigidbody()->SetVelocity(Vec3());
     //    Rigidbody()->SetAngularVelocity(Vec3());
-    //    ChangeStateGroup(ElfilisStateGroup::GroundAtkFar, L"GROUND_ATK_SWORDWAVE_STORM");
+    //    ChangeStateGroup(ElfilisStateGroup::GroundMove, L"GROUND_MOVE_TELEPORT");
     //    //ChangeStateGroup(ElfilisStateGroup::GroundToAir);
     //}
 }
@@ -669,6 +669,27 @@ void CElfilisFSM::ResetEmissive()
     }
 }
 
+void CElfilisFSM::ReleaseDynamicMtrl()
+{
+    if (!MeshRender())
+        return;
+
+    Vec4 TeleportInfo;
+
+    // set body shader
+    int BodyMtrlCount = MeshRender()->GetMtrlCount();
+    for (int i = 0; i < BodyMtrlCount; ++i)
+    {
+        MeshRender()->GetSharedMaterial(i)->SetScalarParam(SCALAR_PARAM::VEC4_3, TeleportInfo);
+    }
+
+    // set weapon shader
+    if (m_Weapon && m_Weapon->MeshRender())
+    {
+        m_Weapon->MeshRender()->GetSharedMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC4_3, TeleportInfo);
+    }
+}
+
 void CElfilisFSM::AddEmissive(Vec3 _Color)
 {
     for (int i = 0; i < m_listBodyMtrl.size(); ++i)
@@ -700,6 +721,28 @@ void CElfilisFSM::OffWeaponTrigger()
         return;
 
     m_Weapon->BoxCollider()->SetEnabled(false);
+}
+
+void CElfilisFSM::Teleport(CGameObject* _TeleportObject, UINT _Flag, float _WorldY)
+{
+    if (!_TeleportObject->MeshRender() || _Flag > 2)
+        return;
+
+    Vec4 TeleportInfo{(float)_Flag, _WorldY, 15.f, 0.f};
+    
+    // set body shader
+    int BodyMtrlCount = _TeleportObject->MeshRender()->GetMtrlCount();
+    for (int i = 0; i < BodyMtrlCount; ++i)
+    {
+        _TeleportObject->MeshRender()->GetDynamicMaterial(i)->SetScalarParam(SCALAR_PARAM::VEC4_3, TeleportInfo);
+    }
+
+    // set weapon shader
+    CGameObject* Weapon = _TeleportObject->GetChildObject(L"Halberd");
+    if (Weapon && Weapon->MeshRender())
+    {
+        Weapon->MeshRender()->GetDynamicMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC4_3, TeleportInfo);
+    }
 }
 
 const vector<wstring>& CElfilisFSM::GetCurPublicStates() const
