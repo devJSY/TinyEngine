@@ -441,10 +441,10 @@ void CKirbyAbility_Sword::AttackCharge3End()
         PLAYERFSM->GetCurWeapon()->Transform()->SetLocalScale(NewScale);
     }
 
-    // 
+    // Thunder & Tornado Effect
     if (m_bFrmEnter && CHECK_ANIMFRM(PLAYER, 35))
     {
-        CAMERACTRL->Shake(0.5f, 50.f, 50.f);
+        CAMERACTRL->Shake(0.3f, 50.f, 50.f);
         m_bFrmEnter = false;
     }
 }

@@ -187,7 +187,7 @@ void CPlayerHitbox::OnTriggerStay(CCollider* _OtherCollider)
     // Camera Shake
     if (m_bCameraShake)
     {
-        CAMERACTRL->Shake(0.1f, 10.f, 10.f);
+        CAMERACTRL->Shake(0.1f, 15.f, 15.f);
     }
 }
 

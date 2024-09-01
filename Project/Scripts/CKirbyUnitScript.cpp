@@ -286,6 +286,13 @@ void CKirbyUnitScript::DropAbility()
         GamePlayStatic::SpawnGameObject(pBubble, LAYER_DYNAMIC);
     }
 
+    // clear kirby sword twinkle particle
+    CGameObject* pTwinkleParticle = PLAYER->GetChildObject(L"KirbySwordTwinkleParticle");
+    if (nullptr != pTwinkleParticle)
+    {
+        GamePlayStatic::DestroyGameObject(pTwinkleParticle);
+    }
+
     // clear current ability
     PLAYERFSM->ClearYPressedTime();
     PLAYERFSM->ClearCurHatWeapon();
