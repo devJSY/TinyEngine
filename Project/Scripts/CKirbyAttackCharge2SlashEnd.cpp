@@ -28,6 +28,8 @@ void CKirbyAttackCharge2SlashEnd::Enter()
     PLAYERCTRL->SetFrictionMode(true);
 
     PLAYERFSM->SetInvincible(true);
+
+    PLAYERFSM->GetCurWeapon()->GetChildObject(L"KirbySwordFireParticle")->ParticleSystem()->EnableModule(PARTICLE_MODULE::SPAWN, false);
 }
 
 void CKirbyAttackCharge2SlashEnd::Exit()

@@ -5,6 +5,8 @@ class CKirbyAbility_Sword : public CKirbyAbility
 {
 private:
     Ptr<CPrefab> m_KirbySwordSlashPref;
+    Ptr<CPrefab> m_KirbySwordTwinkleParticlePref;
+    Ptr<CPrefab> m_KirbySwordFireParticlePref;
     Vec3 m_PrevWeaponScale;
     Vec3 m_BigWeaponScale;
     float m_PrevSpeed;

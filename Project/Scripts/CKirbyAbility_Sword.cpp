@@ -4,23 +4,9 @@
 #include "CState.h"
 
 CKirbyAbility_Sword::CKirbyAbility_Sword()
-    : m_BigWeaponScale(Vec3(5.f, 5.f, 5.f))
-    , m_PrevSpeed(0.f)
-    , m_PrevRotSpeed(0.f)
-    , m_PrevGravity(0.f)
-    , m_AccTime(0.f)
-    , m_bFrmEnter(true)
-{
-    m_Hat = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordHat.pref", L"prefab\\KirbySwordHat.pref");
-    m_Weapon = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordWeapon.pref", L"prefab\\KirbySwordWeapon.pref");
-    m_KirbySwordSlashPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordSlash.pref");
-    m_ComboSuccessTime = 0.5f;
-    m_Charge1Time = 1.f;
-    m_Charge2Time = 1.f;
-}
-
-CKirbyAbility_Sword::CKirbyAbility_Sword(const CKirbyAbility_Sword& _Origin)
-    : CKirbyAbility(_Origin)
+    : m_KirbySwordSlashPref(nullptr)
+    , m_KirbySwordTwinkleParticlePref(nullptr)
+    , m_KirbySwordFireParticlePref(nullptr)
     , m_BigWeaponScale(Vec3(5.f, 5.f, 5.f))
     , m_PrevSpeed(0.f)
     , m_PrevRotSpeed(0.f)
@@ -31,6 +17,30 @@ CKirbyAbility_Sword::CKirbyAbility_Sword(const CKirbyAbility_Sword& _Origin)
     m_Hat = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordHat.pref", L"prefab\\KirbySwordHat.pref");
     m_Weapon = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordWeapon.pref", L"prefab\\KirbySwordWeapon.pref");
     m_KirbySwordSlashPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordSlash.pref");
+    m_KirbySwordTwinkleParticlePref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordTwinkleParticle.pref");
+    m_KirbySwordFireParticlePref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordFireParticle.pref");
+    m_ComboSuccessTime = 0.5f;
+    m_Charge1Time = 1.f;
+    m_Charge2Time = 1.f;
+}
+
+CKirbyAbility_Sword::CKirbyAbility_Sword(const CKirbyAbility_Sword& _Origin)
+    : CKirbyAbility(_Origin)
+    , m_KirbySwordSlashPref(nullptr)
+    , m_KirbySwordTwinkleParticlePref(nullptr)
+    , m_KirbySwordFireParticlePref(nullptr)
+    , m_BigWeaponScale(Vec3(5.f, 5.f, 5.f))
+    , m_PrevSpeed(0.f)
+    , m_PrevRotSpeed(0.f)
+    , m_PrevGravity(0.f)
+    , m_AccTime(0.f)
+    , m_bFrmEnter(true)
+{
+    m_Hat = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordHat.pref", L"prefab\\KirbySwordHat.pref");
+    m_Weapon = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordWeapon.pref", L"prefab\\KirbySwordWeapon.pref");
+    m_KirbySwordSlashPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordSlash.pref");
+    m_KirbySwordTwinkleParticlePref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordTwinkleParticle.pref");
+    m_KirbySwordFireParticlePref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordFireParticle.pref");
     m_ComboSuccessTime = 0.5f;
     m_Charge1Time = 1.f;
     m_Charge2Time = 1.f;
@@ -307,8 +317,8 @@ void CKirbyAbility_Sword::AttackCharge2Start()
 void CKirbyAbility_Sword::AttackCharge2StartEnter()
 {
     PLAYER->Animator()->Play(ANIMPREFIX("SuperSpinSlashChargeStart"), false, false, 1.5f);
-    //@Effect 충전완료
 
+    //@Effect 충전완료
     m_PrevSpeed = PLAYERCTRL->GetSpeed();
     PLAYERCTRL->SetSpeed(3.f);
     PLAYERCTRL->LockDirection();
@@ -734,11 +744,20 @@ void CKirbyAbility_Sword::ChangeAbilityEnter()
     PLAYERFSM->SetCurHat(pInstObj);
     GamePlayStatic::AddChildObject(PLAYER, pInstObj, L"Hat");
 
+    // particle
+    pInstObj = m_KirbySwordTwinkleParticlePref->Instantiate();
+    GamePlayStatic::AddChildObject(PLAYER, pInstObj, L"Hat");
+
     // create sword
     pInstObj = m_Weapon->Instantiate();
     pInstObj->BoxCollider()->SetEnabled(false);
     PLAYERFSM->SetCurWeapon(pInstObj);
     GamePlayStatic::AddChildObject(PLAYER, pInstObj, L"Weapon");
+
+    // Sword Fire Particle
+    CGameObject* pFireParticle = m_KirbySwordFireParticlePref->Instantiate();
+    pFireParticle->ParticleSystem()->EnableModule(PARTICLE_MODULE::SPAWN, false);
+    GamePlayStatic::AddChildObject(pInstObj, pFireParticle, L"WeaponEnd");
 }
 
 void CKirbyAbility_Sword::ChangeAbilityExit()

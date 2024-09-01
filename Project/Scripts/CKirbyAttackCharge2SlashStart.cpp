@@ -28,6 +28,8 @@ void CKirbyAttackCharge2SlashStart::Enter()
     PLAYERCTRL->LockJump();
 
     PLAYERFSM->SetInvincible(true);
+
+    PLAYERFSM->GetCurWeapon()->GetChildObject(L"KirbySwordFireParticle")->ParticleSystem()->EnableModule(PARTICLE_MODULE::SPAWN, true);
 }
 
 void CKirbyAttackCharge2SlashStart::Exit()
