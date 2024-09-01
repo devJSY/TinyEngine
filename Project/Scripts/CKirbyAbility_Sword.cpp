@@ -13,7 +13,7 @@ CKirbyAbility_Sword::CKirbyAbility_Sword()
 {
     m_Hat = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordHat.pref", L"prefab\\KirbySwordHat.pref");
     m_Weapon = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordWeapon.pref", L"prefab\\KirbySwordWeapon.pref");
-    // m_KirbySwordSlashPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordSlash.pref");
+    m_KirbySwordSlashPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordSlash.pref
     m_ComboSuccessTime = 0.5f;
     m_Charge1Time = 1.f;
     m_Charge2Time = 1.f;
@@ -30,7 +30,7 @@ CKirbyAbility_Sword::CKirbyAbility_Sword(const CKirbyAbility_Sword& _Origin)
 {
     m_Hat = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordHat.pref", L"prefab\\KirbySwordHat.pref");
     m_Weapon = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordWeapon.pref", L"prefab\\KirbySwordWeapon.pref");
-    // m_KirbySwordSlashPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordSlash.pref");
+    m_KirbySwordSlashPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordSlash.pref");
     m_ComboSuccessTime = 0.5f;
     m_Charge1Time = 1.f;
     m_Charge2Time = 1.f;
@@ -68,7 +68,7 @@ void CKirbyAbility_Sword::IdleEnter()
 // ===============
 // Attack
 // ===============
-// Ä®ÈÖµÎ¸£±â (Lv0)
+// ì¹¼íœ˜ë‘ë¥´ê¸° (Lv0)
 
 #include "CMomentaryObjScript.h"
 void CKirbyAbility_Sword::Attack()
@@ -76,7 +76,7 @@ void CKirbyAbility_Sword::Attack()
     if (CHECK_ANIMFRM(PLAYER, 7) && m_bFrmEnter)
     {
         m_bFrmEnter = false;
-        SpawnSwordSlash();
+        SpawnSwordSlash(Vec3(30.f, 30.f, 30.f));
     }
 }
 
@@ -92,7 +92,7 @@ void CKirbyAbility_Sword::AttackEnter()
 
     m_bFrmEnter = true;
 
-    //@Effect Effect Àç»ý
+    //@Effect Effect ìž¬ìƒ
 }
 
 void CKirbyAbility_Sword::AttackExit()
@@ -108,21 +108,21 @@ void CKirbyAbility_Sword::AttackExit()
 // ===============
 // Attack Combo 1
 // ===============
-// Ä®ÈÖµÎ¸£±â (Lv1)
+// ì¹¼íœ˜ë‘ë¥´ê¸° (Lv1)
 
 void CKirbyAbility_Sword::AttackCombo1()
 {
     if (CHECK_ANIMFRM(PLAYER, 9) && m_bFrmEnter)
     {
         m_bFrmEnter = false;
-        SpawnSwordSlash();
+        SpawnSwordSlash(Vec3(50.f, 30.f, 30.f));
     }
 }
 
 void CKirbyAbility_Sword::AttackCombo1Enter()
 {
     PLAYER->Animator()->Play(ANIMPREFIX("Attack2"), false, false, 1.5f);
-    //@Effect Àç»ý
+    //@Effect ìž¬ìƒ
 
     m_PrevSpeed = PLAYERCTRL->GetSpeed();
     PLAYERCTRL->SetSpeed(3.f);
@@ -148,14 +148,14 @@ void CKirbyAbility_Sword::AttackCombo1Exit()
 // ===============
 // Attack Combo 2
 // ===============
-// Ä®ÈÖµÎ¸£±â (Lv2)
+// ì¹¼íœ˜ë‘ë¥´ê¸° (Lv2)
 
 void CKirbyAbility_Sword::AttackCombo2()
 {
     if (CHECK_ANIMFRM(PLAYER, 17) && m_bFrmEnter)
     {
         m_bFrmEnter = false;
-        SpawnSwordSlash();
+        SpawnSwordSlash(Vec3(50.f, 30.f, 30.f));
     }
 }
 
@@ -168,7 +168,7 @@ void CKirbyAbility_Sword::AttackCombo2Enter()
     PLAYERCTRL->LockDirection();
     PLAYERCTRL->LockJump();
 
-    //@Effect Effect Àç»ý
+    //@Effect Effect ìž¬ìƒ
     PLAYERFSM->SetInvincible(true);
     PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(true);
 
@@ -190,7 +190,7 @@ void CKirbyAbility_Sword::AttackCombo2Exit()
 // ===============
 // Charge Attack 1
 // ===============
-// ½ºÇÉ°ø°Ý (Lv1)
+// ìŠ¤í•€ê³µê²© (Lv1)
 
 // (charge attack)
 void CKirbyAbility_Sword::AttackCharge1()
@@ -201,7 +201,7 @@ void CKirbyAbility_Sword::AttackCharge1()
 void CKirbyAbility_Sword::AttackCharge1Enter()
 {
     PLAYER->Animator()->Play(ANIMPREFIX("SpinSlash"), false, false, 1.5f);
-    //@Effect ½ºÇÉÀÌÆåÆ®
+    //@Effect ìŠ¤í•€ì´íŽ™íŠ¸
 
     PLAYERCTRL->LockDirection();
     PLAYERCTRL->LockJump();
@@ -227,7 +227,7 @@ void CKirbyAbility_Sword::AttackCharge1Start()
 void CKirbyAbility_Sword::AttackCharge1StartEnter()
 {
     PLAYER->Animator()->Play(ANIMPREFIX("SpinSlashCharge"), false, false, 1.5f);
-    //@Effect ÃæÀü¿Ï·á
+    //@Effect ì¶©ì „ì™„ë£Œ
 
     m_PrevSpeed = PLAYERCTRL->GetSpeed();
     PLAYERCTRL->SetSpeed(3.f);
@@ -250,7 +250,7 @@ void CKirbyAbility_Sword::AttackCharge1End()
 void CKirbyAbility_Sword::AttackCharge1EndEnter()
 {
     PLAYER->Animator()->Play(ANIMPREFIX("SpinSlashEnd"), false, false, 1.5f);
-    //@Effect ÅÍÁö´Â Èò»ö ÆÄÆ¼Å¬ ÀÔÀÚµé
+    //@Effect í„°ì§€ëŠ” í°ìƒ‰ íŒŒí‹°í´ ìž…ìžë“¤
 
     PLAYERCTRL->LockDirection();
     PLAYERCTRL->LockJump();
@@ -275,7 +275,7 @@ void CKirbyAbility_Sword::AttackCharge1EndExit()
 // ===============
 // Charge Attack 2
 // ===============
-// ½ºÇÉ°ø°Ý-Â÷Áö (Lv2)
+// ìŠ¤í•€ê³µê²©-ì°¨ì§€ (Lv2)
 
 // (charge)
 void CKirbyAbility_Sword::AttackCharge2()
@@ -307,7 +307,7 @@ void CKirbyAbility_Sword::AttackCharge2Start()
 void CKirbyAbility_Sword::AttackCharge2StartEnter()
 {
     PLAYER->Animator()->Play(ANIMPREFIX("SuperSpinSlashChargeStart"), false, false, 1.5f);
-    //@Effect ÃæÀü¿Ï·á
+    //@Effect ì¶©ì „ì™„ë£Œ
 
     m_PrevSpeed = PLAYERCTRL->GetSpeed();
     PLAYERCTRL->SetSpeed(3.f);
@@ -325,13 +325,13 @@ void CKirbyAbility_Sword::AttackCharge2StartExit()
 // ===============
 // Charge Attack 2
 // ===============
-// ½ºÇÉ°ø°Ý-°ø°Ý (Lv2)
-// State µû·Î ÆÄ¼­ ±¸Çö
+// ìŠ¤í•€ê³µê²©-ê³µê²© (Lv2)
+// State ë”°ë¡œ íŒŒì„œ êµ¬í˜„
 
 // ===============
 // Charge Attack 3
 // ===============
-// ´ë°Ë°ø°Ý (Lv3)
+// ëŒ€ê²€ê³µê²© (Lv3)
 
 // (charge)
 void CKirbyAbility_Sword::AttackCharge3()
@@ -391,7 +391,7 @@ void CKirbyAbility_Sword::AttackCharge3StartEnter()
 {
     PLAYER->Animator()->Play(ANIMPREFIX("GigantChargeAttackStart"), false, false, 1.5f);
     CPlayerMgr::SetPlayerFace(FaceType::Frown);
-    //@Effect ÃæÀü¿Ï·á
+    //@Effect ì¶©ì „ì™„ë£Œ
 
     m_AccTime = 0.f;
     m_PrevSpeed = PLAYERCTRL->GetSpeed();
@@ -429,7 +429,7 @@ void CKirbyAbility_Sword::AttackCharge3EndEnter()
 {
     PLAYER->Animator()->Play(ANIMPREFIX("GigantChargeAttack"), false, false, 1.5f, 0.f);
     PLAYER->Animator()->SetClipFrameIndex(25);
-    //@Effect ¹ø°³
+    //@Effect ë²ˆê°œ
 
     PLAYERCTRL->LockMove();
     PLAYERCTRL->LockDirection();
@@ -456,7 +456,7 @@ void CKirbyAbility_Sword::AttackCharge3EndExit()
 // ===============
 // Jump
 // ===============
-// Á¡ÇÁ
+// ì í”„
 void CKirbyAbility_Sword::JumpFallEnter()
 {
     PLAYER->Animator()->Play(ANIMPREFIX("JumpFall"), false, false, 2.5f, 0.3f);
@@ -465,7 +465,7 @@ void CKirbyAbility_Sword::JumpFallEnter()
 // ===============
 // Jump Attack
 // ===============
-// Á¡ÇÁ ½ºÇÉ°ø°Ý
+// ì í”„ ìŠ¤í•€ê³µê²©
 
 void CKirbyAbility_Sword::JumpAttack()
 {
@@ -486,7 +486,7 @@ void CKirbyAbility_Sword::JumpAttack()
 void CKirbyAbility_Sword::JumpAttackEnter()
 {
     PLAYER->Animator()->Play(ANIMPREFIX("SwordSpin"), false, false, 2.f);
-    //@Effect ½ºÇÉ ÀÌÆåÆ®
+    //@Effect ìŠ¤í•€ ì´íŽ™íŠ¸
 
     m_PrevGravity = PLAYERCTRL->GetGravity();
     PLAYERCTRL->SetGravity(0.f);
@@ -496,6 +496,7 @@ void CKirbyAbility_Sword::JumpAttackEnter()
     PLAYERFSM->SetInvincible(true);
     PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(true);
     m_bFrmEnter = true;
+    SpawnSwordSlash(Vec3(50.f, 30.f, 30.f), true);
 }
 
 void CKirbyAbility_Sword::JumpAttackExit()
@@ -515,7 +516,7 @@ void CKirbyAbility_Sword::JumpAttackStart()
 void CKirbyAbility_Sword::JumpAttackStartEnter()
 {
     PLAYER->Animator()->Play(ANIMPREFIX("SwordSpinStart"), false, false, 2.f);
-    //@Effect Ä® ³¡ µû¶ó°¡´Â ÀÌÆåÆ®
+    //@Effect ì¹¼ ë ë”°ë¼ê°€ëŠ” ì´íŽ™íŠ¸
 
     PLAYERCTRL->LockDirection();
 
@@ -551,7 +552,7 @@ void CKirbyAbility_Sword::LandingEnter()
         PLAYERFSM->SetKnockBackDir(-PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT));
         PLAYERFSM->SetInvincible(true);
 
-        //@Effect ³»·ÁÂï´Â Ãæ°ÝÈ¿°ú, ³ªºñ
+        //@Effect ë‚´ë ¤ì°ëŠ” ì¶©ê²©íš¨ê³¼, ë‚˜ë¹„
     }
 
     PLAYERCTRL->LockJump();
@@ -575,7 +576,7 @@ void CKirbyAbility_Sword::GuardEnter()
 // ===============
 // Guard Run
 // ===============
-// ¼ø°£ÀÌµ¿
+// ìˆœê°„ì´ë™
 
 void CKirbyAbility_Sword::GuardRun()
 {
@@ -586,7 +587,7 @@ void CKirbyAbility_Sword::GuardRunEnter()
     PLAYER->MeshRender()->SetEnabled(false);
     PLAYERFSM->GetCurHat()->MeshRender()->SetEnabled(false);
     PLAYERFSM->GetCurWeapon()->MeshRender()->SetEnabled(false);
-    //@Effect ±ËÀû ÆÄÆ¼Å¬
+    //@Effect ê¶¤ì  íŒŒí‹°í´
 
     m_PrevSpeed = PLAYERCTRL->GetSpeed();
     PLAYERCTRL->SetSpeed(15.f);
@@ -612,7 +613,7 @@ void CKirbyAbility_Sword::GuardRunExit()
 // ===============
 // Slide
 // ===============
-// ½½¶óÀÌµå Âî¸£±â
+// ìŠ¬ë¼ì´ë“œ ì°Œë¥´ê¸°
 
 void CKirbyAbility_Sword::Slide()
 {
@@ -673,7 +674,7 @@ void CKirbyAbility_Sword::SlideEndExit()
 // ===============
 // Slide Attack
 // ===============
-// ½½¶óÀÌµå ÄÞº¸°ø°Ý
+// ìŠ¬ë¼ì´ë“œ ì½¤ë³´ê³µê²©
 
 void CKirbyAbility_Sword::SlideAttack()
 {
@@ -692,7 +693,7 @@ void CKirbyAbility_Sword::SlideAttackEnter()
 {
     PLAYER->Animator()->Play(ANIMPREFIX("UpwardSlash"), false, false, 2.f);
     CPlayerMgr::SetPlayerFace(FaceType::UpTail);
-    //@Effect Ä®³¡ ±ËÀû¼±
+    //@Effect ì¹¼ë ê¶¤ì ì„ 
 
     PLAYERCTRL->AddVelocity(Vec3(0, 30, 0));
     m_PrevGravity = PLAYERCTRL->GetGravity();
@@ -750,20 +751,20 @@ void CKirbyAbility_Sword::ChangeAbilityExit()
 
 void CKirbyAbility_Sword::DropAbilityEnter()
 {
-    // ÆÄÆ¼Å¬ ÇØÁ¦ÇÒ ¶§¿¡´Â ¹Ù·Î ¾ø¾Ö´Â°Åº¸´Ù DestroyParticle Script¸¦ ¾´´Ù¸é ¿¹»Ú°Ô »ç¶óÁý´Ï´Ù (½ºÆù ³¡³­ ÈÄ »èÁ¦)
+    // íŒŒí‹°í´ í•´ì œí•  ë•Œì—ëŠ” ë°”ë¡œ ì—†ì• ëŠ”ê±°ë³´ë‹¤ DestroyParticle Scriptë¥¼ ì“´ë‹¤ë©´ ì˜ˆì˜ê²Œ ì‚¬ë¼ì§‘ë‹ˆë‹¤ (ìŠ¤í° ëë‚œ í›„ ì‚­ì œ)
     // --------------------
-    // ¿¹½ÃÄÚµå:
+    // ì˜ˆì‹œì½”ë“œ:
     // CDestroyParticleScript* Script = new CDestroyParticleScript;
-    // Script->SetSpawnTime(0.f);           // Ãß°¡ÀûÀ¸·Î Spawn ±â´Ù¸± ½Ã°£
-    // ÆÄÆ¼Å¬°´Ã¼->AddComponent(Script);
-    // (ÀÌ·¸°Ô¸¸ ÇÏ¸é script ¾È¿¡¼­ ¾Ë¾Æ¼­ »èÁ¦Ã³¸®)
+    // Script->SetSpawnTime(0.f);           // ì¶”ê°€ì ìœ¼ë¡œ Spawn ê¸°ë‹¤ë¦´ ì‹œê°„
+    // íŒŒí‹°í´ê°ì²´->AddComponent(Script);
+    // (ì´ë ‡ê²Œë§Œ í•˜ë©´ script ì•ˆì—ì„œ ì•Œì•„ì„œ ì‚­ì œì²˜ë¦¬)
 }
 
 // ===============
 // Custom Func
 // ===============
 
-void CKirbyAbility_Sword::SpawnSwordSlash()
+void CKirbyAbility_Sword::SpawnSwordSlash(Vec3 _SlashScale, bool _bVertical)
 {
     if (m_KirbySwordSlashPref == nullptr || PLAYERUNIT->GetCurInfo().HP < PLAYERUNIT->GetCurInfo().MAXHP)
         return;
@@ -771,16 +772,26 @@ void CKirbyAbility_Sword::SpawnSwordSlash()
     CGameObject* SwordSlash = m_KirbySwordSlashPref->Instantiate();
     Vec3 Dir = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT);
     Vec3 Pos = PLAYER->Transform()->GetWorldPos() + Dir * 10.f;
-    SwordSlash->Transform()->SetWorldPos(Pos);
 
-    Dir.y = 0.f;
-    Dir.Normalize();
-    SwordSlash->Transform()->SetDirection(Dir);
+    SwordSlash->Transform()->SetWorldScale(_SlashScale);
+    float ImpulsePower = (_SlashScale.x + _SlashScale.y + _SlashScale.z) / 3.f;
+    ImpulsePower *= 1.2f;
+
+    if (_bVertical)
+    {
+        SwordSlash->Transform()->SetWorldPos(Pos);
+        SwordSlash->Transform()->SetDirection(Dir, PLAYER->Transform()->GetWorldDir(DIR_TYPE::RIGHT));
+    }
+    else
+    {
+        SwordSlash->Transform()->SetWorldPos(Pos + Vec3(0.f, 20.f, 0.f));
+        SwordSlash->Transform()->SetDirection(Dir);
+    }
 
     CMomentaryObjScript* Script = SwordSlash->GetScript<CMomentaryObjScript>();
-    Script->SetInitVelocity(Dir * 140.f);
+    Script->SetInitVelocity(Dir * ImpulsePower);
     Script->SetPlayTime(1.5f);
 
     SwordSlash->SetName(L"KirbyAttack_SwordSlash");
-    GamePlayStatic::SpawnGameObject(SwordSlash, LAYER_PLAYERATK);
+    GamePlayStatic::SpawnGameObject(SwordSlash, LAYER_PLAYERATK_TRIGGER);
 }

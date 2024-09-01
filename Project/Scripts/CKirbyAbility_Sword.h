@@ -117,7 +117,7 @@ public:
     virtual void DropAbilityEnter() override;
 
 private:
-    void SpawnSwordSlash();
+    void SpawnSwordSlash(Vec3 _SlashScale, bool _bVertical = false);
 
 public:
     CLONE(CKirbyAbility_Sword)
