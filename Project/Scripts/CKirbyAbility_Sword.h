@@ -7,6 +7,7 @@ private:
     Ptr<CPrefab> m_KirbySwordSlashPref;
     Ptr<CPrefab> m_KirbySwordTwinkleParticlePref;
     Ptr<CPrefab> m_KirbySwordFireParticlePref;
+    Ptr<CPrefab> m_KirbySwordButterflyParticlePref;
     Vec3 m_PrevWeaponScale;
     Vec3 m_BigWeaponScale;
     float m_PrevSpeed;
@@ -120,6 +121,7 @@ public:
 
 private:
     void SpawnSwordSlash(Vec3 _SlashScale, bool _bVertical = false);
+    void SpawnButterflyParticle();
 
 public:
     CLONE(CKirbyAbility_Sword)

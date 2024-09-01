@@ -3,11 +3,13 @@
 #include "CKirbyMoveController.h"
 #include "CState.h"
 #include "CDestroyParticleScript.h"
+#include "CMomentaryObjScript.h"
 
 CKirbyAbility_Sword::CKirbyAbility_Sword()
     : m_KirbySwordSlashPref(nullptr)
     , m_KirbySwordTwinkleParticlePref(nullptr)
     , m_KirbySwordFireParticlePref(nullptr)
+    , m_KirbySwordButterflyParticlePref(nullptr)
     , m_BigWeaponScale(Vec3(5.f, 5.f, 5.f))
     , m_PrevSpeed(0.f)
     , m_PrevRotSpeed(0.f)
@@ -20,6 +22,7 @@ CKirbyAbility_Sword::CKirbyAbility_Sword()
     m_KirbySwordSlashPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordSlash.pref");
     m_KirbySwordTwinkleParticlePref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordTwinkleParticle.pref");
     m_KirbySwordFireParticlePref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordFireParticle.pref");
+    m_KirbySwordButterflyParticlePref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordButterflyParticle.pref");
     m_ComboSuccessTime = 0.5f;
     m_Charge1Time = 1.f;
     m_Charge2Time = 1.f;
@@ -30,6 +33,7 @@ CKirbyAbility_Sword::CKirbyAbility_Sword(const CKirbyAbility_Sword& _Origin)
     , m_KirbySwordSlashPref(nullptr)
     , m_KirbySwordTwinkleParticlePref(nullptr)
     , m_KirbySwordFireParticlePref(nullptr)
+    , m_KirbySwordButterflyParticlePref(nullptr)
     , m_BigWeaponScale(Vec3(5.f, 5.f, 5.f))
     , m_PrevSpeed(0.f)
     , m_PrevRotSpeed(0.f)
@@ -42,6 +46,7 @@ CKirbyAbility_Sword::CKirbyAbility_Sword(const CKirbyAbility_Sword& _Origin)
     m_KirbySwordSlashPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordSlash.pref");
     m_KirbySwordTwinkleParticlePref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordTwinkleParticle.pref");
     m_KirbySwordFireParticlePref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordFireParticle.pref");
+    m_KirbySwordButterflyParticlePref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordButterflyParticle.pref");
     m_ComboSuccessTime = 0.5f;
     m_Charge1Time = 1.f;
     m_Charge2Time = 1.f;
@@ -598,7 +603,9 @@ void CKirbyAbility_Sword::GuardRunEnter()
     PLAYER->MeshRender()->SetEnabled(false);
     PLAYERFSM->GetCurHat()->MeshRender()->SetEnabled(false);
     PLAYERFSM->GetCurWeapon()->MeshRender()->SetEnabled(false);
+
     //@Effect ±ËÀû ÆÄÆ¼Å¬
+    SpawnButterflyParticle();
 
     m_PrevSpeed = PLAYERCTRL->GetSpeed();
     PLAYERCTRL->SetSpeed(15.f);
@@ -612,6 +619,8 @@ void CKirbyAbility_Sword::GuardRunExit()
     PLAYER->MeshRender()->SetEnabled(true);
     PLAYERFSM->GetCurHat()->MeshRender()->SetEnabled(true);
     PLAYERFSM->GetCurWeapon()->MeshRender()->SetEnabled(true);
+
+    SpawnButterflyParticle();
 
     PLAYERCTRL->SetSpeed(m_PrevSpeed);
     PLAYERCTRL->UnlockJump();
@@ -812,4 +821,23 @@ void CKirbyAbility_Sword::SpawnSwordSlash(Vec3 _SlashScale, bool _bVertical)
 
     SwordSlash->SetName(L"KirbyAttack_SwordSlash");
     GamePlayStatic::SpawnGameObject(SwordSlash, LAYER_PLAYERATK_TRIGGER);
+}
+
+void CKirbyAbility_Sword::SpawnButterflyParticle()
+{
+    CGameObject* pButterFlyPtcl = m_KirbySwordButterflyParticlePref->Instantiate();
+    Vec3 Pos = PLAYER->Transform()->GetWorldPos();
+
+    pButterFlyPtcl->Transform()->SetWorldPos(Pos + Vec3(0.f, 20.f, 0.f));
+
+    for (const auto& child : pButterFlyPtcl->GetChildObject())
+    {
+        CDestroyParticleScript* Script = new CDestroyParticleScript;
+        Script->SetSpawnTime(0.3f);
+        child->AddComponent(Script);
+    }
+
+    CMomentaryObjScript* pMomentaryScript = pButterFlyPtcl->GetScript<CMomentaryObjScript>();
+    pMomentaryScript->SetPlayTime(5.f);
+    GamePlayStatic::SpawnGameObject(pButterFlyPtcl, LAYER_EFFECT);
 }
