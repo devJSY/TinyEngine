@@ -134,6 +134,7 @@ void CSirKibbleScript::OnTriggerEnter(CCollider* _OtherCollider)
     if (Layer == LAYER_PLAYER_TRIGGER && L"Body Collider" == pObj->GetName())
     {
         pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo);
+        BodyAttackSound();
     }
 }
 

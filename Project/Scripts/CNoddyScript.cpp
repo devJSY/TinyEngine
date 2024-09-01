@@ -435,6 +435,7 @@ void CNoddyScript::OnTriggerEnter(CCollider* _OtherCollider)
         Vec3 vDir = PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos();
         UnitHit hitInfo = {DAMAGE_TYPE::NORMAL, vDir.Normalize(), GetCurInfo().ATK, 0.f, 0.f};
         pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo);
+        BodyAttackSound();
     }
 }
 

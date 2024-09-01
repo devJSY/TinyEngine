@@ -34,6 +34,7 @@ public:
 
     void SpawnDeadEffect(int _iSize);
 
+    void BodyAttackSound();
     void FindSound();
 
 public:

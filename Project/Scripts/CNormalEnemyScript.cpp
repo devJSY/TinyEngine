@@ -107,6 +107,7 @@ void CNormalEnemyScript::OnTriggerEnter(CCollider* _OtherCollider)
 
     if (Layer == LAYER_PLAYER_TRIGGER && L"Body Collider" == pObj->GetName())
     {
+        BodyAttackSound();
         pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo);
     }
 }
@@ -277,6 +278,7 @@ void CNormalEnemyScript::EnterState(NormalEnemyState _state)
     }
     break;
     case NormalEnemyState::Damage: {
+
         GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
             TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemyEye.03.png",
                                                         L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemyEye.03.png"));

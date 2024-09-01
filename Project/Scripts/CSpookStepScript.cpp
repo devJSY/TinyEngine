@@ -71,6 +71,7 @@ void CSpookStepScript::OnTriggerEnter(CCollider* _OtherCollider)
 
     if (Layer == LAYER_PLAYER_TRIGGER && L"Body Collider" == pObj->GetName())
     {
+        BodyAttackSound();
         pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo);
     }
 }

@@ -190,6 +190,7 @@ void CBladeKnightScript::EnterState()
     }
     break;
     case BLADEKNIGHT_STATE::Damage: {
+
         SetSparkle(true);
 
         // 피격 방향으로 회전
@@ -782,6 +783,7 @@ void CBladeKnightScript::OnTriggerEnter(CCollider* _OtherCollider)
     UINT Layer = _OtherCollider->GetOwner()->GetLayerIdx();
     if (Layer == LAYER_PLAYER_TRIGGER && L"Body Collider" == pObj->GetName())
     {
+        BodyAttackSound();
         Vec3 vDir = PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos();
         UnitHit hitInfo = {DAMAGE_TYPE::NORMAL, vDir.Normalize(), GetCurInfo().ATK, 0.f, 0.f};
         pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo);
