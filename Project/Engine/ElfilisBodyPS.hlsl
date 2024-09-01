@@ -20,22 +20,45 @@
 #define InvertNormalMapY g_int_0
 #define RIM_POWER g_float_1
 #define RIM_COLOR g_vec4_0
-#define TeleportFlag g_int_3    // (0) false, (1) Down, (2), Up 
-#define TeleportY g_float_3
+#define TeleportFlag g_vec4_3.x   // (x) Flag(false, Down, Up), (y) Teleport WorldY, (z) Radius
+#define TeleportWorldY g_vec4_3.y
+#define TeleportRadius g_vec4_3.z
 
 PS_OUT_FORWARD main(PS_IN input)
 {
     // Check Teleport (No Render)
-    float4 LocalPos = mul(float4(input.vPosWorld, 1.f), g_matWorldInv);
+    float Alpha = 1.f;
     
+    // teleprot Down : 위쪽만 그림
     if (TeleportFlag == 1)
     {
-        if (LocalPos.y < TeleportY)
-            clip(-1);
+        if (input.vPosWorld.y < TeleportWorldY)
+        {
+            if (TeleportRadius > 0.f && input.vPosWorld.y >= TeleportWorldY - TeleportRadius)
+            {
+                Alpha = 1.f - (TeleportWorldY - input.vPosWorld.y) / TeleportRadius;
+            }
+            else
+            {
+                clip(-1);
+            }
+        }
     }
+    
+    // teleport Up : 아래쪽만 그림
     else if (TeleportFlag == 2)
     {
-        
+        if (input.vPosWorld.y > TeleportWorldY)
+        {
+            if (TeleportRadius > 0.f && input.vPosWorld.y <= TeleportWorldY + TeleportRadius)
+            {
+                Alpha = 1.f - (input.vPosWorld.y - TeleportWorldY) / TeleportRadius;
+            }
+            else
+            {
+                clip(-1);
+            }
+        }
     }
     
     // Render
@@ -84,7 +107,7 @@ PS_OUT_FORWARD main(PS_IN input)
     float3 RimColor = RimLight(input.vNormalWorld, pixelToEye, RIM_COLOR.rgb, RIM_POWER);
     
     PS_OUT_FORWARD output;
-    output.vColor = float4(ambientLighting + directLighting + emission + RimColor, 1.0);
+    output.vColor = float4(ambientLighting + directLighting + emission + RimColor, Alpha);
     output.vColor = clamp(output.vColor, 0.0, 1000.0);
 
     output.vMotionVector.xy = input.vMotionVector.xy; // Vector
