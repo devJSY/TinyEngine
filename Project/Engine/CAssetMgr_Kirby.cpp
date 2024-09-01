@@ -344,6 +344,11 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
 
+        string RenderMaskFlagDesc = "[Render Mask Flag]\n- (0) NONE, (1) LocalZ, (2) WorldY";
+        string RenderMaskInfoDesc = "[Render Mask Info]\n- (x) Use From Pos : (0) NONE\n- (y) Use To Pos : (0) NONE\n- (z) From Pos\n- (w) To Pos";
+        pShader->AddScalarParam(SCALAR_PARAM::INT_0, RenderMaskFlagDesc);
+        pShader->AddScalarParam(SCALAR_PARAM::VEC4_0, RenderMaskInfoDesc);
+
         pShader->AddTexParam(TEX_0, "Nosie Black Texture");
         pShader->AddTexParam(TEX_1, "Noise Alpha Texture");
         pShader->AddTexParam(TEX_2, "Emissive Texture");
@@ -353,7 +358,7 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
     }
 
     // =================================
-    // Elfilis Laser Outer Shader
+    // Elfilis Laser Inner Shader
     // =================================
     {
         Ptr<CGraphicsShader> pShader = new CGraphicsShader;
@@ -365,6 +370,11 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
         pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
+
+        string RenderMaskFlagDesc = "[Render Mask Flag]\n- (0) NONE, (1) LocalZ, (2) WorldY";
+        string RenderMaskInfoDesc = "[Render Mask Info]\n- (x) Use From Pos : (0) NONE\n- (y) Use To Pos : (0) NONE\n- (z) From Pos\n- (w) To Pos";
+        pShader->AddScalarParam(SCALAR_PARAM::INT_0, RenderMaskFlagDesc);
+        pShader->AddScalarParam(SCALAR_PARAM::VEC4_0, RenderMaskInfoDesc);
 
         pShader->AddTexParam(TEX_0, "Emissive Noise Texture");
 
