@@ -40,12 +40,13 @@ float4 main(PS_IN input) : SV_Target
     // Masking Color2
     float Alpha2 = (MaskingColor2.r * ThreshHold) + (1.f - ThreshHold);
     float3 Color2 = DashColor.rgb * Alpha2;
+    
+    if (Alpha <= 0.1f && Alpha2 <= 0.1f)
+        discard;
+    
     float4 output2 = float4(Color2, BackGroundAlpha * DashAlphaRatio.x);
    
     FinalColor = output + output2;
- 
-    if (FinalColor.a <= 0.1f)
-        discard;
     
     return FinalColor;
 }
