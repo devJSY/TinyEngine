@@ -138,7 +138,7 @@ void CFlowMgr_LvRobby::LevelStart()
     SetFadeEffect(Vec3(252.f, 75.f, 129.f), true, 1.f, 1.25f, true);
 
     // BGM
-    GamePlayStatic::PlayBGM(L"sound\\stream\\K15_TownNewWorld1\\K15_TownNewWorld1.marker.wav", 0.5f);
+    BGMUpdate();
 }
 
 void CFlowMgr_LvRobby::tick()
@@ -328,6 +328,25 @@ void CFlowMgr_LvRobby::ExitZoomState()
 
 void CFlowMgr_LvRobby::EnterDragState()
 {
+    switch (m_eDragState)
+    {
+    case DragState::MovePlus: {
+        GamePlayStatic::Play2DSound(L"sound\\wav\\UiMenu\\0003.wav", 1, 0.3f);
+    }
+    break;
+    case DragState::MoveMinus: {
+        GamePlayStatic::Play2DSound(L"sound\\wav\\UiMenu\\0003.wav", 1, 0.3f);
+    }
+    break;
+    case DragState::Stop:
+        break;
+    case DragState::End:
+        break;
+    default:
+        break;
+    }
+
+    BGMUpdate();
 }
 
 void CFlowMgr_LvRobby::ChangeDragState(DragState _eState)
@@ -471,6 +490,30 @@ void CFlowMgr_LvRobby::ZoomIn()
     {
         vWolrdPos.z += DT * 250.f;
         m_pUICam->Transform()->SetWorldPos(vWolrdPos);
+    }
+}
+
+void CFlowMgr_LvRobby::BGMUpdate()
+{
+    if (0 == m_iCurStage)
+    {
+        FadeInBGM(L"sound\\stream\\K15_Grassland1\\K15_Grassland1.marker.wav", 0.f, 0.5f, 1.f);
+    }
+    else if (1 == m_iCurStage)
+    {
+        FadeInBGM(L"sound\\stream\\K15_Grassland1\\K15_Grassland1.marker.wav", 0.f, 0.5f, 1.f);
+    }
+    else if (2 == m_iCurStage)
+    {
+        FadeInBGM(L"sound\\stream\\K15_Park1\\K15_Park1.wav", 0.f, 0.5f, 1.f);
+    }
+    else if (3 == m_iCurStage)
+    {
+        // FadeInBGM(L"sound\\stream\\K15_Grassland1\\K15_Grassland1.marker.wav", 0.f, 0.5f, 1.f);
+    }
+    else
+    {
+        // FadeInBGM(L"sound\\stream\\K15_Grassland1\\K15_Grassland1.marker.wav", 0.f, 0.5f, 1.f);
     }
 }
 

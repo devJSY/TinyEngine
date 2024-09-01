@@ -89,6 +89,7 @@ void CSolarOnceScript::ChangeState(SolarOnceState _state)
 
 void CSolarOnceScript::EnterState(SolarOnceState _state)
 {
+    Vec3 vWorldPos = Transform()->GetWorldPos();
     switch (_state)
     {
     case SolarOnceState::ChargeOn: {
@@ -105,6 +106,8 @@ void CSolarOnceScript::EnterState(SolarOnceState _state)
         GetOwner()->MeshRender()->GetMaterial(17)->SetEmission(Vec4(1.f, 1.f, 0.f, 1.f));
         GetOwner()->MeshRender()->GetMaterial(18)->SetEmission(Vec4(1.f, 1.f, 0.f, 1.f));
         Animator()->Play(ANIMPREFIX("Charge"), false, false, 1.5f);
+        GamePlayStatic::Play3DSound(L"sound\\wav\\GimmickSolarPanel\\0000.wav", vWorldPos, 1, 0.5f);
+        Animator()->Play(ANIMPREFIX("Charge"), false);
     }
     break;
     case SolarOnceState::ChargeOff: {
@@ -112,6 +115,7 @@ void CSolarOnceScript::EnterState(SolarOnceState _state)
     }
     break;
     case SolarOnceState::OnWait: {
+        GamePlayStatic::Play3DSound(L"sound\\wav\\GimmickSolarPanel\\0002.wav", vWorldPos, 1, 0.5f);
         Animator()->Play(ANIMPREFIX("OnWait"), false);
     }
     break;
@@ -132,12 +136,9 @@ void CSolarOnceScript::EnterState(SolarOnceState _state)
         CGameObject* pObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(ToWstring(m_MovingObjName));
         if (nullptr != pObj)
             pObj->GetScript<CElevatorScript>()->SetState(ElevatorState::Move);
-        else
-        {
-            string tmp = string("Not Exist Elevator");
-            LOG(LOG_LEVEL::Log, tmp.c_str());
-        }
 
+        CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\wav\\GimmickSolarPanel\\0000.wav")->Stop();
+        GamePlayStatic::Play3DSound(L"sound\\wav\\GimmickSolarPanel\\0001.wav", vWorldPos, 1, 0.5f);
         Animator()->Play(ANIMPREFIX("OnWaitStart"), false);
     }
     break;

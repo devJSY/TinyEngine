@@ -331,6 +331,9 @@ void CNormalEnemyScript::EnterState(NormalEnemyState _state)
         Animator()->Play(ANIMPREFIX("Damage"), true, false, 1.5f);
     }
     break;
+    case NormalEnemyState::Death: {
+    }
+    break;
     case NormalEnemyState::End:
         break;
     default:

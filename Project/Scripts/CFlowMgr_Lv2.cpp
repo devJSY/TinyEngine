@@ -46,7 +46,7 @@ void CFlowMgr_Lv2::LevelStart()
     SetFadeEffect(Vec3(164.f, 44.f, 174.f), true, 1.f, 1.25f, true);
 
     // TODO BGM
-    GamePlayStatic::PlayBGM(L"sound\\stream\\K15_Park1\\K15_Park1.wav", 0.5f);
+    FadeInBGM(L"sound\\stream\\K15_Park1\\K15_Park1.wav", 0.f, 0.5f, 1.f);
 }
 
 void CFlowMgr_Lv2::LevelEnd()

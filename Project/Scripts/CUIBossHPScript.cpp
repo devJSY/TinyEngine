@@ -22,6 +22,7 @@ CUIBossHPScript::CUIBossHPScript()
     , m_fEnterHP(0.f)
     , m_bMolPho(false)
     , m_bElfilis(false)
+    , m_bSoundFlag(false)
 {
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bMolPho, "Molpho");
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bElfilis, "Elfilis");
@@ -51,6 +52,7 @@ CUIBossHPScript::CUIBossHPScript(const CUIBossHPScript& Origin)
     , m_fEnterHP(0.f)
     , m_bMolPho(false)
     , m_bElfilis(false)
+    , m_bSoundFlag(false)
 {
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bMolPho, "Molpho");
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bElfilis, "Elfilis");
@@ -154,14 +156,21 @@ void CUIBossHPScript::EnterState()
 
 void CUIBossHPScript::Enter()
 {
-    m_fEnterHP += DT * 700.f;
+    m_fEnterHP += DT * 450.f;
 
     float _fScalingRatio = m_fEnterHP / m_fMaxHP;
+
+    if (m_fMaxHP >= 0.1f && !m_bSoundFlag)
+    {
+        GamePlayStatic::Play2DSound(L"sound\\wav\\UiBasic\\0000.wav", 0, 0.3f);
+        m_bSoundFlag = true;
+    }
 
     if (m_fEnterHP >= m_fMaxHP)
     {
         m_fCurHP = m_fPrevHP = m_fMaxHP;
         ChangeState(HPState::Tick);
+        CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\wav\\UiBasic\\0000.wav")->Stop();
     }
 
     m_pRenderer->GetMaterial(0)->SetScalarParam(FLOAT_1, _fScalingRatio);
@@ -201,7 +210,7 @@ void CUIBossHPScript::HPTick()
             if (m_bDamaged)
             {
                 m_bDamaged = false;
-                //m_fCurPrevHP = m_fPrevHP = m_fCurHP;
+                // m_fCurPrevHP = m_fPrevHP = m_fCurHP;
             }
         }
     }
@@ -307,25 +316,25 @@ void CUIBossHPScript::HPDamageTask()
 
 void CUIBossHPScript::HPHealTask()
 {
-    //for (size_t i = 0; i < m_vHealTask.size(); ++i)
+    // for (size_t i = 0; i < m_vHealTask.size(); ++i)
     //{
-    //    // m_fPrevHP는 시작 할 때 현재 HP를 복사한다.
-    //    if (m_fCurPrevHP < m_vHealTask[i].fCurHP)
-    //    {
-    //        m_fAccTime = 0.f;
-    //        m_fCurPrevHP = m_vHealTask[i].fCurHP;
-    //    }
-    //}
+    //     // m_fPrevHP는 시작 할 때 현재 HP를 복사한다.
+    //     if (m_fCurPrevHP < m_vHealTask[i].fCurHP)
+    //     {
+    //         m_fAccTime = 0.f;
+    //         m_fCurPrevHP = m_vHealTask[i].fCurHP;
+    //     }
+    // }
 
-    //m_fAccTime += DT;
-    //if (m_fAccTime >= m_fComboTime)
+    // m_fAccTime += DT;
+    // if (m_fAccTime >= m_fComboTime)
     //{
-    //    m_fAccTime = 0.f;
-    //    m_bHpHealed = false;
-    //    m_bIsScaling = false;
-    //    m_bIsHealedScaling = true;
-    //    m_vHealTask.clear();
-    //}
+    //     m_fAccTime = 0.f;
+    //     m_bHpHealed = false;
+    //     m_bIsScaling = false;
+    //     m_bIsHealedScaling = true;
+    //     m_vHealTask.clear();
+    // }
 }
 
 UINT CUIBossHPScript::SaveToLevelFile(FILE* _File)
