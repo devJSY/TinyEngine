@@ -2,6 +2,7 @@
 #include "CPlayerHitbox.h"
 #include "CPlayerMgr.h"
 #include "CKirbyUnitScript.h"
+#include "CCameraController.h"
 
 CPlayerHitbox::CPlayerHitbox()
     : CScript(PLAYERHITBOX)
@@ -17,6 +18,7 @@ CPlayerHitbox::CPlayerHitbox()
     , m_bRepeat(false)
     , m_bTimeScaling(false)
     , m_bDestroyCollision(false)
+    , m_bCameraShake(false)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Damage, "Damage");
     AddScriptParam(SCRIPT_PARAM::INT, &m_DamageTypeIdx, "Damage Type");
@@ -26,6 +28,7 @@ CPlayerHitbox::CPlayerHitbox()
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bSummon, "Summon");
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bTimeScaling, "Time Scaling");
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bDestroyCollision, "Destroy Collision");
+    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bCameraShake, "Camera Shake");
 }
 
 CPlayerHitbox::CPlayerHitbox(const CPlayerHitbox& _Origin)
@@ -42,6 +45,7 @@ CPlayerHitbox::CPlayerHitbox(const CPlayerHitbox& _Origin)
     , m_bRepeat(false)
     , m_bTimeScaling(_Origin.m_bTimeScaling)
     , m_bDestroyCollision(_Origin.m_bDestroyCollision)
+    , m_bCameraShake(_Origin.m_bCameraShake)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Damage, "Damage");
     AddScriptParam(SCRIPT_PARAM::INT, &m_DamageTypeIdx, "Damage Type");
@@ -51,6 +55,7 @@ CPlayerHitbox::CPlayerHitbox(const CPlayerHitbox& _Origin)
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bSummon, "Summon");
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bTimeScaling, "Time Scaling");
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bDestroyCollision, "Destroy Collision");
+    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bCameraShake, "Camera Shake");
 }
 
 CPlayerHitbox::~CPlayerHitbox()
@@ -114,6 +119,7 @@ void CPlayerHitbox::OnTriggerEnter(CCollider* _OtherCollider)
     m_AccTime = 0.f;
     AddDamage(pMonster);
 
+    // ¾à°æÁ÷
     if (m_bTimeScaling)
     {
         CTimeMgr::GetInst()->SetTimeScale(0.1f, 0.f);
@@ -123,6 +129,12 @@ void CPlayerHitbox::OnTriggerEnter(CCollider* _OtherCollider)
     if (m_bDestroyCollision)
     {
         GamePlayStatic::DestroyGameObject(GetOwner());
+    }
+
+    // Camera Shake
+    if (m_bCameraShake)
+    {
+        CAMERACTRL->Shake(0.1f, 10.f, 10.f);
     }
 }
 
@@ -171,6 +183,12 @@ void CPlayerHitbox::OnTriggerStay(CCollider* _OtherCollider)
     {
         GamePlayStatic::DestroyGameObject(GetOwner());
     }
+
+    // Camera Shake
+    if (m_bCameraShake)
+    {
+        CAMERACTRL->Shake(0.1f, 10.f, 10.f);
+    }
 }
 
 void CPlayerHitbox::AddDamage(CGameObject* _Monster)
@@ -216,11 +234,13 @@ UINT CPlayerHitbox::SaveToLevelFile(FILE* _File)
     fwrite(&m_bCallReward, 1, sizeof(bool), _File);
     fwrite(&m_bTimeScaling, 1, sizeof(bool), _File);
     fwrite(&m_bDestroyCollision, 1, sizeof(bool), _File);
+    fwrite(&m_bCameraShake, 1, sizeof(bool), _File);
 
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(int);
     MemoryByte += sizeof(bool);
     MemoryByte += sizeof(float);
+    MemoryByte += sizeof(bool);
     MemoryByte += sizeof(bool);
     MemoryByte += sizeof(bool);
     MemoryByte += sizeof(bool);
@@ -241,11 +261,13 @@ UINT CPlayerHitbox::LoadFromLevelFile(FILE* _File)
     fread(&m_bCallReward, 1, sizeof(bool), _File);
     fread(&m_bTimeScaling, 1, sizeof(bool), _File);
     fread(&m_bDestroyCollision, 1, sizeof(bool), _File);
+    fread(&m_bCameraShake, 1, sizeof(bool), _File);
 
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(int);
     MemoryByte += sizeof(bool);
     MemoryByte += sizeof(float);
+    MemoryByte += sizeof(bool);
     MemoryByte += sizeof(bool);
     MemoryByte += sizeof(bool);
     MemoryByte += sizeof(bool);

@@ -4,6 +4,7 @@
 #include "CState.h"
 #include "CDestroyParticleScript.h"
 #include "CMomentaryObjScript.h"
+#include "CCameraController.h"
 
 CKirbyAbility_Sword::CKirbyAbility_Sword()
     : m_KirbySwordSlashPref(nullptr)
@@ -439,6 +440,13 @@ void CKirbyAbility_Sword::AttackCharge3End()
         Vec3 NewScale = m_PrevWeaponScale + (m_BigWeaponScale - m_PrevWeaponScale) * t;
         PLAYERFSM->GetCurWeapon()->Transform()->SetLocalScale(NewScale);
     }
+
+    // 
+    if (m_bFrmEnter && CHECK_ANIMFRM(PLAYER, 35))
+    {
+        CAMERACTRL->Shake(0.5f, 50.f, 50.f);
+        m_bFrmEnter = false;
+    }
 }
 
 void CKirbyAbility_Sword::AttackCharge3EndEnter()
@@ -454,6 +462,8 @@ void CKirbyAbility_Sword::AttackCharge3EndEnter()
     PLAYERFSM->SetInvincible(true);
     PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(true);
     PLAYERFSM->GetCurWeapon()->Transform()->SetLocalScale(m_BigWeaponScale);
+
+    m_bFrmEnter = true;
 }
 
 void CKirbyAbility_Sword::AttackCharge3EndExit()
