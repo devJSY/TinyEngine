@@ -1563,9 +1563,6 @@
     <FxCompile Include="MaskingPS.hlsl">
       <Filter>ShaderCode\Kirby\Common</Filter>
     </FxCompile>
-    <FxCompile Include="CutMaskingPS.hlsl">
-      <Filter>ShaderCode\Kirby\Common</Filter>
-    </FxCompile>
     <FxCompile Include="MeshDistortionPS.hlsl">
       <Filter>ShaderCode\Kirby\Postprocess</Filter>
     </FxCompile>
@@ -1573,6 +1570,9 @@
       <Filter>ShaderCode\Kirby\Common</Filter>
     </FxCompile>
     <FxCompile Include="ElfilisBodyPS.hlsl">
+      <Filter>ShaderCode\Kirby\Characters\Boss\Elfilis</Filter>
+    </FxCompile>
+    <FxCompile Include="DimensionGatePS.hlsl">
       <Filter>ShaderCode\Kirby\Characters\Boss\Elfilis</Filter>
     </FxCompile>
   </ItemGroup>

@@ -732,12 +732,12 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
     }
 
     // =================================
-    // Effect Masking Cut Shader
+    // Effect DimensionGate
     // =================================
     {
         Ptr<CGraphicsShader> pShader = new CGraphicsShader;
         pShader->CreateVertexShader(L"shader\\UnrealPBRVS.hlsl", "main");
-        pShader->CreatePixelShader(L"shader\\CutMaskingPS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\DimensionGatePS.hlsl", "main");
 
         pShader->SetRSType(RS_TYPE::CULL_NONE);
         pShader->SetDSType(DS_TYPE::LESS);
@@ -746,18 +746,18 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
 
         pShader->AddScalarParam(INT_0, "Invert NormalMap Y");
-        pShader->AddScalarParam(FLOAT_1, "Rim Power");
-        pShader->AddScalarParam(VEC4_0, "Rim Color");
         pShader->AddScalarParam(FLOAT_2, "Color Coefficient");
+        pShader->AddScalarParam(FLOAT_1, "Distortion Speed");
+        pShader->AddScalarParam(FLOAT_3, "Distortion Scale");
+        pShader->AddScalarParam(VEC4_0, "Noise Color");
 
         pShader->AddTexParam(TEX_0, "Masking Alpha Texture");
         pShader->AddTexParam(TEX_1, "Color Texture");
-        pShader->AddTexParam(TEX_2, "MRA Texture"); // Metallic, Roughness, Ambient Occlusion
-        pShader->AddTexParam(TEX_3, "Normal Texture");
-        pShader->AddTexParam(TEX_4, "Emissive Texture");
+        pShader->AddTexParam(TEX_2, "Base Color Noise Texture");
+        pShader->AddTexParam(TEX_3, "Distortion Noise Texture");
 
-        pShader->SetName(L"EffectMaskingCutShader");
-        AddAsset(L"EffectMaskingCutShader", pShader);
+        pShader->SetName(L"EffectDimensionGateShader");
+        AddAsset(L"EffectDimensionGateShader", pShader);
     }
 
     // =================================
