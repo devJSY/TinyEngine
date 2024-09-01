@@ -196,10 +196,12 @@ void CElfilisG_NormalAtkTeleportR::StartEnd()
         float ChangeHeight = Pos.y - m_EffectSpeed * DT;
         Pos.y = ChangeHeight;
         m_BeforeEffect->Transform()->SetWorldPos(Pos);
+        ELFFSM->Teleport(m_BeforeObj, 2, Pos.y);
 
         Pos = m_AfterEffect->Transform()->GetWorldPos();
         Pos.y = ChangeHeight;
         m_AfterEffect->Transform()->SetWorldPos(Pos);
+        ELFFSM->Teleport(1, Pos.y);
 
         if (ChangeHeight <= 0.f)
         {
