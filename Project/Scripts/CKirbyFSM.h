@@ -99,6 +99,9 @@ private:
     // State Control : Vending Machine
     UINT m_LeftCanCount;
 
+    // Shader
+    Ptr<CGraphicsShader> m_OriginShader;
+
 public:
     void begin() override;
     void tick() override;
@@ -119,6 +122,7 @@ public:
     void ResetCanCount() { m_LeftCanCount = 100; }
     void OffCollider();
     void OnCollider();
+    void ClearMtrlShader();
 
 public:
     void SetCurHat(CGameObject* _Hat);
@@ -151,6 +155,7 @@ public:
     void SetSkrr(bool _Skrr) { m_bIsSkrr = _Skrr; }
     void SetGlidingGravity(float _Gravity) { m_GlidingGravity = _Gravity; }
     void SetUnstuffReverse(bool _Unstuffed) { m_bUnstuffReverse = _Unstuffed; }
+    void SetMtrlShader(Ptr<CGraphicsShader> _Shader);
 
     virtual CKirbyUnitScript* GetUnit() override { return (CKirbyUnitScript*)m_Unit; }
     CKirbyAbility* GetCurAbility() const { return m_arrAbility[(UINT)m_CurAbility]; }
