@@ -87,6 +87,9 @@ PS_OUT PS_Decal(PS_IN _in)
     if (0.1f > output.vColor.a)
         return output;
 
+    // Emissive Ãß°¡ 
+    output.vColor.rgb += output.vColor.rgb * Emissive.rgb;
+    
     if (g_btex_5)
     {
         output.vMRA = DecalMRATexture.Sample(g_LinearWrapSampler, vLocal.xz);
@@ -125,7 +128,7 @@ PS_OUT PS_Decal(PS_IN _in)
         output.vEmissive = DecalEmissiveTexture.Sample(g_LinearWrapSampler, vLocal.xz);
     }
     
-    output.vEmissive += Emissive;
+    //output.vEmissive += Emissive;
     
     return output;
 }
