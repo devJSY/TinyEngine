@@ -232,6 +232,7 @@ void CBladeKnightScript::EnterState()
     }
     break;
     case BLADEKNIGHT_STATE::FindWait: {
+        Rigidbody()->SetAngularVelocity(Vec3(0.f, 0.f, 0.f));
         Animator()->Play(ANIMPREFIX("FindWait"));
     }
     break;

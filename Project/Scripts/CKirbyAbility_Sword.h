@@ -8,6 +8,10 @@ private:
     Ptr<CPrefab> m_KirbySwordTwinkleParticlePref;
     Ptr<CPrefab> m_KirbySwordFireParticlePref;
     Ptr<CPrefab> m_KirbySwordButterflyParticlePref;
+    Ptr<CPrefab> m_LightningEffectPref;
+    CGameObject* m_pLightningEffect;
+    Ptr<CPrefab> m_KirbySwordTornadoPref;
+
     Vec3 m_PrevWeaponScale;
     Vec3 m_BigWeaponScale;
     float m_PrevSpeed;

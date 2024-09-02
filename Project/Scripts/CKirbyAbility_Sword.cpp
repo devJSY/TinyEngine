@@ -5,12 +5,17 @@
 #include "CDestroyParticleScript.h"
 #include "CMomentaryObjScript.h"
 #include "CCameraController.h"
+#include "CChangeAlphaScript.h"
+#include "CKirbySwordTornadoScript.h"
 
 CKirbyAbility_Sword::CKirbyAbility_Sword()
     : m_KirbySwordSlashPref(nullptr)
     , m_KirbySwordTwinkleParticlePref(nullptr)
     , m_KirbySwordFireParticlePref(nullptr)
     , m_KirbySwordButterflyParticlePref(nullptr)
+    , m_LightningEffectPref(nullptr)
+    , m_pLightningEffect(nullptr)
+    , m_KirbySwordTornadoPref(nullptr)
     , m_BigWeaponScale(Vec3(5.f, 5.f, 5.f))
     , m_PrevSpeed(0.f)
     , m_PrevRotSpeed(0.f)
@@ -24,6 +29,8 @@ CKirbyAbility_Sword::CKirbyAbility_Sword()
     m_KirbySwordTwinkleParticlePref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordTwinkleParticle.pref");
     m_KirbySwordFireParticlePref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordFireParticle.pref");
     m_KirbySwordButterflyParticlePref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordButterflyParticle.pref");
+    m_LightningEffectPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Effect_MorphoLightningSet.pref");
+    m_KirbySwordTornadoPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordTornado.pref");
     m_ComboSuccessTime = 0.5f;
     m_Charge1Time = 1.f;
     m_Charge2Time = 1.f;
@@ -35,6 +42,9 @@ CKirbyAbility_Sword::CKirbyAbility_Sword(const CKirbyAbility_Sword& _Origin)
     , m_KirbySwordTwinkleParticlePref(nullptr)
     , m_KirbySwordFireParticlePref(nullptr)
     , m_KirbySwordButterflyParticlePref(nullptr)
+    , m_LightningEffectPref(nullptr)
+    , m_pLightningEffect(nullptr)
+    , m_KirbySwordTornadoPref(nullptr)
     , m_BigWeaponScale(Vec3(5.f, 5.f, 5.f))
     , m_PrevSpeed(0.f)
     , m_PrevRotSpeed(0.f)
@@ -48,6 +58,8 @@ CKirbyAbility_Sword::CKirbyAbility_Sword(const CKirbyAbility_Sword& _Origin)
     m_KirbySwordTwinkleParticlePref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordTwinkleParticle.pref");
     m_KirbySwordFireParticlePref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordFireParticle.pref");
     m_KirbySwordButterflyParticlePref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordButterflyParticle.pref");
+    m_LightningEffectPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Effect_MorphoLightningSet.pref", L"prefab\\Effect_MorphoLightningSet.pref");
+    m_KirbySwordTornadoPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordTornado.pref");
     m_ComboSuccessTime = 0.5f;
     m_Charge1Time = 1.f;
     m_Charge2Time = 1.f;
@@ -441,9 +453,75 @@ void CKirbyAbility_Sword::AttackCharge3End()
         PLAYERFSM->GetCurWeapon()->Transform()->SetLocalScale(NewScale);
     }
 
-    // Thunder & Tornado Effect
+    // ButterFlyPtcl & Thunder & Tornado Effect
     if (m_bFrmEnter && CHECK_ANIMFRM(PLAYER, 35))
     {
+        Vec3 Pos = PLAYER->Transform()->GetWorldPos();
+        Vec3 Dir = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+
+        // ==========================
+        // ButterFly Particle
+        // ==========================
+        {
+            CGameObject* pButterFlyPtcl = m_KirbySwordButterflyParticlePref->Instantiate();
+
+            const vector<CGameObject*>& vecChild = pButterFlyPtcl->GetChildObject();
+
+            for (int i = 0; i < vecChild.size(); ++i)
+            {
+                Vec3 OffsetPos;
+                OffsetPos.y += GetRandomfloat(0.f, 50.f);
+                vecChild[i]->Transform()->SetWorldPos(Pos + OffsetPos + (Dir * 50.f * float(1 + i)));
+
+                tParticleModule Module = vecChild[i]->ParticleSystem()->GetParticleModule();
+                Module.SpawnRate = 100;
+                Module.vSpawnMinScale = Vec3(20.f, 20.f, 1.f);
+                Module.vSpawnMaxScale = Vec3(40.f, 40.f, 1.f);
+                Module.vScaleRatio = Vec3::Zero;
+                Module.MinSpeed = 30.f;
+                Module.MaxSpeed = 80.f;
+                Module.AlphaBasedLife = 1;
+
+                vecChild[i]->ParticleSystem()->SetParticleModule(Module);
+
+                CDestroyParticleScript* Script = new CDestroyParticleScript;
+                Script->SetSpawnTime(0.3f);
+                vecChild[i]->AddComponent(Script);
+            }
+
+            CMomentaryObjScript* pMomentaryScript = pButterFlyPtcl->GetScript<CMomentaryObjScript>();
+            pMomentaryScript->SetPlayTime(8.f);
+            GamePlayStatic::SpawnGameObject(pButterFlyPtcl, LAYER_EFFECT);
+        }
+
+        // ==========================
+        // Tornado Effect
+        // ==========================
+        {
+            CGameObject* pTornadoObj = m_KirbySwordTornadoPref->Instantiate();
+            pTornadoObj->Transform()->SetWorldPos(Pos + Vec3(0.f, 20.f, 0.f) + Dir * 100.f);
+            pTornadoObj->Transform()->SetDirection(Dir);
+            pTornadoObj->GetScript<CKirbySwordTornadoScript>()->SetOriginRight(pTornadoObj->Transform()->GetWorldDir(DIR_TYPE::RIGHT));
+            GamePlayStatic::SpawnGameObject(pTornadoObj, LAYER_PLAYERATK_TRIGGER);
+
+            pTornadoObj = m_KirbySwordTornadoPref->Instantiate();
+            pTornadoObj->Transform()->SetWorldPos(Pos + Vec3(0.f, 20.f, 0.f) + Dir * 100.f);
+            pTornadoObj->Transform()->SetDirection(Dir);
+            pTornadoObj->GetScript<CKirbySwordTornadoScript>()->SetOriginRight(-pTornadoObj->Transform()->GetWorldDir(DIR_TYPE::RIGHT));
+            GamePlayStatic::SpawnGameObject(pTornadoObj, LAYER_PLAYERATK_TRIGGER);
+        }
+
+        // ==========================
+        // Thunder Effect
+        // ==========================
+        {
+            m_pLightningEffect = m_LightningEffectPref->Instantiate();
+            m_pLightningEffect->Transform()->SetWorldPos(Pos + Vec3(0.f, 20.f, 0.f) + Dir * 100.f);
+
+            m_pLightningEffect->GetScript<CChangeAlphaScript>()->FadeIn_RandomDelay(0.f, 0.4f);
+            GamePlayStatic::SpawnGameObject(m_pLightningEffect, LAYER_EFFECT);
+        }
+
         CAMERACTRL->Shake(0.3f, 50.f, 50.f);
         m_bFrmEnter = false;
     }
@@ -477,6 +555,12 @@ void CKirbyAbility_Sword::AttackCharge3EndExit()
     PLAYERFSM->SetInvincible(false);
     PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(false);
     PLAYERFSM->GetCurWeapon()->Transform()->SetLocalScale(m_PrevWeaponScale);
+
+    if (nullptr != m_pLightningEffect)
+    {
+        m_pLightningEffect->GetScript<CChangeAlphaScript>()->FadeOutDestroy(0.5f);
+        m_pLightningEffect = nullptr;
+    }
 }
 
 // ===============
