@@ -50,6 +50,35 @@ void CKirbySlide::tick()
 
 void CKirbySlide::Enter()
 {
+    // SlideSmoke 추가
+    Ptr<CPrefab> SlideSmokePref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySlideSmokeSpawner.pref");
+
+    if (SlideSmokePref.Get())
+    {
+        m_Spawner = SlideSmokePref->Instantiate();
+
+        GamePlayStatic::AddChildObject(PLAYER, m_Spawner);
+    }
+
+    // Smoke Spawn
+    Ptr<CPrefab> LandingSmoke = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbyLandingSmoke.pref");
+    CGameObject* LeftSmokeObj = LandingSmoke->Instantiate();
+    CGameObject* RightSmokeObj = LandingSmoke->Instantiate();
+
+    Vec3 KirbyFront = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+    Vec3 KirbyRight = PLAYER->Transform()->GetWorldDir(DIR_TYPE::RIGHT);
+    Vec3 KirbyPos = PLAYER->Transform()->GetWorldPos();
+
+    LeftSmokeObj->Transform()->SetDirection(-KirbyFront);
+    RightSmokeObj->Transform()->SetDirection(-KirbyFront);
+
+    LeftSmokeObj->Transform()->SetWorldPos(KirbyPos - KirbyRight * 4.f);
+    RightSmokeObj->Transform()->SetWorldPos(KirbyPos + KirbyRight * 4.f);
+
+    GamePlayStatic::SpawnGameObject(LeftSmokeObj, LAYER_EFFECT);
+    GamePlayStatic::SpawnGameObject(RightSmokeObj, LAYER_EFFECT);
+
+
     // 애니메이션 재생
     CKirbyFSM* KirbyFSM = CPlayerMgr::GetPlayerFSM();
     KirbyFSM->GetCurAbility()->SlideEnter();
@@ -73,6 +102,12 @@ void CKirbySlide::Enter()
 
 void CKirbySlide::Exit()
 {
+    if (m_Spawner != nullptr)
+    {
+        GamePlayStatic::DestroyGameObject(m_Spawner);
+        m_Spawner = nullptr;
+    }
+
     CKirbyFSM* KirbyFSM = CPlayerMgr::GetPlayerFSM();
     KirbyFSM->GetCurAbility()->SlideExit();
 
