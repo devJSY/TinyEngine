@@ -152,6 +152,7 @@ void CBossLevelFlowMgr::EnterDemoPlay()
 
     PLAYERCTRL->LockInput();
     PLAYERFSM->ChangeState(L"IDLE");
+    PLAYERFSM->LockChangeState();
 }
 
 void CBossLevelFlowMgr::EnterDeath()
@@ -185,6 +186,7 @@ void CBossLevelFlowMgr::ExitWaitBoss()
 void CBossLevelFlowMgr::ExitDemoPlay()
 {
     PLAYERCTRL->UnlockInput();
+    PLAYERFSM->UnlockChangeState();
     m_DemoType = BossDemoType::NONE;
 }
 

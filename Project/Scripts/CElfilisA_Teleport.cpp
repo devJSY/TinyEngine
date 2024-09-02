@@ -10,7 +10,7 @@ CElfilisA_Teleport::CElfilisA_Teleport()
     : m_BeforeObj(nullptr)
     , m_BeforeEffect(nullptr)
     , m_AfterEffect(nullptr)
-    , m_EffectSpeed(400.f)
+    , m_EffectSpeed(200.f)
 {
     m_Effect = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Effect_ElfilisTeleport.pref", L"prefab\\Effect_ElfilisTeleport.pref");
 }
@@ -34,6 +34,30 @@ void CElfilisA_Teleport::tick()
     }
 }
 
+void CElfilisA_Teleport::Exit()
+{
+    Exit_Step();
+
+    ELFFSM->ReleaseDynamicMtrl();
+    GetOwner()->Animator()->SetPlay(true);
+
+    if (m_BeforeObj)
+    {
+        GamePlayStatic::DestroyGameObject(m_BeforeObj);
+    }
+    if (m_BeforeEffect)
+    {
+        GamePlayStatic::DestroyGameObject(m_BeforeEffect);
+    }
+    if (m_AfterEffect)
+    {
+        GamePlayStatic::DestroyGameObject(m_AfterEffect);
+    }
+
+    // 투 타겟
+    CAMERACTRL->SetElfilisTwoTarget();
+}
+
 void CElfilisA_Teleport::Enter_Step()
 {
     switch (m_Step)
@@ -41,16 +65,6 @@ void CElfilisA_Teleport::Enter_Step()
     case StateStep::Start: {
         GetOwner()->Animator()->Play(ANIMPREFIX("Wait"));
         GetOwner()->Animator()->SetPlay(false);
-
-        //@Effect 일부분만 그리는 셰이더 작성 필요
-
-        // copy object
-        m_BeforeObj = new CGameObject;
-        m_BeforeObj->AddComponent(GetOwner()->Transform()->Clone());
-        m_BeforeObj->AddComponent(GetOwner()->MeshRender()->Clone());
-        m_BeforeObj->AddComponent(GetOwner()->Animator()->Clone());
-        m_BeforeObj->SetName(L"Effect_ElfilisTelport Body");
-        GamePlayStatic::SpawnGameObject(m_BeforeObj, LAYER_MONSTER);
 
         // teleport
         float MapSizeRadius = ELFFSM->GetMapSizeRadius();
@@ -64,18 +78,7 @@ void CElfilisA_Teleport::Enter_Step()
             m_AfterPos = MapFloorOffset + Dir * MapSizeRadius;
         }
 
-        //@Effect 텔레포드 이펙트
-        Vec3 Pos = GetOwner()->Transform()->GetWorldPos();
-        Pos.y += 100.f;
-        m_BeforeEffect = m_Effect->Instantiate();
-        m_BeforeEffect->Transform()->SetWorldPos(Pos);
-        GamePlayStatic::SpawnGameObject(m_BeforeEffect, LAYER_EFFECT);
-
-        Pos = m_AfterPos;
-        Pos.y += 100.f;
-        m_AfterEffect = m_Effect->Instantiate();
-        m_AfterEffect->Transform()->SetWorldPos(Pos);
-        GamePlayStatic::SpawnGameObject(m_AfterEffect, LAYER_EFFECT);
+        ELFFSM->GetUnit()->PlayTeleportEffect(&m_BeforeObj, &m_BeforeEffect, &m_AfterEffect, m_AfterPos);
     }
     break;
     case StateStep::End:
@@ -89,26 +92,8 @@ void CElfilisA_Teleport::Exit_Step()
     {
     case StateStep::Start:
         break;
-    case StateStep::End: {
-        GetOwner()->Animator()->SetPlay(true);
-
-        if (m_BeforeObj)
-        {
-            GamePlayStatic::DestroyGameObject(m_BeforeObj);
-        }
-        if (m_BeforeEffect)
-        {
-            GamePlayStatic::DestroyGameObject(m_BeforeEffect);
-        }
-        if (m_AfterEffect)
-        {
-            GamePlayStatic::DestroyGameObject(m_AfterEffect);
-        }
-
-        // 투 타겟
-        CAMERACTRL->SetElfilisTwoTarget();
-    }
-    break;
+    case StateStep::End:
+        break;
     }
 }
 
@@ -131,10 +116,12 @@ void CElfilisA_Teleport::End()
     Vec3 Pos = m_BeforeEffect->Transform()->GetWorldPos();
     Pos.y -= m_EffectSpeed * DT;
     m_BeforeEffect->Transform()->SetWorldPos(Pos);
+    ELFFSM->Teleport(m_BeforeObj, 2, Pos.y);
 
     Pos = m_AfterEffect->Transform()->GetWorldPos();
     Pos.y -= m_EffectSpeed * DT;
     m_AfterEffect->Transform()->SetWorldPos(Pos);
+    ELFFSM->Teleport(1, Pos.y);
 
     if (Pos.y <= 0.f)
     {

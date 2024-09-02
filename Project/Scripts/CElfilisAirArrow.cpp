@@ -3,6 +3,8 @@
 #include "CMomentaryObjScript.h"
 #include "CBossMgr.h"
 #include "CElfilisFSM.h"
+#include "CPlayerMgr.h"
+#include "CCameraController.h"
 #include <Engine\CAssetMgr.h>
 #include <Engine\CPrefab.h>
 
@@ -125,9 +127,15 @@ void CElfilisAirArrow::OnCollisionEnter(CCollider* _OtherCollider)
         if (m_CollisionEffect != nullptr)
         {
             CGameObject* Effect = m_CollisionEffect->Instantiate();
+
             Vec3 InitPos = Transform()->GetWorldPos();
             InitPos.y -= 40.f;
             Effect->Transform()->SetWorldPos(InitPos);
+
+            Vec3 LookDir = CAMERACTRL->GetOwner()->Transform()->GetWorldPos() - InitPos;
+            LookDir.z += GetRandomfloat(-10.f, 10.f) / 100.f;
+            LookDir.x += GetRandomfloat(-10.f, 10.f) / 100.f;
+            Effect->Transform()->SetDirection(LookDir.Normalize());
 
             CMomentaryObjScript* Script = Effect->GetScript<CMomentaryObjScript>();
             Script->SetPlayTime(0.5f);

@@ -13,6 +13,7 @@ private:
 
 public:
     virtual void tick() override;
+    virtual void Exit() override;
 
 private:
     void Enter_Step();
@@ -21,7 +22,7 @@ private:
     // tick
     void Start();
     void End();
-
+      
 public:
     CLONE(CElfilisG_Teleport)
     CElfilisG_Teleport();

@@ -3,10 +3,16 @@
 
 class CMorphoUnit : public CUnitScript
 {
-public:
-    virtual void tick();
+private:
+    Ptr<CPrefab> m_LightningEffectPref;
 
+public:
+    virtual void tick() override;
     // virtual void AttackReward();
+
+    CGameObject* SpawnAttackButterflyEffect(Vec3 _Pos);
+    CGameObject* SpawnLightningEffect(Vec3 _Pos);
+    CGameObject* SpawnCircleDustEffect(Vec3 _Pos);
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;
@@ -15,5 +21,6 @@ public:
 public:
     CLONE(CMorphoUnit)
     CMorphoUnit();
+    CMorphoUnit(const CMorphoUnit& _Origin);
     virtual ~CMorphoUnit();
 };

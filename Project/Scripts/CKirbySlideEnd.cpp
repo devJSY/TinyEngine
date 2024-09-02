@@ -69,6 +69,8 @@ void CKirbySlideEnd::Enter()
     PLAYERCTRL->LockMove();
     PLAYERCTRL->LockDirection();
     PLAYERCTRL->LockJump();
+
+    PLAYERFSM->SetSlideComboLevel(0);
 }
 
 void CKirbySlideEnd::Exit()

@@ -25,7 +25,7 @@ void CFlowMgr_BossElfilis::begin()
     CBossLevelFlowMgr::begin();
 
     // set effect
-    SetToneMappingParam(true, true, 1.f, 1.88f, 0.3f);
+    SetToneMappingParam(true, false, 0.4f, 0.75f, 0.3f, 1.2f, 2.2f);
     SetFadeEffectColor(Vec3(180.f, 140.f, 200.f));
 
     // set camera

@@ -15,13 +15,25 @@ CElfilisUnit::CElfilisUnit()
         10.f,   // JumpPower
         0.f,    // ATK
     };
-
     SetInitInfo(ElfilisInfo);
+
+    m_TeleportEffect = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Effect_ElfilisTeleport.pref", L"prefab\\Effect_ElfilisTeleport.pref");
 }
 
 CElfilisUnit::CElfilisUnit(const CElfilisUnit& _Origin)
     : CUnitScript(_Origin)
 {
+    UnitInfo ElfilisInfo = {
+        1000.f, // HP
+        1000.f, // MaxHP
+        10.f,   // Speed
+        10.f,   // Rotation Speed
+        10.f,   // JumpPower
+        0.f,    // ATK
+    };
+    SetInitInfo(ElfilisInfo);
+
+    m_TeleportEffect = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Effect_ElfilisTeleport.pref", L"prefab\\Effect_ElfilisTeleport.pref");
 }
 
 CElfilisUnit::~CElfilisUnit()
@@ -39,7 +51,7 @@ void CElfilisUnit::tick()
         if ((CurStateGroup >= ElfilisStateGroup::GroundIdle || CurStateGroup <= ElfilisStateGroup::GroundAtkFar))
         {
             ELFFSM->ResetFSM();
-            m_CurInfo.HP = m_InitInfo.MAXHP * 0.05f; 
+            m_CurInfo.HP = m_InitInfo.MAXHP * 0.05f;
             ELFFSM->ChangeStateGroup(ElfilisStateGroup::DEMO, L"DEMO_RESIST");
         }
     }
@@ -52,7 +64,7 @@ void CElfilisUnit::tick()
         {
             m_CurInfo.HP = m_InitInfo.HP * 0.4f;
         }
-        
+
         ElfilisStateGroup CurStateGroup = ELFFSM->GetCurStateGroup();
 
         if ((CurStateGroup >= ElfilisStateGroup::GroundIdle || CurStateGroup <= ElfilisStateGroup::GroundAtkFar) &&
@@ -78,6 +90,42 @@ void CElfilisUnit::tick()
 void CElfilisUnit::ResistSuccess()
 {
     m_CurInfo.HP += m_CurInfo.MAXHP * 0.1f;
+}
+
+void CElfilisUnit::PlayTeleportEffect(CGameObject** _BeforeUnit, CGameObject** _BeforeEffect, CGameObject** _AfterEffect, Vec3 _Pos)
+{
+    // copy object
+    CGameObject* BeforeUnit = new CGameObject;
+    BeforeUnit->AddComponent(Transform()->Clone());
+    BeforeUnit->AddComponent(MeshRender()->Clone());
+    BeforeUnit->AddComponent(Animator()->Clone());
+    BeforeUnit->SetName(L"Effect_ElfilisTelport Body");
+    GamePlayStatic::SpawnGameObject(BeforeUnit, LAYER_MONSTER);
+    *_BeforeUnit = BeforeUnit;
+
+    // set shader
+    Vec3 BeforePos = GetOwner()->Transform()->GetWorldPos();
+    BeforePos.y += 100.f;
+    ELFFSM->Teleport(BeforeUnit, 2, BeforePos.y);
+
+    Vec3 AfterPos = _Pos;
+    AfterPos.y += 100.f;
+    ELFFSM->Teleport(1, AfterPos.y);
+
+    if (m_TeleportEffect != nullptr)
+    {
+        // teleport effect (before object)
+        CGameObject* BeforeEffect = m_TeleportEffect->Instantiate();
+        BeforeEffect->Transform()->SetWorldPos(BeforePos);
+        GamePlayStatic::SpawnGameObject(BeforeEffect, LAYER_EFFECT);
+        *_BeforeEffect = BeforeEffect;
+
+        // teleport effect (after object)
+        CGameObject* AfterEffect = m_TeleportEffect->Instantiate();
+        AfterEffect->Transform()->SetWorldPos(AfterPos);
+        GamePlayStatic::SpawnGameObject(AfterEffect, LAYER_EFFECT);
+        *_AfterEffect = AfterEffect;
+    }
 }
 
 UINT CElfilisUnit::SaveToLevelFile(FILE* _File)

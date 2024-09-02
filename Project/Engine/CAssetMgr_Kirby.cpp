@@ -237,6 +237,77 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
     }
 
     // =================================
+    // Elfilis Body Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\UnrealPBRVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\ElfilisBodyPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetDSType(DS_TYPE::LESS);
+        pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
+
+        string TeleprotDesc = "[Teleport Info]\n- (x) Flag(false, Down, Up)\n- (y) Teleport WorldY\n- (z) Radius";
+        pShader->AddScalarParam(VEC4_3, TeleprotDesc);
+
+        pShader->AddScalarParam(INT_0, "Invert NormalMapY");
+        pShader->AddScalarParam(FLOAT_0, "HeightMapping Scale", 0.1f);
+        pShader->AddScalarParam(FLOAT_1, "Rim Power");
+        pShader->AddScalarParam(VEC4_0, "Rim Color");
+
+        pShader->AddTexParam(TEX_0, "Albedo0 Texture");
+        pShader->AddTexParam(TEX_1, "Albedo1 Texture");
+        pShader->AddTexParam(TEX_2, "Albedo2 Texture");
+        pShader->AddTexParam(TEX_3, "Albedo3 Texture");
+        pShader->AddTexParam(TEX_4, "MRA Texture"); // Metallic, Roughness, Ambient Occlusion
+        pShader->AddTexParam(TEX_5, "Normal Texture");
+        pShader->AddTexParam(TEX_6, "Height Texture");
+        pShader->AddTexParam(TEX_7, "Emissive Texture");
+
+        pShader->SetName(L"ElfilisBodyShader");
+        AddAsset(L"ElfilisBodyShader", pShader);
+    }
+
+    // =================================
+    // Elfilis Tail Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\UnrealPBRVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\MaskingPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::NO_WRITE);
+        pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
+        
+        string TeleprotDesc = "[Teleport Info]\n- (x) Flag(false, Down, Up)\n- (y) Teleport WorldY\n- (z) Radius";
+        pShader->AddScalarParam(VEC4_3, TeleprotDesc);
+
+        pShader->AddScalarParam(INT_0, "Invert NormalMap Y");
+        pShader->AddScalarParam(FLOAT_1, "Rim Power");
+        pShader->AddScalarParam(VEC4_0, "Rim Color");
+        pShader->AddScalarParam(VEC4_1, "Additional Color");
+        pShader->AddScalarParam(INT_1, "Invert Masking Alpha 0");
+        pShader->AddScalarParam(INT_2, "Invert Masking Alpha 1");
+
+        pShader->AddTexParam(TEX_0, "Masking Alpha0 Texture");
+        pShader->AddTexParam(TEX_1, "Masking Alpha1 Texture");
+        pShader->AddTexParam(TEX_2, "Masking Color Texture");
+        pShader->AddTexParam(TEX_3, "Color Texture");
+        pShader->AddTexParam(TEX_4, "MRA Texture"); // Metallic, Roughness, Ambient Occlusion
+        pShader->AddTexParam(TEX_5, "Normal Texture");
+        pShader->AddTexParam(TEX_6, "Emissive Texture");
+
+        pShader->SetName(L"ElfilisTailShader");
+        AddAsset(L"ElfilisTailShader", pShader);
+    }
+    
+    // =================================
     // Transparent Elfilis Shader
     // =================================
     {
@@ -280,6 +351,11 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
 
+        string RenderMaskFlagDesc = "[Render Mask Flag]\n- (0) NONE, (1) LocalZ, (2) WorldY";
+        string RenderMaskInfoDesc = "[Render Mask Info]\n- (x) Use From Pos : (0) NONE\n- (y) Use To Pos : (0) NONE\n- (z) From Pos\n- (w) To Pos";
+        pShader->AddScalarParam(SCALAR_PARAM::INT_0, RenderMaskFlagDesc);
+        pShader->AddScalarParam(SCALAR_PARAM::VEC4_0, RenderMaskInfoDesc);
+
         pShader->AddTexParam(TEX_0, "Nosie Black Texture");
         pShader->AddTexParam(TEX_1, "Noise Alpha Texture");
         pShader->AddTexParam(TEX_2, "Emissive Texture");
@@ -289,7 +365,7 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
     }
 
     // =================================
-    // Elfilis Laser Outer Shader
+    // Elfilis Laser Inner Shader
     // =================================
     {
         Ptr<CGraphicsShader> pShader = new CGraphicsShader;
@@ -301,6 +377,11 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
         pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
+
+        string RenderMaskFlagDesc = "[Render Mask Flag]\n- (0) NONE, (1) LocalZ, (2) WorldY";
+        string RenderMaskInfoDesc = "[Render Mask Info]\n- (x) Use From Pos : (0) NONE\n- (y) Use To Pos : (0) NONE\n- (z) From Pos\n- (w) To Pos";
+        pShader->AddScalarParam(SCALAR_PARAM::INT_0, RenderMaskFlagDesc);
+        pShader->AddScalarParam(SCALAR_PARAM::VEC4_0, RenderMaskInfoDesc);
 
         pShader->AddTexParam(TEX_0, "Emissive Noise Texture");
 
@@ -625,7 +706,7 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
     }
 
     // =================================
-    // Masking Shader
+    // Effect Masking Shader
     // =================================
     {
         Ptr<CGraphicsShader> pShader = new CGraphicsShader;
@@ -633,7 +714,7 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
         pShader->CreatePixelShader(L"shader\\MaskingPS.hlsl", "main");
 
         pShader->SetRSType(RS_TYPE::CULL_NONE);
-        pShader->SetDSType(DS_TYPE::NO_WRITE);
+        pShader->SetDSType(DS_TYPE::LESS);
         pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
@@ -653,8 +734,37 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
         pShader->AddTexParam(TEX_5, "Normal Texture");
         pShader->AddTexParam(TEX_6, "Emissive Texture");
 
-        pShader->SetName(L"MaskingShader");
-        AddAsset(L"MaskingShader", pShader);
+        pShader->SetName(L"EffectMaskingShader");
+        AddAsset(L"EffectMaskingShader", pShader);
+    }
+
+    // =================================
+    // Effect DimensionGate
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\UnrealPBRVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\DimensionGatePS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::LESS);
+        pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
+
+        pShader->AddScalarParam(INT_0, "Invert NormalMap Y");
+        pShader->AddScalarParam(FLOAT_2, "Color Coefficient");
+        pShader->AddScalarParam(FLOAT_1, "Distortion Speed");
+        pShader->AddScalarParam(FLOAT_3, "Distortion Scale");
+        pShader->AddScalarParam(VEC4_0, "Noise Color");
+
+        pShader->AddTexParam(TEX_0, "Masking Alpha Texture");
+        pShader->AddTexParam(TEX_1, "Color Texture");
+        pShader->AddTexParam(TEX_2, "Base Color Noise Texture");
+        pShader->AddTexParam(TEX_3, "Distortion Noise Texture");
+
+        pShader->SetName(L"EffectDimensionGateShader");
+        AddAsset(L"EffectDimensionGateShader", pShader);
     }
 
     // =================================
@@ -1134,5 +1244,71 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
 
         pShader->SetName(L"EffectQuadShader");
         AddAsset(L"EffectQuadShader", pShader);
+    }
+
+    // =================================
+    // Effect Texture Distortion Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\UnrealPBRVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\TextureDistortionPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::NO_WRITE);
+        pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
+
+        pShader->AddScalarParam(SCALAR_PARAM::VEC2_0, "Distortion Speed");
+        pShader->AddScalarParam(SCALAR_PARAM::VEC2_1, "Distortion Scale");
+        pShader->AddScalarParam(SCALAR_PARAM::VEC4_0, "Use VtxColor Scale");
+        pShader->AddTexParam(TEX_0, "Mask Texture");
+        pShader->AddTexParam(TEX_1, "Noise Texture");
+
+        pShader->SetName(L"EffectTextureDistortionShader");
+        AddAsset(L"EffectTextureDistortionShader", pShader);
+    }
+
+    // =================================
+    // Texture Distortion Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\UnrealPBRVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\TextureDistortionPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::LESS);
+        pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
+
+        pShader->AddScalarParam(SCALAR_PARAM::VEC2_0, "Distortion Speed");
+        pShader->AddScalarParam(SCALAR_PARAM::VEC2_1, "Distortion Scale");
+        pShader->AddScalarParam(SCALAR_PARAM::VEC4_0, "Use VtxColor Scale");
+        pShader->AddTexParam(TEX_0, "Mask Texture");
+        pShader->AddTexParam(TEX_1, "Noise Texture");
+
+        pShader->SetName(L"TextureDistortionRenderShader");
+        AddAsset(L"TextureDistortionRenderShader", pShader);
+    }
+    
+    // =================================
+    // Mesh Distortion Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\UnrealPBRVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\MeshDistortionPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::NO_WRITE);
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
+
+        pShader->AddScalarParam(SCALAR_PARAM::VEC4_0, "Use VtxColor Scale");
+        pShader->AddTexParam(TEX_0, "Noise Texture");
+        pShader->AddTexParam(TEX_1, "Masking Texture");
+
+        pShader->SetName(L"MeshDistortionShader");
+        AddAsset(L"MeshDistortionShader", pShader);
     }
 }

@@ -52,11 +52,11 @@ void CElfilisStormScript::tick()
     if (m_StormRed && m_StormWhite)
     {
         Vec3 NewRot = m_StormRed->Transform()->GetLocalRotation();
-        NewRot.y -= XMConvertToRadians(360.f * 2.f * DT);
+        NewRot.y -= XMConvertToRadians(360.f * 2.f) * DT;
         m_StormRed->Transform()->SetLocalRotation(NewRot);
         
         NewRot = m_StormWhite->Transform()->GetLocalRotation();
-        NewRot.y -= XMConvertToRadians(360.f * 4.f * DT);
+        NewRot.y += XMConvertToRadians(360.f) * DT;
         m_StormWhite->Transform()->SetLocalRotation(NewRot);
     }
 

@@ -24,8 +24,52 @@
 #define InvertMaskingAlpha0 g_int_1
 #define InvertMaskingAlpha1 g_int_2
 
+//-----------------------------------
+// Elflis Tail
+#define TeleportFlag g_vec4_3.x   // (x) Flag(false, Down, Up), (y) Teleport WorldY, (z) Radius
+#define TeleportWorldY g_vec4_3.y
+#define TeleportRadius g_vec4_3.z
+
 float4 main(PS_IN input) : SV_Target
 {
+    //-----------------------------------
+    // Elflis Tail
+    //-----------------------------------
+    // Check Teleport (No Render)
+    float TeleportAlpha = 1.f;
+    
+    // teleprot Down : 위쪽만 그림
+    if (TeleportFlag == 1)
+    {
+        if (input.vPosWorld.y < TeleportWorldY)
+        {
+            if (TeleportRadius > 0.f && input.vPosWorld.y >= TeleportWorldY - TeleportRadius)
+            {
+                TeleportAlpha = 1.f - (TeleportWorldY - input.vPosWorld.y) / TeleportRadius;
+            }
+            else
+            {
+                clip(-1);
+            }
+        }
+    }
+    // teleport Up : 아래쪽만 그림
+    else if (TeleportFlag == 2)
+    {
+        if (input.vPosWorld.y > TeleportWorldY)
+        {
+            if (TeleportRadius > 0.f && input.vPosWorld.y <= TeleportWorldY + TeleportRadius)
+            {
+                TeleportAlpha = 1.f - (input.vPosWorld.y - TeleportWorldY) / TeleportRadius;
+            }
+            else
+            {
+                clip(-1);
+            }
+        }
+    }
+    //-----------------------------------
+    
     float3 pixelToEye = normalize(g_eyeWorld - input.vPosWorld);
     float3 normalWorld = g_btex_5 ? NormalMapping(input, NormalTex, input.vUV0, g_LinearWrapSampler, InvertNormalMapY) : input.vNormalWorld;
   
@@ -73,7 +117,7 @@ float4 main(PS_IN input) : SV_Target
         albedo = MtrlAlbedo;
     }
     
-    OutAlpha = albedo.a * Alpha;
+    OutAlpha = albedo.a * Alpha * TeleportAlpha;
     
     // 1. get MRA
     float metallic = g_btex_4 ? MRATex.Sample(g_LinearWrapSampler, input.vUV0).r
