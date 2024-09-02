@@ -794,15 +794,6 @@ void GamePlayStatic::PlayBGM(const wstring& _SoundPath, float _Volume)
     }
 }
 
-void GamePlayStatic::StopSound(const wstring& _SoundPath)
-{
-    Ptr<CSound> pSound = CAssetMgr::GetInst()->Load<CSound>(_SoundPath, _SoundPath);
-
-    if (nullptr != pSound)
-    {
-        pSound->Stop();
-    }
-}
 
 int GetRandomInt(int _Min, int _Max)
 {
