@@ -4,24 +4,35 @@
 
 CElfilisLaser::CElfilisLaser()
     : CScript(ELFILISLASER)
+    , m_CollisionParticle(nullptr)
     , m_Step(StateStep::Start)
     , m_bAutoPlay(false)
     , m_bCollisionFloor(false)
 {
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bCollisionFloor, "Collision Floor");
+    // m_MagmaPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\ElfilisLaserMagma.pref");
+    m_CollisionParticlePref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Particle_ElfilisLaserCollision.pref");
 }
 
 CElfilisLaser::CElfilisLaser(const CElfilisLaser& _Origin)
     : CScript(_Origin)
+    , m_CollisionParticle(nullptr)
     , m_Step(StateStep::Start)
     , m_bAutoPlay(_Origin.m_bAutoPlay)
     , m_bCollisionFloor(_Origin.m_bCollisionFloor)
 {
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bCollisionFloor, "Collision Floor");
+    // m_MagmaPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\ElfilisLaserMagma.pref");
+    m_CollisionParticlePref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Particle_ElfilisLaserCollision.pref");
 }
 
 CElfilisLaser::~CElfilisLaser()
 {
+    if (m_CollisionParticle)
+    {
+        GamePlayStatic::DestroyGameObject(m_CollisionParticle);
+        m_CollisionParticle = nullptr;
+    }
 }
 
 void CElfilisLaser::begin()
@@ -59,12 +70,71 @@ void CElfilisLaser::tick()
     }
 }
 
+void CElfilisLaser::OnTriggerEnter(CCollider* _OtherCollider)
+{
+    if (!m_bCollisionFloor || _OtherCollider->GetOwner()->GetName() != L"Floor")
+        return;
+
+    static vector<wstring> vecCollision{L"World Static"};
+    RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), 2000.f, vecCollision);
+
+    if (Hit.pCollisionObj)
+    {
+        if (m_CollisionParticlePref != nullptr)
+        {
+            if (!m_CollisionParticle)
+            {
+                m_CollisionParticle = m_CollisionParticlePref->Instantiate();
+                GamePlayStatic::SpawnGameObject(m_CollisionParticle, LAYER_EFFECT);
+            }
+
+            m_CollisionParticle->Transform()->SetWorldPos(Hit.Point);
+        }
+    }
+}
+
+void CElfilisLaser::OnTriggerStay(CCollider* _OtherCollider)
+{
+    if (!m_bCollisionFloor || _OtherCollider->GetOwner()->GetName() != L"Floor")
+        return;
+
+    static vector<wstring> vecCollision{L"World Static"};
+    RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), 2000.f, vecCollision);
+
+    if (Hit.pCollisionObj)
+    {
+        if (m_CollisionParticle)
+        {
+            m_CollisionParticle->Transform()->SetWorldPos(Hit.Point);
+        }
+
+        //@EFFECT magma ¼ÒÈ¯
+    }
+}
+
+void CElfilisLaser::OnTriggerExit(CCollider* _OtherCollider)
+{
+    if (!m_bCollisionFloor || _OtherCollider->GetOwner()->GetName() != L"Floor")
+        return;
+
+    static vector<wstring> vecCollision{L"World Static"};
+    RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), 2000.f, vecCollision);
+
+    if (!Hit.pCollisionObj)
+    {
+        if (m_CollisionParticle)
+        {
+            GamePlayStatic::DestroyGameObject(m_CollisionParticle);
+            m_CollisionParticle = nullptr;
+        }
+    }
+}
+
 void CElfilisLaser::SetStart()
 {
     m_Step = StateStep::Start;
     Animator()->Play(ANIMPREFIX("Start"), false);
     PlayOuter(ANIMPREFIX("Start"), false);
-    GetOwner()->SetActive(true);
 }
 
 void CElfilisLaser::SetWait()
@@ -79,6 +149,23 @@ void CElfilisLaser::SetEnd()
     m_Step = StateStep::End;
     Animator()->Play(ANIMPREFIX("End"), false);
     PlayOuter(ANIMPREFIX("End"), false);
+
+    if (m_CollisionParticle)
+    {
+        GamePlayStatic::DestroyGameObject(m_CollisionParticle);
+        m_CollisionParticle = nullptr;
+    }
+}
+
+void CElfilisLaser::SafeDestroy()
+{
+    if (m_CollisionParticle)
+    {
+        GamePlayStatic::DestroyGameObject(m_CollisionParticle);
+        m_CollisionParticle = nullptr;
+    }
+
+    GamePlayStatic::DestroyGameObject(GetOwner());
 }
 
 void CElfilisLaser::Start()
@@ -91,25 +178,19 @@ void CElfilisLaser::Start()
 
 void CElfilisLaser::Progress()
 {
-    static vector<wstring> vecCollision{L"World Static"};
-
-    if (m_bCollisionFloor)
-    {
-        RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), 2000.f, vecCollision);
-
-        if (Hit.pCollisionObj)
-        {
-            // @Effect Æ¢´Â ÀÌÆåÆ®, ¹Ù´ÚÀÜ»ó ¼ÒÈ¯
-            GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), 2000.f, Vec3(1.f, 0.f, 0.f), true);
-        }
-    }
 }
 
 void CElfilisLaser::End()
 {
     if (Animator()->IsFinish())
     {
-        GetOwner()->SetActive(false);
+        GamePlayStatic::DestroyGameObject(GetOwner());
+
+        if (m_CollisionParticle)
+        {
+            GamePlayStatic::DestroyGameObject(m_CollisionParticle);
+            m_CollisionParticle = nullptr;
+        }
     }
 }
 

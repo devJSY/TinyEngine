@@ -3,7 +3,6 @@
 
 class CMorphoAtkA_DoubleSwordAtkLR : public CBossState
 {
-    Ptr<CPrefab> m_LightningEffectPref;
     Ptr<CPrefab> m_FireSwipePref;
     CGameObject* m_LightningEffect[2];
     CGameObject* m_FireSwipe[2];
@@ -27,9 +26,6 @@ private:
     void End();
     void EndWait();
     void EndEnd();
-
-    void SpawnCircleDust(Vec3 _Pos);
-    void SpawnButterfly(Vec3 _Pos);
 
 public:
     CLONE(CMorphoAtkA_DoubleSwordAtkLR)

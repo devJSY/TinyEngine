@@ -74,6 +74,10 @@ void CElfilisFSM::ResetFSM()
     SetResist(false);
     ClearComboLevel();
 
+    // Big Elfilis
+    m_BigElfilisFSM->ChangeState(L"IDLE");
+    m_BigElfilis->SetActive(false);
+
     // attack collider clear
     OffWeaponTrigger();
     m_Hitbox->BoxCollider()->SetSize(Vec3(1.f, 1.f, 1.f));
@@ -400,6 +404,8 @@ void CElfilisFSM::DestroySumon()
 #include "CElfilisA_TeleportCombo.h"
 void CElfilisFSM::begin()
 {
+    CFSMScript::begin();
+
     // add state
     AddGroupPublicState(ElfilisStateGroup::GroundIdle, L"GROUND_IDLE", new CElfilisG_Idle);
     AddGroupPublicState(ElfilisStateGroup::GroundMove, L"GROUND_MOVE_BACKSTEP", new CElfilisG_BackStep);
@@ -508,20 +514,19 @@ void CElfilisFSM::tick()
     //{
     //    Rigidbody()->SetVelocity(Vec3());
     //    Rigidbody()->SetAngularVelocity(Vec3());
-    //    ChangeStateGroup(ElfilisStateGroup::AirToGround, L"AIR_TOGROUND_TELEPORT");
+    //    ChangeStateGroup(ElfilisStateGroup::GroundToAir);
     //}
     //if (KEY_TAP(KEY::ENTER))
     //{
     //    Rigidbody()->SetVelocity(Vec3());
     //    Rigidbody()->SetAngularVelocity(Vec3());
-    //    ChangeStateGroup(ElfilisStateGroup::GroundAtkNear);
+    //    ChangeStateGroup(ElfilisStateGroup::AirSmallAtk2, L"AIR_ATKS_DIMENSIONLASER");
+    //    //ChangeStateGroup(ElfilisStateGroup::GroundToAir);
     //}
 }
 
 void CElfilisFSM::OnCollisionEnter(CCollider* _OtherCollider)
 {
-    // static vector<wstring> vecCollision{L"World Static", L"World Dynamic"};
-    // RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(GetOwner()->Transform()->GetWorldPos(), Vec3(0.f, -1.f, 0.f), 100.f, vecCollision);
     int LayerIdx = _OtherCollider->GetOwner()->GetLayerIdx();
 
     if (m_CurStateGroup == ElfilisStateGroup::AirToGround)
@@ -666,6 +671,27 @@ void CElfilisFSM::ResetEmissive()
     }
 }
 
+void CElfilisFSM::ReleaseDynamicMtrl()
+{
+    if (!MeshRender())
+        return;
+
+    Vec4 TeleportInfo;
+
+    // set body shader
+    int BodyMtrlCount = MeshRender()->GetMtrlCount();
+    for (int i = 0; i < BodyMtrlCount; ++i)
+    {
+        MeshRender()->GetSharedMaterial(i)->SetScalarParam(SCALAR_PARAM::VEC4_3, TeleportInfo);
+    }
+
+    // set weapon shader
+    if (m_Weapon && m_Weapon->MeshRender())
+    {
+        m_Weapon->MeshRender()->GetSharedMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC4_3, TeleportInfo);
+    }
+}
+
 void CElfilisFSM::AddEmissive(Vec3 _Color)
 {
     for (int i = 0; i < m_listBodyMtrl.size(); ++i)
@@ -697,6 +723,28 @@ void CElfilisFSM::OffWeaponTrigger()
         return;
 
     m_Weapon->BoxCollider()->SetEnabled(false);
+}
+
+void CElfilisFSM::Teleport(CGameObject* _TeleportObject, UINT _Flag, float _WorldY)
+{
+    if (!_TeleportObject->MeshRender() || _Flag > 2)
+        return;
+
+    Vec4 TeleportInfo{(float)_Flag, _WorldY, 15.f, 0.f};
+    
+    // set body shader
+    int BodyMtrlCount = _TeleportObject->MeshRender()->GetMtrlCount();
+    for (int i = 0; i < BodyMtrlCount; ++i)
+    {
+        _TeleportObject->MeshRender()->GetDynamicMaterial(i)->SetScalarParam(SCALAR_PARAM::VEC4_3, TeleportInfo);
+    }
+
+    // set weapon shader
+    CGameObject* Weapon = _TeleportObject->GetChildObject(L"Halberd");
+    if (Weapon && Weapon->MeshRender())
+    {
+        Weapon->MeshRender()->GetDynamicMaterial(0)->SetScalarParam(SCALAR_PARAM::VEC4_3, TeleportInfo);
+    }
 }
 
 const vector<wstring>& CElfilisFSM::GetCurPublicStates() const

@@ -114,7 +114,7 @@ void CKirbyLongDiveStart::tick()
     }
     break;
     case AbilityCopyType::SLEEP: {
-        if(PLAYERCTRL->IsGround())
+        if (PLAYERCTRL->IsGround())
         {
             ChangeState(L"LONGDIVE_LANDING");
         }
@@ -129,10 +129,55 @@ void CKirbyLongDiveStart::tick()
 
 void CKirbyLongDiveStart::Enter()
 {
+    // Change State
+    if (PLAYERFSM->GetCurObjectIdx() != ObjectCopyType::NONE)
+    {
+    }
+    else
+    {
+        switch (PLAYERFSM->GetCurAbilityIdx())
+        {
+        case AbilityCopyType::NORMAL:
+            break;
+        case AbilityCopyType::FIRE:
+            break;
+        case AbilityCopyType::CUTTER:
+            break;
+        case AbilityCopyType::SWORD: {
+            PLAYERFSM->LockSlideCombo();
+        }
+        break;
+        case AbilityCopyType::SLEEP:
+            break;
+        }
+    }
+
     // 애니메이션 재생
     PLAYER->Animator()->Play(ANIMPREFIX("LongDiveAttackStart"), false, false, 0.2f);
 }
 
 void CKirbyLongDiveStart::Exit()
 {
+    // Change State
+    if (PLAYERFSM->GetCurObjectIdx() != ObjectCopyType::NONE)
+    {
+    }
+    else
+    {
+        switch (PLAYERFSM->GetCurAbilityIdx())
+        {
+        case AbilityCopyType::NORMAL:
+            break;
+        case AbilityCopyType::FIRE:
+            break;
+        case AbilityCopyType::CUTTER:
+            break;
+        case AbilityCopyType::SWORD: {
+            PLAYERFSM->UnlockSlideCombo();
+        }
+        break;
+        case AbilityCopyType::SLEEP:
+            break;
+        }
+    }
 }

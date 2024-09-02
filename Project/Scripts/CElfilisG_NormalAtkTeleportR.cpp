@@ -7,7 +7,7 @@ CElfilisG_NormalAtkTeleportR::CElfilisG_NormalAtkTeleportR()
     : m_BeforeObj(nullptr)
     , m_BeforeEffect(nullptr)
     , m_AfterEffect(nullptr)
-    , m_EffectSpeed(400.f)
+    , m_EffectSpeed(200.f)
     , m_bComboSuccess(false)
     , m_bFrmEnter(true)
 {
@@ -109,6 +109,8 @@ void CElfilisG_NormalAtkTeleportR::Exit_Step()
     case StateStep::Wait:
         break;
     case StateStep::StartEnd: {
+        ELFFSM->ReleaseDynamicMtrl();
+
         if (m_BeforeObj)
         {
             GamePlayStatic::DestroyGameObject(m_BeforeObj);
@@ -194,10 +196,12 @@ void CElfilisG_NormalAtkTeleportR::StartEnd()
         float ChangeHeight = Pos.y - m_EffectSpeed * DT;
         Pos.y = ChangeHeight;
         m_BeforeEffect->Transform()->SetWorldPos(Pos);
+        ELFFSM->Teleport(m_BeforeObj, 2, Pos.y);
 
         Pos = m_AfterEffect->Transform()->GetWorldPos();
         Pos.y = ChangeHeight;
         m_AfterEffect->Transform()->SetWorldPos(Pos);
+        ELFFSM->Teleport(1, Pos.y);
 
         if (ChangeHeight <= 0.f)
         {
@@ -294,16 +298,6 @@ void CElfilisG_NormalAtkTeleportR::End()
 
 void CElfilisG_NormalAtkTeleportR::SpawnTeleport()
 {
-    //@Effect 일부분만 그리는 셰이더 작성 필요
-
-    // copy object
-    m_BeforeObj = new CGameObject;
-    m_BeforeObj->AddComponent(GetOwner()->Transform()->Clone());
-    m_BeforeObj->AddComponent(GetOwner()->MeshRender()->Clone());
-    m_BeforeObj->AddComponent(GetOwner()->Animator()->Clone());
-    m_BeforeObj->SetName(L"Effect_ElfilisTelport Body");
-    GamePlayStatic::SpawnGameObject(m_BeforeObj, LAYER_MONSTER);
-
     // get teleport pos
     Vec3 Dist = GetOwner()->Transform()->GetWorldPos() - PLAYER->Transform()->GetWorldPos();
     Dist.y = 0.f;
@@ -323,16 +317,5 @@ void CElfilisG_NormalAtkTeleportR::SpawnTeleport()
         m_AfterPos = MapFloorOffset + Dir * MapSizeRadius;
     }
 
-    //@Effect 텔레포드 이펙트
-    Vec3 Pos = GetOwner()->Transform()->GetWorldPos();
-    Pos.y += 100.f;
-    m_BeforeEffect = m_Effect->Instantiate();
-    m_BeforeEffect->Transform()->SetWorldPos(Pos);
-    GamePlayStatic::SpawnGameObject(m_BeforeEffect, LAYER_EFFECT);
-
-    Pos = m_AfterPos;
-    Pos.y += 100.f;
-    m_AfterEffect = m_Effect->Instantiate();
-    m_AfterEffect->Transform()->SetWorldPos(Pos);
-    GamePlayStatic::SpawnGameObject(m_AfterEffect, LAYER_EFFECT);
+    ELFFSM->GetUnit()->PlayTeleportEffect(&m_BeforeObj, &m_BeforeEffect, &m_AfterEffect, m_AfterPos);
 }
