@@ -19,7 +19,7 @@ void CKirbyAttackFailed::tick()
 
 void CKirbyAttackFailed::Enter()
 {
-    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroDeformVendingMachine\\VendingMachine_AttackFailed.wav", 1, 50.f);
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroDeformVendingMachine\\VendingMachine_AttackFailed.wav", 1, KIRBY_EFFECTSOUND);
 
     PLAYER->Animator()->Play(ANIMPREFIX("ShootFailed"), false, false, 2.f, 0);
 

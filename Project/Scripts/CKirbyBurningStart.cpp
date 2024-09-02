@@ -63,7 +63,7 @@ void CKirbyBurningStart::tick()
 void CKirbyBurningStart::Enter()
 {
 
-    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroFireDragon\\Fire_Burning.wav", 1, 50.f);
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroFireDragon\\Fire_Burning.wav", 1, KIRBY_EFFECTSOUND);
 
     CPlayerMgr::SetPlayerFace(FaceType::UpTail);
 
