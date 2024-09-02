@@ -30,6 +30,11 @@ void CNoddyScript::begin()
         MeshRender()->GetDynamicMaterial(0);
     }
 
+    if (nullptr != Rigidbody())
+    {
+        Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
+    }
+
     SetSnotBubble();
     ChangeState(NODDY_STATE::SleepStart);
 }

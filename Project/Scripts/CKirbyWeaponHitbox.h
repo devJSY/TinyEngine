@@ -12,6 +12,7 @@ public:
 
 private:
     float LoadDamage();
+    void ApplyEffect();
 
 private:
     void SlashEffect(Vec3 _vPos);

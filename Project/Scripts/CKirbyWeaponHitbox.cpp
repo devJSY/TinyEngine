@@ -4,6 +4,7 @@
 #include "CUnitScript.h"
 #include "CKirbyFSM.h"
 #include "CState.h"
+#include "CCameraController.h"
 
 CKirbyWeaponHitbox::CKirbyWeaponHitbox()
     : CScript(KIRBYWEAPONHITBOX)
@@ -28,6 +29,7 @@ void CKirbyWeaponHitbox::OnTriggerEnter(CCollider* _OtherCollider)
         Vec3 HitDir = (_OtherCollider->Transform()->GetWorldPos() - PLAYER->Transform()->GetWorldPos()).Normalize();
         UnitHit HitInfo = {DAMAGE_TYPE::NORMAL, HitDir, 5.f, 0.f, 0.f};
         HitInfo.Damage = LoadDamage();
+        ApplyEffect();
 
         SlashEffect(_OtherCollider->Transform()->GetWorldPos());
 
@@ -91,6 +93,23 @@ float CKirbyWeaponHitbox::LoadDamage()
     }
 
     return damage;
+}
+
+void CKirbyWeaponHitbox::ApplyEffect()
+{
+    switch (PLAYERFSM->GetCurAbilityIdx())
+    {
+    case AbilityCopyType::FIRE:
+        break;
+    case AbilityCopyType::CUTTER:
+        break;
+    case AbilityCopyType::SWORD: {
+        CAMERACTRL->Shake(0.1f, 20.f, 20.f);
+    }
+    break;
+    case AbilityCopyType::SLEEP:
+        break;
+    }
 }
 
 void CKirbyWeaponHitbox::SlashEffect(Vec3 _vPos)

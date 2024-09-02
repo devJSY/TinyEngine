@@ -14,7 +14,7 @@ float3 NormalMapping(PS_IN input, Texture2D NormalTex, float2 vUV, SamplerState 
         normal.b = 1.f;
     }
 
-    normal = 2.0 * normal - 1.0; // 범위 조절 [-1.0, 1.0]
+    normal = 2.f * normal - 1.f; // 범위 조절 [-1.0, 1.0]
         
     // OpenGL 용 노멀맵일 경우에는 y 방향 반전
     normal.y = InvertNoramlMapY ? -normal.y : normal.y;

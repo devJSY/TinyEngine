@@ -126,5 +126,6 @@ CKirbySoundListener
 CUIDashEffectScript
 CDestroyParticleScript
 CMorphoShockWaveWave
+CKirbySwordTornadoScript
 CUICommonHitEffectScript
 CUISlashEffectScript

@@ -42,7 +42,6 @@ void VectorPermute(uint PermuteX, uint PermuteY, uint PermuteZ, uint PermuteW
     _vOut = Result;
 }
 
-
 float4 VectorShiftLeft(in float4 _V1, in float4 _V2, uint _Elements)
 {
     float4 vOut = (float4) 0.f;

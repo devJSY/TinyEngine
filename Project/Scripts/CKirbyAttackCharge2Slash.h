@@ -7,6 +7,7 @@ private:
     float m_Speed;
     float m_PrevSpeed;
     float m_PlayTime;
+    bool m_bEnableFireParticle;
 
 public:
     virtual void tick();

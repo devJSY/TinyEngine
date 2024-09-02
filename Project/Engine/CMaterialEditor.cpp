@@ -281,7 +281,6 @@ void CMaterialEditor::DrawDetails()
             ImGui::Separator();
 
             // Texture
-            const map<wstring, Ptr<CAsset>>& TexturesMap = CAssetMgr::GetInst()->GetMapAsset(ASSET_TYPE::TEXTURE);
             const vector<tTexParam>& TexParams = pShader->GetTexParam();
             constexpr float IMAGE_BASE_SIZE = 100.0f;
 
