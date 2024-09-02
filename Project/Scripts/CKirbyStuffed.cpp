@@ -27,7 +27,6 @@ void CKirbyStuffed::tick()
 
 void CKirbyStuffed::Enter()
 {
-    GamePlayStatic::StopSound(L"sound\\wav\\HeroBasic\\Vacuum.wav");
 
     GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\Stuffed.wav", 1, KIRBY_EFFECTSOUND);
     PLAYER->Animator()->Play(ANIMPREFIX("Stuffed"), false);

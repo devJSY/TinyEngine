@@ -57,8 +57,6 @@ void CKirbyChangeAbility::tick()
 
 void CKirbyChangeAbility::Enter()
 {
-    GamePlayStatic::StopSound(L"sound\\wav\\HeroBasic\\Vacuum.wav");
-
     GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\Skrr.wav", 1, KIRBY_EFFECTSOUND);
 
     m_bFrameEnter = false;

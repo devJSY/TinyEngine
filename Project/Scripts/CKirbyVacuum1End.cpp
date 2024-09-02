@@ -27,7 +27,7 @@ void CKirbyVacuum1End::tick()
 
 void CKirbyVacuum1End::Enter()
 {
-    GamePlayStatic::StopSound(L"sound\\wav\\HeroBasic\\Vacuum.wav");
+    GamePlayStatic::PauseSound(L"sound\\wav\\HeroBasic\\Vacuum.wav");
 
     PLAYER->Animator()->Play(ANIMPREFIX("VacuumEnd"), false);
     CPlayerMgr::ClearBodyMtrl();
