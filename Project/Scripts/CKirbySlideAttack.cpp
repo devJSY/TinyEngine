@@ -33,7 +33,6 @@ void CKirbySlideAttack::tick()
             }
             else if (KEY_TAP(KEY_ATK) || KEY_PRESSED(KEY_ATK))
             {
-                PLAYERFSM->SetSlideComboLevel(1);
                 ChangeState(L"JUMP_ATTACK_START");
             }
             else if (KEY_TAP(KEY_JUMP))
@@ -42,7 +41,6 @@ void CKirbySlideAttack::tick()
             }
             else
             {
-                PLAYERFSM->SetSlideComboLevel(1);
                 ChangeState(L"JUMP_FALL");
             }
         }
@@ -55,6 +53,9 @@ void CKirbySlideAttack::Enter()
     CKirbyFSM* KirbyFSM = CPlayerMgr::GetPlayerFSM();
     KirbyFSM->GetCurAbility()->SlideAttackEnter();
 
+    PLAYERFSM->SetSlideComboLevel(1);
+    PLAYERFSM->LockSlideCombo();
+
     m_PlayTime = 0.3f;
 }
 
@@ -63,4 +64,5 @@ void CKirbySlideAttack::Exit()
     CKirbyFSM* KirbyFSM = CPlayerMgr::GetPlayerFSM();
     KirbyFSM->GetCurAbility()->SlideAttackExit();
 
+    PLAYERFSM->UnlockSlideCombo();
 }

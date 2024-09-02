@@ -102,6 +102,8 @@ CMorphoFSM::~CMorphoFSM()
 #include "CMorphoMoveA_Teleport.h"
 void CMorphoFSM::begin()
 {
+    CFSMScript::begin();
+
     // add state
     AddGroupPublicState(MorphoStateGroup::Idle, L"IDLE", new CMorpho_Idle);
     AddGroupPublicState(MorphoStateGroup::AtkGroundNormalNear, L"ATKG_NORMALNEAR_ATK1", new CMorphoAtkG_NormalNear_Atk1);

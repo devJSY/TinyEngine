@@ -1,5 +1,6 @@
 #pragma once
 #include "CFSMScript.h"
+#include "CMorphoUnit.h"
 
 enum class MorphoStateGroup
 {
@@ -31,14 +32,6 @@ enum class MorphoPatternType
     TrackingSoulCombo,
     ShockWaveCombo,
 };
-//
-//enum class MorphoParticleType
-//{
-//    ButterflyYellow,
-//    ButterflyPink,
-//    ButterflyYellowPink,
-//    CircleDust
-//};
 
 class CMorphoFSM : public CFSMScript
 {
@@ -118,6 +111,7 @@ public:
     void SetWeaponEmissive(Vec3 _Color);
     void EnableTeleportParticle(bool _Enable = true);
 
+    virtual CMorphoUnit* GetUnit() override { return ((CMorphoUnit*)m_Unit); }
     MorphoStateGroup GetCurStateGroup() const { return m_CurStateGroup; }
     UINT GetPhase() const { return m_Phase; }
     bool IsPattern() const { return m_Pattern != MorphoPatternType::NONE; }

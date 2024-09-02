@@ -69,6 +69,7 @@ public:
 
     // 점프
     virtual void JumpFallEnter() override;
+    virtual void JumpFallExit() override;
 
     // 점프공격
     virtual void JumpAttack() override;

@@ -13,7 +13,6 @@
 #include "CKirbyObject_Cone.h"
 #include "CKirbyObject_Lightbulb.h"
 #include "CKirbyObject_VendingMachine.h"
-
 CKirbyFSM::CKirbyFSM()
     : CFSMScript(KIRBYFSM)
     , m_arrAbility{}
@@ -30,6 +29,7 @@ CKirbyFSM::CKirbyFSM()
     , m_StuffedObj(nullptr)
     , m_BodyCollider(nullptr)
     , m_VacuumCollider(nullptr)
+    , m_PointLight(nullptr)
     , m_HoveringLimitTime(7.f)
     , m_HoveringAccTime(0.f)
     , m_bHovering(false)
@@ -37,6 +37,7 @@ CKirbyFSM::CKirbyFSM()
     , m_ComboAccTime(0.f)
     , m_ChargeAccTime(0.f)
     , m_SlideComboLevel(0)
+    , m_bSlideComboLock(false)
     , m_bAttackEvent(false)
     , m_LastJump(LastJumpType::HIGH)
     , m_DodgeType(DodgeType::NONE)
@@ -59,6 +60,7 @@ CKirbyFSM::CKirbyFSM()
     , m_bCanBladeAttack(true)
     , m_GlidingDuration(1.7f)
     , m_GlidingAcc(0.f)
+    , m_GlidingGravity(0.f)
     , m_LeftCanCount(0)
     , m_bEscapeLadder(false)
     , m_bInCollisionLadder(false)
@@ -67,7 +69,6 @@ CKirbyFSM::CKirbyFSM()
     , m_LadderTop{}
     , m_LadderBottom{}
 {
-    // @TODO Copy Type마다 추가
     m_arrAbility[(UINT)AbilityCopyType::NORMAL] = new CKirbyAbility_Normal();
     m_arrAbility[(UINT)AbilityCopyType::FIRE] = new CKirbyAbility_Fire();
     m_arrAbility[(UINT)AbilityCopyType::CUTTER] = new CKirbyAbility_Cutter();
@@ -77,6 +78,8 @@ CKirbyFSM::CKirbyFSM()
     m_arrObject[(UINT)ObjectCopyType::CONE] = new CKirbyObject_Cone();
     m_arrObject[(UINT)ObjectCopyType::VENDING_MACHINE] = new CKirbyObject_VendingMachine();
     m_arrObject[(UINT)ObjectCopyType::LIGHT] = new CKirbyObject_Lightbulb();
+
+    m_OriginShader = CAssetMgr::GetInst()->Load<CGraphicsShader>(L"KirbyBodyShader");
 }
 
 CKirbyFSM::CKirbyFSM(const CKirbyFSM& _Origin)
@@ -101,12 +104,14 @@ CKirbyFSM::CKirbyFSM(const CKirbyFSM& _Origin)
     , m_ComboAccTime(0.f)
     , m_ChargeAccTime(0.f)
     , m_SlideComboLevel(0)
+    , m_bSlideComboLock(false)
     , m_bAttackEvent(false)
     , m_LastJump(LastJumpType::HIGH)
     , m_DodgeType(DodgeType::NONE)
     , m_bStuffed(false)
     , m_bUnstuffReverse(false)
     , m_BodyCollider(nullptr)
+    , m_PointLight(nullptr)
     , m_KnockbackDir{}
     , m_YPressedTime(0.f)
     , m_Vacuum1MaxTime(_Origin.m_Vacuum1MaxTime)
@@ -124,6 +129,7 @@ CKirbyFSM::CKirbyFSM(const CKirbyFSM& _Origin)
     , m_bCanBladeAttack(true)
     , m_GlidingDuration(_Origin.m_GlidingDuration)
     , m_GlidingAcc(0.f)
+    , m_GlidingGravity(0.f)
     , m_LeftCanCount(0)
     , m_bEscapeLadder(false)
     , m_bInCollisionLadder(false)
@@ -153,6 +159,8 @@ CKirbyFSM::CKirbyFSM(const CKirbyFSM& _Origin)
         assert(pObjCopy);
         m_arrObject[i] = pObjCopy;
     }
+
+    m_OriginShader = CAssetMgr::GetInst()->Load<CGraphicsShader>(L"KirbyBodyShader");
 }
 
 CKirbyFSM::~CKirbyFSM()
@@ -267,21 +275,15 @@ CKirbyFSM::~CKirbyFSM()
 #include "CKirbyDropObjectStart.h"
 #include "CKirbyDropObject.h"
 #include "CKirbyStageClear.h"
-
-// LongDive
 #include "CKirbyLongDiveStart.h"
 #include "CKirbyLongDive.h"
 #include "CKirbyLongDiveLanding.h"
 #include "CKirbyLongDiveBound.h"
-
-// Ladder
 #include "CKirbyLadderDown.h"
 #include "CKirbyLadderUp.h"
 #include "CKirbyLadderWait.h"
 #include "CKirbyLadderWaitStart.h"
 #include "CKirbyLadderExit.h"
-
-// Fall
 #include "CKirbyFall.h"
 
 void CKirbyFSM::begin()
@@ -321,12 +323,15 @@ void CKirbyFSM::begin()
             else
             {
                 m_CurHat = KirbyChildObject[i]->Clone();
+                m_CurHat->MeshRender()->SetEnabled(true);
                 GamePlayStatic::DestroyGameObject(KirbyChildObject[i]);
             }
         }
         else if (ObjName.find(L"Weapon") != wstring::npos)
         {
             m_CurWeapon = KirbyChildObject[i]->Clone();
+            m_CurWeapon->SetActive(true);
+            m_CurWeapon->MeshRender()->SetEnabled(true);
             GamePlayStatic::DestroyGameObject(KirbyChildObject[i]);
         }
         else if (ObjName == L"KirbyDragon")
@@ -344,6 +349,7 @@ void CKirbyFSM::begin()
     // Mesh & Mtrls
     // ---------------------------
     MeshRender()->SetEnabled(true);
+    ClearMtrlShader();
 
     // Parsing Mesh
     PLAYER->MeshRender()->SetMeshData(CPlayerMgr::GetPlayerMeshData());
@@ -380,7 +386,6 @@ void CKirbyFSM::begin()
     if (m_CurHat)
     {
         GamePlayStatic::AddChildObject(GetOwner(), m_CurHat, L"Hat");
-        GetCurHat()->MeshRender()->SetEnabled(true);
     }
 
     if (m_CurHatBlade)
@@ -391,7 +396,6 @@ void CKirbyFSM::begin()
     if (m_CurWeapon)
     {
         GamePlayStatic::AddChildObject(GetOwner(), m_CurWeapon, L"Weapon");
-        GetCurWeapon()->MeshRender()->SetEnabled(true);
     }
 
     // ---------------------------
@@ -527,6 +531,14 @@ void CKirbyFSM::tick()
         if (m_ComboAccTime >= GetCurAbility()->GetComboSuccessTime())
         {
             SetComboLevel(0);
+        }
+    }
+
+    if (m_SlideComboLevel != 0)
+    {
+        if (!m_bSlideComboLock)
+        {
+            m_SlideComboLevel = 0;
         }
     }
 
@@ -817,6 +829,12 @@ void CKirbyFSM::SetEmissive(bool _Emissive, float _Duration)
     }
 }
 
+void CKirbyFSM::SetMtrlShader(Ptr<CGraphicsShader> _Shader)
+{
+    CPlayerMgr::GetPlayerBodyDemoMtrl()->SetShader(_Shader);
+    CPlayerMgr::GetPlayerBodyMtrl()->SetShader(_Shader);
+}
+
 void CKirbyFSM::ClearCurHatWeapon()
 {
     if (m_CurHat)
@@ -870,6 +888,11 @@ void CKirbyFSM::OnCollider()
     {
         m_BodyCollider->SetEnabled(true);
     }
+}
+
+void CKirbyFSM::ClearMtrlShader()
+{
+    SetMtrlShader(m_OriginShader);
 }
 
 bool CKirbyFSM::IsDrawing() const
