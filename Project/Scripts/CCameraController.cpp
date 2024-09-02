@@ -782,9 +782,10 @@ void CCameraController::ProcessEffet()
         case EFFECT_TYPE::TILT_ANGLE: {
             Transform()->SetDirection(m_CurLookDir);
 
-            float tiltDuration = 0.5f;        // 초기 회전 시간
-            float oscillationDuration = 3.0f; // 흔들림 시간
-            float returnDuration = 0.5f;      // 복귀 시간
+
+            float tiltDuration = 0.5f;                      // 초기 회전 시간
+            float oscillationDuration = CurEffet.Duration;  // 흔들림 시간
+            float returnDuration = 0.5f;                    // 복귀 시간
 
             float totalDuration = tiltDuration + oscillationDuration + returnDuration;
 
