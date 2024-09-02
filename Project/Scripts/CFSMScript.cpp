@@ -38,6 +38,11 @@ CFSMScript::~CFSMScript()
     Delete_Map(m_mapState);
 }
 
+void CFSMScript::begin()
+{
+    m_Unit = GetOwner()->GetScript<CUnitScript>();
+}
+
 void CFSMScript::tick()
 {
     if (m_CurState)

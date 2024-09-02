@@ -133,8 +133,8 @@ void CElfilisAirArrow::OnCollisionEnter(CCollider* _OtherCollider)
             Effect->Transform()->SetWorldPos(InitPos);
 
             Vec3 LookDir = CAMERACTRL->GetOwner()->Transform()->GetWorldPos() - InitPos;
-            LookDir.z += GetRandFloat(-10.f, 10.f) / 100.f;
-            LookDir.x += GetRandFloat(-10.f, 10.f) / 100.f;
+            LookDir.z += GetRandomfloat(-10.f, 10.f) / 100.f;
+            LookDir.x += GetRandomfloat(-10.f, 10.f) / 100.f;
             Effect->Transform()->SetDirection(LookDir.Normalize());
 
             CMomentaryObjScript* Script = Effect->GetScript<CMomentaryObjScript>();

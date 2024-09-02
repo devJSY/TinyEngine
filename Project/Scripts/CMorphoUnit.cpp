@@ -3,6 +3,7 @@
 #include "CBossMgr.h"
 #include "CMorphoFSM.h"
 #include "CBossLevelFlowMgr.h"
+#include "CDestroyParticleScript.h"
 
 CMorphoUnit::CMorphoUnit()
     : CUnitScript(MORPHOUNIT)
@@ -59,6 +60,79 @@ void CMorphoUnit::tick()
             m_CurInfo.HP = 0.f;
         }
     }
+}
+
+CGameObject* CMorphoUnit::SpawnAttackButterflyEffect(Vec3 _Pos)
+{
+    CGameObject* Butterfly = new CGameObject;
+    CParticleSystem* Particle = nullptr;
+    int Rand = GetRandomInt(0, 2);
+
+    if (Rand == 0)
+    {
+        Particle = MRPFSM->GetParticleButterflyPink()->ParticleSystem()->Clone();
+    }
+    else if (Rand == 1)
+    {
+        Particle = MRPFSM->GetParticleButterflyYellow()->ParticleSystem()->Clone();
+    }
+    else if (Rand == 2)
+    {
+        Particle = MRPFSM->GetParticleButterflyYellowPink()->ParticleSystem()->Clone();
+    }
+
+    if (Particle)
+    {
+        tParticleModule Module = Particle->GetParticleModule();
+        Module.vSpawnMinScale = Vec3(20.f, 20.f, 1.f);
+        Module.vSpawnMaxScale = Vec3(40.f, 40.f, 1.f);
+        Module.vScaleRatio = Vec3::Zero;
+        Module.MinSpeed = 30.f;
+        Module.MaxSpeed = 80.f;
+        Module.VelocityAlignment = GetRandomInt(0, 1);
+        Module.AlphaBasedLife = 1;
+
+        Particle->SetParticleModule(Module);
+        Butterfly->AddComponent(Particle);
+    }
+
+    _Pos.y = GetRandomfloat(0.f, 50.f);
+    Butterfly->AddComponent(new CTransform);
+    Butterfly->Transform()->SetWorldPos(_Pos);
+
+    CDestroyParticleScript* Script = new CDestroyParticleScript;
+    Script->SetSpawnTime(0.5f);
+    Butterfly->AddComponent(Script);
+
+    Butterfly->SetName(L"Particle_Butterfly");
+    GamePlayStatic::SpawnGameObject(Butterfly, LAYER_EFFECT);
+
+    return Butterfly;
+}
+
+CGameObject* CMorphoUnit::SpawnLightningEffect(Vec3 _Pos)
+{
+    return nullptr;
+}
+
+CGameObject* CMorphoUnit::SpawnCircleDustEffect(Vec3 _Pos)
+{
+    CGameObject* Dust = new CGameObject;
+    CParticleSystem* Particle = MRPFSM->GetParticleCircleDust()->ParticleSystem()->Clone();
+    Dust->AddComponent(Particle);
+
+    _Pos.y = GetRandomfloat(0.f, 10.f);
+    Dust->AddComponent(new CTransform);
+    Dust->Transform()->SetWorldPos(_Pos);
+
+    CDestroyParticleScript* Script = new CDestroyParticleScript;
+    Script->SetSpawnTime(0.5f);
+    Dust->AddComponent(Script);
+
+    Dust->SetName(L"Particle_CircleDust");
+    GamePlayStatic::SpawnGameObject(Dust, LAYER_EFFECT);
+
+    return Dust;
 }
 
 UINT CMorphoUnit::SaveToLevelFile(FILE* _File)

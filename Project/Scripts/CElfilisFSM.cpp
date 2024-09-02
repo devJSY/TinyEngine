@@ -404,6 +404,8 @@ void CElfilisFSM::DestroySumon()
 #include "CElfilisA_TeleportCombo.h"
 void CElfilisFSM::begin()
 {
+    CFSMScript::begin();
+
     // add state
     AddGroupPublicState(ElfilisStateGroup::GroundIdle, L"GROUND_IDLE", new CElfilisG_Idle);
     AddGroupPublicState(ElfilisStateGroup::GroundMove, L"GROUND_MOVE_BACKSTEP", new CElfilisG_BackStep);

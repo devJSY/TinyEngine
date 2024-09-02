@@ -5,8 +5,11 @@ class CMorphoUnit : public CUnitScript
 {
 public:
     virtual void tick();
-
     // virtual void AttackReward();
+
+    CGameObject* SpawnAttackButterflyEffect(Vec3 _Pos);
+    CGameObject* SpawnLightningEffect(Vec3 _Pos);
+    CGameObject* SpawnCircleDustEffect(Vec3 _Pos);
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

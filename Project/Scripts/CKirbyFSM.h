@@ -1,5 +1,6 @@
 #pragma once
 #include "CFSMScript.h"
+#include "CKirbyUnitScript.h"
 class CKirbyAbility;
 class CKirbyObject;
 class CKirbyVacuumCollider;
@@ -23,81 +24,80 @@ enum class DodgeType
 class CKirbyFSM : public CFSMScript
 {
 private:
-    CKirbyAbility*          m_arrAbility[(UINT)AbilityCopyType::END];
-    AbilityCopyType         m_PrevAbility;
-    AbilityCopyType         m_CurAbility;
-    AbilityCopyType         m_NextAbility;
+    // FSM
+    CKirbyAbility* m_arrAbility[(UINT)AbilityCopyType::END];
+    AbilityCopyType m_PrevAbility;
+    AbilityCopyType m_CurAbility;
+    AbilityCopyType m_NextAbility;
 
-    CKirbyObject*           m_arrObject[(UINT)ObjectCopyType::END];
-    ObjectCopyType          m_PrevObject;
-    ObjectCopyType          m_CurObject;
-    ObjectCopyType          m_NextObject;
-    
-    CGameObject*            m_CurHat;
-    CGameObject*            m_CurHatBlade;
-    CGameObject*            m_CurWeapon;
-    CGameObject*            m_StuffedObj;
+    CKirbyObject* m_arrObject[(UINT)ObjectCopyType::END];
+    ObjectCopyType m_PrevObject;
+    ObjectCopyType m_CurObject;
+    ObjectCopyType m_NextObject;
 
-    CCapsuleCollider*       m_BodyCollider;
-    CKirbyVacuumCollider*   m_VacuumCollider;
-    CKirbyLightScript*      m_PointLight;
+    CGameObject* m_CurHat;
+    CGameObject* m_CurHatBlade;
+    CGameObject* m_CurWeapon;
+    CGameObject* m_StuffedObj;
 
-    // 상태 관리를 위한 값들
-    const float             m_HoveringLimitTime;
-    float                   m_HoveringAccTime;
-    bool                    m_bHovering;
+    CCapsuleCollider* m_BodyCollider;
+    CKirbyVacuumCollider* m_VacuumCollider;
+    CKirbyLightScript* m_PointLight;
 
-    UINT                    m_ComboLevel;
-    float                   m_ComboAccTime;
-    float                   m_ChargeAccTime;
-    bool                    m_bAttackEvent;
+    // State Control : Common
+    UINT m_ComboLevel;
+    float m_ComboAccTime;
 
-    LastJumpType            m_LastJump;
-    DodgeType               m_DodgeType;
-    bool                    m_bStuffed;
-    bool                    m_bUnstuffReverse;
+    float m_ChargeAccTime;
+    float m_YPressedTime;
+    float m_DropCopyTime;
+    LastJumpType m_LastJump;
+    DodgeType m_DodgeType;
+    bool m_bNearDeformObject;
+    bool m_bAttackEvent;
+    bool m_bDroppable;
+    bool m_bIsSkrr;
 
-    Vec3                    m_KnockbackDir;
-    float                   m_YPressedTime;
-    float                   m_Vacuum1MaxTime;
-    float                   m_DropCopyTime;
-    bool                    m_bDroppable;
-    bool                    m_bNearDeformObject;
+    const float m_HoveringLimitTime;
+    float m_HoveringAccTime;
+    bool m_bHovering;
 
-    // 무적 상태
-    float                   m_InvincibleAcc;
-    float                   m_InvincibleDuration;
-    bool                    m_bInvincible;
+    float m_Vacuum1MaxTime;
+    bool m_bStuffed;
+    bool m_bUnstuffReverse;
 
-    // Emissive 상태
-    float                   m_EmissiveCoef;
-    float                   m_EmissiveAcc;
-    float                   m_EmissiveDuration;
-    bool                    m_bEmissive;
-    bool                    m_bIsSkrr;
+    Vec3 m_KnockbackDir;
 
-    // Sword
-    UINT                    m_SlideComboLevel;
-    bool                    m_bSlideComboLock;
-   
-    // Blade
-    bool                    m_bCanBladeAttack;
+    float m_InvincibleAcc;
+    float m_InvincibleDuration;
+    bool m_bInvincible;
 
-    // Fire Gliding Timer
-    float                   m_GlidingDuration;
-    float                   m_GlidingAcc;
-    bool                    m_GlidingGravity;
+    Vec3 m_LadderUpSightDir;
+    Vec3 m_LadderDownSightDir;
+    Vec3 m_LadderTop;
+    Vec3 m_LadderBottom;
+    bool m_bEscapeLadder;
+    bool m_bInCollisionLadder;
 
-    // Vending Machine
-    UINT                    m_LeftCanCount;
+    float m_EmissiveCoef;
+    float m_EmissiveAcc;
+    float m_EmissiveDuration;
+    bool m_bEmissive;
 
-    // Ladder
-    bool                    m_bEscapeLadder;
-    bool                    m_bInCollisionLadder;
-    Vec3                    m_LadderUpSightDir;
-    Vec3                    m_LadderDownSightDir;
-    Vec3                    m_LadderTop;
-    Vec3                    m_LadderBottom;
+    // State Control : Sword
+    UINT m_SlideComboLevel;
+    bool m_bSlideComboLock;
+
+    // State Control : Blade
+    bool m_bCanBladeAttack;
+
+    // State Control : Fire
+    float m_GlidingDuration;
+    float m_GlidingAcc;
+    bool m_GlidingGravity;
+
+    // State Control : Vending Machine
+    UINT m_LeftCanCount;
 
 public:
     void begin() override;
@@ -109,12 +109,27 @@ public:
     void DrawingCollisionEnter(CGameObject* _CollisionObject);
     void AddGlidingTime(float _Time) { m_GlidingAcc += _Time; }
 
+    void ClearCurHatWeapon();
+    void ClearChargeAccTime() { m_ChargeAccTime = 0.f; }
+    void ClearHoveringAccTime() { m_HoveringAccTime = 0.f; }
+    void ClearStuff();
+    void ClearGlidingTime() { m_GlidingAcc = 0.f; }
+    void ClearYPressedTime() { m_YPressedTime = 0.f; }
+    void SubCanCount();
+    void ResetCanCount() { m_LeftCanCount = 100; }
+    void OffCollider();
+    void OnCollider();
+
 public:
     void SetCurHat(CGameObject* _Hat);
     void SetCurHatBlade(CGameObject* _HatBlade) { m_CurHatBlade = _HatBlade; }
     void SetCurWeapon(CGameObject* _Weapon);
     void SetAttackEvent(bool _bAttack) { m_bAttackEvent = _bAttack; }
-    void SetComboLevel(int _Level) { m_ComboAccTime = 0.f; m_ComboLevel = _Level; }
+    void SetComboLevel(int _Level)
+    {
+        m_ComboAccTime = 0.f;
+        m_ComboLevel = _Level;
+    }
     void SetLastJump(LastJumpType _Type) { m_LastJump = _Type; }
     void SetHovering(bool _bHovering);
     void SetDodgeType(DodgeType _Type) { m_DodgeType = _Type; }
@@ -133,24 +148,14 @@ public:
     void SetLadderTop(Vec3 _Top) { m_LadderTop = _Top; }
     void SetLadderBottom(Vec3 _Bottom) { m_LadderBottom = _Bottom; }
     void SetEscapeLadder(bool _b) { m_bEscapeLadder = _b; }
-    void SetSkrr(bool _Skrr) { m_bIsSkrr = _Skrr; }    
+    void SetSkrr(bool _Skrr) { m_bIsSkrr = _Skrr; }
     void SetGlidingGravity(float _Gravity) { m_GlidingGravity = _Gravity; }
-    
     void SetUnstuffReverse(bool _Unstuffed) { m_bUnstuffReverse = _Unstuffed; }
-    void ClearCurHatWeapon();
-    void ClearChargeAccTime() { m_ChargeAccTime = 0.f; }
-    void ClearHoveringAccTime() { m_HoveringAccTime = 0.f; }
-    void ClearStuff();
-    void ClearGlidingTime() { m_GlidingAcc = 0.f; }
-    void ClearYPressedTime() { m_YPressedTime = 0.f; }
-    void SubCanCount();
-    void ResetCanCount() { m_LeftCanCount = 100; }
-    void OffCollider();
-    void OnCollider();
 
+    virtual CKirbyUnitScript* GetUnit() override { return (CKirbyUnitScript*)m_Unit; }
     CKirbyAbility* GetCurAbility() const { return m_arrAbility[(UINT)m_CurAbility]; }
-    CKirbyAbility* GetPrevAbility() const { return m_arrAbility[(UINT)m_PrevAbility]; } 
-    CKirbyAbility* GetNextAbility() const { return m_arrAbility[(UINT)m_NextAbility]; } 
+    CKirbyAbility* GetPrevAbility() const { return m_arrAbility[(UINT)m_PrevAbility]; }
+    CKirbyAbility* GetNextAbility() const { return m_arrAbility[(UINT)m_NextAbility]; }
     CKirbyObject* GetCurObject() const { return m_arrObject[(UINT)m_CurObject]; }
     CKirbyObject* GetPrevObject() const { return m_arrObject[(UINT)m_PrevObject]; }
     CKirbyObject* GetNextObject() const { return m_arrObject[(UINT)m_NextObject]; }
@@ -188,15 +193,12 @@ public:
     Vec3 GetKnockBackDir() const { return m_KnockbackDir; }
     UINT GetCanCount() const { return m_LeftCanCount; }
     float GetGlidingGravity() const { return m_GlidingGravity; }
-
-
     bool GetCollisionLadder() const { return m_bInCollisionLadder; }
     Vec3 GetLadderUpSightDir() const { return m_LadderUpSightDir; }
     Vec3 GetLadderDownSightDir() const { return m_LadderDownSightDir; }
     Vec3 GetLadderTop() const { return m_LadderTop; }
     Vec3 GetLadderBottom() const { return m_LadderBottom; }
     bool GetEscapeLadder() const { return m_bEscapeLadder; }
-
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

@@ -1,5 +1,6 @@
 #pragma once
 #include "CFSMScript.h"
+#include "CElfilisUnit.h"
 class CElfilisBigFSM;
 
 enum class ElfilisStateGroup
@@ -108,6 +109,7 @@ public:
     void SetResist(bool _bResist) { m_bResist = _bResist; }
     void AddEmissive(Vec3 _Color);
 
+    virtual CElfilisUnit* GetUnit() override { return (CElfilisUnit*)m_Unit; }
     ElfilisStateGroup GetCurStateGroup() const { return m_CurStateGroup; }
     const vector<wstring>& GetCurPublicStates() const;
     bool IsPattern() const { return m_Pattern != ElfilisPatternType::NONE; }
