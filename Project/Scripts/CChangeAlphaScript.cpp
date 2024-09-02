@@ -7,7 +7,6 @@ CChangeAlphaScript::CChangeAlphaScript()
     , m_Event(ChangeAlphaEvent::NONE)
     , m_PlayTime(0.f)
     , m_AccTime(0.f)
-
 {
 }
 
@@ -36,7 +35,7 @@ void CChangeAlphaScript::begin()
         {
             for (int i = 0; i < (int)iter->MeshRender()->GetMtrlCount(); ++i)
             {
-                m_listMtrl.push_back(iter->MeshRender()->GetMaterial(i));
+                m_vecMtrl.push_back(iter->MeshRender()->GetMaterial(i));
             }
         }
     }
@@ -48,7 +47,7 @@ void CChangeAlphaScript::tick()
 
     switch (m_Event)
     {
-    case ChangeAlphaEvent::FADE_IN: {
+    case ChangeAlphaEvent::FadeIn: {
         float Alpha = clamp(m_AccTime / m_PlayTime, 0.f, 1.f);
         SetAlpha(Alpha);
 
@@ -58,7 +57,16 @@ void CChangeAlphaScript::tick()
         }
     }
     break;
-    case ChangeAlphaEvent::FADE_OUT: {
+    case ChangeAlphaEvent::FadeIn_Random: {
+        SetAlpha_Delay();
+
+        if (m_AccTime > m_PlayTime)
+        {
+            ClearEvent();
+        }
+    }
+    break;
+    case ChangeAlphaEvent::FadeOut: {
         float Alpha = 1.f - clamp(m_AccTime / m_PlayTime, 0.f, 1.f);
         SetAlpha(Alpha);
 
@@ -71,11 +79,47 @@ void CChangeAlphaScript::tick()
     }
 }
 
+void CChangeAlphaScript::FadeIn_RandomDelay(float _MinPlayTime, float _MaxPlayTime)
+{
+    m_MinPlayTime = _MinPlayTime;
+
+    for (int i = 0; i < m_vecMtrl.size(); ++i)
+    {
+        float RandomDelay = GetRandomfloat(_MinPlayTime, _MaxPlayTime);
+        m_vecDelayTime.push_back(RandomDelay);
+    }
+
+    SetEvent(ChangeAlphaEvent::FadeIn_Random, _MaxPlayTime);
+}
+
 void CChangeAlphaScript::SetAlpha(float _Alpha)
 {
-    for (Ptr<CMaterial> iter : m_listMtrl)
+    for (Ptr<CMaterial> iter : m_vecMtrl)
     {
         iter->SetScalarParam(m_AlphaParamIdx, _Alpha);
+    }
+}
+
+void CChangeAlphaScript::SetAlpha_Delay()
+{
+    if (m_vecDelayTime.empty())
+    {
+        for (int i = 0; i < m_vecMtrl.size(); ++i)
+        {
+            float RandomDelay = GetRandomfloat(m_MinPlayTime, m_PlayTime);
+            m_vecDelayTime.push_back(RandomDelay);
+        }
+    }
+
+    for (int i = 0; i < m_vecMtrl.size(); ++i)
+    {
+        float Delay = m_vecDelayTime[i];
+
+        if (m_AccTime > Delay)
+        {
+            float Alpha = clamp((m_AccTime - Delay) / (m_PlayTime - Delay), 0.f, 1.f);
+            m_vecMtrl[i]->SetScalarParam(m_AlphaParamIdx, Alpha);
+        }
     }
 }
 

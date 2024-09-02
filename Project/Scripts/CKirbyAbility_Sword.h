@@ -4,6 +4,7 @@
 class CKirbyAbility_Sword : public CKirbyAbility
 {
 private:
+    Ptr<CPrefab> m_KirbySwordSlashPref;
     Vec3 m_PrevWeaponScale;
     Vec3 m_BigWeaponScale;
     float m_PrevSpeed;
@@ -111,6 +112,9 @@ public:
     virtual void ChangeAbility() override;
     virtual void ChangeAbilityEnter() override;
     virtual void ChangeAbilityExit() override;
+
+private:
+    void SpawnSwordSlash();
 
 public:
     CLONE(CKirbyAbility_Sword)

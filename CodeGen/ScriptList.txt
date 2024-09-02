@@ -123,3 +123,6 @@ CUIChangeAbilityStarSpawnEffectScript
 CUIChangeAbilityStarEffect
 CUIChangeAbilityStopStarEffect
 CKirbySoundListener
+CUIDashEffectScript
+CDestroyParticleScript
+CMorphoShockWaveWave

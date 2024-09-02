@@ -126,6 +126,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CCanJuice.h" />
     <ClInclude Include="CCutterProjectileScript.h" />
     <ClInclude Include="CDamageStarEffect.h" />
+    <ClInclude Include="CDestroyParticleScript.h" />
     <ClInclude Include="CElfilisAirArrow.h" />
     <ClInclude Include="CElfilisArrowScript.h" />
     <ClInclude Include="CElfilisArrowSetScript.h" />
@@ -285,6 +286,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CMorphoMoveG_TeleportCombo.h" />
     <ClInclude Include="CMorphoMoveG_TeleportNear.h" />
     <ClInclude Include="CMorphoShockWave.h" />
+    <ClInclude Include="CMorphoShockWaveWave.h" />
     <ClInclude Include="CMorphoTrackingSoul.h" />
     <ClInclude Include="CMorphoUnit.h" />
     <ClInclude Include="CMorpho_Idle.h" />
@@ -431,6 +433,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CUIChangeAbilityStarEffect.h" />
     <ClInclude Include="CUIChangeAbilityStarSpawnEffectScript.h" />
     <ClInclude Include="CUIChangeAbilityStopStarEffect.h" />
+    <ClInclude Include="CUIDashEffectScript.h" />
     <ClInclude Include="CUIFlowMgr.h" />
     <ClInclude Include="CUIGlowMoveScript.h" />
     <ClInclude Include="CUIHPScript.h" />
@@ -473,6 +476,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CCanJuice.cpp" />
     <ClCompile Include="CCutterProjectileScript.cpp" />
     <ClCompile Include="CDamageStarEffect.cpp" />
+    <ClCompile Include="CDestroyParticleScript.cpp" />
     <ClCompile Include="CElfilisAirArrow.cpp" />
     <ClCompile Include="CElfilisArrowScript.cpp" />
     <ClCompile Include="CElfilisArrowSetScript.cpp" />
@@ -632,6 +636,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CMorphoMoveG_TeleportCombo.cpp" />
     <ClCompile Include="CMorphoMoveG_TeleportNear.cpp" />
     <ClCompile Include="CMorphoShockWave.cpp" />
+    <ClCompile Include="CMorphoShockWaveWave.cpp" />
     <ClCompile Include="CMorphoTrackingSoul.cpp" />
     <ClCompile Include="CMorphoUnit.cpp" />
     <ClCompile Include="CMorpho_Idle.cpp" />
@@ -778,6 +783,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CUIChangeAbilityStarEffect.cpp" />
     <ClCompile Include="CUIChangeAbilityStarSpawnEffectScript.cpp" />
     <ClCompile Include="CUIChangeAbilityStopStarEffect.cpp" />
+    <ClCompile Include="CUIDashEffectScript.cpp" />
     <ClCompile Include="CUIFlowMgr.cpp" />
     <ClCompile Include="CUIGlowMoveScript.cpp" />
     <ClCompile Include="CUIHPScript.cpp" />

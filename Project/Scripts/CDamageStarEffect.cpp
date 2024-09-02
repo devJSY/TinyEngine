@@ -129,9 +129,11 @@ void CDamageStarEffect::Enter()
 
     if (m_eTickType == DamageStarTickType::Direction)
     {
+        float fPower = RandomizePow();
+
         if (Rigidbody())
         {
-            Rigidbody()->AddForce(m_vDir * m_fPower, ForceMode::Acceleration);
+            Rigidbody()->AddForce(m_vDir * fPower, ForceMode::Acceleration);
         }
     }
 
@@ -251,7 +253,7 @@ float CDamageStarEffect::RandomizeScale()
 
 float CDamageStarEffect::RandomizePow()
 {
-    return GetRandomfloat(1.f, 5.f);
+    return GetRandomfloat(m_fRandomMizeMinPower, m_fRandomMizeMaxPower);
 }
 
 UINT CDamageStarEffect::SaveToLevelFile(FILE* _File)
