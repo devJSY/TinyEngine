@@ -30,7 +30,7 @@ void CFlowMgr_BossMorpho::begin()
     CBossLevelFlowMgr::begin();
 
     // set effect
-    SetToneMappingParam(true, 1, 0.85f, 0.27f, 1.3f, 1.26f, 1.963f);
+    SetToneMappingParam(true, 1, 0.4f, 0.27f, 1.3f, 1.6f, 2.3f);
     SetFadeEffectColor(Vec3(255.f, 150.f, 100.f));
 
     // find object
@@ -100,7 +100,7 @@ void CFlowMgr_BossMorpho::EnterDemoPlay()
     {
     case BossDemoType::Encounter: {
         //SetToneMappingParam(true, 1, 0.5f, 0.27f, 1.3f, 1.2f, 1.7f);
-        SetToneMappingParam(true, 1, 0.5f, 0.27f, 1.3f, 1.26f, 1.973f);
+        //SetToneMappingParam(true, 1, 0.5f, 0.27f, 1.3f, 1.26f, 1.973f);
     }
     break;
     case BossDemoType::StartPhase2:
@@ -159,7 +159,7 @@ void CFlowMgr_BossMorpho::ExitDemoPlay()
             m_Barricade->Transform()->SetWorldScale(m_BarricadeScale);
         }
 
-        SetToneMappingParam(true, 1, 0.85f, 0.27f, 1.3f, 1.26f, 1.963f);
+        //SetToneMappingParam(true, 1, 0.85f, 0.27f, 1.3f, 1.26f, 1.963f);
     }
     break;
     case BossDemoType::StartPhase2: {

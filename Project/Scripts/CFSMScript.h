@@ -1,11 +1,12 @@
 #pragma once
 #include <Engine\\CScript.h>
-
 class CState;
+class CUnitScript;
 
 class CFSMScript : public CScript
 {
 protected:
+    CUnitScript* m_Unit;
     bool m_bGlobalState;
 
 private:
@@ -14,19 +15,23 @@ private:
     CState* m_PrevState;
 
 public:
-    virtual void begin() override = 0;
+    virtual void begin() override;
     virtual void tick() override;
 
     void AddState(const wstring& _StateName, CState* _State);
     CState* FindState(const wstring& _StateName);
     virtual void ChangeState(const wstring& _strStateName);
     void DeleteState(const wstring& _StateKey);
-    void SetGlobalState(bool _GlobalState) { m_bGlobalState = _GlobalState; }
 
 protected:
     void ChangeState_proc(CState* _pNextState);
 
 public:
+    void SetGlobalState(bool _GlobalState) { m_bGlobalState = _GlobalState; }
+    void LockChangeState() { m_bGlobalState = true; }
+    void UnlockChangeState() { m_bGlobalState = false; }
+
+    virtual CUnitScript* GetUnit() { return m_Unit; }
     const map<wstring, CState*>& GetStates() { return m_mapState; }
     CState* GetCurState() { return m_CurState; }
     CState* GetPrevState() { return m_PrevState; }

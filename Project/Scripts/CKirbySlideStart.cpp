@@ -48,6 +48,8 @@ void CKirbySlideStart::Enter()
     PLAYERCTRL->LockDirection();
     PLAYERCTRL->LockJump();
 
+    PLAYERFSM->SetSlideComboLevel(0);
+
     // 커비 표정 바꾸기 
     CPlayerMgr::SetPlayerFace(FaceType::UpTail);
 }

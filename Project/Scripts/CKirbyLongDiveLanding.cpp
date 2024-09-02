@@ -114,6 +114,29 @@ void CKirbyLongDiveLanding::Enter()
 {
     GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\LongDive.wav", 1, KIRBY_EFFECTSOUND);
 
+    // Change State
+    if (PLAYERFSM->GetCurObjectIdx() != ObjectCopyType::NONE)
+    {
+    }
+    else
+    {
+        switch (PLAYERFSM->GetCurAbilityIdx())
+        {
+        case AbilityCopyType::NORMAL:
+            break;
+        case AbilityCopyType::FIRE:
+            break;
+        case AbilityCopyType::CUTTER:
+            break;
+        case AbilityCopyType::SWORD: {
+            PLAYERFSM->LockSlideCombo();
+        }
+        break;
+        case AbilityCopyType::SLEEP:
+            break;
+        }
+    }
+
     // 애니메이션 재생
     PLAYER->Animator()->Play(ANIMPREFIX("LongDiveAttackLanding"), false, false, 2.f);
     
@@ -137,9 +160,30 @@ void CKirbyLongDiveLanding::Enter()
 
     PLAYERCTRL->ClearVelocityY();
     PLAYERCTRL->AddVelocity(Vec3(0.f, 7.f, 0.f));
-
 }
 
 void CKirbyLongDiveLanding::Exit()
 {
+    // Change State
+    if (PLAYERFSM->GetCurObjectIdx() != ObjectCopyType::NONE)
+    {
+    }
+    else
+    {
+        switch (PLAYERFSM->GetCurAbilityIdx())
+        {
+        case AbilityCopyType::NORMAL:
+            break;
+        case AbilityCopyType::FIRE:
+            break;
+        case AbilityCopyType::CUTTER:
+            break;
+        case AbilityCopyType::SWORD: {
+            PLAYERFSM->UnlockSlideCombo();
+        }
+        break;
+        case AbilityCopyType::SLEEP:
+            break;
+        }
+    }
 }

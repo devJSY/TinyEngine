@@ -2720,7 +2720,7 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
 
                     if (2 == Module.AlphaBasedLife)
                     {
-                        ImGui::DragFloat(ImGui_LabelPrefix("Alpha Max Age##Velocity Type").c_str(), &Module.AlphaMaxAge, 0.1f, 0.f, Module.MaxLife);
+                        ImGui::DragFloat(ImGui_LabelPrefix("Alpha Max Age").c_str(), &Module.AlphaMaxAge, 0.1f, 0.f, Module.MaxLife);
                     }
 
                     ImGui::TreePop();
@@ -2866,46 +2866,33 @@ void COutliner::DrawDecal(CGameObject* obj)
 
     if (open)
     {
+        constexpr float IMAGE_BASE_SIZE = 128.f;
+
         // Decal Albedo Texture
         {
-            ImGui::Text("Decal Albedo Texture");
-            void* TextureID = nullptr;
             Ptr<CTexture> pDecalAlbedoTex = pDecal->GetDecalAlbedoTex();
+            string AlbedoTextureName = string();
 
-            if (nullptr != pDecalAlbedoTex)
-                TextureID = pDecalAlbedoTex->GetSRV().Get();
-            else
-                TextureID = CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\missing_texture.png", L"Texture\\missing_texture.png")->GetSRV().Get();
+            ID3D11ShaderResourceView* pSRV = nullptr;
 
-            ImGui::Image(TextureID, ImVec2(256.f, 256.f));
-
-            if (nullptr != pDecalAlbedoTex)
+            // Texture Render
             {
-                if (ImGui::BeginItemTooltip())
+                if (nullptr != pDecalAlbedoTex.Get())
                 {
-                    ImGui::Text("%s", ToString(pDecalAlbedoTex->GetKey()).c_str());
-                    ImGui::EndTooltip();
+                    pSRV = pDecalAlbedoTex->GetSRV().Get();
+                    AlbedoTextureName = ToString(pDecalAlbedoTex->GetName());
                 }
-            }
+                else
+                    pSRV = CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\missing_texture.png", L"Texture\\missing_texture.png")->GetSRV().Get();
 
-            // Drag & Drop
-            if (ImGui::BeginDragDropTarget())
-            {
-                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_ASSETS"))
-                {
-                    string name = (char*)payload->Data;
-                    name.resize(payload->DataSize);
-                    pDecal->SetDecalAlbedoTex(CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(name)));
-                }
+                ImGui::Columns(2);
+                ImGui::SetColumnWidth(0, 250);
+                ImGui::Spacing();
+                ImGui::Dummy(ImVec2(0.f, 30.f));
+                ImGui::Text("Albedo Texture");
+                ImGui::NextColumn();
 
-                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
-                {
-                    string name = (char*)payload->Data;
-                    name.resize(payload->DataSize);
-                    pDecal->SetDecalAlbedoTex(CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(name)));
-                }
-
-                ImGui::EndDragDropTarget();
+                ImGui::Image((void*)pSRV, ImVec2(IMAGE_BASE_SIZE, IMAGE_BASE_SIZE));
             }
 
             // Delete Texture Popup
@@ -2920,48 +2907,43 @@ void COutliner::DrawDecal(CGameObject* obj)
 
                 ImGui::EndPopup();
             }
+
+            ImGui::SameLine();
+
+            // Textures Combobox
+            if (ImGui_TexturesComboUI("##Decal Albedo Texture", AlbedoTextureName))
+            {
+                pDecal->SetDecalAlbedoTex(CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(AlbedoTextureName)));
+            }
+
+            ImGui::Columns(1);
         }
 
         // Decal MRA Texture
         {
-            ImGui::Text("Decal MRA Texture");
-            void* TextureID = nullptr;
             Ptr<CTexture> pDecalMRATex = pDecal->GetDecalMRATex();
+            string MRATextureName = string();
 
-            if (nullptr != pDecalMRATex)
-                TextureID = pDecalMRATex->GetSRV().Get();
-            else
-                TextureID = CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\missing_texture.png", L"Texture\\missing_texture.png")->GetSRV().Get();
+            ID3D11ShaderResourceView* pSRV = nullptr;
 
-            ImGui::Image(TextureID, ImVec2(256.f, 256.f));
-
-            if (nullptr != pDecalMRATex)
+            // Texture Render
             {
-                if (ImGui::BeginItemTooltip())
+                if (nullptr != pDecalMRATex.Get())
                 {
-                    ImGui::Text("%s", ToString(pDecalMRATex->GetKey()).c_str());
-                    ImGui::EndTooltip();
+                    pSRV = pDecalMRATex->GetSRV().Get();
+                    MRATextureName = ToString(pDecalMRATex->GetName());
                 }
-            }
+                else
+                    pSRV = CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\missing_texture.png", L"Texture\\missing_texture.png")->GetSRV().Get();
 
-            // Drag & Drop
-            if (ImGui::BeginDragDropTarget())
-            {
-                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_ASSETS"))
-                {
-                    string name = (char*)payload->Data;
-                    name.resize(payload->DataSize);
-                    pDecal->SetDecalMRATex(CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(name)));
-                }
+                ImGui::Columns(2);
+                ImGui::SetColumnWidth(0, 250);
+                ImGui::Spacing();
+                ImGui::Dummy(ImVec2(0.f, 30.f));
+                ImGui::Text("MRA Texture");
+                ImGui::NextColumn();
 
-                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
-                {
-                    string name = (char*)payload->Data;
-                    name.resize(payload->DataSize);
-                    pDecal->SetDecalMRATex(CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(name)));
-                }
-
-                ImGui::EndDragDropTarget();
+                ImGui::Image((void*)pSRV, ImVec2(IMAGE_BASE_SIZE, IMAGE_BASE_SIZE));
             }
 
             // Delete Texture Popup
@@ -2976,48 +2958,43 @@ void COutliner::DrawDecal(CGameObject* obj)
 
                 ImGui::EndPopup();
             }
+
+            ImGui::SameLine();
+
+            // Textures Combobox
+            if (ImGui_TexturesComboUI("##Decal MRA Texture", MRATextureName))
+            {
+                pDecal->SetDecalMRATex(CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(MRATextureName)));
+            }
+
+            ImGui::Columns(1);
         }
 
         // Decal Normal Texture
         {
-            ImGui::Text("Decal Normal Texture");
-            void* TextureID = nullptr;
             Ptr<CTexture> pDecalNormalTex = pDecal->GetDecalNormalTex();
+            string NormalTextureName = string();
 
-            if (nullptr != pDecalNormalTex)
-                TextureID = pDecalNormalTex->GetSRV().Get();
-            else
-                TextureID = CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\missing_texture.png", L"Texture\\missing_texture.png")->GetSRV().Get();
+            ID3D11ShaderResourceView* pSRV = nullptr;
 
-            ImGui::Image(TextureID, ImVec2(256.f, 256.f));
-
-            if (nullptr != pDecalNormalTex)
+            // Texture Render
             {
-                if (ImGui::BeginItemTooltip())
+                if (nullptr != pDecalNormalTex.Get())
                 {
-                    ImGui::Text("%s", ToString(pDecalNormalTex->GetKey()).c_str());
-                    ImGui::EndTooltip();
+                    pSRV = pDecalNormalTex->GetSRV().Get();
+                    NormalTextureName = ToString(pDecalNormalTex->GetName());
                 }
-            }
+                else
+                    pSRV = CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\missing_texture.png", L"Texture\\missing_texture.png")->GetSRV().Get();
 
-            // Drag & Drop
-            if (ImGui::BeginDragDropTarget())
-            {
-                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_ASSETS"))
-                {
-                    string name = (char*)payload->Data;
-                    name.resize(payload->DataSize);
-                    pDecal->SetDecalNormalTex(CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(name)));
-                }
+                ImGui::Columns(2);
+                ImGui::SetColumnWidth(0, 250);
+                ImGui::Spacing();
+                ImGui::Dummy(ImVec2(0.f, 30.f));
+                ImGui::Text("Normal Texture");
+                ImGui::NextColumn();
 
-                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
-                {
-                    string name = (char*)payload->Data;
-                    name.resize(payload->DataSize);
-                    pDecal->SetDecalNormalTex(CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(name)));
-                }
-
-                ImGui::EndDragDropTarget();
+                ImGui::Image((void*)pSRV, ImVec2(IMAGE_BASE_SIZE, IMAGE_BASE_SIZE));
             }
 
             // Delete Texture Popup
@@ -3032,48 +3009,43 @@ void COutliner::DrawDecal(CGameObject* obj)
 
                 ImGui::EndPopup();
             }
+
+            ImGui::SameLine();
+
+            // Textures Combobox
+            if (ImGui_TexturesComboUI("##Decal Normal Texture", NormalTextureName))
+            {
+                pDecal->SetDecalNormalTex(CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(NormalTextureName)));
+            }
+
+            ImGui::Columns(1);
         }
 
         // Decal Emissive Texture
         {
-            ImGui::Text("Decal Emissive Texture");
-            void* TextureID = nullptr;
             Ptr<CTexture> pDecalEmissiveTex = pDecal->GetDecalEmissiveTex();
+            string EmissiveTextureName = string();
 
-            if (nullptr != pDecalEmissiveTex)
-                TextureID = pDecalEmissiveTex->GetSRV().Get();
-            else
-                TextureID = CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\missing_texture.png", L"Texture\\missing_texture.png")->GetSRV().Get();
+            ID3D11ShaderResourceView* pSRV = nullptr;
 
-            ImGui::Image(TextureID, ImVec2(256.f, 256.f));
-
-            if (nullptr != pDecalEmissiveTex)
+            // Texture Render
             {
-                if (ImGui::BeginItemTooltip())
+                if (nullptr != pDecalEmissiveTex.Get())
                 {
-                    ImGui::Text("%s", ToString(pDecalEmissiveTex->GetKey()).c_str());
-                    ImGui::EndTooltip();
+                    pSRV = pDecalEmissiveTex->GetSRV().Get();
+                    EmissiveTextureName = ToString(pDecalEmissiveTex->GetName());
                 }
-            }
+                else
+                    pSRV = CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\missing_texture.png", L"Texture\\missing_texture.png")->GetSRV().Get();
 
-            // Drag & Drop
-            if (ImGui::BeginDragDropTarget())
-            {
-                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("LEVEL_EDITOR_ASSETS"))
-                {
-                    string name = (char*)payload->Data;
-                    name.resize(payload->DataSize);
-                    pDecal->SetDecalEmissiveTex(CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(name)));
-                }
+                ImGui::Columns(2);
+                ImGui::SetColumnWidth(0, 250);
+                ImGui::Spacing();
+                ImGui::Dummy(ImVec2(0.f, 30.f));
+                ImGui::Text("Emissive Texture");
+                ImGui::NextColumn();
 
-                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
-                {
-                    string name = (char*)payload->Data;
-                    name.resize(payload->DataSize);
-                    pDecal->SetDecalEmissiveTex(CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(name)));
-                }
-
-                ImGui::EndDragDropTarget();
+                ImGui::Image((void*)pSRV, ImVec2(IMAGE_BASE_SIZE, IMAGE_BASE_SIZE));
             }
 
             // Delete Texture Popup
@@ -3088,12 +3060,26 @@ void COutliner::DrawDecal(CGameObject* obj)
 
                 ImGui::EndPopup();
             }
+
+            ImGui::SameLine();
+
+            // Textures Combobox
+            if (ImGui_TexturesComboUI("##Decal Emissive Texture", EmissiveTextureName))
+            {
+                pDecal->SetDecalEmissiveTex(CAssetMgr::GetInst()->FindAsset<CTexture>(ToWstring(EmissiveTextureName)));
+            }
+
+            ImGui::Columns(1);
         }
+
+        Vec4 Emissive = pDecal->GetEmissive();
+        if (ImGui::ColorEdit3(ImGui_LabelPrefix("Emissive").c_str(), &Emissive.x))
+            pDecal->SetEmissive(Emissive);
 
         // Invert Normal Y
         bool bInvertNormal = pDecal->IsInvertNormalY();
-        ImGui::Checkbox(ImGui_LabelPrefix("Invert Normal Y").c_str(), &bInvertNormal);
-        pDecal->SetInvertNormalY(bInvertNormal);
+        if (ImGui::Checkbox(ImGui_LabelPrefix("Invert Normal Y").c_str(), &bInvertNormal))
+            pDecal->SetInvertNormalY(bInvertNormal);
 
         ImGui::TreePop();
     }

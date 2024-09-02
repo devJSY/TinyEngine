@@ -20,6 +20,12 @@ private:
     bool m_bRepeat;
     bool m_bTimeScaling;
 
+    // Destroy Collision
+    bool m_bDestroyCollision;
+
+    // Camera Shake
+    bool m_bCameraShake;
+
 public:
     virtual void begin() override;
     virtual void tick() override;

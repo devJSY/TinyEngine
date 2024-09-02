@@ -55,9 +55,14 @@ void CKirbyBackJump::Enter()
     {
         PLAYER->Animator()->Play(ANIMPREFIX("BackJump"), false, false, 2.f);
 
-        if (PLAYERFSM->GetCurAbilityIdx() == AbilityCopyType::SWORD && PLAYERFSM->GetSlideComboLevel() == 2)
+        if (PLAYERFSM->GetCurAbilityIdx() == AbilityCopyType::SWORD)
         {
-            PLAYERFSM->SetInvincible(true);
+            PLAYERFSM->LockSlideCombo();
+
+            if (PLAYERFSM->GetSlideComboLevel() == 2)
+            {
+                PLAYERFSM->SetInvincible(true);
+            }
         }
     }
 
@@ -93,10 +98,15 @@ void CKirbyBackJump::Exit()
     {
         PLAYER->Animator()->Play(ANIMPREFIX("BackJump"), false, false, 2.f);
 
-        if (PLAYERFSM->GetCurAbilityIdx() == AbilityCopyType::SWORD && PLAYERFSM->GetSlideComboLevel() == 2)
+        if (PLAYERFSM->GetCurAbilityIdx() == AbilityCopyType::SWORD)
         {
-            PLAYERFSM->SetSlideComboLevel(0);
-            PLAYERFSM->SetInvincible(false);
+            PLAYERFSM->UnlockSlideCombo();
+
+            if (PLAYERFSM->GetSlideComboLevel() == 2)
+            {
+                PLAYERFSM->SetSlideComboLevel(0);
+                PLAYERFSM->SetInvincible(false);
+            }
         }
     }
 

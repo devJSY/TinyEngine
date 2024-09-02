@@ -21,6 +21,8 @@ CKirbyObject_Lightbulb::CKirbyObject_Lightbulb(const CKirbyObject_Lightbulb& _Or
     : CKirbyObject(_Origin)
     , m_Speed(8.f)
     , m_BrightSpeed(3.f)
+    , m_SavedSpeed(0.f)
+    , m_SavedRotSpeed(0.f)
 {
     m_OriginObject = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Lightbulb.pref", L"prefab\\Lightbulb.pref");
     m_Mesh = CAssetMgr::GetInst()->Load<CMeshData>(L"meshdata\\KirbyLightbulb.mdat", L"meshdata\\KirbyLightbulb.mdat");
@@ -240,8 +242,7 @@ void CKirbyObject_Lightbulb::DropObjectEnter()
     // reset shader
     if (m_LightShader != nullptr)
     {
-        CPlayerMgr::GetPlayerBodyDemoMtrl()->SetShader(m_PrevShader);
-        CPlayerMgr::GetPlayerBodyMtrl()->SetShader(m_PrevShader);
+        PLAYERFSM->SetMtrlShader(m_PrevShader);
     }
 
     // 콜라이더 & 바디콜라이더 크기 세팅
@@ -269,8 +270,7 @@ void CKirbyObject_Lightbulb::ChangeObjectEnter()
     if (m_LightShader != nullptr)
     {
         m_PrevShader = CPlayerMgr::GetPlayerBodyMtrl()->GetShader();
-        CPlayerMgr::GetPlayerBodyDemoMtrl()->SetShader(m_LightShader);
-        CPlayerMgr::GetPlayerBodyMtrl()->SetShader(m_LightShader);
+        PLAYERFSM->SetMtrlShader(m_LightShader);
     }
 
     // 콜라이더 & 바디콜라이더 크기 세팅

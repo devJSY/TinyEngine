@@ -149,9 +149,8 @@ void CKirbyObject::DropObjectEnter()
         GamePlayStatic::AddChildObject(PLAYER, Wing, L"Wing");
     }
 
-        // animation & move controller
-        PLAYER->Animator()
-        ->Play(ANIMPREFIX("SpitDeform"), false, false, 1.5f);
+    // animation & move controller
+    PLAYER->Animator()->Play(ANIMPREFIX("SpitDeform"), false, false, 1.5f);
 
     PLAYERCTRL->LockMove();
     PLAYERCTRL->LockDirection();

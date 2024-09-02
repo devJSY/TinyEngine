@@ -12,6 +12,7 @@ public:
 
 private:
     float LoadDamage();
+    void ApplyEffect();
 
 public:
     CLONE(CKirbyWeaponHitbox)

@@ -32,8 +32,6 @@ void CKirbyJumpAttack::tick()
             {
                 if (PLAYERFSM->GetSlideComboLevel())
                 {
-                    PLAYERFSM->SetSlideComboLevel(2);
-
                     if (PLAYERCTRL->IsGround())
                     {
                         ChangeState(L"LANDING");

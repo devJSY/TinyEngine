@@ -46,8 +46,8 @@ void CFlowMgr_Lv4::begin()
 
     SetFadeEffectColor(Vec3(164.f, 44.f, 174.f));
 
-    // TODO BGM
-    GamePlayStatic::PlayBGM(L"sound\\stream\\K15_Park5\\K15_Park5.marker.wav", 0.5f);
+    // BGM
+    FadeInBGM(L"sound\\stream\\K15_Park5\\K15_Park5.marker.wav", 0.f, 0.5f, 1.f);
 }
 
 void CFlowMgr_Lv4::tick()

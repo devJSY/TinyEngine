@@ -84,7 +84,7 @@ public:
     void OnDimensionFade(float _Coef);
     void OnDimensionFade(float _StartCoef, float _EndCoef, float _Duration);
     void OffDimensionFade();
-    void OnRadialBlurEffect(float _Duration, float _Radius = 1.f, float _BlurPower = 1.1f);
+    void OnRadialBlurEffect(float _Duration);
     void OffRadialBlurEffect();
     void SetRadialBlurEffect(float _Radius, float _BlurPower, Vec2 _UV);
     CGameObject* GetRadialBlurEffect() { return m_RadialBlurEffect; }

@@ -32,6 +32,8 @@ CElfilisBigFSM::~CElfilisBigFSM()
 #include "CElfilisBig_SwingFinishL.h"
 void CElfilisBigFSM::begin()
 {
+    CFSMScript::begin();
+
     AddState(L"IDLE", new CElfilisBig_Idle);
     AddState(L"APPEAR", new CElfilisBig_Appear);
     AddState(L"ROAR", new CElfilisBig_Roar);

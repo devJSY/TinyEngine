@@ -104,13 +104,33 @@ void CKirbyLongDiveBound::tick()
     }
     break;
     }
-
-
-    
 }
 
 void CKirbyLongDiveBound::Enter()
 {
+    // Change State
+    if (PLAYERFSM->GetCurObjectIdx() != ObjectCopyType::NONE)
+    {
+    }
+    else
+    {
+        switch (PLAYERFSM->GetCurAbilityIdx())
+        {
+        case AbilityCopyType::NORMAL:
+            break;
+        case AbilityCopyType::FIRE:
+            break;
+        case AbilityCopyType::CUTTER:
+            break;
+        case AbilityCopyType::SWORD: {
+            PLAYERFSM->LockSlideCombo();
+        }
+        break;
+        case AbilityCopyType::SLEEP:
+            break;
+        }
+    }
+
     // 애니메이션 재생
     PLAYER->Animator()->Play(ANIMPREFIX("LongDiveAttackBound"), false, false, 2.f);
 
@@ -120,5 +140,26 @@ void CKirbyLongDiveBound::Enter()
 
 void CKirbyLongDiveBound::Exit()
 {
+    // Change State
+    if (PLAYERFSM->GetCurObjectIdx() != ObjectCopyType::NONE)
+    {
+    }
+    else
+    {
+        switch (PLAYERFSM->GetCurAbilityIdx())
+        {
+        case AbilityCopyType::NORMAL:
+            break;
+        case AbilityCopyType::FIRE:
+            break;
+        case AbilityCopyType::CUTTER:
+            break;
+        case AbilityCopyType::SWORD: {
+            PLAYERFSM->UnlockSlideCombo();
+        }
+        break;
+        case AbilityCopyType::SLEEP:
+            break;
+        }
+    }
 }
-

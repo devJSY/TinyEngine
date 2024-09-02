@@ -11,6 +11,7 @@ CDecal::CDecal()
     , m_DecalMRATex(nullptr)
     , m_DecalNormalTex(nullptr)
     , m_DecalEmissiveTex(nullptr)
+    , m_Emissive(Vec4())
     , m_bInvertNormalY(false)
 {
     SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"BoxMesh"));
@@ -38,6 +39,7 @@ void CDecal::UpdateData()
     Matrix matInv = Transform()->GetWorldInvMat();
     GetMaterial(0)->SetScalarParam(MAT_0, matInv);
     GetMaterial(0)->SetScalarParam(INT_0, m_bInvertNormalY);
+    GetMaterial(0)->SetScalarParam(VEC4_0, m_Emissive);
     GetMaterial(0)->SetTexParam(TEX_4, m_DecalAlbedoTex);
     GetMaterial(0)->SetTexParam(TEX_5, m_DecalMRATex);
     GetMaterial(0)->SetTexParam(TEX_6, m_DecalNormalTex);
@@ -81,8 +83,10 @@ UINT CDecal::SaveToLevelFile(FILE* _File)
     MemoryByte += SaveAssetRef(m_DecalMRATex, _File);
     MemoryByte += SaveAssetRef(m_DecalNormalTex, _File);
     MemoryByte += SaveAssetRef(m_DecalEmissiveTex, _File);
+    fwrite(&m_Emissive, sizeof(Vec4), 1, _File);
     fwrite(&m_bInvertNormalY, sizeof(int), 1, _File);
 
+    MemoryByte += sizeof(Vec4);
     MemoryByte += sizeof(int);
 
     return MemoryByte;
@@ -97,8 +101,10 @@ UINT CDecal::LoadFromLevelFile(FILE* _File)
     MemoryByte += LoadAssetRef(m_DecalMRATex, _File);
     MemoryByte += LoadAssetRef(m_DecalNormalTex, _File);
     MemoryByte += LoadAssetRef(m_DecalEmissiveTex, _File);
+    fread(&m_Emissive, sizeof(Vec4), 1, _File);
     fread(&m_bInvertNormalY, sizeof(int), 1, _File);
 
+    MemoryByte += sizeof(Vec4);
     MemoryByte += sizeof(int);
 
     return MemoryByte;

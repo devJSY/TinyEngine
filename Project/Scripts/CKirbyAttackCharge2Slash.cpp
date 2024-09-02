@@ -5,6 +5,7 @@ CKirbyAttackCharge2Slash::CKirbyAttackCharge2Slash()
     : m_Speed(13.f)
     , m_PrevSpeed(0.f)
     , m_PlayTime(1.5f)
+    , m_bEnableFireParticle(false)
 {
 }
 
@@ -15,6 +16,12 @@ CKirbyAttackCharge2Slash::~CKirbyAttackCharge2Slash()
 void CKirbyAttackCharge2Slash::tick()
 {
     m_PlayTime -= DT;
+
+    if (m_bEnableFireParticle && m_PlayTime < 0.5f)
+    {
+        m_bEnableFireParticle = false;
+        PLAYERFSM->GetCurWeapon()->GetChildObject(L"KirbySwordFireParticle")->ParticleSystem()->EnableModule(PARTICLE_MODULE::SPAWN, true);
+    }
 
     if (m_PlayTime < 0.f)
     {
@@ -35,6 +42,7 @@ void CKirbyAttackCharge2Slash::Enter()
     PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(true);
 
     m_PlayTime = 1.5f;
+    m_bEnableFireParticle = true;
 }
 
 void CKirbyAttackCharge2Slash::Exit()

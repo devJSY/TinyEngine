@@ -2,25 +2,20 @@
 #include "CKirbyAbility_Sword.h"
 #include "CKirbyMoveController.h"
 #include "CState.h"
+#include "CDestroyParticleScript.h"
+#include "CMomentaryObjScript.h"
+#include "CCameraController.h"
+#include "CChangeAlphaScript.h"
+#include "CKirbySwordTornadoScript.h"
 
 CKirbyAbility_Sword::CKirbyAbility_Sword()
-    : m_BigWeaponScale(Vec3(5.f, 5.f, 5.f))
-    , m_PrevSpeed(0.f)
-    , m_PrevRotSpeed(0.f)
-    , m_PrevGravity(0.f)
-    , m_AccTime(0.f)
-    , m_bFrmEnter(true)
-{
-    m_Hat = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordHat.pref", L"prefab\\KirbySwordHat.pref");
-    m_Weapon = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordWeapon.pref", L"prefab\\KirbySwordWeapon.pref");
-    //m_KirbySwordSlashPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordSlash.pref");
-    m_ComboSuccessTime = 0.5f;
-    m_Charge1Time = 1.f;
-    m_Charge2Time = 1.f;
-}
-
-CKirbyAbility_Sword::CKirbyAbility_Sword(const CKirbyAbility_Sword& _Origin)
-    : CKirbyAbility(_Origin)
+    : m_KirbySwordSlashPref(nullptr)
+    , m_KirbySwordTwinkleParticlePref(nullptr)
+    , m_KirbySwordFireParticlePref(nullptr)
+    , m_KirbySwordButterflyParticlePref(nullptr)
+    , m_LightningEffectPref(nullptr)
+    , m_pLightningEffect(nullptr)
+    , m_KirbySwordTornadoPref(nullptr)
     , m_BigWeaponScale(Vec3(5.f, 5.f, 5.f))
     , m_PrevSpeed(0.f)
     , m_PrevRotSpeed(0.f)
@@ -30,7 +25,41 @@ CKirbyAbility_Sword::CKirbyAbility_Sword(const CKirbyAbility_Sword& _Origin)
 {
     m_Hat = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordHat.pref", L"prefab\\KirbySwordHat.pref");
     m_Weapon = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordWeapon.pref", L"prefab\\KirbySwordWeapon.pref");
-    // m_KirbySwordSlashPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordSlash.pref");
+    m_KirbySwordSlashPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordSlash.pref");
+    m_KirbySwordTwinkleParticlePref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordTwinkleParticle.pref");
+    m_KirbySwordFireParticlePref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordFireParticle.pref");
+    m_KirbySwordButterflyParticlePref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordButterflyParticle.pref");
+    m_LightningEffectPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Effect_MorphoLightningSet.pref");
+    m_KirbySwordTornadoPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordTornado.pref");
+    m_ComboSuccessTime = 0.5f;
+    m_Charge1Time = 1.f;
+    m_Charge2Time = 1.f;
+}
+
+CKirbyAbility_Sword::CKirbyAbility_Sword(const CKirbyAbility_Sword& _Origin)
+    : CKirbyAbility(_Origin)
+    , m_KirbySwordSlashPref(nullptr)
+    , m_KirbySwordTwinkleParticlePref(nullptr)
+    , m_KirbySwordFireParticlePref(nullptr)
+    , m_KirbySwordButterflyParticlePref(nullptr)
+    , m_LightningEffectPref(nullptr)
+    , m_pLightningEffect(nullptr)
+    , m_KirbySwordTornadoPref(nullptr)
+    , m_BigWeaponScale(Vec3(5.f, 5.f, 5.f))
+    , m_PrevSpeed(0.f)
+    , m_PrevRotSpeed(0.f)
+    , m_PrevGravity(0.f)
+    , m_AccTime(0.f)
+    , m_bFrmEnter(true)
+{
+    m_Hat = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordHat.pref", L"prefab\\KirbySwordHat.pref");
+    m_Weapon = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordWeapon.pref", L"prefab\\KirbySwordWeapon.pref");
+    m_KirbySwordSlashPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordSlash.pref");
+    m_KirbySwordTwinkleParticlePref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordTwinkleParticle.pref");
+    m_KirbySwordFireParticlePref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordFireParticle.pref");
+    m_KirbySwordButterflyParticlePref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordButterflyParticle.pref");
+    m_LightningEffectPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Effect_MorphoLightningSet.pref", L"prefab\\Effect_MorphoLightningSet.pref");
+    m_KirbySwordTornadoPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordTornado.pref");
     m_ComboSuccessTime = 0.5f;
     m_Charge1Time = 1.f;
     m_Charge2Time = 1.f;
@@ -76,7 +105,7 @@ void CKirbyAbility_Sword::Attack()
     if (CHECK_ANIMFRM(PLAYER, 7) && m_bFrmEnter)
     {
         m_bFrmEnter = false;
-        SpawnSwordSlash();
+        SpawnSwordSlash(Vec3(30.f, 30.f, 30.f));
     }
 }
 
@@ -115,7 +144,7 @@ void CKirbyAbility_Sword::AttackCombo1()
     if (CHECK_ANIMFRM(PLAYER, 9) && m_bFrmEnter)
     {
         m_bFrmEnter = false;
-        SpawnSwordSlash();
+        SpawnSwordSlash(Vec3(50.f, 30.f, 30.f));
     }
 }
 
@@ -155,7 +184,7 @@ void CKirbyAbility_Sword::AttackCombo2()
     if (CHECK_ANIMFRM(PLAYER, 17) && m_bFrmEnter)
     {
         m_bFrmEnter = false;
-        SpawnSwordSlash();
+        SpawnSwordSlash(Vec3(50.f, 30.f, 30.f));
     }
 }
 
@@ -307,8 +336,8 @@ void CKirbyAbility_Sword::AttackCharge2Start()
 void CKirbyAbility_Sword::AttackCharge2StartEnter()
 {
     PLAYER->Animator()->Play(ANIMPREFIX("SuperSpinSlashChargeStart"), false, false, 1.5f);
-    //@Effect 충전완료
 
+    //@Effect 충전완료
     m_PrevSpeed = PLAYERCTRL->GetSpeed();
     PLAYERCTRL->SetSpeed(3.f);
     PLAYERCTRL->LockDirection();
@@ -423,6 +452,79 @@ void CKirbyAbility_Sword::AttackCharge3End()
         Vec3 NewScale = m_PrevWeaponScale + (m_BigWeaponScale - m_PrevWeaponScale) * t;
         PLAYERFSM->GetCurWeapon()->Transform()->SetLocalScale(NewScale);
     }
+
+    // ButterFlyPtcl & Thunder & Tornado Effect
+    if (m_bFrmEnter && CHECK_ANIMFRM(PLAYER, 35))
+    {
+        Vec3 Pos = PLAYER->Transform()->GetWorldPos();
+        Vec3 Dir = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+
+        // ==========================
+        // ButterFly Particle
+        // ==========================
+        {
+            CGameObject* pButterFlyPtcl = m_KirbySwordButterflyParticlePref->Instantiate();
+
+            const vector<CGameObject*>& vecChild = pButterFlyPtcl->GetChildObject();
+
+            for (int i = 0; i < vecChild.size(); ++i)
+            {
+                Vec3 OffsetPos;
+                OffsetPos.y += GetRandomfloat(0.f, 50.f);
+                vecChild[i]->Transform()->SetWorldPos(Pos + OffsetPos + (Dir * 50.f * float(1 + i)));
+
+                tParticleModule Module = vecChild[i]->ParticleSystem()->GetParticleModule();
+                Module.SpawnRate = 100;
+                Module.vSpawnMinScale = Vec3(20.f, 20.f, 1.f);
+                Module.vSpawnMaxScale = Vec3(40.f, 40.f, 1.f);
+                Module.vScaleRatio = Vec3::Zero;
+                Module.MinSpeed = 30.f;
+                Module.MaxSpeed = 80.f;
+                Module.AlphaBasedLife = 1;
+
+                vecChild[i]->ParticleSystem()->SetParticleModule(Module);
+
+                CDestroyParticleScript* Script = new CDestroyParticleScript;
+                Script->SetSpawnTime(0.3f);
+                vecChild[i]->AddComponent(Script);
+            }
+
+            CMomentaryObjScript* pMomentaryScript = pButterFlyPtcl->GetScript<CMomentaryObjScript>();
+            pMomentaryScript->SetPlayTime(8.f);
+            GamePlayStatic::SpawnGameObject(pButterFlyPtcl, LAYER_EFFECT);
+        }
+
+        // ==========================
+        // Tornado Effect
+        // ==========================
+        {
+            CGameObject* pTornadoObj = m_KirbySwordTornadoPref->Instantiate();
+            pTornadoObj->Transform()->SetWorldPos(Pos + Vec3(0.f, 20.f, 0.f) + Dir * 100.f);
+            pTornadoObj->Transform()->SetDirection(Dir);
+            pTornadoObj->GetScript<CKirbySwordTornadoScript>()->SetOriginRight(pTornadoObj->Transform()->GetWorldDir(DIR_TYPE::RIGHT));
+            GamePlayStatic::SpawnGameObject(pTornadoObj, LAYER_PLAYERATK_TRIGGER);
+
+            pTornadoObj = m_KirbySwordTornadoPref->Instantiate();
+            pTornadoObj->Transform()->SetWorldPos(Pos + Vec3(0.f, 20.f, 0.f) + Dir * 100.f);
+            pTornadoObj->Transform()->SetDirection(Dir);
+            pTornadoObj->GetScript<CKirbySwordTornadoScript>()->SetOriginRight(-pTornadoObj->Transform()->GetWorldDir(DIR_TYPE::RIGHT));
+            GamePlayStatic::SpawnGameObject(pTornadoObj, LAYER_PLAYERATK_TRIGGER);
+        }
+
+        // ==========================
+        // Thunder Effect
+        // ==========================
+        {
+            m_pLightningEffect = m_LightningEffectPref->Instantiate();
+            m_pLightningEffect->Transform()->SetWorldPos(Pos + Vec3(0.f, 20.f, 0.f) + Dir * 100.f);
+
+            m_pLightningEffect->GetScript<CChangeAlphaScript>()->FadeIn_RandomDelay(0.f, 0.4f);
+            GamePlayStatic::SpawnGameObject(m_pLightningEffect, LAYER_EFFECT);
+        }
+
+        CAMERACTRL->Shake(0.3f, 50.f, 50.f);
+        m_bFrmEnter = false;
+    }
 }
 
 void CKirbyAbility_Sword::AttackCharge3EndEnter()
@@ -438,6 +540,8 @@ void CKirbyAbility_Sword::AttackCharge3EndEnter()
     PLAYERFSM->SetInvincible(true);
     PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(true);
     PLAYERFSM->GetCurWeapon()->Transform()->SetLocalScale(m_BigWeaponScale);
+
+    m_bFrmEnter = true;
 }
 
 void CKirbyAbility_Sword::AttackCharge3EndExit()
@@ -451,6 +555,12 @@ void CKirbyAbility_Sword::AttackCharge3EndExit()
     PLAYERFSM->SetInvincible(false);
     PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(false);
     PLAYERFSM->GetCurWeapon()->Transform()->SetLocalScale(m_PrevWeaponScale);
+
+    if (nullptr != m_pLightningEffect)
+    {
+        m_pLightningEffect->GetScript<CChangeAlphaScript>()->FadeOutDestroy(0.5f);
+        m_pLightningEffect = nullptr;
+    }
 }
 
 // ===============
@@ -460,6 +570,23 @@ void CKirbyAbility_Sword::AttackCharge3EndExit()
 void CKirbyAbility_Sword::JumpFallEnter()
 {
     PLAYER->Animator()->Play(ANIMPREFIX("JumpFall"), false, false, 2.5f, 0.3f);
+    
+    PLAYERFSM->LockSlideCombo();
+    if (PLAYERFSM->GetSlideComboLevel())
+    {
+        PLAYERFSM->SetInvincible(true);
+    }
+}
+
+void CKirbyAbility_Sword::JumpFallExit()
+{
+    CKirbyAbility::JumpFallExit();
+
+    PLAYERFSM->UnlockSlideCombo();
+    if (PLAYERFSM->GetSlideComboLevel())
+    {
+        PLAYERFSM->SetInvincible(false);
+    }
 }
 
 // ===============
@@ -481,6 +608,14 @@ void CKirbyAbility_Sword::JumpAttack()
         }
         m_bFrmEnter = false;
     }
+
+    if (PLAYER->Animator()->IsFinish())
+    {
+        if (PLAYERFSM->GetSlideComboLevel())
+        {
+            PLAYERFSM->SetSlideComboLevel(2);
+        }
+    }
 }
 
 void CKirbyAbility_Sword::JumpAttackEnter()
@@ -495,7 +630,9 @@ void CKirbyAbility_Sword::JumpAttackEnter()
 
     PLAYERFSM->SetInvincible(true);
     PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(true);
+    PLAYERFSM->LockSlideCombo();
     m_bFrmEnter = true;
+    SpawnSwordSlash(Vec3(50.f, 30.f, 30.f), true);
 }
 
 void CKirbyAbility_Sword::JumpAttackExit()
@@ -505,6 +642,7 @@ void CKirbyAbility_Sword::JumpAttackExit()
 
     PLAYERFSM->SetInvincible(false);
     PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(false);
+    PLAYERFSM->UnlockSlideCombo();
 }
 
 // Start
@@ -521,6 +659,7 @@ void CKirbyAbility_Sword::JumpAttackStartEnter()
 
     PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(true);
     PLAYERFSM->SetInvincible(true);
+    PLAYERFSM->LockSlideCombo();
 }
 
 void CKirbyAbility_Sword::JumpAttackStartExit()
@@ -529,6 +668,7 @@ void CKirbyAbility_Sword::JumpAttackStartExit()
 
     PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(false);
     PLAYERFSM->SetInvincible(false);
+    PLAYERFSM->UnlockSlideCombo();
 }
 
 // ===============
@@ -546,6 +686,8 @@ void CKirbyAbility_Sword::LandingEnter()
         PLAYER->Animator()->Play(ANIMPREFIX("Landing"), false);
     }
 
+    PLAYERFSM->LockSlideCombo();
+
     if (PLAYERFSM->GetSlideComboLevel())
     {
         PLAYERFSM->SetKnockBackDir(-PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT));
@@ -562,6 +704,7 @@ void CKirbyAbility_Sword::LandingExit()
     PLAYERCTRL->UnlockJump();
 
     PLAYERFSM->SetInvincible(false);
+    PLAYERFSM->UnlockSlideCombo();
 }
 
 // ===============
@@ -586,7 +729,9 @@ void CKirbyAbility_Sword::GuardRunEnter()
     PLAYER->MeshRender()->SetEnabled(false);
     PLAYERFSM->GetCurHat()->MeshRender()->SetEnabled(false);
     PLAYERFSM->GetCurWeapon()->MeshRender()->SetEnabled(false);
+
     //@Effect 궤적 파티클
+    SpawnButterflyParticle();
 
     m_PrevSpeed = PLAYERCTRL->GetSpeed();
     PLAYERCTRL->SetSpeed(15.f);
@@ -600,6 +745,8 @@ void CKirbyAbility_Sword::GuardRunExit()
     PLAYER->MeshRender()->SetEnabled(true);
     PLAYERFSM->GetCurHat()->MeshRender()->SetEnabled(true);
     PLAYERFSM->GetCurWeapon()->MeshRender()->SetEnabled(true);
+
+    SpawnButterflyParticle();
 
     PLAYERCTRL->SetSpeed(m_PrevSpeed);
     PLAYERCTRL->UnlockJump();
@@ -733,18 +880,44 @@ void CKirbyAbility_Sword::ChangeAbilityEnter()
     PLAYERFSM->SetCurHat(pInstObj);
     GamePlayStatic::AddChildObject(PLAYER, pInstObj, L"Hat");
 
+    // particle
+    pInstObj = m_KirbySwordTwinkleParticlePref->Instantiate();
+    GamePlayStatic::AddChildObject(PLAYER, pInstObj, L"Hat");
+
     // create sword
     pInstObj = m_Weapon->Instantiate();
     pInstObj->BoxCollider()->SetEnabled(false);
     PLAYERFSM->SetCurWeapon(pInstObj);
     GamePlayStatic::AddChildObject(PLAYER, pInstObj, L"Weapon");
+
+    // Sword Fire Particle
+    CGameObject* pFireParticle = m_KirbySwordFireParticlePref->Instantiate();
+    pFireParticle->ParticleSystem()->EnableModule(PARTICLE_MODULE::SPAWN, false);
+    GamePlayStatic::AddChildObject(pInstObj, pFireParticle, L"WeaponEnd");
 }
 
 void CKirbyAbility_Sword::ChangeAbilityExit()
 {
 }
 
-void CKirbyAbility_Sword::SpawnSwordSlash()
+// ===============
+// Drop Ability
+// ===============
+
+void CKirbyAbility_Sword::DropAbilityEnter()
+{
+    CGameObject* pTwinkleParticle = PLAYER->GetChildObject(L"KirbySwordTwinkleParticle");
+    if (nullptr != pTwinkleParticle)
+    {
+        GamePlayStatic::DestroyGameObject(pTwinkleParticle);
+    }
+}
+
+// ===============
+// Custom Func
+// ===============
+
+void CKirbyAbility_Sword::SpawnSwordSlash(Vec3 _SlashScale, bool _bVertical)
 {
     if (m_KirbySwordSlashPref == nullptr || PLAYERUNIT->GetCurInfo().HP < PLAYERUNIT->GetCurInfo().MAXHP)
         return;
@@ -752,16 +925,45 @@ void CKirbyAbility_Sword::SpawnSwordSlash()
     CGameObject* SwordSlash = m_KirbySwordSlashPref->Instantiate();
     Vec3 Dir = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT);
     Vec3 Pos = PLAYER->Transform()->GetWorldPos() + Dir * 10.f;
-    SwordSlash->Transform()->SetWorldPos(Pos);
 
-    Dir.y = 0.f;
-    Dir.Normalize();
-    SwordSlash->Transform()->SetDirection(Dir);
+    SwordSlash->Transform()->SetWorldScale(_SlashScale);
+    float ImpulsePower = (_SlashScale.x + _SlashScale.y + _SlashScale.z) / 3.f;
+    ImpulsePower *= 1.2f;
+
+    if (_bVertical)
+    {
+        SwordSlash->Transform()->SetWorldPos(Pos);
+        SwordSlash->Transform()->SetDirection(Dir, PLAYER->Transform()->GetWorldDir(DIR_TYPE::RIGHT));
+    }
+    else
+    {
+        SwordSlash->Transform()->SetWorldPos(Pos + Vec3(0.f, 20.f, 0.f));
+        SwordSlash->Transform()->SetDirection(Dir);
+    }
 
     CMomentaryObjScript* Script = SwordSlash->GetScript<CMomentaryObjScript>();
-    Script->SetInitVelocity(Dir * 140.f);
+    Script->SetInitVelocity(Dir * ImpulsePower);
     Script->SetPlayTime(1.5f);
 
     SwordSlash->SetName(L"KirbyAttack_SwordSlash");
-    GamePlayStatic::SpawnGameObject(SwordSlash, LAYER_PLAYERATK);
+    GamePlayStatic::SpawnGameObject(SwordSlash, LAYER_PLAYERATK_TRIGGER);
+}
+
+void CKirbyAbility_Sword::SpawnButterflyParticle()
+{
+    CGameObject* pButterFlyPtcl = m_KirbySwordButterflyParticlePref->Instantiate();
+    Vec3 Pos = PLAYER->Transform()->GetWorldPos();
+
+    pButterFlyPtcl->Transform()->SetWorldPos(Pos + Vec3(0.f, 20.f, 0.f));
+
+    for (const auto& child : pButterFlyPtcl->GetChildObject())
+    {
+        CDestroyParticleScript* Script = new CDestroyParticleScript;
+        Script->SetSpawnTime(0.3f);
+        child->AddComponent(Script);
+    }
+
+    CMomentaryObjScript* pMomentaryScript = pButterFlyPtcl->GetScript<CMomentaryObjScript>();
+    pMomentaryScript->SetPlayTime(5.f);
+    GamePlayStatic::SpawnGameObject(pButterFlyPtcl, LAYER_EFFECT);
 }
