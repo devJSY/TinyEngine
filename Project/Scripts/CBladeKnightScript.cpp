@@ -42,6 +42,11 @@ void CBladeKnightScript::begin()
 {
     CMonsterUnitScript::begin();
 
+    if (nullptr != Rigidbody())
+    {
+        Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
+    }
+
     SetSword();
 
     m_StepPower = 5.f;
@@ -253,7 +258,7 @@ void CBladeKnightScript::EnterState()
     }
     break;
     case BLADEKNIGHT_STATE::Thrust: {
-        Rigidbody()->AddForce(Transform()->GetWorldDir(DIR_TYPE::FRONT) * m_StepPower * 2.f, ForceMode::Impulse);
+        Rigidbody()->AddForce(Transform()->GetWorldDir(DIR_TYPE::FRONT) * m_StepPower * 1.2f, ForceMode::Impulse);
         Animator()->Play(ANIMPREFIX("Thrust"), false);
         if (nullptr != m_Sword)
         {
