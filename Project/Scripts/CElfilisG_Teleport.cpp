@@ -64,14 +64,6 @@ void CElfilisG_Teleport::Enter_Step()
         GetOwner()->Animator()->Play(ANIMPREFIX("Wait"));
         GetOwner()->Animator()->SetPlay(false);
 
-        // copy object
-        m_BeforeObj = new CGameObject;
-        m_BeforeObj->AddComponent(GetOwner()->Transform()->Clone());
-        m_BeforeObj->AddComponent(GetOwner()->MeshRender()->Clone());
-        m_BeforeObj->AddComponent(GetOwner()->Animator()->Clone());
-        m_BeforeObj->SetName(L"Effect_ElfilisTelport Body");
-        GamePlayStatic::SpawnGameObject(m_BeforeObj, LAYER_MONSTER);
-
         // teleport
         float MapSizeRadius = ELFFSM->GetMapSizeRadius();
         m_AfterPos.x = GetRandomfloat(-MapSizeRadius, MapSizeRadius);
@@ -79,19 +71,7 @@ void CElfilisG_Teleport::Enter_Step()
         m_AfterPos.z = GetRandomfloat(-MapSizeRadius, MapSizeRadius);
         m_AfterPos = ELFFSM->GetMapFloorOffset() + m_AfterPos.Normalize() * GetRandomfloat(0.f, MapSizeRadius);
 
-        Vec3 Pos = GetOwner()->Transform()->GetWorldPos();
-        Pos.y += 100.f;
-        m_BeforeEffect = m_Effect->Instantiate();
-        m_BeforeEffect->Transform()->SetWorldPos(Pos);
-        GamePlayStatic::SpawnGameObject(m_BeforeEffect, LAYER_EFFECT);
-        ELFFSM->Teleport(m_BeforeObj, 2, Pos.y);
-
-        Pos = m_AfterPos;
-        Pos.y += 100.f;
-        m_AfterEffect = m_Effect->Instantiate();
-        m_AfterEffect->Transform()->SetWorldPos(Pos);
-        GamePlayStatic::SpawnGameObject(m_AfterEffect, LAYER_EFFECT);
-        ELFFSM->Teleport(1, Pos.y);
+        ELFFSM->GetUnit()->PlayTeleportEffect(&m_BeforeObj, &m_BeforeEffect, &m_AfterEffect, m_AfterPos);
     }
     break;
     case StateStep::End:
