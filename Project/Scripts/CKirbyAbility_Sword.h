@@ -5,6 +5,13 @@ class CKirbyAbility_Sword : public CKirbyAbility
 {
 private:
     Ptr<CPrefab> m_KirbySwordSlashPref;
+    Ptr<CPrefab> m_KirbySwordTwinkleParticlePref;
+    Ptr<CPrefab> m_KirbySwordFireParticlePref;
+    Ptr<CPrefab> m_KirbySwordButterflyParticlePref;
+    Ptr<CPrefab> m_LightningEffectPref;
+    CGameObject* m_pLightningEffect;
+    Ptr<CPrefab> m_KirbySwordTornadoPref;
+
     Vec3 m_PrevWeaponScale;
     Vec3 m_BigWeaponScale;
     float m_PrevSpeed;
@@ -114,8 +121,12 @@ public:
     virtual void ChangeAbilityEnter() override;
     virtual void ChangeAbilityExit() override;
 
+    // 변신 해제
+    virtual void DropAbilityEnter() override;
+
 private:
-    void SpawnSwordSlash();
+    void SpawnSwordSlash(Vec3 _SlashScale, bool _bVertical = false);
+    void SpawnButterflyParticle();
 
 public:
     CLONE(CKirbyAbility_Sword)

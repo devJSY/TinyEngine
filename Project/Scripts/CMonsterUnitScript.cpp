@@ -131,10 +131,8 @@ void CMonsterUnitScript::RigidbodyMove(CGameObject* _pTargetObj)
 
 void CMonsterUnitScript::Rotating()
 {
-    float Angle = Transform()->GetLocalRotation().y;
-    Angle += DT * GetCurInfo().RotationSpeed;
-    Quat Quaternion = Quat::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), Angle);
-    Transform()->SetWorldRotation(Quaternion);
+    Quat Quaternion = Quat::CreateFromAxisAngle(Vec3(0.f, 1.f, 0.f), DT * GetCurInfo().RotationSpeed);
+    Transform()->SetWorldRotation(Transform()->GetWorldQuaternion() * Quaternion);
 }
 
 void CMonsterUnitScript::RotatingToTarget()

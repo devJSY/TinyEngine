@@ -527,7 +527,7 @@ void CLevelFlowMgr::MtrlParamUpdate()
             // end
             if (m_RadialBlurAcc >= m_RadialBlurDuration - OnOffTime)
             {
-                float t = 1.f - (m_RadialBlurAcc - OnOffTime) / OnOffTime;
+                float t = (m_RadialBlurDuration - m_RadialBlurAcc) / OnOffTime;
                 BlurPower *= t;
             }
 
@@ -670,17 +670,13 @@ void CLevelFlowMgr::OffDimensionFade()
     }
 }
 
-void CLevelFlowMgr::OnRadialBlurEffect(float _Duration, float _Radius, float _BlurPower)
+void CLevelFlowMgr::OnRadialBlurEffect(float _Duration)
 {
-    if (nullptr != m_RadialBlurEffect)
+    if (nullptr != m_RadialBlurEffect && !m_bRadialBlurEffect)
     {
         m_RadialBlurAcc = 0.f;
         m_RadialBlurDuration = _Duration;
         m_bRadialBlurEffect = true;
-
-        static Ptr<CMaterial> pRadialBlurMtrl = CAssetMgr::GetInst()->Load<CMaterial>(L"RadialBlurMtrl");
-        pRadialBlurMtrl->SetScalarParam(FLOAT_0, _Radius);
-        pRadialBlurMtrl->SetScalarParam(FLOAT_1, _BlurPower);
 
         m_RadialBlurEffect->SetActive(true);
     }

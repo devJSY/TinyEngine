@@ -8,6 +8,7 @@ private:
     Ptr<CTexture> m_DecalMRATex;
     Ptr<CTexture> m_DecalNormalTex;
     Ptr<CTexture> m_DecalEmissiveTex;
+    Vec4 m_Emissive;
     int m_bInvertNormalY;
 
 public:
@@ -22,6 +23,9 @@ public:
 
     Ptr<CTexture> GetDecalEmissiveTex() const { return m_DecalEmissiveTex; }
     void SetDecalEmissiveTex(Ptr<CTexture> _Tex) { m_DecalEmissiveTex = _Tex; }
+
+    Vec4 GetEmissive() const { return m_Emissive; }
+    void SetEmissive(Vec4 _Emissive) { m_Emissive = _Emissive; }
 
     bool IsInvertNormalY() const { return m_bInvertNormalY; }
     void SetInvertNormalY(bool _bInvertY) { m_bInvertNormalY = _bInvertY; }

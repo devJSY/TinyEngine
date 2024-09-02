@@ -5,6 +5,7 @@ class CEngineTestScript : public CScript
 {
 private:
     float TestParam1;
+    float TestParam2;
 
 public:
     virtual void begin() override;

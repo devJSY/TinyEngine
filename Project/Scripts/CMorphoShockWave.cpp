@@ -65,7 +65,7 @@ void CMorphoShockWave::SpawnWave()
 {
     CGameObject* Wave = nullptr;
     int Rand = GetRandomInt(0, 1);
-    
+
     if (Rand == 0)
     {
         Wave = m_WavePref[0]->Instantiate();
@@ -76,6 +76,7 @@ void CMorphoShockWave::SpawnWave()
     }
 
     Wave->Transform()->SetWorldPos(Transform()->GetWorldPos());
+    Wave->Transform()->SetWorldScale(Transform()->GetWorldScale());
     GamePlayStatic::SpawnGameObject(Wave, LAYER_EFFECT);
 }
 

@@ -982,6 +982,9 @@
     <ClInclude Include="CMorphoShockWaveWave.h">
       <Filter>Scripts\Character\Boss\Morpho\ShockWave</Filter>
     </ClInclude>
+    <ClInclude Include="CKirbySwordTornadoScript.h">
+      <Filter>Scripts\Character\Kirby\KirbySwordTornado</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1973,6 +1976,9 @@
     </ClCompile>
     <ClCompile Include="CMorphoShockWaveWave.cpp">
       <Filter>Scripts\Character\Boss\Morpho\ShockWave</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbySwordTornadoScript.cpp">
+      <Filter>Scripts\Character\Kirby\KirbySwordTornado</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -3103,6 +3109,9 @@
     </Filter>
     <Filter Include="Scripts\Common\FollowPlayer">
       <UniqueIdentifier>{583a05de-dbe3-4485-a0d8-9de3ff6048bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Kirby\KirbySwordTornado">
+      <UniqueIdentifier>{9b8f6e59-73cd-4fec-886f-6020f6c1cdc0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -95,7 +95,7 @@ void CKirbyUnitScript::tick()
                 CLevelFlowMgr* FlowMgr = ManagerObj->GetScript<CLevelFlowMgr>();
                 if (FlowMgr)
                 {
-                    FlowMgr->OnRadialBlurEffect(1.f, 20.f, 5.f);
+                    FlowMgr->OnRadialBlurEffect(1.f);
                 }
             }
         }
@@ -284,6 +284,13 @@ void CKirbyUnitScript::DropAbility()
         }
 
         GamePlayStatic::SpawnGameObject(pBubble, LAYER_DYNAMIC);
+    }
+
+    // clear kirby sword twinkle particle
+    CGameObject* pTwinkleParticle = PLAYER->GetChildObject(L"KirbySwordTwinkleParticle");
+    if (nullptr != pTwinkleParticle)
+    {
+        GamePlayStatic::DestroyGameObject(pTwinkleParticle);
     }
 
     // clear current ability
