@@ -3,8 +3,11 @@
 
 class CMorphoUnit : public CUnitScript
 {
+private:
+    Ptr<CPrefab> m_LightningEffectPref;
+
 public:
-    virtual void tick();
+    virtual void tick() override;
     // virtual void AttackReward();
 
     CGameObject* SpawnAttackButterflyEffect(Vec3 _Pos);
@@ -18,5 +21,6 @@ public:
 public:
     CLONE(CMorphoUnit)
     CMorphoUnit();
+    CMorphoUnit(const CMorphoUnit& _Origin);
     virtual ~CMorphoUnit();
 };

@@ -4,7 +4,6 @@
 class CMorphoAtkA_DoubleSwordAtkL : public CBossState
 {
 private:
-    Ptr<CPrefab> m_LightningEffectPref;
     CGameObject* m_LightningEffect;
     bool m_bFrmEnter;
 

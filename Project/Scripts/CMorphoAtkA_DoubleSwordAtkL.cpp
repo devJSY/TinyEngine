@@ -11,7 +11,6 @@ CMorphoAtkA_DoubleSwordAtkL::CMorphoAtkA_DoubleSwordAtkL()
     : m_LightningEffect(nullptr)
     , m_bFrmEnter(true)
 {
-    m_LightningEffectPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Effect_MorphoLightningSet.pref", L"prefab\\Effect_MorphoLightningSet.pref");
 }
 
 CMorphoAtkA_DoubleSwordAtkL::~CMorphoAtkA_DoubleSwordAtkL()
@@ -99,24 +98,10 @@ void CMorphoAtkA_DoubleSwordAtkL::Progress()
     {
         m_bFrmEnter = false;
 
-        if (m_LightningEffectPref != nullptr)
-        {
-            m_LightningEffect = m_LightningEffectPref->Instantiate();
-
-            Vec3 Pos = MRPFSM->GetWeaponL()->GetChildObject()[0]->Transform()->GetWorldPos();
-            Vec3 Dir = CPlayerMgr::GetCameraController()->GetLookDir() * -1.f;
-            Pos.y = 0.f;
-            Dir.y = 0.f;
-
-            m_LightningEffect->Transform()->SetWorldPos(Pos);
-            m_LightningEffect->Transform()->Slerp(Dir.Normalize(), 1.f);
-
-            CChangeAlphaScript* Script = m_LightningEffect->GetScript<CChangeAlphaScript>();
-            Script->FadeIn_RandomDelay(0.f, 0.4f);
-
-            GamePlayStatic::SpawnGameObject(m_LightningEffect, LAYER_EFFECT);
-            MRPFSM->GetUnit()->SpawnCircleDustEffect(Pos);
-        }
+        Vec3 Pos = MRPFSM->GetWeaponL()->GetChildObject()[0]->Transform()->GetWorldPos();
+        Pos.y = 0.f;
+        m_LightningEffect = MRPFSM->GetUnit()->SpawnLightningEffect(Pos);
+        MRPFSM->GetUnit()->SpawnCircleDustEffect(Pos);
 
         CAMERACTRL->Shake(0.3f, 30.f, 30.f);
 

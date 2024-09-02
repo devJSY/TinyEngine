@@ -1,9 +1,12 @@
 #include "pch.h"
 #include "CMorphoUnit.h"
+#include "CPlayerMgr.h"
+#include "CCameraController.h"
 #include "CBossMgr.h"
 #include "CMorphoFSM.h"
 #include "CBossLevelFlowMgr.h"
 #include "CDestroyParticleScript.h"
+#include "CChangeAlphaScript.h"
 
 CMorphoUnit::CMorphoUnit()
     : CUnitScript(MORPHOUNIT)
@@ -17,6 +20,24 @@ CMorphoUnit::CMorphoUnit()
         0.f,   // ATK
     };
     SetInitInfo(MorphoInfo);
+
+    m_LightningEffectPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Effect_MorphoLightningSet.pref", L"prefab\\Effect_MorphoLightningSet.pref");
+}
+
+CMorphoUnit::CMorphoUnit(const CMorphoUnit& _Origin)
+    : CUnitScript(_Origin)
+{
+    UnitInfo MorphoInfo = {
+        700.f, // HP
+        700.f, // MaxHP
+        10.f,  // Speed
+        10.f,  // Rotation Speed
+        10.f,  // JumpPower
+        0.f,   // ATK
+    };
+    SetInitInfo(MorphoInfo);
+
+    m_LightningEffectPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Effect_MorphoLightningSet.pref", L"prefab\\Effect_MorphoLightningSet.pref");
 }
 
 CMorphoUnit::~CMorphoUnit()
@@ -112,7 +133,22 @@ CGameObject* CMorphoUnit::SpawnAttackButterflyEffect(Vec3 _Pos)
 
 CGameObject* CMorphoUnit::SpawnLightningEffect(Vec3 _Pos)
 {
-    return nullptr;
+    if (m_LightningEffectPref == nullptr)
+        return nullptr;
+
+    CGameObject* Lightning = m_LightningEffectPref->Instantiate();
+    Vec3 Dir = CPlayerMgr::GetCameraController()->GetLookDir() * -1.f;
+    Dir.y = 0.f;
+
+    Lightning->Transform()->SetWorldPos(_Pos);
+    Lightning->Transform()->Slerp(Dir.Normalize(), 1.f);
+
+    CChangeAlphaScript* Script = Lightning->GetScript<CChangeAlphaScript>();
+    Script->FadeIn_RandomDelay(0.f, 0.4f);
+
+    GamePlayStatic::SpawnGameObject(Lightning, LAYER_EFFECT);
+
+    return Lightning;
 }
 
 CGameObject* CMorphoUnit::SpawnCircleDustEffect(Vec3 _Pos)
