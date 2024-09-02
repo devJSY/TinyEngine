@@ -13,6 +13,10 @@ public:
 private:
     float LoadDamage();
 
+private:
+    void SlashEffect(Vec3 _vPos);
+    void SpawnSlashEffect(Vec3 _vPos, int _iCount);
+
 public:
     CLONE(CKirbyWeaponHitbox)
     CKirbyWeaponHitbox();

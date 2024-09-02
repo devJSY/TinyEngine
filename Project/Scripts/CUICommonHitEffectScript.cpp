@@ -69,9 +69,9 @@ void CUICommonHitEffectScript::Progress()
         {
             m_eState = CommonHitEffectState::End;
         }
-    }
 
-    Billboarding();
+        Billboarding();
+    }
 }
 
 void CUICommonHitEffectScript::Stop()

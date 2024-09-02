@@ -985,6 +985,9 @@
     <ClInclude Include="CUICommonHitEffectScript.h">
       <Filter>Scripts\UI\UIEffect\UIBurstStarSpawnEffect\CUICommonHitEffectScript</Filter>
     </ClInclude>
+    <ClInclude Include="CUISlashEffectScript.h">
+      <Filter>Scripts\UI\UIEffect\UISlashEffect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1979,6 +1982,9 @@
     </ClCompile>
     <ClCompile Include="CUICommonHitEffectScript.cpp">
       <Filter>Scripts\UI\UIEffect\UIBurstStarSpawnEffect\CUICommonHitEffectScript</Filter>
+    </ClCompile>
+    <ClCompile Include="CUISlashEffectScript.cpp">
+      <Filter>Scripts\UI\UIEffect\UISlashEffect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -3112,6 +3118,9 @@
     </Filter>
     <Filter Include="Scripts\UI\UIEffect\UIBurstStarSpawnEffect\CUICommonHitEffectScript">
       <UniqueIdentifier>{392b6401-b463-4fb3-a598-30bb6923e051}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIEffect\UISlashEffect">
+      <UniqueIdentifier>{0a93117f-c0f3-45e3-9061-4c56e33193a4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

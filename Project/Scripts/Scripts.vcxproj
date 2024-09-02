@@ -441,6 +441,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CUIManagerScript.h" />
     <ClInclude Include="CUIMtrlScript.h" />
     <ClInclude Include="CUIRotateScript.h" />
+    <ClInclude Include="CUISlashEffectScript.h" />
     <ClInclude Include="CUIStartSceneFlowScript.h" />
     <ClInclude Include="CUITexManagerScript.h" />
     <ClInclude Include="CUITexScript.h" />
@@ -792,6 +793,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CUIManagerScript.cpp" />
     <ClCompile Include="CUIMtrlScript.cpp" />
     <ClCompile Include="CUIRotateScript.cpp" />
+    <ClCompile Include="CUISlashEffectScript.cpp" />
     <ClCompile Include="CUIStartSceneFlowScript.cpp" />
     <ClCompile Include="CUITexManagerScript.cpp" />
     <ClCompile Include="CUITexScript.cpp" />

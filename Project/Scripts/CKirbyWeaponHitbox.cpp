@@ -29,6 +29,8 @@ void CKirbyWeaponHitbox::OnTriggerEnter(CCollider* _OtherCollider)
         UnitHit HitInfo = {DAMAGE_TYPE::NORMAL, HitDir, 5.f, 0.f, 0.f};
         HitInfo.Damage = LoadDamage();
 
+        SlashEffect(_OtherCollider->Transform()->GetWorldPos());
+
         pMonster->GetDamage(HitInfo);
         ((CUnitScript*)PLAYERUNIT)->AttackReward();
     }
@@ -45,8 +47,7 @@ float CKirbyWeaponHitbox::LoadDamage()
         break;
     case AbilityCopyType::CUTTER:
         break;
-    case AbilityCopyType::SWORD:
-    {
+    case AbilityCopyType::SWORD: {
         if (state.find(L"CHARGE1") != wstring::npos)
         {
             damage = 7.5f;
@@ -84,12 +85,33 @@ float CKirbyWeaponHitbox::LoadDamage()
             damage = 7.5f;
         }
     }
-        break;
+    break;
     case AbilityCopyType::SLEEP:
         break;
     }
 
     return damage;
+}
+
+void CKirbyWeaponHitbox::SlashEffect(Vec3 _vPos)
+{
+    wstring state = PLAYERFSM->GetCurState()->GetName();
+
+    SpawnSlashEffect(_vPos, state.find(L"COMBO2") != wstring::npos ? 2 : 1);
+}
+
+void CKirbyWeaponHitbox::SpawnSlashEffect(Vec3 _vPos, int _iCount)
+{
+    for (int i = 0; i < _iCount; i++)
+    {
+        CGameObject* pSpawnEffect =
+            CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Effect_SlashEffect.pref", L"prefab\\Effect_SlashEffect.pref")->Instantiate();
+
+        Vec3 vPos = _vPos;
+        vPos.y += 35.f;
+        pSpawnEffect->Transform()->SetWorldPos(vPos);
+        GamePlayStatic::SpawnGameObject(pSpawnEffect, pSpawnEffect->GetLayerIdx());
+    }
 }
 
 UINT CKirbyWeaponHitbox::SaveToLevelFile(FILE* _File)

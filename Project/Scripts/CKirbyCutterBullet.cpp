@@ -195,8 +195,6 @@ void CKirbyCutterBullet::tick()
             }
 
             m_MoveDir.Normalize();
-
-
         }
         else
         {
@@ -394,7 +392,6 @@ void CKirbyCutterBullet::OnCollisionEnter(CCollider* _OtherCollider)
 
         SetState(BulletState::HOLD_WALL);
     }
-
 }
 
 void CKirbyCutterBullet::OnTriggerEnter(CCollider* _OtherCollider)
@@ -430,6 +427,11 @@ void CKirbyCutterBullet::OnTriggerEnter(CCollider* _OtherCollider)
             HitDir.Normalize();
             UnitHit HitInfo = {DAMAGE_TYPE::NORMAL, HitDir, 10.f, 0.f, 0.f};
 
+            for (UINT i = 0; i < 2; i++)
+            {
+                SpawnSlashEffect(_OtherCollider->Transform()->GetWorldPos());
+            }
+
             Monster->GetDamage(HitInfo);
         }
     }
@@ -437,6 +439,16 @@ void CKirbyCutterBullet::OnTriggerEnter(CCollider* _OtherCollider)
 
 void CKirbyCutterBullet::OnTriggerExit(CCollider* _OtherCollider)
 {
+}
+
+void CKirbyCutterBullet::SpawnSlashEffect(Vec3 _vPos)
+{
+    CGameObject* pSpawnEffect =
+        CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Effect_SlashEffect.pref", L"prefab\\Effect_SlashEffect.pref")->Instantiate();
+
+    _vPos.y += 35.f;
+    pSpawnEffect->Transform()->SetWorldPos(_vPos);
+    GamePlayStatic::SpawnGameObject(pSpawnEffect, pSpawnEffect->GetLayerIdx());
 }
 
 UINT CKirbyCutterBullet::SaveToLevelFile(FILE* _File)

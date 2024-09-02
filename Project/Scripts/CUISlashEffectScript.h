@@ -1,37 +1,41 @@
 #pragma once
 #include <Engine\CScript.h>
 
-enum class CommonHitEffectState
+enum class UISlashEffectState
 {
     Progress,
     End,
 };
 
-class CUICommonHitEffectScript : public CScript
+class CUISlashEffectScript : public CScript
 {
 private:
     Vec3 m_vOriginScale;
 
-    CommonHitEffectState m_eState;
-    float m_fLerpSpeed;
+    UISlashEffectState m_eState;
     float m_fRatio;
+    float m_fLessRatio;
+    float m_fLerpSpeed;
 
 public:
     virtual void begin() override;
     virtual void tick() override;
 
 private:
+    void Billboarding();
     void Progress();
     void Stop();
 
-    void Billboarding();
+private:
+    float RandomRotation();
+
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;
     virtual UINT LoadFromLevelFile(FILE* _File) override;
 
-    CLONE(CUICommonHitEffectScript)
+    CLONE(CUISlashEffectScript)
 public:
-    CUICommonHitEffectScript();
-    CUICommonHitEffectScript(const CUICommonHitEffectScript& Origin);
-    virtual ~CUICommonHitEffectScript();
+    CUISlashEffectScript();
+    CUISlashEffectScript(const CUISlashEffectScript& Origin);
+    virtual ~CUISlashEffectScript();
 };

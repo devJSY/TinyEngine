@@ -127,3 +127,4 @@ CUIDashEffectScript
 CDestroyParticleScript
 CMorphoShockWaveWave
 CUICommonHitEffectScript
+CUISlashEffectScript
