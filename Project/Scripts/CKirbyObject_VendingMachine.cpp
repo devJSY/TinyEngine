@@ -3,6 +3,7 @@
 
 #include "CPlayerMgr.h"
 
+#include "CCameraController.h"
 #include "CKirbyUnitScript.h"
 
 CKirbyObject_VendingMachine::CKirbyObject_VendingMachine()
@@ -61,9 +62,9 @@ void CKirbyObject_VendingMachine::AttackStart()
 
 void CKirbyObject_VendingMachine::AttackStartEnter()
 {
-    PLAYERCTRL->LockMove();
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroDeformVendingMachine\\VendingMachine_Attack.wav", 1, 50.f);
+
     PLAYERCTRL->LockJump();
-    PLAYERCTRL->LockDirection();
 
     // Can Counting
     PLAYERFSM->SubCanCount();
@@ -92,9 +93,7 @@ void CKirbyObject_VendingMachine::AttackStartEnter()
 
 void CKirbyObject_VendingMachine::AttackStartExit()
 {
-    PLAYERCTRL->UnlockMove();
     PLAYERCTRL->UnlockJump();
-    PLAYERCTRL->UnlockDirection();
 }
 
 void CKirbyObject_VendingMachine::AttackCharge1()
@@ -121,6 +120,8 @@ void CKirbyObject_VendingMachine::AttackCharge1()
 
 void CKirbyObject_VendingMachine::AttackCharge1Enter()
 {
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroDeformVendingMachine\\VendingMachine_Attack.wav", 1, 50.f);
+
     PLAYERCTRL->LockJump();
 
     // Can Counting
@@ -182,6 +183,15 @@ void CKirbyObject_VendingMachine::AttackEndExit()
     PLAYERCTRL->UnlockMove();
     PLAYERCTRL->UnlockJump();
     PLAYERCTRL->UnlockDirection();
+}
+
+void CKirbyObject_VendingMachine::LandingEnter()
+{
+    CKirbyObject::LandingEnter();
+
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroDeformVendingMachine\\VendingMachine_Landing.wav", 1, 50.f);
+
+    CAMERACTRL->Shake(0.2f, 10.f, 10.f);
 }
 
 // ===============
