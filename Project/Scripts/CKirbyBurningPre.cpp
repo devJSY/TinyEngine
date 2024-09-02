@@ -23,6 +23,8 @@ void CKirbyBurningPre::tick()
 
 void CKirbyBurningPre::Enter()
 {
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroFireDragon\\Fire_BurningPre.wav", 1, 50.f);
+
     CGameObject* Wing = PLAYER->GetChildObject(L"KirbyDragon"); 
 
     if (Wing != nullptr)

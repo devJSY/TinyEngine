@@ -94,6 +94,7 @@ void CKirbyFireBullet::StepUp()
 
     case (UINT)Fire_Step::LV1:
     {
+        GamePlayStatic::Play2DSound(L"sound\\wav\\HeroFireDragon\\Fire_BurningPre.wav", 1, 50.f);
         NextFirePref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\FireBulletLV2.pref");
     }
         break;
