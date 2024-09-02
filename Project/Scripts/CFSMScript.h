@@ -6,8 +6,8 @@ class CUnitScript;
 class CFSMScript : public CScript
 {
 protected:
-    bool m_bGlobalState;
     CUnitScript* m_Unit;
+    bool m_bGlobalState;
 
 private:
     map<wstring, CState*> m_mapState;
@@ -22,12 +22,15 @@ public:
     CState* FindState(const wstring& _StateName);
     virtual void ChangeState(const wstring& _strStateName);
     void DeleteState(const wstring& _StateKey);
-    void SetGlobalState(bool _GlobalState) { m_bGlobalState = _GlobalState; }
 
 protected:
     void ChangeState_proc(CState* _pNextState);
 
 public:
+    void SetGlobalState(bool _GlobalState) { m_bGlobalState = _GlobalState; }
+    void LockChangeState() { m_bGlobalState = true; }
+    void UnlockChangeState() { m_bGlobalState = false; }
+
     virtual CUnitScript* GetUnit() { return m_Unit; }
     const map<wstring, CState*>& GetStates() { return m_mapState; }
     CState* GetCurState() { return m_CurState; }
