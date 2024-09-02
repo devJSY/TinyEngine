@@ -16,7 +16,11 @@ const UINT CLevelSaveLoad::MemoryBlockSize = 8192;
 
 void CLevelSaveLoad::SaveLevel(CLevel* _Level, const wstring& _LevelFileName)
 {
-    assert(_Level);
+    if (nullptr == _Level)
+    {
+        assert(nullptr);
+        return;
+    }
 
     if (_Level->GetState() != LEVEL_STATE::STOP)
         return;
