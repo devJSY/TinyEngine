@@ -462,6 +462,10 @@ void CKirbyAbility_Sword::JumpFallEnter()
     PLAYER->Animator()->Play(ANIMPREFIX("JumpFall"), false, false, 2.5f, 0.3f);
     
     PLAYERFSM->LockSlideCombo();
+    if (PLAYERFSM->GetSlideComboLevel())
+    {
+        PLAYERFSM->SetInvincible(true);
+    }
 }
 
 void CKirbyAbility_Sword::JumpFallExit()
@@ -469,6 +473,10 @@ void CKirbyAbility_Sword::JumpFallExit()
     CKirbyAbility::JumpFallExit();
 
     PLAYERFSM->UnlockSlideCombo();
+    if (PLAYERFSM->GetSlideComboLevel())
+    {
+        PLAYERFSM->SetInvincible(false);
+    }
 }
 
 // ===============
