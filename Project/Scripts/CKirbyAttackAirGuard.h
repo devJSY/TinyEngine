@@ -4,6 +4,7 @@
 class CKirbyAttackAirGuard : public CState
 {
 private:
+    Ptr<CPrefab> m_KirbySwordShockWavePref;
     float m_PrevGravity;
     float m_PlayTime;
 

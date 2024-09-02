@@ -736,23 +736,33 @@ void GamePlayStatic::Physics_Event(CGameObject* _pObj, Physics_EVENT_TYPE _Type)
     CTaskMgr::GetInst()->AddTask(task);
 }
 
-void GamePlayStatic::Play2DSound(const wstring& _SoundPath, int _Loop, float _Volume, bool _Overlap)
+void GamePlayStatic::Play2DSound(const wstring& _SoundPath, int _Loop, float _Volume, bool _Overlap, bool _Reset)
 {
     Ptr<CSound> pSound = CAssetMgr::GetInst()->Load<CSound>(_SoundPath, _SoundPath);
 
     if (nullptr != pSound)
     {
+        if (_Reset)
+        {
+            pSound->SetPosition(0);
+        }
+
         pSound->Play2D(_Loop, _Volume, _Overlap);
     }
 }
 
-void GamePlayStatic::Play3DSound(const wstring& _SoundPath, Vec3 _WorldPos, int _Loop, float _Volume, bool _Overlap, float _Mindistance,
+void GamePlayStatic::Play3DSound(const wstring& _SoundPath, Vec3 _WorldPos, int _Loop, float _Volume, bool _Overlap, bool _Reset, float _Mindistance,
                                  float _Maxdistance)
 {
     Ptr<CSound> pSound = CAssetMgr::GetInst()->Load<CSound>(_SoundPath, _SoundPath);
 
     if (nullptr != pSound)
     {
+        if (_Reset)
+        {
+            pSound->SetPosition(0);
+        }
+
         pSound->Play3D(_WorldPos, _Loop, _Volume, _Overlap, _Mindistance, _Maxdistance);
     }
 }
@@ -781,6 +791,16 @@ void GamePlayStatic::PlayBGM(const wstring& _SoundPath, float _Volume)
             pSound->Play2D(0, _Volume);
             CurBGM = pSound;
         }
+    }
+}
+
+void GamePlayStatic::PauseSound(const wstring& _SoundPath)
+{
+    Ptr<CSound> pSound = CAssetMgr::GetInst()->Load<CSound>(_SoundPath, _SoundPath);
+
+    if (nullptr != pSound)
+    {
+        pSound->Pause();
     }
 }
 

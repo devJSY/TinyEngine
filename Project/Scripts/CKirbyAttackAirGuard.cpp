@@ -1,10 +1,13 @@
 #include "pch.h"
 #include "CKirbyAttackAirGuard.h"
+#include "CMomentaryObjScript.h"
 
 CKirbyAttackAirGuard::CKirbyAttackAirGuard()
-    : m_PrevGravity(0.f)
+    : m_KirbySwordShockWavePref(nullptr)
+    , m_PrevGravity(0.f)
     , m_PlayTime(1.f)
 {
+    m_KirbySwordShockWavePref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbySwordShockWave.pref");
 }
 
 CKirbyAttackAirGuard::~CKirbyAttackAirGuard()
@@ -27,7 +30,34 @@ void CKirbyAttackAirGuard::Enter()
     CPlayerMgr::ClearMouthMtrl();
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthOpen));
     CPlayerMgr::SetPlayerFace(FaceType::UpTail);
+
     //@Effect Ãæ°ÝÆÄ & ¿Ö°î
+    Vec3 Pos = PLAYER->Transform()->GetWorldPos();
+    Vec3 RightDir = PLAYER->Transform()->GetWorldDir(DIR_TYPE::RIGHT);
+
+    // Right
+    {
+        CGameObject* pShockWaveObj = m_KirbySwordShockWavePref->Instantiate();
+
+        CMomentaryObjScript* pMomentaryScript = new CMomentaryObjScript;
+        pMomentaryScript->SetPlayTime(3.f);
+        pShockWaveObj->AddComponent(pMomentaryScript);
+
+        pShockWaveObj->Transform()->SetWorldPos(Pos + RightDir * 25.f + Vec3(0.f, 25.f, 0.f));
+        GamePlayStatic::SpawnGameObject(pShockWaveObj, LAYER_PLAYERATK_TRIGGER);
+    }
+
+    // Left
+    {
+        CGameObject* pShockWaveObj = m_KirbySwordShockWavePref->Instantiate();
+
+        CMomentaryObjScript* pMomentaryScript = new CMomentaryObjScript;
+        pMomentaryScript->SetPlayTime(3.f);
+        pShockWaveObj->AddComponent(pMomentaryScript);
+
+        pShockWaveObj->Transform()->SetWorldPos(Pos + -RightDir * 25.f + Vec3(0.f, 25.f, 0.f));
+        GamePlayStatic::SpawnGameObject(pShockWaveObj, LAYER_PLAYERATK_TRIGGER);
+    }
 
     PLAYERCTRL->ClearVelocityY();
     m_PrevGravity = PLAYERCTRL->GetGravity();
