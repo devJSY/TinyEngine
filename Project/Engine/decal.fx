@@ -14,6 +14,7 @@
 
 // Parameter
 // g_int_0  : Invert Normal Y
+// g_vec4_0 : Emissive
 // g_mat_0  : WorldInv
 // ===========================
 
@@ -25,6 +26,9 @@
 #define DecalMRATexture g_tex_5
 #define DecalNormalTexture g_tex_6
 #define DecalEmissiveTexture g_tex_7
+
+#define InvertNormalY g_int_0
+#define Emissive g_vec4_0
 
 PS_IN VS_Decal(VS_IN _in)
 {
@@ -91,25 +95,28 @@ PS_OUT PS_Decal(PS_IN _in)
     
     if (g_btex_6)
     {
-        // TBN 행렬 생성
-        float3 Tangent = TangentTex.Sample(g_LinearWrapSampler, vScreenUV).xyz;
-        float3 Bitangent = BitangentTex.Sample(g_LinearWrapSampler, vScreenUV).xyz;
-        float3 normal = normalize(cross(Tangent, Bitangent));
-        float3x3 TBN = float3x3(Tangent, Bitangent, normal);
+        float3 normal = DecalNormalTexture.Sample(g_LinearWrapSampler, vLocal.xz).xyz;
         
-        float3 TexNormal = DecalNormalTexture.Sample(g_LinearWrapSampler, vLocal.xz).xyz;
-        
-        // 압축되어있는 Normal Map인 경우
-        if (0.f >= TexNormal.b)
+        // DXT5 Normal Map 예외처리
+        bool bDXT5Normal = 0.f >= normal.b ? true : false;
+        if (bDXT5Normal)
         {
-            TexNormal.b = 1.f;
+            normal.b = 1.f;
         }
         
-        TexNormal = 2.0 * TexNormal - 1.0; // 범위 조절 [-1.0, 1.0]
+        normal = 2.f * normal - 1.f; // 범위 조절 [-1.0, 1.0]
         
-        TexNormal.y = g_int_0 ? -TexNormal.y : TexNormal.y;
+        normal.y = InvertNormalY ? -normal.y : normal.y;
     
-        output.vNormal.xyz = normalize(mul(TexNormal, TBN));
+        // TBN 행렬 생성
+        float3 T = TangentTex.Sample(g_LinearWrapSampler, vScreenUV).xyz;
+        float3 B = BitangentTex.Sample(g_LinearWrapSampler, vScreenUV).xyz;
+        float3 N = normalize(cross(T, B));
+
+        // 압축되어있는 노말은 Bitangent 사용 X
+        float3x3 TBN = bDXT5Normal ? float3x3(T, T, N) : float3x3(T, B, N);
+        
+        output.vNormal.xyz = normalize(mul(normal, TBN));
         output.vNormal.a = 1.f;
     }
     
@@ -117,6 +124,8 @@ PS_OUT PS_Decal(PS_IN _in)
     {
         output.vEmissive = DecalEmissiveTexture.Sample(g_LinearWrapSampler, vLocal.xz);
     }
+    
+    output.vEmissive += Emissive;
     
     return output;
 }
