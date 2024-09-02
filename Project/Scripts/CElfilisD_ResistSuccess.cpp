@@ -40,7 +40,7 @@ void CElfilisD_ResistSuccess::Enter_Step()
     case StateStep::Start: {
         GetOwner()->Animator()->Play(ANIMPREFIX("ResistSuccess"), false, false, 1.5f);
         ELFFSM->SetResist(true);
-        ((CElfilisUnit*)BOSSUNIT)->ResistSuccess();
+        ELFFSM->GetUnit()->ResistSuccess();
 
         CBossMgr::GetBossFlowMgr()->ChangeFlow(BossLevelFlow::Fight);
     }
