@@ -101,6 +101,9 @@ void CNormalEnemyScript::OnTriggerEnter(CCollider* _OtherCollider)
 
     CGameObject* pObj = _OtherCollider->GetOwner();
 
+    if (!PLAYER)
+        return;
+
     Vec3 vDir = PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos();
     UnitHit hitInfo = {DAMAGE_TYPE::NORMAL, vDir.Normalize(), GetCurInfo().ATK, 0.f, 0.f};
     UINT Layer = _OtherCollider->GetOwner()->GetLayerIdx();

@@ -126,3 +126,4 @@ CKirbySoundListener
 CUIDashEffectScript
 CDestroyParticleScript
 CMorphoShockWaveWave
+CUICommonHitEffectScript

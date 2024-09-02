@@ -129,6 +129,7 @@
 #include "CUIDashEffectScript.h"
 #include "CDestroyParticleScript.h"
 #include "CMorphoShockWaveWave.h"
+#include "CUICommonHitEffectScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -260,6 +261,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CUIDashEffectScript");
 	_vec.push_back(L"CDestroyParticleScript");
 	_vec.push_back(L"CMorphoShockWaveWave");
+	_vec.push_back(L"CUICommonHitEffectScript");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -520,6 +522,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CDestroyParticleScript;
 	if (L"CMorphoShockWaveWave" == _strScriptName)
 		return new CMorphoShockWaveWave;
+	if (L"CUICommonHitEffectScript" == _strScriptName)
+		return new CUICommonHitEffectScript;
 	return nullptr;
 }
 
@@ -783,6 +787,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CDestroyParticleScript;
 	case (UINT)SCRIPT_TYPE::MORPHOSHOCKWAVEWAVE:
 		return new CMorphoShockWaveWave;
+	case (UINT)SCRIPT_TYPE::UICOMMONHITEFFECTSCRIPT:
+		return new CUICommonHitEffectScript;
 	}
 	return nullptr;
 }
@@ -1047,6 +1053,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CDestroyParticleScript";
 	case SCRIPT_TYPE::MORPHOSHOCKWAVEWAVE:
 		return L"CMorphoShockWaveWave";
+	case SCRIPT_TYPE::UICOMMONHITEFFECTSCRIPT:
+		return L"CUICommonHitEffectScript";
 	}
 	return nullptr;
 }
