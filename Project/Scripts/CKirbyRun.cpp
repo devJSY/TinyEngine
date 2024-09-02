@@ -342,7 +342,7 @@ void CKirbyRun::SpawnSmoke()
 
     if (m_FirstStep == true && CHECK_ANIMFRM(GetOwner(), m_FirstStepSmokeFrm) && CHECK_ANIMFRM_UNDER(GetOwner(), m_SecondStepSmokeFrm - 1))
     {
-        GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\Run.wav", 1, 50.f);
+        GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\Run.wav", 1, KIRBY_EFFECTSOUND);
 
         Ptr<CPrefab> Smoke = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Smoke.pref");
         if (Smoke.Get())
@@ -368,7 +368,7 @@ void CKirbyRun::SpawnSmoke()
 
     if (m_FirstStep == false && CHECK_ANIMFRM(GetOwner(), m_SecondStepSmokeFrm))
     {
-        GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\Run.wav", 1, 50.f);
+        GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\Run.wav", 1, KIRBY_EFFECTSOUND);
 
         Ptr<CPrefab> Smoke = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Smoke.pref");
         if (Smoke.Get())

@@ -112,7 +112,7 @@ void CKirbyLongDiveLanding::tick()
 
 void CKirbyLongDiveLanding::Enter()
 {
-    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\LongDive.wav", 1, 50.f);
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\LongDive.wav", 1, KIRBY_EFFECTSOUND);
 
     // 애니메이션 재생
     PLAYER->Animator()->Play(ANIMPREFIX("LongDiveAttackLanding"), false, false, 2.f);

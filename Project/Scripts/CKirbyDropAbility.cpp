@@ -108,7 +108,7 @@ void CKirbyDropAbility::Enter()
 
 void CKirbyDropAbility::Exit()
 {
-    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\DropAbility.wav", 1, 50.f);
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\DropAbility.wav", 1, KIRBY_EFFECTSOUND);
 
     CPlayerMgr::SetPlayerFace(FaceType::Normal);
 

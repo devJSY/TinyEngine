@@ -31,7 +31,7 @@ void CKirbyDropObjectStart::tick()
 
 void CKirbyDropObjectStart::Enter()
 {
-    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\DropObject.wav", 1, 50.f);
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\DropObject.wav", 1, KIRBY_EFFECTSOUND);
 
     PLAYERFSM->ChangeObjectCopy(ObjectCopyType::NONE);
     PLAYERFSM->SetGlobalState(true);

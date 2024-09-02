@@ -54,7 +54,7 @@ void CKirbyObject_Cone::Attack()
 
 void CKirbyObject_Cone::AttackEnter()
 {
-    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroDeformCone\\0006.wav", 1, 0.5f);
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroDeformCone\\0006.wav", 1, KIRBY_EFFECTSOUND);
 
     PLAYER->Animator()->Play(ANIMPREFIX("TurnEnd"), false, false, 2.f);
 
@@ -73,7 +73,7 @@ void CKirbyObject_Cone::AttackStart()
 
 void CKirbyObject_Cone::AttackStartEnter()
 {
-    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroDeformCone\\Cone_UpWhizz.wav", 1, 0.5f);
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroDeformCone\\Cone_UpWhizz.wav", 1, KIRBY_EFFECTSOUND);
 
     PLAYER->Animator()->Play(ANIMPREFIX("Turn"), false, false, 2.f);
 
@@ -128,7 +128,7 @@ void CKirbyObject_Cone::AttackCombo1()
 
 void CKirbyObject_Cone::AttackCombo1Enter()
 {
-    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroDeformCone\\0007.wav", 1, 0.5f);
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroDeformCone\\0007.wav", 1, KIRBY_EFFECTSOUND);
 
     PLAYER->Animator()->Play(ANIMPREFIX("TurnLanding"), false, false, 2.f);
     //@Effect √Êµπ¿Ã∆Â∆Æ
@@ -232,5 +232,5 @@ void CKirbyObject_Cone::LandingEnter()
 {
     CKirbyObject::LandingEnter();
 
-    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroDeformCone\\Cone_Landing.wav",1,0.5f);
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroDeformCone\\Cone_Landing.wav", 1, KIRBY_EFFECTSOUND);
 }

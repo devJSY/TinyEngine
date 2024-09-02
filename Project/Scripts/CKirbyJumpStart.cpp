@@ -232,7 +232,7 @@ void CKirbyJumpStart::tick()
 
 void CKirbyJumpStart::Enter()
 {
-    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\Jump.wav", 1, 50.f);
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\Jump.wav", 1, KIRBY_EFFECTSOUND);
 
     PLAY_CURSTATE(JumpStartEnter)
 

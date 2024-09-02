@@ -22,7 +22,7 @@ void CKirbyFinalCutterEnd::tick()
 
 void CKirbyFinalCutterEnd::Enter()
 {
-    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroCutterBaisc\\Cutter_Slash3.wav", 1, 50.f);
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroCutterBaisc\\Cutter_Slash3.wav", 1, KIRBY_EFFECTSOUND);
 
     PLAYER->Animator()->Play(ANIMPREFIX("FinalCutterEnd"), false, false, 1.5f, 0);
 

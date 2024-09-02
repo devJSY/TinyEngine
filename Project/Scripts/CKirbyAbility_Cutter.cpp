@@ -37,7 +37,7 @@ void CKirbyAbility_Cutter::Attack()
 
 void CKirbyAbility_Cutter::AttackEnter()
 {
-    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroCutterMetal\\AttackCutter.wav", 1, 50.f);
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroCutterMetal\\AttackCutter.wav", 1, KIRBY_EFFECTSOUND);
 
     // 애니메이션 재생
     PLAYER->Animator()->Play(ANIMPREFIX("MetalCutterThrow"), false, false, 1.5f);
@@ -103,7 +103,7 @@ void CKirbyAbility_Cutter::AttackCombo1()
 
 void CKirbyAbility_Cutter::AttackCombo1Enter()
 {
-    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroCutterBaisc\\Cutter_Slash0.wav", 1, 50.f);
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroCutterBaisc\\Cutter_Slash0.wav", 1, KIRBY_EFFECTSOUND);
 
     PLAYER->Animator()->Play(ANIMPREFIX("CutterSlashChain1"), false, false, 2.f);
 
@@ -168,7 +168,7 @@ void CKirbyAbility_Cutter::AttackCombo2()
 
 void CKirbyAbility_Cutter::AttackCombo2Enter()
 {
-    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroCutterBaisc\\Cutter_Slash1.wav", 1, 50.f);
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroCutterBaisc\\Cutter_Slash1.wav", 1, KIRBY_EFFECTSOUND);
 
     PLAYER->Animator()->Play(ANIMPREFIX("CutterSlashChain2"), false, false, 2.f);
     m_IsNextCombo = false;
