@@ -946,6 +946,28 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
     }
 
     // =================================
+    // Kirby Vignette Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\postprocessVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\KirbyVignettePS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
+
+        pShader->AddScalarParam(FLOAT_0, "Red Color", 0.01f);
+        pShader->AddScalarParam(FLOAT_1, "Green Color", 0.01f);
+        pShader->AddScalarParam(FLOAT_2, "Blue Color", 0.01f);
+
+        pShader->AddScalarParam(VEC2_0, "Inner Value", 0.01f);
+
+        pShader->SetName(L"KirbyVignetteShader");
+        AddAsset(L"KirbyVignetteShader", pShader);
+    }
+
+    // =================================
     // Fire Shader
     // =================================
     {

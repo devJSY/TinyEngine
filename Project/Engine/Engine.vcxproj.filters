@@ -1563,5 +1563,8 @@
     <FxCompile Include="EffectQuadPS.hlsl">
       <Filter>ShaderCode\Kirby\Common</Filter>
     </FxCompile>
+    <FxCompile Include="KirbyVignettePS.hlsl">
+      <Filter>ShaderCode\Kirby\Postprocess</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
