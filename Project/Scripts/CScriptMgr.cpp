@@ -130,6 +130,7 @@
 #include "CDestroyParticleScript.h"
 #include "CMorphoShockWaveWave.h"
 #include "CKirbySwordTornadoScript.h"
+#include "CKirbyVacuumScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -262,6 +263,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CDestroyParticleScript");
 	_vec.push_back(L"CMorphoShockWaveWave");
 	_vec.push_back(L"CKirbySwordTornadoScript");
+	_vec.push_back(L"CKirbyVacuumScript");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -524,6 +526,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CMorphoShockWaveWave;
 	if (L"CKirbySwordTornadoScript" == _strScriptName)
 		return new CKirbySwordTornadoScript;
+	if (L"CKirbyVacuumScript" == _strScriptName)
+		return new CKirbyVacuumScript;
 	return nullptr;
 }
 
@@ -789,6 +793,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CMorphoShockWaveWave;
 	case (UINT)SCRIPT_TYPE::KIRBYSWORDTORNADOSCRIPT:
 		return new CKirbySwordTornadoScript;
+	case (UINT)SCRIPT_TYPE::KIRBYVACUUMSCRIPT:
+		return new CKirbyVacuumScript;
 	}
 	return nullptr;
 }
@@ -1055,6 +1061,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CMorphoShockWaveWave";
 	case SCRIPT_TYPE::KIRBYSWORDTORNADOSCRIPT:
 		return L"CKirbySwordTornadoScript";
+	case SCRIPT_TYPE::KIRBYVACUUMSCRIPT:
+		return L"CKirbyVacuumScript";
 	}
 	return nullptr;
 }

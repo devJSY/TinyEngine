@@ -218,6 +218,8 @@ call CodeGen.exe</Command>
     <ClInclude Include="CKirbySmoke.h" />
     <ClInclude Include="CKirbySoundListener.h" />
     <ClInclude Include="CKirbyStuffedDamage.h" />
+    <ClInclude Include="CKirbySwallowEnd.h" />
+    <ClInclude Include="CKirbySwallowStart.h" />
     <ClInclude Include="CKirbySwordTornadoScript.h" />
     <ClInclude Include="CKirbyVacuum1.h" />
     <ClInclude Include="CKirbyVacuum1End.h" />
@@ -570,6 +572,8 @@ call CodeGen.exe</Command>
     <ClCompile Include="CKirbySmoke.cpp" />
     <ClCompile Include="CKirbySoundListener.cpp" />
     <ClCompile Include="CKirbyStuffedDamage.cpp" />
+    <ClCompile Include="CKirbySwallowEnd.cpp" />
+    <ClCompile Include="CKirbySwallowStart.cpp" />
     <ClCompile Include="CKirbySwordTornadoScript.cpp" />
     <ClCompile Include="CKirbyVacuum1.cpp" />
     <ClCompile Include="CKirbyVacuum1End.cpp" />

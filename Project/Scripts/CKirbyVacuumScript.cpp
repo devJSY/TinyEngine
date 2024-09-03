@@ -63,7 +63,7 @@ void CKirbyVacuumScript::begin()
 {
     m_InsideVacuum = GetOwner()->GetChildObject(L"VacuumInside");
     m_OutsdieVacuum = GetOwner()->GetChildObject(L"VacuumOutside");
-    m_InitColor = Vec4(1.f, 1.f, 1.f, 1.f);
+    m_InitColor = Vec4(255.f, 255.f, 255.f, 255.f);
 
     if (m_InsideVacuum == nullptr || m_OutsdieVacuum == nullptr)
     {
