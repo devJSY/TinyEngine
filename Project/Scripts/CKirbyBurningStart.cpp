@@ -65,13 +65,10 @@ void CKirbyBurningStart::tick()
 
 void CKirbyBurningStart::Enter()
 {
-    Ptr<CPrefab> FireSmokeSpawner = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\FireSmokeSpawner.pref");
-
-    if (FireSmokeSpawner.Get())
+    CGameObject* Spawner = PLAYER->GetChildObject(L"FireSmokeSpawner");
+    if (Spawner != nullptr)
     {
-        CGameObject* Spanwer = FireSmokeSpawner->Instantiate();
-        Spanwer->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
-        GamePlayStatic::AddChildObject(PLAYER, Spanwer);
+        Spawner->SetActive(true);
     }
 
     PLAYERFSM->SetBurningParticleSpawn(true);
@@ -126,7 +123,7 @@ void CKirbyBurningStart::Exit()
     CGameObject* Spawner = PLAYER->GetChildObject(L"FireSmokeSpawner");
     if (Spawner != nullptr)
     {
-        GamePlayStatic::DestroyGameObject(Spawner);
+        Spawner->SetActive(false);
     }
 
     PLAYERFSM->SetBurningParticleSpawn(false);
