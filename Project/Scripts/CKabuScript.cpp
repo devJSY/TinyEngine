@@ -5,6 +5,7 @@
 
 CKabuScript::CKabuScript()
     : CMonsterUnitScript(KABUSCRIPT)
+    , m_pSmokeSpawner(nullptr)
     , m_eState(KabuState::Patrol)
     , m_vCenterPos{}
     , m_vDamageDir{}
@@ -28,6 +29,7 @@ CKabuScript::CKabuScript()
 
 CKabuScript::CKabuScript(const CKabuScript& Origin)
     : CMonsterUnitScript(Origin)
+    , m_pSmokeSpawner(nullptr)
     , m_eState(KabuState::Patrol)
     , m_vCenterPos{}
     , m_vDamageDir{}
@@ -69,6 +71,8 @@ void CKabuScript::begin()
     {
         m_vPrevDir = m_vDir = Vec3(1.f, 0.f, 0.f);
     }
+        
+    m_pSmokeSpawner = GetOwner()->GetChildObject(L"KabuSmokeSpawner");
 }
 
 void CKabuScript::tick()
@@ -199,6 +203,8 @@ void CKabuScript::CheckDamage()
 
 void CKabuScript::EnterState(KabuState _state)
 {
+    SmokeSpawnOn();
+
     switch (_state)
     {
     case KabuState::Patrol: {
@@ -212,14 +218,17 @@ void CKabuScript::EnterState(KabuState _state)
     }
     break;
     case KabuState::Fall: {
+        SmokeSpawnOff();
         Animator()->Play(ANIMPREFIX("Fall"), true, false, 1.5f);
     }
     break;
     case KabuState::Landing: {
+        SmokeSpawnOff();
         Animator()->Play(ANIMPREFIX("Landing"), false, false, 1.5f);
     }
     break;
     case KabuState::Damage: {
+        SmokeSpawnOff();
         SetSparkle(true);
 
         Vec3 vFollowDir = (PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos()).Normalize();
@@ -248,10 +257,13 @@ void CKabuScript::EnterState(KabuState _state)
     }
     break;
     case KabuState::Eaten: {
+        SmokeSpawnOff();
         Animator()->Play(ANIMPREFIX("Damage"), true, false, 1.5f);
     }
     break;
     case KabuState::Death: {
+        SmokeSpawnOff();
+        SpawnDeadSmokeEffect();
         Animator()->Play(ANIMPREFIX("Damage"), false, false, 1.5f);
     }
     break;
@@ -513,6 +525,16 @@ void CKabuScript::Death()
         SpawnDeadEffect(1);
         GamePlayStatic::DestroyGameObject(GetOwner());
     }
+}
+void CKabuScript::SmokeSpawnOn()
+{
+    if (nullptr != m_pSmokeSpawner)
+        m_pSmokeSpawner->SetActive(true);
+}
+void CKabuScript::SmokeSpawnOff()
+{
+    if (nullptr != m_pSmokeSpawner)
+        m_pSmokeSpawner->SetActive(false);
 }
 #pragma endregion
 

@@ -338,6 +338,7 @@ void CNormalEnemyScript::EnterState(NormalEnemyState _state)
     }
     break;
     case NormalEnemyState::Death: {
+        SpawnDeadSmokeEffect();
     }
     break;
     case NormalEnemyState::End:

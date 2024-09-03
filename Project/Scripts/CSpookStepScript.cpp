@@ -150,6 +150,7 @@ void CSpookStepScript::EnterState()
     }
     break;
     case SpookStepState::Disappear: {
+        SpawnDeadSmokeEffect();
         Animator()->Play(ANIMPREFIX("Disappear"), false);
     }
     break;

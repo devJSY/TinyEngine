@@ -257,6 +257,7 @@ void CTackleEnemyScript::EnterState(TackleEnemyState _state)
     }
     break;
     case TackleEnemyState::Death:
+        SpawnDeadSmokeEffect();
         DashEffectOff();
         break;
     default:

@@ -32,7 +32,6 @@ public:
     bool GetResistState() const { return m_bResistState; }
     void SetResistState(const bool _bResist) { m_bResistState = _bResist; }
 
-    void SpawnDeadEffect(int _iSize);
 
     void BodyAttackSound();
     void FindSound();
@@ -52,6 +51,8 @@ protected:
 
     void SparkleEffect();
     void SparkleReset();
+    void SpawnDeadEffect(int _iSize);
+    void SpawnDeadSmokeEffect();
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

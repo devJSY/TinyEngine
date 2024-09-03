@@ -153,6 +153,7 @@ void CNoddyScript::EnterState()
         float fForce = 0.f;
         if (GetCurInfo().HP <= 0.1f)
         {
+            SpawnDeadSmokeEffect();
             fForce = 8.f;
             Impulse.y = 1.5f;
         }

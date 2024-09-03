@@ -293,6 +293,8 @@ void CHotHeadScript::EnterState(HotHeadState _state)
     }
     break;
     case HotHeadState::Death: {
+        SpawnDeadSmokeEffect();
+
         GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
             TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\HotHead\\FaceTexturePattern.03.png",
                                                         L"fbx\\Characters\\Monster\\HotHead\\FaceTexturePattern.03.png"));

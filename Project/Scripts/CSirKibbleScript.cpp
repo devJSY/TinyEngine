@@ -266,6 +266,7 @@ void CSirKibbleScript::EnterState(SirKibbleState _state)
     }
     break;
     case SirKibbleState::Death: {
+        SpawnDeadSmokeEffect();
         Animator()->Play(ANIMPREFIX("Damage"), false);
     }
     break;
