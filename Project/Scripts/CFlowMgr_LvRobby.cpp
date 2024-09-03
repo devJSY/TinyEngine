@@ -331,11 +331,11 @@ void CFlowMgr_LvRobby::EnterDragState()
     switch (m_eDragState)
     {
     case DragState::MovePlus: {
-        GamePlayStatic::Play2DSound(L"sound\\wav\\UiMenu\\0003.wav", 1, 0.3f);
+        GamePlayStatic::Play2DSound(L"sound\\wav\\UiMenu\\0003.wav", 1, 0.2f);
     }
     break;
     case DragState::MoveMinus: {
-        GamePlayStatic::Play2DSound(L"sound\\wav\\UiMenu\\0003.wav", 1, 0.3f);
+        GamePlayStatic::Play2DSound(L"sound\\wav\\UiMenu\\0003.wav", 1, 0.2f);
     }
     break;
     case DragState::Stop:
