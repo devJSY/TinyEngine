@@ -66,6 +66,17 @@ void CKirbyBurning::tick()
 
 void CKirbyBurning::Enter()
 {
+    Ptr<CPrefab> FireSmokeSpawner = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\FireSmokeSpawner.pref");
+
+    if (FireSmokeSpawner.Get())
+    {
+        CGameObject* Spanwer = FireSmokeSpawner->Instantiate();
+        Spanwer->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
+        GamePlayStatic::AddChildObject(PLAYER, Spanwer);
+    }
+
+    PLAYERFSM->SetBurningParticleSpawn(true);
+
     CPlayerMgr::SetPlayerFace(FaceType::UpTail);
 
 
@@ -104,6 +115,14 @@ void CKirbyBurning::Enter()
 
 void CKirbyBurning::Exit()
 {
+    CGameObject* Spawner = PLAYER->GetChildObject(L"FireSmokeSpawner");
+    if (Spawner != nullptr)
+    {
+        GamePlayStatic::DestroyGameObject(Spawner);
+    }
+
+    PLAYERFSM->SetBurningParticleSpawn(false);
+
     CPlayerMgr::SetPlayerFace(FaceType::Normal);
 
     CGameObject* Wing = PLAYER->GetChildObject(L"KirbyDragon");

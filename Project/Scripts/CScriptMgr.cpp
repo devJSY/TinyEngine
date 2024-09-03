@@ -131,6 +131,7 @@
 #include "CMorphoShockWaveWave.h"
 #include "CKirbySwordTornadoScript.h"
 #include "CKirbyVacuumScript.h"
+#include "CAutoDelete.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -264,6 +265,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CMorphoShockWaveWave");
 	_vec.push_back(L"CKirbySwordTornadoScript");
 	_vec.push_back(L"CKirbyVacuumScript");
+	_vec.push_back(L"CAutoDelete");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -528,6 +530,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CKirbySwordTornadoScript;
 	if (L"CKirbyVacuumScript" == _strScriptName)
 		return new CKirbyVacuumScript;
+	if (L"CAutoDelete" == _strScriptName)
+		return new CAutoDelete;
 	return nullptr;
 }
 
@@ -795,6 +799,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CKirbySwordTornadoScript;
 	case (UINT)SCRIPT_TYPE::KIRBYVACUUMSCRIPT:
 		return new CKirbyVacuumScript;
+	case (UINT)SCRIPT_TYPE::AUTODELETE:
+		return new CAutoDelete;
 	}
 	return nullptr;
 }
@@ -1063,6 +1069,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CKirbySwordTornadoScript";
 	case SCRIPT_TYPE::KIRBYVACUUMSCRIPT:
 		return L"CKirbyVacuumScript";
+	case SCRIPT_TYPE::AUTODELETE:
+		return L"CAutoDelete";
 	}
 	return nullptr;
 }

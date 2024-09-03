@@ -105,6 +105,11 @@ private:
     // CameraSetupSave
     UINT m_LastCameraSetup;
 
+    // Burning Particle Spawn
+    bool m_bBurningParticle;
+    float m_BurningParticleAcc;
+    float m_BurningParticleCoolTime;
+
 public:
     void begin() override;
     void tick() override;
@@ -160,6 +165,12 @@ public:
     void SetUnstuffReverse(bool _Unstuffed) { m_bUnstuffReverse = _Unstuffed; }
     void SetMtrlShader(Ptr<CGraphicsShader> _Shader);
     void SaveLastCameraSetup(UINT _Setup) { m_LastCameraSetup = _Setup; }
+    void SetBurningParticleSpawn(bool _b) { m_bBurningParticle = _b; }
+    void ResetBurningParticleSpawn()
+    {
+        m_BurningParticleAcc = 0.f;
+        m_BurningParticleCoolTime = 0.1f;
+    }
     void ChangeNextAbility();
 
     virtual CKirbyUnitScript* GetUnit() override { return (CKirbyUnitScript*)m_Unit; }

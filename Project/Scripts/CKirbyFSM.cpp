@@ -662,6 +662,35 @@ void CKirbyFSM::tick()
         }
     }
 
+    if (m_bBurningParticle)
+    {
+        // Particle Spawn
+        Vec3 Raystart = GetOwner()->Transform()->GetWorldPos();
+
+        Vec3 RayDir = Vec3(0.f, -1.f, 0.f);
+
+        float RayLength = 100.f;
+
+        static vector<wstring> FireParticleCollision{L"World Static"};
+        RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(Raystart, RayDir, RayLength, FireParticleCollision);
+
+        if (Hit.pCollisionObj != nullptr)
+        {
+            m_BurningParticleAcc += DT;
+
+            if (m_BurningParticleAcc > m_BurningParticleCoolTime)
+            {
+                Ptr<CPrefab> ParticlePrefab = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\BurningFireParticle.pref");
+                CGameObject* ParticleObj = ParticlePrefab->Instantiate();
+                ParticleObj->Transform()->SetWorldPos(Hit.Point);
+
+                GamePlayStatic::SpawnGameObject(ParticleObj, ParticleObj->GetLayerIdx());
+
+                m_BurningParticleAcc -= m_BurningParticleCoolTime;
+            }
+        }
+    }
+
     CFSMScript::tick();
 }
 void CKirbyFSM::ChangeAbilityCopy(AbilityCopyType _Type)
@@ -905,6 +934,7 @@ void CKirbyFSM::ClearMtrlShader()
 {
     SetMtrlShader(m_OriginShader);
 }
+
 
 bool CKirbyFSM::IsDrawing() const
 {

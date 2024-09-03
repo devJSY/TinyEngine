@@ -23,6 +23,8 @@ void CKirbyBurningPre::tick()
 
 void CKirbyBurningPre::Enter()
 {
+    PLAYERFSM->ResetBurningParticleSpawn();
+
     GamePlayStatic::Play2DSound(L"sound\\wav\\HeroFireDragon\\Fire_BurningPre.wav", 1, KIRBY_EFFECTSOUND);
 
     CGameObject* Wing = PLAYER->GetChildObject(L"KirbyDragon"); 

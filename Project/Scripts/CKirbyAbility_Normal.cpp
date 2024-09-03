@@ -54,10 +54,17 @@ void CKirbyAbility_Normal::Attack()
             if (nullptr != bulletScript)
             {
                 Vec3 InitDir = PLAYERCTRL->GetInputWorld();
+                if (InitDir.Length() == 0.f)
+                {
+                    InitDir = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+                }
+                else
+                {
+                    PLAYERCTRL->ForceDir({ForceDirType::STATE, InitDir, true});
+                }
+
                 InitDir.y = 0.f;
                 bulletScript->SetInitVelocity(InitDir * 30.f);
-
-                PLAYERCTRL->ForceDir({ForceDirType::STATE, InitDir, true});
             }
         }
     }

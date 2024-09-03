@@ -32,36 +32,49 @@ void CKirbyBurningStart::tick()
         ChangeState(L"BURNING");
     }
 
-    Vec3 Raystart = GetOwner()->Transform()->GetWorldPos();
-    Raystart.y += 20.f;
-
-    Vec3 RayDir = GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT);
-
-    float RayLength = GetOwner()->CharacterController()->GetRadius() * 20.f + 5.f;
-
-    static vector<wstring> FireWallCollision{L"World Static"};
-    RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(Raystart, RayDir, RayLength, FireWallCollision);
-
-    if (Hit.pCollisionObj != nullptr)
     {
-        Vec3 Normal = Hit.Normal;
-        Normal.y = 0.f;
+        Vec3 Raystart = GetOwner()->Transform()->GetWorldPos();
+        Raystart.y += 20.f;
 
-        if (Normal.Length() == 0.f)
-            return;
+        Vec3 RayDir = GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT);
 
-        Normal.Normalize();
+        float RayLength = GetOwner()->CharacterController()->GetRadius() * 20.f + 5.f;
 
-        // 벽과 날아가는 각도가 45도 이하일 경우 WallEnd상태로 이동
-        if (Normal.Dot(-RayDir) >= cosf(XM_PI / 4.f))
+        static vector<wstring> FireWallCollision{L"World Static"};
+        RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(Raystart, RayDir, RayLength, FireWallCollision);
+
+        if (Hit.pCollisionObj != nullptr)
         {
-            ChangeState(L"BURNING_WALL_END");
+            Vec3 Normal = Hit.Normal;
+            Normal.y = 0.f;
+
+            if (Normal.Length() == 0.f)
+                return;
+
+            Normal.Normalize();
+
+            // 벽과 날아가는 각도가 45도 이하일 경우 WallEnd상태로 이동
+            if (Normal.Dot(-RayDir) >= cosf(XM_PI / 4.f))
+            {
+                ChangeState(L"BURNING_WALL_END");
+            }
         }
     }
+
 }
 
 void CKirbyBurningStart::Enter()
 {
+    Ptr<CPrefab> FireSmokeSpawner = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\FireSmokeSpawner.pref");
+
+    if (FireSmokeSpawner.Get())
+    {
+        CGameObject* Spanwer = FireSmokeSpawner->Instantiate();
+        Spanwer->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
+        GamePlayStatic::AddChildObject(PLAYER, Spanwer);
+    }
+
+    PLAYERFSM->SetBurningParticleSpawn(true);
 
     GamePlayStatic::Play2DSound(L"sound\\wav\\HeroFireDragon\\Fire_Burning.wav", 1, KIRBY_EFFECTSOUND);
 
@@ -110,6 +123,14 @@ void CKirbyBurningStart::Enter()
 
 void CKirbyBurningStart::Exit()
 {
+    CGameObject* Spawner = PLAYER->GetChildObject(L"FireSmokeSpawner");
+    if (Spawner != nullptr)
+    {
+        GamePlayStatic::DestroyGameObject(Spawner);
+    }
+
+    PLAYERFSM->SetBurningParticleSpawn(false);
+
     CPlayerMgr::SetPlayerFace(FaceType::Normal);
 
     CGameObject* Wing = PLAYER->GetChildObject(L"KirbyDragon");

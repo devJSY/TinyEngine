@@ -994,6 +994,9 @@
     <ClInclude Include="CKirbySwallowStart.h">
       <Filter>State\KirbyState\ChangeAbility\SwallowStart</Filter>
     </ClInclude>
+    <ClInclude Include="CAutoDelete.h">
+      <Filter>Scripts\Common\AutoDelete</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1997,6 +2000,9 @@
     </ClCompile>
     <ClCompile Include="CKirbySwallowStart.cpp">
       <Filter>State\KirbyState\ChangeAbility\SwallowStart</Filter>
+    </ClCompile>
+    <ClCompile Include="CAutoDelete.cpp">
+      <Filter>Scripts\Common\AutoDelete</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -3139,6 +3145,9 @@
     </Filter>
     <Filter Include="State\KirbyState\ChangeAbility\SwallowEnd">
       <UniqueIdentifier>{4892a87b-8b3e-4363-ae2e-3cc3062fd043}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Common\AutoDelete">
+      <UniqueIdentifier>{d4dcc17f-ce62-4c4e-a9fb-4b02eeaae16f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

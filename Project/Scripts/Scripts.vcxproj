@@ -115,6 +115,7 @@ call CodeGen.exe</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CAttackAreaScript.h" />
+    <ClInclude Include="CAutoDelete.h" />
     <ClInclude Include="CBladeKnightScript.h" />
     <ClInclude Include="CBladeKnightSwordScript.h" />
     <ClInclude Include="CBossDropStarScript.h" />
@@ -469,6 +470,7 @@ call CodeGen.exe</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CAttackAreaScript.cpp" />
+    <ClCompile Include="CAutoDelete.cpp" />
     <ClCompile Include="CBladeKnightScript.cpp" />
     <ClCompile Include="CBladeKnightSwordScript.cpp" />
     <ClCompile Include="CBossDropStarScript.cpp" />
