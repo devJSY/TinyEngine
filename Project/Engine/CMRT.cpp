@@ -18,7 +18,11 @@ CMRT::~CMRT()
 
 void CMRT::Create(Ptr<CTexture>* _pArrTex, Vec4* _ClearColor, UINT _RTCount, Ptr<CTexture> _DSTex)
 {
-    assert(_RTCount <= 8);
+    if (_RTCount <= 0 || _RTCount > 8)
+    {
+        assert(nullptr);
+        return;
+    }
 
     m_RTCount = _RTCount;
 

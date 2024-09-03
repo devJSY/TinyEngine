@@ -56,12 +56,6 @@ void CSolarChargeScript::tick()
     }
     break;
     case SolarChargeState::ChargeOn: {
-        GetOwner()->MeshRender()->GetMaterial(1)->SetEmission(Vec4(0.f, 1.f, 0.f, 1.f));
-        GetOwner()->MeshRender()->GetMaterial(6)->SetEmission(Vec4(0.f, 1.f, 0.f, 1.f));
-        GetOwner()->MeshRender()->GetMaterial(7)->SetEmission(Vec4(0.f, 1.f, 0.f, 1.f));
-        GetOwner()->MeshRender()->GetMaterial(8)->SetEmission(Vec4(0.f, 1.f, 0.f, 1.f));
-        GetOwner()->MeshRender()->GetMaterial(12)->SetEmission(Vec4(0.f, 1.f, 0.f, 1.f));
-        GetOwner()->MeshRender()->GetMaterial(13)->SetEmission(Vec4(0.f, 1.f, 0.f, 1.f));
         ChargeOn();
     }
     break;
@@ -70,12 +64,6 @@ void CSolarChargeScript::tick()
     }
     break;
     case SolarChargeState::ChargedStart: {
-        GetOwner()->MeshRender()->GetMaterial(1)->SetEmission(Vec4(1.f, 1.f, 0.f, 1.f));
-        GetOwner()->MeshRender()->GetMaterial(6)->SetEmission(Vec4(1.f, 1.f, 0.f, 1.f));
-        GetOwner()->MeshRender()->GetMaterial(7)->SetEmission(Vec4(1.f, 1.f, 0.f, 1.f));
-        GetOwner()->MeshRender()->GetMaterial(8)->SetEmission(Vec4(1.f, 1.f, 0.f, 1.f));
-        GetOwner()->MeshRender()->GetMaterial(12)->SetEmission(Vec4(1.f, 1.f, 0.f, 1.f));
-        GetOwner()->MeshRender()->GetMaterial(13)->SetEmission(Vec4(1.f, 1.f, 0.f, 1.f));
         ChargedStart();
     }
     break;
@@ -86,12 +74,6 @@ void CSolarChargeScript::tick()
     }
     break;
     case SolarChargeState::OffWaitStart: {
-        GetOwner()->MeshRender()->GetMaterial(1)->SetEmission(Vec4(1.f, 0.f, 0.f, 1.f));
-        GetOwner()->MeshRender()->GetMaterial(6)->SetEmission(Vec4(1.f, 0.f, 0.f, 1.f));
-        GetOwner()->MeshRender()->GetMaterial(7)->SetEmission(Vec4(1.f, 0.f, 0.f, 1.f));
-        GetOwner()->MeshRender()->GetMaterial(8)->SetEmission(Vec4(1.f, 0.f, 0.f, 1.f));
-        GetOwner()->MeshRender()->GetMaterial(12)->SetEmission(Vec4(1.f, 0.f, 0.f, 1.f));
-        GetOwner()->MeshRender()->GetMaterial(13)->SetEmission(Vec4(1.f, 0.f, 0.f, 1.f));
         OffWaitStart();
     }
     break;
@@ -111,6 +93,7 @@ void CSolarChargeScript::ChangeState(SolarChargeState _state)
 
 void CSolarChargeScript::EnterState()
 {
+    Vec3 vWorldPos = Transform()->GetWorldPos();
     switch (m_eState)
     {
     case SolarChargeState::OffWait: {
@@ -118,7 +101,13 @@ void CSolarChargeScript::EnterState()
     }
     break;
     case SolarChargeState::ChargeOn: {
-        // GamePlayStatic::Play2DSound(L"sound\\wav\\GimmickSolarPanel\\0000.wav", 1, 0.5f);
+        GetOwner()->MeshRender()->GetMaterial(1)->SetEmission(Vec4(0.f, 1.f, 0.f, 1.f));
+        GetOwner()->MeshRender()->GetMaterial(6)->SetEmission(Vec4(0.f, 1.f, 0.f, 1.f));
+        GetOwner()->MeshRender()->GetMaterial(7)->SetEmission(Vec4(0.f, 1.f, 0.f, 1.f));
+        GetOwner()->MeshRender()->GetMaterial(8)->SetEmission(Vec4(0.f, 1.f, 0.f, 1.f));
+        GetOwner()->MeshRender()->GetMaterial(12)->SetEmission(Vec4(0.f, 1.f, 0.f, 1.f));
+        GetOwner()->MeshRender()->GetMaterial(13)->SetEmission(Vec4(0.f, 1.f, 0.f, 1.f));
+        GamePlayStatic::Play2DSound(L"sound\\wav\\GimmickSolarPanel\\0000.wav", 1, 0.5f);
         Animator()->Play(ANIMPREFIX("Charge"), false);
     }
     break;
@@ -127,18 +116,31 @@ void CSolarChargeScript::EnterState()
     }
     break;
     case SolarChargeState::ChargedStart: {
-        //GamePlayStatic::Play2DSound(L"sound\\wav\\GimmickSolarPanel\\0001.wav", 1, 0.5f);
+        GetOwner()->MeshRender()->GetMaterial(1)->SetEmission(Vec4(1.f, 1.f, 0.f, 1.f));
+        GetOwner()->MeshRender()->GetMaterial(6)->SetEmission(Vec4(1.f, 1.f, 0.f, 1.f));
+        GetOwner()->MeshRender()->GetMaterial(7)->SetEmission(Vec4(1.f, 1.f, 0.f, 1.f));
+        GetOwner()->MeshRender()->GetMaterial(8)->SetEmission(Vec4(1.f, 1.f, 0.f, 1.f));
+        GetOwner()->MeshRender()->GetMaterial(12)->SetEmission(Vec4(1.f, 1.f, 0.f, 1.f));
+        GetOwner()->MeshRender()->GetMaterial(13)->SetEmission(Vec4(1.f, 1.f, 0.f, 1.f));
+
+        GamePlayStatic::Play2DSound(L"sound\\wav\\GimmickSolarPanel\\0001.wav", 1, 0.5f);
         Animator()->Play(ANIMPREFIX("ChargedStart"), false);
     }
     break;
     case SolarChargeState::ChargedWait:
         break;
     case SolarChargeState::Decreases: {
-        // GamePlayStatic::Play2DSound(L"sound\\wav\\GimmickSolarPanel\\0002.wav", 1, 0.5f);
+        GamePlayStatic::Play2DSound(L"sound\\wav\\GimmickSolarPanel\\0002.wav", 1, 0.5f);
         Animator()->Play(ANIMPREFIX("Decreases"), false);
     }
     break;
     case SolarChargeState::OffWaitStart: {
+        GetOwner()->MeshRender()->GetMaterial(1)->SetEmission(Vec4(1.f, 0.f, 0.f, 1.f));
+        GetOwner()->MeshRender()->GetMaterial(6)->SetEmission(Vec4(1.f, 0.f, 0.f, 1.f));
+        GetOwner()->MeshRender()->GetMaterial(7)->SetEmission(Vec4(1.f, 0.f, 0.f, 1.f));
+        GetOwner()->MeshRender()->GetMaterial(8)->SetEmission(Vec4(1.f, 0.f, 0.f, 1.f));
+        GetOwner()->MeshRender()->GetMaterial(12)->SetEmission(Vec4(1.f, 0.f, 0.f, 1.f));
+        GetOwner()->MeshRender()->GetMaterial(13)->SetEmission(Vec4(1.f, 0.f, 0.f, 1.f));
         Animator()->Play(ANIMPREFIX("OffWaitStart"), false);
     }
     break;
@@ -156,6 +158,7 @@ void CSolarChargeScript::ExitState()
     case SolarChargeState::OffWait:
         break;
     case SolarChargeState::ChargeOn: {
+        CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\wav\\GimmickSolarPanel\\0000.wav")->Stop();
         m_fTermTime = 0.f;
         m_bOnOffFlag = false;
     }

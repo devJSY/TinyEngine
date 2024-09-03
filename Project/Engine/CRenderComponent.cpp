@@ -38,13 +38,14 @@ CRenderComponent::CRenderComponent(const CRenderComponent& origin)
         // 원본 오브젝트가 공유재질을 참조하고 있고, 현재 사용재질은 공유재질이 아닌경우
         if (origin.m_vecMtrls[i].pSharedMtrl != origin.m_vecMtrls[i].pCurMtrl)
         {
-            assert(origin.m_vecMtrls[i].pDynamicMtrl.Get());
+            if (nullptr != origin.m_vecMtrls[i].pDynamicMtrl.Get())
+            {
+                // 복사 렌더 컴포넌트도 별도의 동적재질을 생성한다.
+                GetDynamicMaterial(i);
 
-            // 복사 렌더 컴포넌트도 별도의 동적재질을 생성한다.
-            GetDynamicMaterial(i);
-
-            // 원본 렌더컴포넌트의 동적재질 값을 현재 생성한 동적재질로 복사한다.
-            m_vecMtrls[i].pDynamicMtrl = origin.m_vecMtrls[i].pDynamicMtrl->Clone();
+                // 원본 렌더컴포넌트의 동적재질 값을 현재 생성한 동적재질로 복사한다.
+                m_vecMtrls[i].pDynamicMtrl = origin.m_vecMtrls[i].pDynamicMtrl->Clone();
+            }
         }
         else
         {

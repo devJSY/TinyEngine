@@ -32,12 +32,14 @@ public:
     bool GetResistState() const { return m_bResistState; }
     void SetResistState(const bool _bResist) { m_bResistState = _bResist; }
 
-    void SpawnDeadEffect(int _iSize);
+
+    void BodyAttackSound();
+    void FindSound();
 
 public:
     virtual void begin() override;
     virtual void tick() override;
-
+    
 protected:
     void SetTarget(CGameObject* _pObj) { m_pTargetObj = _pObj; }
     CGameObject* GetTarget() const { return m_pTargetObj; }
@@ -49,6 +51,8 @@ protected:
 
     void SparkleEffect();
     void SparkleReset();
+    void SpawnDeadEffect(int _iSize);
+    void SpawnDeadSmokeEffect();
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

@@ -297,7 +297,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CObstacleTriggerScript.h" />
     <ClInclude Include="CProgressCamTrigger.h" />
     <ClInclude Include="CPushOutScript.h" />
-    <ClInclude Include="CShcokWaveScript.h" />
+    <ClInclude Include="CShockWaveScript.h" />
     <ClInclude Include="CSirKibbleScript.h" />
     <ClInclude Include="CButtonManagerScript.h" />
     <ClInclude Include="CButtonScript.h" />
@@ -427,6 +427,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CSurpriseBoardScript.h" />
     <ClInclude Include="CTackleEnemyScript.h" />
     <ClInclude Include="CTwoTargetCamTrigger.h" />
+    <ClInclude Include="CUIAbsorbUIScript.h" />
     <ClInclude Include="CUIAnimManagerScript.h" />
     <ClInclude Include="CUIAnimScript.h" />
     <ClInclude Include="CUIBossHPScript.h" />
@@ -434,6 +435,8 @@ call CodeGen.exe</Command>
     <ClInclude Include="CUIChangeAbilityStarEffect.h" />
     <ClInclude Include="CUIChangeAbilityStarSpawnEffectScript.h" />
     <ClInclude Include="CUIChangeAbilityStopStarEffect.h" />
+    <ClInclude Include="CUICommonHitEffectScript.h" />
+    <ClInclude Include="CUIContinueUIScript.h" />
     <ClInclude Include="CUIDashEffectScript.h" />
     <ClInclude Include="CUIFlowMgr.h" />
     <ClInclude Include="CUIGlowMoveScript.h" />
@@ -441,6 +444,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CUIManagerScript.h" />
     <ClInclude Include="CUIMtrlScript.h" />
     <ClInclude Include="CUIRotateScript.h" />
+    <ClInclude Include="CUISlashEffectScript.h" />
     <ClInclude Include="CUIStartSceneFlowScript.h" />
     <ClInclude Include="CUITexManagerScript.h" />
     <ClInclude Include="CUITexScript.h" />
@@ -648,7 +652,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CObstacleTriggerScript.cpp" />
     <ClCompile Include="CProgressCamTrigger.cpp" />
     <ClCompile Include="CPushOutScript.cpp" />
-    <ClCompile Include="CShcokWaveScript.cpp" />
+    <ClCompile Include="CShockWaveScript.cpp" />
     <ClCompile Include="CSirKibbleScript.cpp" />
     <ClCompile Include="CButtonManagerScript.cpp" />
     <ClCompile Include="CButtonScript.cpp" />
@@ -778,6 +782,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CSurpriseBoardScript.cpp" />
     <ClCompile Include="CTackleEnemyScript.cpp" />
     <ClCompile Include="CTwoTargetCamTrigger.cpp" />
+    <ClCompile Include="CUIAbsorbUIScript.cpp" />
     <ClCompile Include="CUIAnimManagerScript.cpp" />
     <ClCompile Include="CUIAnimScript.cpp" />
     <ClCompile Include="CUIBossHPScript.cpp" />
@@ -785,6 +790,8 @@ call CodeGen.exe</Command>
     <ClCompile Include="CUIChangeAbilityStarEffect.cpp" />
     <ClCompile Include="CUIChangeAbilityStarSpawnEffectScript.cpp" />
     <ClCompile Include="CUIChangeAbilityStopStarEffect.cpp" />
+    <ClCompile Include="CUICommonHitEffectScript.cpp" />
+    <ClCompile Include="CUIContinueUIScript.cpp" />
     <ClCompile Include="CUIDashEffectScript.cpp" />
     <ClCompile Include="CUIFlowMgr.cpp" />
     <ClCompile Include="CUIGlowMoveScript.cpp" />
@@ -792,6 +799,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CUIManagerScript.cpp" />
     <ClCompile Include="CUIMtrlScript.cpp" />
     <ClCompile Include="CUIRotateScript.cpp" />
+    <ClCompile Include="CUISlashEffectScript.cpp" />
     <ClCompile Include="CUIStartSceneFlowScript.cpp" />
     <ClCompile Include="CUITexManagerScript.cpp" />
     <ClCompile Include="CUITexScript.cpp" />

@@ -4,72 +4,59 @@
 #include "UnrealPBRCommon.hlsli"
 
 #define Albedo0Tex g_tex_0
-#define Albedo1Tex g_tex_1
-#define Albedo2Tex g_tex_2
-#define Albedo3Tex g_tex_3
-#define MRATex g_tex_4 // Metallic, Roughness, Ambient Occlusion
-#define NormalTex g_tex_5
-#define EmissiveTex g_tex_7
-
-#define MtrlAlbedo g_vAlbedo
-#define MtrlMetallic g_vMetallic
-#define MtrlRoughness g_vRoughness
-#define MtrlEmission g_vEmission
+#define GradationTex g_tex_1
 
 #define InvertNormalMapY g_int_0
 
+#define DashStart g_int_1
+
 #define Progress g_float_0
+#define ThreshHold g_float_1
+#define BackGroundAlpha g_float_2
+#define PowValue g_float_3
+
+#define UVScale1 g_vec2_0
+#define UVScale2 g_vec2_1
+#define BGTextureOffset g_vec2_2
+#define DashAlphaRatio g_vec2_3
+
 #define DashColor g_vec4_0
 
-PS_OUT_DEFERRED main(PS_IN input)
+float4 main(PS_IN input) : SV_Target
 {
-    PS_OUT_DEFERRED output = (PS_OUT_DEFERRED) 0.f;
- 
-    input.vUV0 = float2(input.vUV0.x, input.vUV0.y - Progress);
+    float4 MaskingColor = Albedo0Tex.Sample(g_LinearWrapSampler, float2(input.vUV0.x * UVScale1.x, (input.vUV0.y - Progress) * UVScale1.y));
+    float4 MaskingColor2 = Albedo0Tex.Sample(g_LinearWrapSampler, float2(input.vUV0.x * UVScale2.x + BGTextureOffset.x + (Progress / 100.f), (input.vUV0.y - Progress) * UVScale2.y) + BGTextureOffset.y);
     
-    float4 albedo0 = g_btex_0 ? Albedo0Tex.Sample(g_LinearWrapSampler, input.vUV0) : (float4) 0.f;
+    if (MaskingColor.a <= 0.1f && MaskingColor2.a <= 0.1f)
+        discard;
+   
+    float4 FinalColor = (float4) 0.f;
     
-    albedo0.rgb *= albedo0.a;
-
-    if (albedo0.a <= 0.1f)
+    // Masking Color1
+    float Alpha = DashStart == 1 ? lerp(MaskingColor.r, 1.f, MaskingColor.r) * DashAlphaRatio.y : 0.0;
+    float3 Color = DashColor.rgb * Alpha;
+    
+    float4 output = float4(Color, Alpha);
+    FinalColor = output;
+    
+    // Masking Color2
+    float Alpha2 = lerp(MaskingColor2.r, 1.f, MaskingColor2.r);
+    float3 Color2 = DashColor.rgb * Alpha2;
+    
+    if (Alpha <= 0.01f && Alpha2 <= 0.1f)
         discard;
     
-    float3 albedo = albedo0.rgb;
-    
-    float alpha = albedo.r;
-    
-    float Ratio = albedo0.r * 0.7 + 0.3;
-    
-    albedo = DashColor.rgb * Ratio;
-    
-    if (0.f >= length(albedo))
-    {
-        albedo = MtrlAlbedo.rgb;
-    }
-    
-    float metallic = g_btex_4 ? MRATex.Sample(g_LinearWrapSampler, input.vUV0).r
-                                    : MtrlMetallic;
-    float roughness = g_btex_4 ? MRATex.Sample(g_LinearWrapSampler, input.vUV0).g 
-                                      : MtrlRoughness;
-    float ao = g_btex_4 ? MRATex.Sample(g_LinearWrapSampler, input.vUV0).b : 1.f;
-    if (ao >= 1.f)
-    {
-        ao = SSAOTex.Sample(g_LinearWrapSampler, input.vUV0).r;
-    }
-    float3 emission = g_btex_7 ? EmissiveTex.Sample(g_LinearWrapSampler, input.vUV0).rgb
-                                     : MtrlEmission.rgb;
+    float4 output2 = float4(Color2, BackGroundAlpha * DashAlphaRatio.x);
+   
+    float4 GradationColor = GradationTex.Sample(g_LinearClampSampler, input.vUV0);
 
-    output.vColor = float4(albedo, alpha);
-    output.vPosition = float4(input.vPosWorld, 1.f);
-    output.vNormal = float4(g_btex_5 ? NormalMapping(input, NormalTex, input.vUV0, g_LinearWrapSampler, InvertNormalMapY) : input.vNormalWorld, 1.f);
-    output.vTangent = float4(input.vTangentWorld, 1.f);
-    output.vBitangent = float4(input.vBitangentWorld, 1.f);
-    output.vEmissive = float4(emission, 0.f);
-    output.vMRA = float4(metallic, roughness, ao, alpha);
-
-    output.vMotionVector.xy = input.vMotionVector.xy; // Vector
-    output.vMotionVector.z = 1.f;
-    output.vMotionVector.w = input.vMotionVector.z / input.vMotionVector.w; // Depth
+    FinalColor = output + output2;
     
-    return output;
+    FinalColor.a = clamp(FinalColor.a, 0.f, 1.f);
+    
+    FinalColor.a *= GradationColor.r;
+    
+    FinalColor.a = pow(abs(FinalColor.a), PowValue);
+    
+    return FinalColor;
 }

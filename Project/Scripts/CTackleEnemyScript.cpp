@@ -2,6 +2,7 @@
 #include "CTackleEnemyScript.h"
 
 #include "CPlayerMgr.h"
+#include "CUIDashEffectScript.h"
 
 CTackleEnemyScript::CTackleEnemyScript()
     : CMonsterUnitScript(TACKLEENEMYSCRIPT)
@@ -52,7 +53,7 @@ void CTackleEnemyScript::begin()
     ChangeState(TackleEnemyState::Idle);
 
     SetInfo(UnitInfo{67.f, 67.f, 70.f, 8.f, 1.f, 5.f});
-    m_fMaxSpeed = m_fSpeed = 16.f;
+    m_fMaxSpeed = m_fSpeed = 21.5f;
     m_fRushLerp = 0.8f;
     m_fRushSpeedLerp = 0.2f;
     m_fThreshHoldRushLerp = 0.1f;
@@ -128,6 +129,7 @@ void CTackleEnemyScript::OnTriggerEnter(CCollider* _OtherCollider)
     if (Layer == LAYER_PLAYER_TRIGGER && L"Body Collider" == pObj->GetName())
     {
         pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo);
+        BodyAttackSound();
     }
 }
 
@@ -154,10 +156,12 @@ void CTackleEnemyScript::EnterState(TackleEnemyState _state)
     }
     break;
     case TackleEnemyState::Find: {
+        FindSound();
         Animator()->Play(ANIMPREFIX("Find"), false, false, 1.5f);
     }
     break;
     case TackleEnemyState::AttackPrev: {
+        DashEffectOn();
         GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
             TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\TackleEnemy\\TackleEnemyEye.01.png",
                                                         L"fbx\\Characters\\Monster\\TackleEnemy\\TackleEnemyEye.01.png"));
@@ -170,11 +174,13 @@ void CTackleEnemyScript::EnterState(TackleEnemyState _state)
     }
     break;
     case TackleEnemyState::AttackAfter: {
+        DashEffectOff();
         Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
         Animator()->Play(ANIMPREFIX("Brake"), false, false, 1.5f);
     }
     break;
     case TackleEnemyState::AttackAfter2: {
+        DashEffectOff();
         Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
         Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
         Animator()->Play(ANIMPREFIX("Brake"), false);
@@ -189,7 +195,7 @@ void CTackleEnemyScript::EnterState(TackleEnemyState _state)
     }
     break;
     case TackleEnemyState::Landing: {
-
+        DashEffectOff();
         GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
             TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\TackleEnemy\\TackleEnemyEye.00.png",
                                                         L"fbx\\Characters\\Monster\\TackleEnemy\\TackleEnemyEye.00.png"));
@@ -198,7 +204,7 @@ void CTackleEnemyScript::EnterState(TackleEnemyState _state)
     }
     break;
     case TackleEnemyState::Wait: {
-
+        DashEffectOff();
         GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
             TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\TackleEnemy\\TackleEnemyEye.00.png",
                                                         L"fbx\\Characters\\Monster\\TackleEnemy\\TackleEnemyEye.00.png"));
@@ -206,7 +212,7 @@ void CTackleEnemyScript::EnterState(TackleEnemyState _state)
     }
     break;
     case TackleEnemyState::Damage: {
-
+        DashEffectOff();
         GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
             TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\TackleEnemy\\TackleEnemyEye.02.png",
                                                         L"fbx\\Characters\\Monster\\TackleEnemy\\TackleEnemyEye.02.png"));
@@ -243,7 +249,7 @@ void CTackleEnemyScript::EnterState(TackleEnemyState _state)
     }
     break;
     case TackleEnemyState::Eaten: {
-
+        DashEffectOff();
         GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
             TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\TackleEnemy\\TackleEnemyEye.02.png",
                                                         L"fbx\\Characters\\Monster\\TackleEnemy\\TackleEnemyEye.02.png"));
@@ -251,6 +257,8 @@ void CTackleEnemyScript::EnterState(TackleEnemyState _state)
     }
     break;
     case TackleEnemyState::Death:
+        SpawnDeadSmokeEffect();
+        DashEffectOff();
         break;
     default:
         break;
@@ -399,6 +407,32 @@ void CTackleEnemyScript::ApplyDir(Vec3 _vFront, bool _flag)
     Transform()->SetWorldRotation(_vTrackQuat);
 }
 
+void CTackleEnemyScript::DashEffectOn()
+{
+    m_pDashEffect = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Effect_DashEffect.pref", L"prefab\\Effect_DashEffect.pref")->Instantiate();
+    m_pDashEffect->Transform()->SetAbsolute(false);
+    m_pDashEffect->Transform()->SetLocalScale(Vec3(2.2f, 2.2f, 2.2f));
+    m_pDashEffect->Transform()->SetLocalPos(Vec3(0.f, 2.f, 1.f));
+    m_pDashEffect->Transform()->SetLocalRotation(Vec3(XM_PIDIV2, 0.f, 0.f));
+    m_pDashEffect->GetScript<CUIDashEffectScript>()->SetDashTime(1.f);
+    m_pDashEffect->GetScript<CUIDashEffectScript>()->SetRatioSpeed(0.01f);
+    m_pDashEffect->GetScript<CUIDashEffectScript>()->SetTextureSpeed(4.5f);
+    m_pDashEffect->GetScript<CUIDashEffectScript>()->SetBackGroundAlpha(0.15f);
+
+    GamePlayStatic::AddChildObject(GetOwner(), m_pDashEffect);
+}
+
+void CTackleEnemyScript::DashEffectOff()
+{
+    if (nullptr != m_pDashEffect)
+    {
+        if (m_pDashEffect->GetScript<CUIDashEffectScript>())
+        {
+            m_pDashEffect->GetScript<CUIDashEffectScript>()->ChangeState(DashEffectState::Stop);
+        }
+    }
+}
+
 Vec3 CTackleEnemyScript::TrackDir(Vec3 _vPos)
 {
     return (PLAYER->GetComponent<CTransform>()->GetLocalPos() - _vPos).Normalize();
@@ -512,12 +546,14 @@ void CTackleEnemyScript::Landing()
 #pragma region DAMAGE
 void CTackleEnemyScript::Damage()
 {
-    if (GetCurInfo().HP <= 0.f)
+    if (GetCurInfo().HP <= 0.1f)
     {
         ChangeState(TackleEnemyState::Death);
     }
-
-    Animator()->IsFinish() ? ChangeState(TackleEnemyState::Fall) : void();
+    else
+    {
+        Animator()->IsFinish() ? ChangeState(TackleEnemyState::Fall) : void();
+    }
 }
 #pragma endregion
 

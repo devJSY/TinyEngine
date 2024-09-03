@@ -49,12 +49,21 @@ private:
     Vec4 m_vButtonColor[(UINT)ButtonState::END];
     Vec2 m_vButtonScale[(UINT)ButtonState::END];
 
+    void Enter();
+    void Exit();
+
 public:
     void ChangeState(ButtonState _eState)
     {
+        if (m_eCurState == _eState)
+            return;
+
+        Exit();
         m_ePrevState = m_eCurState;
         m_eCurState = _eState;
+        Enter();
     }
+
     void SetTransition(const ButtonTransition _eTransition) { m_eTransition = _eTransition; }
 
     Ptr<CTexture> GetTexture(ButtonState _eState) const { return m_pButtonTex[(UINT)_eState]; }
@@ -86,6 +95,7 @@ public:
 
 private:
     void ButtonUpdate();
+    void ButtonSoundUpdate();
 
 private:
     bool IsMouseHovered();

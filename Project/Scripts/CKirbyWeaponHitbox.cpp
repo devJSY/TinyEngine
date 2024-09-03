@@ -31,6 +31,8 @@ void CKirbyWeaponHitbox::OnTriggerEnter(CCollider* _OtherCollider)
         HitInfo.Damage = LoadDamage();
         ApplyEffect();
 
+        SlashEffect(_OtherCollider->Transform()->GetWorldPos());
+
         pMonster->GetDamage(HitInfo);
         ((CUnitScript*)PLAYERUNIT)->AttackReward();
     }
@@ -107,6 +109,27 @@ void CKirbyWeaponHitbox::ApplyEffect()
     break;
     case AbilityCopyType::SLEEP:
         break;
+    }
+}
+
+void CKirbyWeaponHitbox::SlashEffect(Vec3 _vPos)
+{
+    wstring state = PLAYERFSM->GetCurState()->GetName();
+
+    SpawnSlashEffect(_vPos, state.find(L"COMBO2") != wstring::npos ? 2 : 1);
+}
+
+void CKirbyWeaponHitbox::SpawnSlashEffect(Vec3 _vPos, int _iCount)
+{
+    for (int i = 0; i < _iCount; i++)
+    {
+        CGameObject* pSpawnEffect =
+            CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Effect_SlashEffect.pref", L"prefab\\Effect_SlashEffect.pref")->Instantiate();
+
+        Vec3 vPos = _vPos;
+        vPos.y += 35.f;
+        pSpawnEffect->Transform()->SetWorldPos(vPos);
+        GamePlayStatic::SpawnGameObject(pSpawnEffect, pSpawnEffect->GetLayerIdx());
     }
 }
 

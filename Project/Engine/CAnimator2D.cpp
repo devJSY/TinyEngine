@@ -70,7 +70,11 @@ void CAnimator2D::Create(const wstring& _strKey, Ptr<CTexture> _AltasTex, Vec2 _
                          int _FrmCount, float _FPS, bool _UseBackGround)
 {
     CAnim2D* pAnim = FindAnim(_strKey);
-    assert(!pAnim);
+    if (nullptr != pAnim)
+    {
+        assert(nullptr);
+        return;
+    }
 
     pAnim = new CAnim2D;
     pAnim->SetName(_strKey);

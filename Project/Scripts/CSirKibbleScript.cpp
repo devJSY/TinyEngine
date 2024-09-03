@@ -134,6 +134,7 @@ void CSirKibbleScript::OnTriggerEnter(CCollider* _OtherCollider)
     if (Layer == LAYER_PLAYER_TRIGGER && L"Body Collider" == pObj->GetName())
     {
         pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo);
+        BodyAttackSound();
     }
 }
 
@@ -177,11 +178,12 @@ void CSirKibbleScript::EnterState(SirKibbleState _state)
     }
     break;
     case SirKibbleState::Find: {
+        FindSound();
         Animator()->Play(ANIMPREFIX("Find"), false, false, 1.5f);
     }
     break;
     case SirKibbleState::FindWait: {
-        Animator()->Play(ANIMPREFIX("FindWait"), true, false, 1.5f);
+        Animator()->Play(ANIMPREFIX("FindWait"), false, false, 1.5f);
     }
     break;
     case SirKibbleState::AirCutterJumpStart: {
@@ -264,6 +266,7 @@ void CSirKibbleScript::EnterState(SirKibbleState _state)
     }
     break;
     case SirKibbleState::Death: {
+        SpawnDeadSmokeEffect();
         Animator()->Play(ANIMPREFIX("Damage"), false);
     }
     break;
@@ -652,8 +655,10 @@ void CSirKibbleScript::Damage()
     {
         ChangeState(SirKibbleState::Death);
     }
-
-    Animator()->IsFinish() ? ChangeState(SirKibbleState::Fall) : void();
+    else
+    {
+        Animator()->IsFinish() ? ChangeState(SirKibbleState::Fall) : void();
+    }
 }
 #pragma endregion
 

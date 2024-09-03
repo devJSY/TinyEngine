@@ -46,6 +46,8 @@ private:
     CGameObject* m_pDropUI;
     CEnterUIScript* m_pEnterUIScript;
     CGameObject* m_pClearUI;
+    CGameObject* m_pContinueUI;
+    CGameObject* m_pAbsorbUI;
 
     bool m_bEnterLevel;
     float m_fFadeInAccTime;
@@ -57,6 +59,7 @@ private:
     bool m_bUILevel;
     bool m_bLoadingUIWait;
     bool m_bAlreayEnterBossUI;
+    bool m_bContinuUIOn;
 
     CFadeEffectScript* m_FadeEffectScript;
 
@@ -102,6 +105,8 @@ public:
     Ptr<CSound> GetBGM() { return m_BGM; }
     float GetVolume() { return m_EndBGMVolume; }
 
+    void FadeOutSound();
+
 public:
     virtual void LevelStart();
     virtual void LevelEnd();
@@ -115,6 +120,8 @@ protected:
 public:
     void TurnOnBossHP();
     void TurnOffBossHP();
+    void BossRevive();
+
     void TurnOnPlayerHP();
     void TurnOffPlayerHP();
 
@@ -131,6 +138,13 @@ public:
 
     void ActiveOffDropUI();
     void ActiveOnDropUI();
+
+    void ContinueUIOn();
+    void ContinueUIOff();
+
+    void AbsorbUIOn(CGameObject* _pObj);
+    void AbsorbUIOff();
+    void AbsorbUIEndOff();
 
 public:
     void ResetFadeEffectTimer();

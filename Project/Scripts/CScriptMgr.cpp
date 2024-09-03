@@ -120,7 +120,7 @@
 #include "CFireOnHitEffect.h"
 #include "CDamageStarEffect.h"
 #include "CMonsterDeadEffectSpawnScript.h"
-#include "CShcokWaveScript.h"
+#include "CShockWaveScript.h"
 #include "CUIBurstStarSpawnEffectScript.h"
 #include "CUIChangeAbilityStarSpawnEffectScript.h"
 #include "CUIChangeAbilityStarEffect.h"
@@ -130,6 +130,10 @@
 #include "CDestroyParticleScript.h"
 #include "CMorphoShockWaveWave.h"
 #include "CKirbySwordTornadoScript.h"
+#include "CUICommonHitEffectScript.h"
+#include "CUISlashEffectScript.h"
+#include "CUIAbsorbUIScript.h"
+#include "CUIContinueUIScript.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -252,7 +256,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CFireOnHitEffect");
 	_vec.push_back(L"CDamageStarEffect");
 	_vec.push_back(L"CMonsterDeadEffectSpawnScript");
-	_vec.push_back(L"CShcokWaveScript");
+	_vec.push_back(L"CShockWaveScript");
 	_vec.push_back(L"CUIBurstStarSpawnEffectScript");
 	_vec.push_back(L"CUIChangeAbilityStarSpawnEffectScript");
 	_vec.push_back(L"CUIChangeAbilityStarEffect");
@@ -262,6 +266,10 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CDestroyParticleScript");
 	_vec.push_back(L"CMorphoShockWaveWave");
 	_vec.push_back(L"CKirbySwordTornadoScript");
+	_vec.push_back(L"CUICommonHitEffectScript");
+	_vec.push_back(L"CUISlashEffectScript");
+	_vec.push_back(L"CUIAbsorbUIScript");
+	_vec.push_back(L"CUIContinueUIScript");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -504,8 +512,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CDamageStarEffect;
 	if (L"CMonsterDeadEffectSpawnScript" == _strScriptName)
 		return new CMonsterDeadEffectSpawnScript;
-	if (L"CShcokWaveScript" == _strScriptName)
-		return new CShcokWaveScript;
+	if (L"CShockWaveScript" == _strScriptName)
+		return new CShockWaveScript;
 	if (L"CUIBurstStarSpawnEffectScript" == _strScriptName)
 		return new CUIBurstStarSpawnEffectScript;
 	if (L"CUIChangeAbilityStarSpawnEffectScript" == _strScriptName)
@@ -524,6 +532,14 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CMorphoShockWaveWave;
 	if (L"CKirbySwordTornadoScript" == _strScriptName)
 		return new CKirbySwordTornadoScript;
+	if (L"CUICommonHitEffectScript" == _strScriptName)
+		return new CUICommonHitEffectScript;
+	if (L"CUISlashEffectScript" == _strScriptName)
+		return new CUISlashEffectScript;
+	if (L"CUIAbsorbUIScript" == _strScriptName)
+		return new CUIAbsorbUIScript;
+	if (L"CUIContinueUIScript" == _strScriptName)
+		return new CUIContinueUIScript;
 	return nullptr;
 }
 
@@ -769,8 +785,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CDamageStarEffect;
 	case (UINT)SCRIPT_TYPE::MONSTERDEADEFFECTSPAWNSCRIPT:
 		return new CMonsterDeadEffectSpawnScript;
-	case (UINT)SCRIPT_TYPE::SHCOKWAVESCRIPT:
-		return new CShcokWaveScript;
+	case (UINT)SCRIPT_TYPE::SHOCKWAVESCRIPT:
+		return new CShockWaveScript;
 	case (UINT)SCRIPT_TYPE::UIBURSTSTARSPAWNEFFECTSCRIPT:
 		return new CUIBurstStarSpawnEffectScript;
 	case (UINT)SCRIPT_TYPE::UICHANGEABILITYSTARSPAWNEFFECTSCRIPT:
@@ -789,6 +805,14 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CMorphoShockWaveWave;
 	case (UINT)SCRIPT_TYPE::KIRBYSWORDTORNADOSCRIPT:
 		return new CKirbySwordTornadoScript;
+	case (UINT)SCRIPT_TYPE::UICOMMONHITEFFECTSCRIPT:
+		return new CUICommonHitEffectScript;
+	case (UINT)SCRIPT_TYPE::UISLASHEFFECTSCRIPT:
+		return new CUISlashEffectScript;
+	case (UINT)SCRIPT_TYPE::UIABSORBUISCRIPT:
+		return new CUIAbsorbUIScript;
+	case (UINT)SCRIPT_TYPE::UICONTINUEUISCRIPT:
+		return new CUIContinueUIScript;
 	}
 	return nullptr;
 }
@@ -1035,8 +1059,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CDamageStarEffect";
 	case SCRIPT_TYPE::MONSTERDEADEFFECTSPAWNSCRIPT:
 		return L"CMonsterDeadEffectSpawnScript";
-	case SCRIPT_TYPE::SHCOKWAVESCRIPT:
-		return L"CShcokWaveScript";
+	case SCRIPT_TYPE::SHOCKWAVESCRIPT:
+		return L"CShockWaveScript";
 	case SCRIPT_TYPE::UIBURSTSTARSPAWNEFFECTSCRIPT:
 		return L"CUIBurstStarSpawnEffectScript";
 	case SCRIPT_TYPE::UICHANGEABILITYSTARSPAWNEFFECTSCRIPT:
@@ -1055,6 +1079,14 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CMorphoShockWaveWave";
 	case SCRIPT_TYPE::KIRBYSWORDTORNADOSCRIPT:
 		return L"CKirbySwordTornadoScript";
+	case SCRIPT_TYPE::UICOMMONHITEFFECTSCRIPT:
+		return L"CUICommonHitEffectScript";
+	case SCRIPT_TYPE::UISLASHEFFECTSCRIPT:
+		return L"CUISlashEffectScript";
+	case SCRIPT_TYPE::UIABSORBUISCRIPT:
+		return L"CUIAbsorbUIScript";
+	case SCRIPT_TYPE::UICONTINUEUISCRIPT:
+		return L"CUIContinueUIScript";
 	}
 	return nullptr;
 }

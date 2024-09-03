@@ -43,7 +43,7 @@ void CCutterProjectileScript::tick()
 {
     if (m_pOwner->IsDead())
         ChangeState(CUTTERPROJECTILE_STATE::Destroy);
-     
+
     switch (m_eState)
     {
     case CUTTERPROJECTILE_STATE::Attack: {
@@ -74,6 +74,10 @@ void CCutterProjectileScript::EnterState(CUTTERPROJECTILE_STATE _state)
     switch (m_eState)
     {
     case CUTTERPROJECTILE_STATE::Attack: {
+        if (nullptr != Transform())
+        {
+            GamePlayStatic::Play2DSound(L"sound\\wav\\CharaBasic\\0019.wav", 1, 0.5f);
+        }
         Animator()->Play(ANIMPREFIX("SpinBig"));
         m_vOriginPos = Transform()->GetWorldPos();
     }
@@ -169,6 +173,20 @@ void CCutterProjectileScript::Destroy()
     GamePlayStatic::DestroyGameObject(GetOwner());
 }
 
+void CCutterProjectileScript::SlashEffect(Vec3 _vPos)
+{
+    for (UINT i = 0; i < 2; i++)
+    {
+        CGameObject* pSpawnEffect =
+            CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Effect_SlashEffect.pref", L"prefab\\Effect_SlashEffect.pref")->Instantiate();
+
+        Vec3 vPos = _vPos;
+        vPos.y += 35.f;
+        pSpawnEffect->Transform()->SetWorldPos(vPos);
+        GamePlayStatic::SpawnGameObject(pSpawnEffect, pSpawnEffect->GetLayerIdx());
+    }
+}
+
 void CCutterProjectileScript::OnTriggerEnter(CCollider* _OtherCollider)
 {
     // 1. Player Hit
@@ -180,6 +198,8 @@ void CCutterProjectileScript::OnTriggerEnter(CCollider* _OtherCollider)
     if (LAYER_PLAYER == pObj->GetLayerIdx() && L"Main Player" == pObj->GetName())
     {
         UnitHit hitInfo = {DAMAGE_TYPE::NORMAL, GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT), 6.f, 0.f, 0.f};
+
+        SlashEffect(pObj->Transform()->GetWorldPos());
         pObj->GetScript<CUnitScript>()->GetDamage(hitInfo);
     }
 
