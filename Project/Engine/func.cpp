@@ -1783,66 +1783,56 @@ void ImGui_SetWindowClass(EDITOR_TYPE _Type)
 
 Vec3 QuaternionToEulerAngles(Quaternion q)
 {
-    //// Ensure the quaternion is normalized
-    // Quaternion normalizedQ = q;
-    // normalizedQ.Normalize();
+    // Ensure the quaternion is normalized
+    Quaternion normalizedQ = q;
+    normalizedQ.Normalize();
 
-    // Vec3 retAngles;
+    Vec3 retAngles;
 
-    //// roll (x-axis rotation)
-    // float sinr_cosp = 2.f * (normalizedQ.w * normalizedQ.x + normalizedQ.y * normalizedQ.z);
-    // float cosr_cosp = 1.f - 2.f * (normalizedQ.x * normalizedQ.x + normalizedQ.y * normalizedQ.y);
-    // retAngles.x = std::atan2f(sinr_cosp, cosr_cosp);
+    // roll (x-axis rotation)
+    float sinr_cosp = 2.f * (normalizedQ.w * normalizedQ.x + normalizedQ.y * normalizedQ.z);
+    float cosr_cosp = 1.f - 2.f * (normalizedQ.x * normalizedQ.x + normalizedQ.y * normalizedQ.y);
+    retAngles.x = std::atan2f(sinr_cosp, cosr_cosp);
 
-    //// pitch (y-axis rotation)
-    // float sinp = 2.f * (normalizedQ.w * normalizedQ.y - normalizedQ.x * normalizedQ.z);
-    //// Clamp pitch to the range [-1, 1] to avoid NaN due to domain errors
-    // if (std::fabs(sinp) >= 1.f)
-    //{
-    //     retAngles.y = std::copysign(XM_PI / 2.f, sinp); // Use 90 degrees if sinp is out of bounds
-    // }
-    // else
-    //{
-    //     retAngles.y = std::asinf(sinp); // Pitch angle
-    // }
-
-    //// yaw (z-axis rotation)
-    // float siny_cosp = 2.f * (normalizedQ.w * normalizedQ.z + normalizedQ.x * normalizedQ.y);
-    // float cosy_cosp = 1.f - 2.f * (normalizedQ.y * normalizedQ.y + normalizedQ.z * normalizedQ.z);
-    // retAngles.z = std::atan2f(siny_cosp, cosy_cosp);
-
-    //// Check for NaN and set to zero
-    // if (!std::isfinite(retAngles.x) || !std::isfinite(retAngles.y) || !std::isfinite(retAngles.z))
-    //{
-    //     retAngles.x = 0.f;
-    //     retAngles.y = 0.f;
-    //     retAngles.z = 0.f;
-    // }
-
-    // return retAngles;
-
-    const float xx = q.x * q.x;
-    const float yy = q.y * q.y;
-    const float zz = q.z * q.z;
-
-    const float m31 = 2.f * q.x * q.z + 2.f * q.y * q.w;
-    const float m32 = 2.f * q.y * q.z - 2.f * q.x * q.w;
-    const float m33 = 1.f - 2.f * xx - 2.f * yy;
-
-    const float cy = sqrtf(m33 * m33 + m31 * m31);
-    const float cx = atan2f(-m32, cy);
-    if (cy > 16.f * FLT_EPSILON)
+    // pitch (y-axis rotation)
+    float sinp = 2.f * (normalizedQ.w * normalizedQ.y - normalizedQ.x * normalizedQ.z);
+    // Clamp pitch to the range [-1, 1] to avoid NaN due to domain errors
+    if (std::fabs(sinp) >= 1.f)
     {
-        const float m12 = 2.f * q.x * q.y + 2.f * q.z * q.w;
+        // Quaternion::ToEuler() Exception Handling
+        const float xx = normalizedQ.x * normalizedQ.x;
+        const float yy = normalizedQ.y * normalizedQ.y;
+        const float zz = normalizedQ.z * normalizedQ.z;
+
+        const float m31 = 2.f * normalizedQ.x * normalizedQ.z + 2.f * normalizedQ.y * normalizedQ.w;
+        const float m32 = 2.f * normalizedQ.y * normalizedQ.z - 2.f * normalizedQ.x * normalizedQ.w;
+        const float m33 = 1.f - 2.f * xx - 2.f * yy;
+
+        const float cy = sqrtf(m33 * m33 + m31 * m31);
+        const float cx = atan2f(-m32, cy);
+
+        const float m12 = 2.f * normalizedQ.x * normalizedQ.y + 2.f * normalizedQ.z * normalizedQ.w;
         const float m22 = 1.f - 2.f * xx - 2.f * zz;
 
         return Vector3(cx, atan2f(m31, m33), atan2f(m12, m22));
     }
     else
     {
-        const float m11 = 1.f - 2.f * yy - 2.f * zz;
-        const float m21 = 2.f * q.x * q.y - 2.f * q.z * q.w;
-
-        return Vector3(cx, 0.f, atan2f(-m21, m11));
+        retAngles.y = std::asinf(sinp); // Pitch angle
     }
+
+    // yaw (z-axis rotation)
+    float siny_cosp = 2.f * (normalizedQ.w * normalizedQ.z + normalizedQ.x * normalizedQ.y);
+    float cosy_cosp = 1.f - 2.f * (normalizedQ.y * normalizedQ.y + normalizedQ.z * normalizedQ.z);
+    retAngles.z = std::atan2f(siny_cosp, cosy_cosp);
+
+    // Check for NaN and set to zero
+    if (!std::isfinite(retAngles.x) || !std::isfinite(retAngles.y) || !std::isfinite(retAngles.z))
+    {
+        retAngles.x = 0.f;
+        retAngles.y = 0.f;
+        retAngles.z = 0.f;
+    }
+
+    return retAngles;
 }
