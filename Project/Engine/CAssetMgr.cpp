@@ -188,12 +188,17 @@ Ptr<CTexture> CAssetMgr::CreateTexture(const wstring& _strKey, UINT _Width, UINT
 {
     Ptr<CTexture> pTex = FindAsset<CTexture>(_strKey);
 
-    assert(nullptr == pTex);
+    if (nullptr != pTex)
+    {
+        assert(nullptr);
+        return nullptr;
+    }
 
     pTex = new CTexture(true);
     if (FAILED(pTex->Create(_Width, _Height, _pixelformat, _BindFlag, _Usage, _dsvDesc, _rtvDesc, _srvDesc, _uavDesc)))
     {
         assert(nullptr);
+        return nullptr;
     }
 
     AddAsset<CTexture>(_strKey, pTex);
@@ -207,12 +212,17 @@ Ptr<CTexture> CAssetMgr::CreateTexture(const wstring& _strKey, ComPtr<ID3D11Text
 {
     Ptr<CTexture> pTex = FindAsset<CTexture>(_strKey);
 
-    assert(nullptr == pTex);
+    if (nullptr != pTex)
+    {
+        assert(nullptr);
+        return nullptr;
+    }
 
     pTex = new CTexture(true);
     if (FAILED(pTex->Create(_Tex2D, _dsvDesc, _rtvDesc, _srvDesc, _uavDesc)))
     {
         assert(nullptr);
+        return nullptr;
     }
 
     pTex->SetKey(_strKey);

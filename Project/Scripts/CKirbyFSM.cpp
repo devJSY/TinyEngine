@@ -680,7 +680,7 @@ void CKirbyFSM::tick()
 
             if (m_BurningParticleAcc > m_BurningParticleCoolTime)
             {
-                Ptr<CPrefab> ParticlePrefab = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\BurningFireParticle.pref");
+                Ptr<CPrefab> ParticlePrefab = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\BurningFireLandParticle.pref");
                 CGameObject* ParticleObj = ParticlePrefab->Instantiate();
                 ParticleObj->Transform()->SetWorldPos(Hit.Point);
 

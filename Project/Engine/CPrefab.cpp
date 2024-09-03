@@ -50,7 +50,11 @@ CGameObject* CPrefab::Instantiate()
 
 int CPrefab::Save(const wstring& _strRelativePath)
 {
-    assert(GAMEOBJECT_SAVE);
+    if (nullptr == GAMEOBJECT_SAVE)
+    {
+        assert(nullptr);
+        return E_FAIL;
+    }
 
     if (IsEngineAsset())
         return E_FAIL;
@@ -76,7 +80,11 @@ int CPrefab::Save(const wstring& _strRelativePath)
 
 int CPrefab::Load(const wstring& _strFilePath)
 {
-    assert(GAMEOBJECT_LOAD);
+    if (nullptr == GAMEOBJECT_LOAD)
+    {
+        assert(nullptr);
+        return E_FAIL;
+    }
 
     FILE* pFile = nullptr;
     _wfopen_s(&pFile, _strFilePath.c_str(), L"rb");

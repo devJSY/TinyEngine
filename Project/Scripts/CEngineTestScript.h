@@ -17,6 +17,7 @@ private:
     void QuaternionExample();
     void DetachObject();
     void SetDirection();
+    void SoundTest();
 
 private:
     virtual void OnCollisionEnter(CCollider* _OtherCollider);

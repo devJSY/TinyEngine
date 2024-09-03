@@ -21,6 +21,7 @@ class CTackleEnemyScript : public CMonsterUnitScript
 {
 private:
     TackleEnemyState m_eState;
+    CGameObject* m_pDashEffect;
     
     float m_fAccTime;
     float m_fWaitTime;
@@ -48,6 +49,8 @@ private:
     void CheckDamage();
     Vec3 TrackDir(Vec3 _vPos);
     void ApplyDir(Vec3 _vFront, bool _flag);
+    void DashEffectOn();
+    void DashEffectOff();
 
 private:
     void OnTriggerEnter(CCollider* _OtherCollider);

@@ -99,6 +99,33 @@ void CMonsterUnitScript::SpawnDeadEffect(int _iSize)
     GamePlayStatic::SpawnGameObject(pSpawnEffect, pSpawnEffect->GetLayerIdx());
 }
 
+void CMonsterUnitScript::SpawnDeadSmokeEffect()
+{
+    CGameObject* pSpawnEffect =
+        CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\MonsterFallBackSmokeSpawner.pref", L"prefab\\MonsterFallBackSmokeSpawner.pref")->Instantiate();
+
+    if (nullptr != pSpawnEffect)
+        GamePlayStatic::AddChildObject(GetOwner(), pSpawnEffect);
+}
+
+void CMonsterUnitScript::BodyAttackSound()
+{
+    CTransform* pTr = Transform();
+    if (nullptr != pTr)
+    {
+        GamePlayStatic::Play2DSound(L"sound\\wav\\CharaBasic\\0003.wav", 1, 0.4f);
+    }
+}
+
+void CMonsterUnitScript::FindSound()
+{
+    CTransform* pTr = Transform();
+    if (nullptr != pTr)
+    {
+        GamePlayStatic::Play2DSound(L"sound\\wav\\CharaBasic\\0017.wav", 1, 0.4f);
+    }
+}
+
 void CMonsterUnitScript::begin()
 {
     CUnitScript::begin();

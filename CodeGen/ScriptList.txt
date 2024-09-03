@@ -117,7 +117,7 @@ CKirbyFireBullet
 CFireOnHitEffect
 CDamageStarEffect
 CMonsterDeadEffectSpawnScript
-CShcokWaveScript
+CShockWaveScript
 CUIBurstStarSpawnEffectScript
 CUIChangeAbilityStarSpawnEffectScript
 CUIChangeAbilityStarEffect
@@ -127,4 +127,9 @@ CUIDashEffectScript
 CDestroyParticleScript
 CMorphoShockWaveWave
 CKirbySwordTornadoScript
+CUICommonHitEffectScript
+CUISlashEffectScript
+CUIAbsorbUIScript
+CUIContinueUIScript
 CKirbyVacuumScript
+CAutoDelete

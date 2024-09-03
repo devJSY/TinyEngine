@@ -22,6 +22,7 @@ CUIBossHPScript::CUIBossHPScript()
     , m_fEnterHP(0.f)
     , m_bMolPho(false)
     , m_bElfilis(false)
+    , m_bSoundFlag(false)
 {
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bMolPho, "Molpho");
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bElfilis, "Elfilis");
@@ -42,7 +43,7 @@ CUIBossHPScript::CUIBossHPScript(const CUIBossHPScript& Origin)
     , m_fAccTime(0.f)
     , m_fComboTime(Origin.m_fComboTime)
     , m_bIsScaling(false)
-    , m_fDescSpeed(Origin.m_fDescSpeed)
+    , m_fDescSpeed(65.f)
     , m_vDecreaseColor(Origin.m_vDecreaseColor)
     , m_vBasicColor(Origin.m_vBasicColor)
     , m_fMaxHP(0.f)
@@ -51,6 +52,7 @@ CUIBossHPScript::CUIBossHPScript(const CUIBossHPScript& Origin)
     , m_fEnterHP(0.f)
     , m_bMolPho(false)
     , m_bElfilis(false)
+    , m_bSoundFlag(false)
 {
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bMolPho, "Molpho");
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bElfilis, "Elfilis");
@@ -96,6 +98,11 @@ void CUIBossHPScript::ChangeState(HPState _state)
     EnterState();
 }
 
+void CUIBossHPScript::BossRevive()
+{
+    m_bIsHealedScaling = true;
+}
+
 void CUIBossHPScript::EnterState()
 {
     switch (m_eState)
@@ -129,7 +136,7 @@ void CUIBossHPScript::EnterState()
         m_pNameObj = GetOwner()->GetChildObject(L"UI_BossName1");
         m_pNameObj2 = GetOwner()->GetChildObject(L"UI_BossName2");
 
-        m_fDescSpeed = 30.f;
+        m_fDescSpeed = 70.f;
 
         if (m_bMolPho)
         {
@@ -154,14 +161,21 @@ void CUIBossHPScript::EnterState()
 
 void CUIBossHPScript::Enter()
 {
-    m_fEnterHP += DT * 700.f;
+    m_fEnterHP += DT * 450.f;
 
     float _fScalingRatio = m_fEnterHP / m_fMaxHP;
+
+    if (m_fMaxHP >= 0.1f && !m_bSoundFlag)
+    {
+        GamePlayStatic::Play2DSound(L"sound\\wav\\UiBasic\\0000.wav", 0, 0.3f);
+        m_bSoundFlag = true;
+    }
 
     if (m_fEnterHP >= m_fMaxHP)
     {
         m_fCurHP = m_fPrevHP = m_fMaxHP;
         ChangeState(HPState::Tick);
+        CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\wav\\UiBasic\\0000.wav")->Stop();
     }
 
     m_pRenderer->GetMaterial(0)->SetScalarParam(FLOAT_1, _fScalingRatio);
@@ -171,6 +185,11 @@ void CUIBossHPScript::HPTick()
 {
     if (!m_pUnitScript)
         return;
+
+    if (KEY_TAP(I))
+    {
+        BossRevive();
+    }
 
     // 데미지가 달면 현재 체력과 달라짐
     float fCheckHP = m_fCurHP;
@@ -183,13 +202,20 @@ void CUIBossHPScript::HPTick()
         // 데미지를 받음
         if (fCheckHP - m_fCurHP > 0.f)
         {
-            m_vDamageTask.push_back({m_fCurHP, fCheckHP});
-            m_bDamaged = true;
-
             if (m_bHpHealed)
             {
-                m_bHpHealed = false;
-                m_fCurPrevHP = m_fPrevHP = m_fCurHP;
+                float fPrevHP = m_vHealTask[0].fPrevHP;
+
+                if (fPrevHP >= m_fCurHP)
+                {
+                    m_bHpHealed = false;
+                    m_vHealTask.pop_back();
+                }
+            }
+            else
+            {
+                m_vDamageTask.push_back({m_fCurHP, fCheckHP});
+                m_bDamaged = true;
             }
         }
         // 체력을 회복함
@@ -197,12 +223,6 @@ void CUIBossHPScript::HPTick()
         {
             m_vHealTask.push_back({m_fCurHP, fCheckHP});
             m_bHpHealed = true;
-
-            if (m_bDamaged)
-            {
-                m_bDamaged = false;
-                //m_fCurPrevHP = m_fPrevHP = m_fCurHP;
-            }
         }
     }
 
@@ -242,20 +262,21 @@ void CUIBossHPScript::CaculateShading()
 
 void CUIBossHPScript::CaculateHealShading()
 {
-    float _fShadingRatio = m_fPrevHP / m_fMaxHP;
+    float _fShadingRatio = m_fCurHP / m_fMaxHP;
     m_pRenderer->GetMaterial(0)->SetScalarParam(FLOAT_0, _fShadingRatio);
+    m_pRenderer->GetMaterial(0)->SetScalarParam(FLOAT_1, _fShadingRatio);
     m_bIsHealedScaling = false;
+    m_bHpHealed = false;
+    m_vDamageTask.pop_back();
 }
 
 void CUIBossHPScript::HealScaling()
 {
-    m_fPrevHP += CTimeMgr::GetInst()->GetDeltaTime() * m_fDescSpeed;
+    m_fPrevHP += CTimeMgr::GetInst()->GetDeltaTime() * 80.f;
 
     if (m_fCurHP <= m_fPrevHP)
     {
         m_fPrevHP = m_fCurHP;
-        m_bIsHealedScaling = true;
-        m_bHpHealed = false;
     }
     m_pRenderer->GetMaterial(0)->SetScalarParam(VEC4_1, Vec4(0.f, 176.f, 151.f, 255.f) / 255.f);
     float _fScalingRatio = m_fPrevHP / m_fMaxHP;
@@ -307,25 +328,25 @@ void CUIBossHPScript::HPDamageTask()
 
 void CUIBossHPScript::HPHealTask()
 {
-    //for (size_t i = 0; i < m_vHealTask.size(); ++i)
+    // for (size_t i = 0; i < m_vHealTask.size(); ++i)
     //{
-    //    // m_fPrevHP는 시작 할 때 현재 HP를 복사한다.
-    //    if (m_fCurPrevHP < m_vHealTask[i].fCurHP)
-    //    {
-    //        m_fAccTime = 0.f;
-    //        m_fCurPrevHP = m_vHealTask[i].fCurHP;
-    //    }
-    //}
+    //     // m_fPrevHP는 시작 할 때 현재 HP를 복사한다.
+    //     if (m_fCurPrevHP < m_vHealTask[i].fCurHP)
+    //     {
+    //         m_fAccTime = 0.f;
+    //         m_fCurPrevHP = m_vHealTask[i].fCurHP;
+    //     }
+    // }
 
-    //m_fAccTime += DT;
-    //if (m_fAccTime >= m_fComboTime)
+    // m_fAccTime += DT;
+    // if (m_fAccTime >= m_fComboTime)
     //{
-    //    m_fAccTime = 0.f;
-    //    m_bHpHealed = false;
-    //    m_bIsScaling = false;
-    //    m_bIsHealedScaling = true;
-    //    m_vHealTask.clear();
-    //}
+    //     m_fAccTime = 0.f;
+    //     m_bHpHealed = false;
+    //     m_bIsScaling = false;
+    //     m_bIsHealedScaling = true;
+    //     m_vHealTask.clear();
+    // }
 }
 
 UINT CUIBossHPScript::SaveToLevelFile(FILE* _File)

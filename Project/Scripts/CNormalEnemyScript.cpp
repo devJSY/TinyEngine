@@ -101,12 +101,16 @@ void CNormalEnemyScript::OnTriggerEnter(CCollider* _OtherCollider)
 
     CGameObject* pObj = _OtherCollider->GetOwner();
 
+    if (!PLAYER)
+        return;
+
     Vec3 vDir = PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos();
     UnitHit hitInfo = {DAMAGE_TYPE::NORMAL, vDir.Normalize(), GetCurInfo().ATK, 0.f, 0.f};
     UINT Layer = _OtherCollider->GetOwner()->GetLayerIdx();
 
     if (Layer == LAYER_PLAYER_TRIGGER && L"Body Collider" == pObj->GetName())
     {
+        BodyAttackSound();
         pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo);
     }
 }
@@ -246,6 +250,7 @@ void CNormalEnemyScript::EnterState(NormalEnemyState _state)
     }
     break;
     case NormalEnemyState::Find: {
+        FindSound();
         GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
             TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemyEye.00.png",
                                                         L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemyEye.00.png"));
@@ -276,6 +281,7 @@ void CNormalEnemyScript::EnterState(NormalEnemyState _state)
     }
     break;
     case NormalEnemyState::Damage: {
+
         GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
             TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemyEye.03.png",
                                                         L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemyEye.03.png"));
@@ -329,6 +335,10 @@ void CNormalEnemyScript::EnterState(NormalEnemyState _state)
             TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemyEye.03.png",
                                                         L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemyEye.03.png"));
         Animator()->Play(ANIMPREFIX("Damage"), true, false, 1.5f);
+    }
+    break;
+    case NormalEnemyState::Death: {
+        SpawnDeadSmokeEffect();
     }
     break;
     case NormalEnemyState::End:
@@ -697,11 +707,13 @@ void CNormalEnemyScript::Damage()
     {
         ChangeState(NormalEnemyState::Death);
     }
-
-    if (Animator()->IsFinish())
+    else
     {
-        ChangeState(NormalEnemyState::Fall);
-        m_bFirst = false;
+        if (Animator()->IsFinish())
+        {
+            ChangeState(NormalEnemyState::Fall);
+            m_bFirst = false;
+        }
     }
 }
 

@@ -75,6 +75,7 @@ namespace GamePlayStatic
     void PlayBGM(const wstring& _SoundPath, float _Volume);
     void PauseSound(const wstring& _SoundPath);
     void StopSound(const wstring& _SoundPath);
+    void StopAllSound();
 }
 
 int GetRandomInt(int _Min, int _Max);

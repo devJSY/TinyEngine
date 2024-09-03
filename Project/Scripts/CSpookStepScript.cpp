@@ -71,6 +71,7 @@ void CSpookStepScript::OnTriggerEnter(CCollider* _OtherCollider)
 
     if (Layer == LAYER_PLAYER_TRIGGER && L"Body Collider" == pObj->GetName())
     {
+        BodyAttackSound();
         pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo);
     }
 }
@@ -100,6 +101,7 @@ void CSpookStepScript::EnterState()
     }
     break;
     case SpookStepState::Find: {
+        FindSound();
         Animator()->Play(ANIMPREFIX("Find"), false, false, 1.5f);
     }
     break;
@@ -148,6 +150,7 @@ void CSpookStepScript::EnterState()
     }
     break;
     case SpookStepState::Disappear: {
+        SpawnDeadSmokeEffect();
         Animator()->Play(ANIMPREFIX("Disappear"), false);
     }
     break;
@@ -349,12 +352,14 @@ void CSpookStepScript::Landing()
 #pragma region DAMAGE
 void CSpookStepScript::Damage()
 {
-    if (GetCurInfo().HP <= 0.f)
+    if (GetCurInfo().HP <= 0.1f)
     {
         ChangeState(SpookStepState::Disappear);
     }
-
-    Animator()->IsFinish() ? ChangeState(SpookStepState::Fall) : void();
+    else
+    {
+        Animator()->IsFinish() ? ChangeState(SpookStepState::Fall) : void();
+    }
 }
 #pragma endregion
 

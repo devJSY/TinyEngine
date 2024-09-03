@@ -32,7 +32,11 @@ CStructuredBuffer::~CStructuredBuffer()
 int CStructuredBuffer::Create(UINT _ElementSize, UINT _ElementCount, SB_TYPE _Type, bool _bSysMemMove, void* _pSysMem)
 {
     // 구조화버퍼 크기가 16의 배수인지 체크
-    assert(!(_ElementSize % 16));
+    if (0 != _ElementSize % 16)
+    {
+        assert(nullptr);
+        return E_FAIL;
+    }
 
     m_SB = nullptr;
     m_SRV = nullptr;
@@ -88,7 +92,7 @@ int CStructuredBuffer::Create(UINT _ElementSize, UINT _ElementCount, SB_TYPE _Ty
     {
         D3D11_UNORDERED_ACCESS_VIEW_DESC UAVDesc = {};
         UAVDesc.ViewDimension = D3D11_UAV_DIMENSION_BUFFER;
-        UAVDesc.Buffer.NumElements = m_ElementCount; 
+        UAVDesc.Buffer.NumElements = m_ElementCount;
 
         hr = DEVICE->CreateUnorderedAccessView(m_SB.Get(), &UAVDesc, m_UAV.GetAddressOf());
         if (FAILED(hr))
@@ -172,10 +176,8 @@ void CStructuredBuffer::Clear_CS_UAV()
 
 void CStructuredBuffer::SetData(void* _SysMem, UINT _ElementCount)
 {
-    if (nullptr == _SysMem)
+    if (nullptr == _SysMem || !m_bSysMemMove)
         return;
-
-    assert(m_bSysMemMove);
 
     if (0 == _ElementCount)
         _ElementCount = m_ElementCount;
@@ -197,7 +199,11 @@ void CStructuredBuffer::SetData(void* _SysMem, UINT _ElementCount)
 
 void CStructuredBuffer::GetData(void* _Dest, UINT _ElementCount)
 {
-    assert(m_bSysMemMove);
+    if (!m_bSysMemMove)
+    {
+        assert(nullptr);
+        return;
+    }
 
     if (0 == _ElementCount)
         _ElementCount = m_ElementCount;
