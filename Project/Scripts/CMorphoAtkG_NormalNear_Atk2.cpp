@@ -45,6 +45,10 @@ void CMorphoAtkG_NormalNear_Atk2::Enter_Step()
         m_ForceDir.y = 0.f;
         m_ForceDir.Normalize();
 
+        // Sound
+        wstring Sound = L"sound\\wav\\CharaMorphoknight\\Swing0.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_MORPHO);
+
         CAMERACTRL->Shake(0.3f, 20.f, 20.f);
     }
     break;

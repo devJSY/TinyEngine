@@ -49,16 +49,28 @@ void CMorphoAtkA_DoubleSwordAtkR::Enter_Step()
         GetOwner()->Animator()->Play(ANIMPREFIX("DoubleSwordAttack1Start"), false, false, 1.5f);
         MRPFSM->OnWeaponRTrigger();
         //@EFFECT Â÷Â¡ÀÌÆåÆ®
+        
+        // sound
+        wstring Sound = L"sound\\wav\\CharaMorphoknight\\DoubleSwordCharging.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_MORPHO * 0.9f);
     }
     break;
     case StateStep::Progress: {
         GetOwner()->Animator()->Play(ANIMPREFIX("DoubleSwordAttack1"), false, false, 1.5f);
         m_bFrmEnter = true;
+
+        // sound
+        wstring Sound = L"sound\\wav\\CharaMorphoknight\\DoubleSwordAttackStart.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_MORPHO * 0.8f);
     }
     break;
     case StateStep::End: {
         GetOwner()->Animator()->Play(ANIMPREFIX("DoubleSwordAttack1End"), false, false, 1.5f);
         m_bFrmEnter = true;
+
+        // sound
+        wstring Sound = L"sound\\wav\\CharaMorphoknight\\DoubleSwordAttackStart.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_MORPHO * 0.4f);
     }
     break;
     }
@@ -68,7 +80,11 @@ void CMorphoAtkA_DoubleSwordAtkR::Exit_Step()
 {
     switch (m_Step)
     {
-    case StateStep::Start:
+    case StateStep::Start: {
+        // sound
+        wstring SoundCharging = L"sound\\wav\\CharaMorphoknight\\DoubleSwordCharging.wav";
+        GamePlayStatic::StopSound(SoundCharging); //@TODO : FadeOut
+    }
         break;
     case StateStep::Progress:
         break;
@@ -131,6 +147,10 @@ void CMorphoAtkA_DoubleSwordAtkR::Progress()
             MRPFSM->GetUnit()->SpawnAttackButterflyEffect(OffsetSpawnPos);
             MRPFSM->SpawnDropStar(OffsetSpawnPos);
         }
+
+        // sound
+        wstring Sound = L"sound\\wav\\CharaMorphoknight\\DoubleSwordAttackCollision.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_MORPHO * 1.5f);
     }
 
     if (GetOwner()->Animator()->IsFinish())

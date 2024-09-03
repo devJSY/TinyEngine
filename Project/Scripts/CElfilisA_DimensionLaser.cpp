@@ -16,10 +16,6 @@ CElfilisA_DimensionLaser::CElfilisA_DimensionLaser()
 {
     m_DimensionStartPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\ElfilisDimensionLaserStart.pref");
     m_DimensionPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\ElfilisDimensionLaser.pref");
-
-    m_SoundKeyCharging = L"sound\\wav\\CharaBossChimeraSoul\\0012_DimensionLaserCharging.wav";
-    m_SoundKeyChargeFinish = L"sound\\wav\\CharaBossChimera2\\0031_DimensionLaserChargeFinish.wav";
-    m_SoundKeyLaserReady = L"sound\\wav\\CharaBossChimeraSoul\\0013_DimensionLaser_LaserStrat.wav";
 }
 
 CElfilisA_DimensionLaser::~CElfilisA_DimensionLaser()
@@ -88,14 +84,16 @@ void CElfilisA_DimensionLaser::Enter_Step()
         CAMERACTRL->SetElfilisGround();
 
         // sound
-        GamePlayStatic::Play2DSound(m_SoundKeyCharging, 1, SOUND_ELFILIS);
+        wstring Sound = L"sound\\wav\\CharaBossChimeraSoul\\0012_DimensionLaserCharging.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_ELFILIS);
     }
     break;
     case StateStep::Start: {
         GetOwner()->Animator()->Play(ANIMPREFIX("DimensionLaserStart"), false, false, 2.5f, 0.3f);
 
         // sound
-        GamePlayStatic::Play2DSound(m_SoundKeyChargeFinish, 1, SOUND_ELFILIS);
+        wstring Sound = L"sound\\wav\\CharaBossChimera2\\0031_DimensionLaserChargeFinish.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_ELFILIS);
     }
     break;
     case StateStep::Progress: {
@@ -255,5 +253,6 @@ void CElfilisA_DimensionLaser::SpawnDimension(int _Idx)
     GamePlayStatic::SpawnGameObject(m_Dimension[_Idx], LAYER_MONSTERATK_TRIGGER);
 
     // sound
-    GamePlayStatic::Play2DSound(m_SoundKeyLaserReady, 1, SOUND_ELFILIS);
+    wstring Sound = L"sound\\wav\\CharaBossChimeraSoul\\0013_DimensionLaser_LaserStrat.wav";
+    GamePlayStatic::Play2DSound(Sound, 1, SOUND_ELFILIS);
 }

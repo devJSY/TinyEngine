@@ -76,6 +76,10 @@ void CMorphoAtkG_NormalFar_SwordSlash::Enter_Step()
             m_SwordSlash[0]->SetName(L"MorphoSwordSlash1");
             GamePlayStatic::SpawnGameObject(m_SwordSlash[0], LAYER_MONSTERATK);
         }
+
+        // Sound
+        wstring Sound = L"sound\\wav\\CharaMorphoknight\\Swing0.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_MORPHO);
     }
     break;
     case StateStep::Combo2: {
@@ -90,6 +94,10 @@ void CMorphoAtkG_NormalFar_SwordSlash::Enter_Step()
             m_SwordSlash[1]->SetName(L"MorphoSwordSlash2");
             GamePlayStatic::SpawnGameObject(m_SwordSlash[1], LAYER_MONSTERATK);
         }
+
+        // Sound
+        wstring Sound = L"sound\\wav\\CharaMorphoknight\\Swing0.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_MORPHO);
     }
     break;
     case StateStep::Combo3: {
@@ -104,6 +112,10 @@ void CMorphoAtkG_NormalFar_SwordSlash::Enter_Step()
             m_SwordSlash[2]->SetName(L"MorphoSwordSlash3");
             GamePlayStatic::SpawnGameObject(m_SwordSlash[2], LAYER_MONSTERATK);
         }
+
+        // Sound
+        wstring Sound = L"sound\\wav\\CharaMorphoknight\\Swing1.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_MORPHO);
     }
     break;
     case StateStep::End: {
@@ -119,12 +131,30 @@ void CMorphoAtkG_NormalFar_SwordSlash::Exit_Step()
     {
     case StateStep::Start:
         break;
-    case StateStep::Combo1:
-        break;
-    case StateStep::Combo2:
-        break;
-    case StateStep::Combo3:
-        break;
+    case StateStep::Combo1: {
+        if (m_bFrmEnter && m_SwordSlash[0])
+        {
+            GamePlayStatic::DestroyGameObject(m_SwordSlash[0]);
+            m_SwordSlash[0] = nullptr;
+        }
+    }
+    break;
+    case StateStep::Combo2: {
+        if (m_bFrmEnter && m_SwordSlash[1])
+        {
+            GamePlayStatic::DestroyGameObject(m_SwordSlash[1]);
+            m_SwordSlash[1] = nullptr;
+        }
+    }
+    break;
+    case StateStep::Combo3: {
+        if (m_bFrmEnter && m_SwordSlash[2])
+        {
+            GamePlayStatic::DestroyGameObject(m_SwordSlash[2]);
+            m_SwordSlash[2] = nullptr;
+        }
+    }
+    break;
     case StateStep::End:
         break;
     }
@@ -161,6 +191,10 @@ void CMorphoAtkG_NormalFar_SwordSlash::Combo1()
             m_SwordSlash[0]->Rigidbody()->SetFreezeRotation(AXIS_TYPE::Z, true);
         }
 
+        // Sound
+        wstring Sound = L"sound\\wav\\CharaMorphoknight\\SwordSlash.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_MORPHO * 0.4f);
+
         CAMERACTRL->Shake(0.3f, 20.f, 20.f);
     }
 
@@ -194,6 +228,10 @@ void CMorphoAtkG_NormalFar_SwordSlash::Combo2()
             m_SwordSlash[1]->Rigidbody()->SetFreezeRotation(AXIS_TYPE::Z, true);
         }
 
+        // Sound
+        wstring Sound = L"sound\\wav\\CharaMorphoknight\\SwordSlash.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_MORPHO * 0.4f);
+
         CAMERACTRL->Shake(0.3f, 20.f, 20.f);
     }
 
@@ -226,6 +264,10 @@ void CMorphoAtkG_NormalFar_SwordSlash::Combo3()
             m_SwordSlash[2]->Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
             m_SwordSlash[2]->Rigidbody()->SetFreezeRotation(AXIS_TYPE::Z, true);
         }
+
+        // Sound
+        wstring Sound = L"sound\\wav\\CharaMorphoknight\\SwordSlash.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_MORPHO * 0.4f);
 
         CAMERACTRL->Shake(0.3f, 20.f, 20.f);
     }

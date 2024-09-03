@@ -13,11 +13,6 @@ private:
     int m_ProgressStep;
     float m_AccTime;
 
-    // sound
-    wstring m_SoundKeyCharging;
-    wstring m_SoundKeyChargeFinish;
-    wstring m_SoundKeyLaserReady;
-
 public:
     virtual void tick() override;
     virtual void Enter() override;
