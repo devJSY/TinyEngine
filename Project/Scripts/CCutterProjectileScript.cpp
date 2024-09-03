@@ -76,7 +76,7 @@ void CCutterProjectileScript::EnterState(CUTTERPROJECTILE_STATE _state)
     case CUTTERPROJECTILE_STATE::Attack: {
         if (nullptr != Transform())
         {
-            GamePlayStatic::Play3DSound(L"sound\\wav\\CharaBasic\\0019.wav", Transform()->GetWorldPos(), 1, 0.5f);
+            GamePlayStatic::Play2DSound(L"sound\\wav\\CharaBasic\\0019.wav", 1, 0.5f);
         }
         Animator()->Play(ANIMPREFIX("SpinBig"));
         m_vOriginPos = Transform()->GetWorldPos();

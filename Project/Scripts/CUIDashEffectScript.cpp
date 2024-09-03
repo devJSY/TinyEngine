@@ -50,6 +50,8 @@ void CUIDashEffectScript::SetBackGroundAlpha(const float _fValue)
 void CUIDashEffectScript::begin()
 {
     ChangeState(DashEffectState::Start);
+    m_fRatioSpeed = 0.3;
+    MeshRender()->GetMaterial(0)->SetScalarParam(FLOAT_2, 0.5f);
 }
 
 void CUIDashEffectScript::tick()

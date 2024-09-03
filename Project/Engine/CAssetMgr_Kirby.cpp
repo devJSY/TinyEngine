@@ -88,7 +88,7 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
 
         pShader->AddTexParam(TEX_0, "Masking Texture1");
-        pShader->AddTexParam(TEX_1, "Masking Texture2");
+        pShader->AddTexParam(TEX_1, "Gradation Texture");
 
         pShader->AddTexParam(TEX_5, "Normal Wind Masking Texture1");
 
@@ -102,6 +102,7 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
         pShader->AddScalarParam(FLOAT_0, "Progress Value", 0.1f);
         pShader->AddScalarParam(FLOAT_1, "ThreshHold", 0.1f);
         pShader->AddScalarParam(FLOAT_2, "BackGround Alpha", 0.1f);
+        pShader->AddScalarParam(FLOAT_3, "Pow Value", 0.1f);
 
         pShader->SetName(L"DashEffectMaskingShader");
         AddAsset(L"DashEffectMaskingShader", pShader);
@@ -284,7 +285,7 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
         pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
-        
+
         string TeleprotDesc = "[Teleport Info]\n- (x) Flag(false, Down, Up)\n- (y) Teleport WorldY\n- (z) Radius";
         pShader->AddScalarParam(VEC4_3, TeleprotDesc);
 
@@ -306,7 +307,7 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
         pShader->SetName(L"ElfilisTailShader");
         AddAsset(L"ElfilisTailShader", pShader);
     }
-    
+
     // =================================
     // Transparent Elfilis Shader
     // =================================
@@ -1291,7 +1292,7 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
         pShader->SetName(L"TextureDistortionRenderShader");
         AddAsset(L"TextureDistortionRenderShader", pShader);
     }
-    
+
     // =================================
     // Mesh Distortion Shader
     // =================================

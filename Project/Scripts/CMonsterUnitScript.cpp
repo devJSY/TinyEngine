@@ -113,7 +113,7 @@ void CMonsterUnitScript::BodyAttackSound()
     CTransform* pTr = Transform();
     if (nullptr != pTr)
     {
-        GamePlayStatic::Play3DSound(L"sound\\wav\\CharaBasic\\0003.wav", pTr->GetWorldPos(), 1, 0.5f);
+        GamePlayStatic::Play2DSound(L"sound\\wav\\CharaBasic\\0003.wav", 1, 0.4f);
     }
 }
 
@@ -122,7 +122,7 @@ void CMonsterUnitScript::FindSound()
     CTransform* pTr = Transform();
     if (nullptr != pTr)
     {
-        GamePlayStatic::Play3DSound(L"sound\\wav\\CharaBasic\\0017.wav", pTr->GetWorldPos(), 1, 0.5f);
+        GamePlayStatic::Play2DSound(L"sound\\wav\\CharaBasic\\0017.wav", 1, 0.4f);
     }
 }
 
