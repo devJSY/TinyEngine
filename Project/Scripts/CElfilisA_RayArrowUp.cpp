@@ -14,6 +14,9 @@ CElfilisA_RayArrowUp::CElfilisA_RayArrowUp()
     , m_NextStateGroup(ElfilisStateGroup::AirIdle)
 {
     m_ArrowPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\ElfilisAirArrow.pref");
+
+    m_SoundKeyArrowStart = L"sound\\wav\\CharaBossChimera2\\0019_RayArrowStart.wav";
+    m_SoundKeyArrowSpawn = L"sound\\wav\\CharaBossChimera2\\0020_RayArrowSpawn.wav";
 }
 
 CElfilisA_RayArrowUp::~CElfilisA_RayArrowUp()
@@ -86,6 +89,9 @@ void CElfilisA_RayArrowUp::Enter_Step()
                 GamePlayStatic::SpawnGameObject(NewArrow, LAYER_MONSTERATK);
             }
         }
+
+        // sound
+        GamePlayStatic::Play2DSound(m_SoundKeyArrowStart, 1, SOUND_ELFILIS);
     }
     break;
     case StateStep::Progress: {
@@ -203,6 +209,8 @@ void CElfilisA_RayArrowUp::CastArrow()
                 {
                     m_ArrowScript[idx]->StartSpawn();
                     m_bSpawn[idx] = true;
+
+                    GamePlayStatic::Play2DSound(m_SoundKeyArrowSpawn, 1, SOUND_ELFILIS * 0.5f);
                 }
             }
         }

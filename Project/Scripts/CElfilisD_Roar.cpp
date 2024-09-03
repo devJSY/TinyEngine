@@ -60,6 +60,14 @@ void CElfilisD_Roar::Enter()
     CAMERACTRL->SetZoomThreshold(100.f);
 
     CAMERACTRL->Shake(4.5f, 60.f, 60.f);
+
+    // sound
+    wstring Roar = L"sound\\wav\\CharaBossChimera2\\0027_Roar.wav";
+    GamePlayStatic::Play2DSound(Roar, 1, SOUND_ELFILIS);
+
+    // Sound
+    wstring ResistBGM = L"sound\\stream\\K15_ChimeraSoulCoreStart\\K15_ChimeraSoulCoreStart.wav";
+    GamePlayStatic::Play2DSound(ResistBGM, 1, SOUND_BGM);
 }
 
 void CElfilisD_Roar::Exit()

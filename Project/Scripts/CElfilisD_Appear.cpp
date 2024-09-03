@@ -16,10 +16,6 @@ CElfilisD_Appear::CElfilisD_Appear()
     , m_SoundIdx(0)
 {
     m_BossNamePref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\BossName_Elfilis.pref", L"prefab\\BossName_Elfilis.pref");
-
-    m_SoundBossDown = L"sound\\wav\\DemoChimeraSoulPre\\0000_BossDown.wav";
-    m_SoundBossAppear = L"sound\\wav\\DemoChimeraSoulPre\\0001_BossAppear.wav";
-    m_SoundSpawnHalberd = L"sound\\wav\\DemoChimeraSoulPre\\0002_SpawnHalberd.wav";
 }
 
 CElfilisD_Appear::~CElfilisD_Appear()
@@ -57,9 +53,6 @@ void CElfilisD_Appear::Enter_Step()
         GetOwner()->Transform()->SetWorldPos(m_StartPos);
         GetOwner()->Transform()->SetWorldRotation(Vec3(0.f, -XM_PI/2.f, 0.f));
         m_bFrmEnter = true;
-
-        // Sound
-        GamePlayStatic::Play2DSound(m_SoundBossDown, 1, SOUND_ELFILIS, true, true);
 
         // Camera : 에피리스가 등장하는 하늘을 올려다봄 (고정)
         CAMERACTRL->SetMainTarget(BOSS);
@@ -108,14 +101,11 @@ void CElfilisD_Appear::Exit_Step()
     {
     case StateStep::Start: {
         GetOwner()->Rigidbody()->SetVelocity(Vec3());
-
-        // Sound
-        GamePlayStatic::StopSound(m_SoundBossDown);
     }
     break;
     case StateStep::Progress: {
         if (m_BossName)
-        {
+        {   
             CChangeAlphaScript* Script = m_BossName->GetScript<CChangeAlphaScript>();
             Script->FadeOutDestroy(0.5f);
             m_BossName = nullptr;
@@ -131,6 +121,16 @@ void CElfilisD_Appear::Exit_Step()
 
 void CElfilisD_Appear::Start()
 {
+     // Sound
+    if (CHECK_ANIMFRM(GetOwner(), 60) && m_bFrmEnter)
+    {
+        m_bFrmEnter = false;
+
+        // Sound
+        wstring BossDown = L"sound\\wav\\DemoChimeraSoulPre\\0000_BossDown.wav";
+        GamePlayStatic::Play2DSound(BossDown, 1, SOUND_ELFILIS);
+    }
+
     if (GetOwner()->Animator()->IsFinish())
     {
         ChangeStep(StateStep::Progress);
@@ -178,13 +178,17 @@ void CElfilisD_Appear::Progress()
     {
         m_bFrmEnter = true;
         m_SoundIdx++;
-        GamePlayStatic::Play2DSound(m_SoundBossAppear, 1, SOUND_ELFILIS, true, true);
+
+        wstring BossAppear = L"sound\\wav\\DemoChimeraSoulPre\\0001_BossAppear.wav";
+        GamePlayStatic::Play2DSound(BossAppear, 1, SOUND_ELFILIS);
     }
     else if (m_SoundIdx == 1 && CHECK_ANIMFRM(GetOwner(), 550))
     {
         m_bFrmEnter = false;
         m_SoundIdx++;
-        GamePlayStatic::Play2DSound(m_SoundSpawnHalberd, 1, SOUND_ELFILIS * 0.5f, true, true);
+
+        wstring SpawnHalberd = L"sound\\wav\\DemoChimeraSoulPre\\0002_SpawnHalberd.wav";
+        GamePlayStatic::Play2DSound(SpawnHalberd, 1, SOUND_ELFILIS * 0.5f);
     }
 
     if (GetOwner()->Animator()->IsFinish())

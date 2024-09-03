@@ -13,9 +13,6 @@ private:
 
     // Sound
     UINT m_SoundIdx;
-    wstring m_SoundBossDown;
-    wstring m_SoundBossAppear;
-    wstring m_SoundSpawnHalberd;
 
 public:
     virtual void tick() override;

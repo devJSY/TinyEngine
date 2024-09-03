@@ -14,6 +14,10 @@ private:
     bool m_bReady;
     bool m_bStateExit;
 
+    // sound
+    wstring m_SoundKeyArrowStart;
+    wstring m_SoundKeyArrowSpawn;
+
 public:
     virtual void tick() override;
     virtual void Exit() override;

@@ -126,6 +126,19 @@ void CElfilisUnit::PlayTeleportEffect(CGameObject** _BeforeUnit, CGameObject** _
         GamePlayStatic::SpawnGameObject(AfterEffect, LAYER_EFFECT);
         *_AfterEffect = AfterEffect;
     }
+
+    // sound
+    wstring Teleport;
+    int RandIdx = GetRandomInt(0, 2);
+
+    if (RandIdx == 0)
+        Teleport = L"sound\\wav\\CharaBossChimera2\\0000_Teleport.wav";
+    else if (RandIdx == 1)
+        Teleport = L"sound\\wav\\CharaBossChimera2\\0001_Teleport.wav";
+    else if (RandIdx == 2)
+        Teleport = L"sound\\wav\\CharaBossChimeraSoul\\0000_Teleport.wav";
+
+    GamePlayStatic::Play2DSound(Teleport, 1, SOUND_ELFILIS * 1.3f);
 }
 
 UINT CElfilisUnit::SaveToLevelFile(FILE* _File)

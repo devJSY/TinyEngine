@@ -283,6 +283,10 @@ void CElfilisAirArrow::Aim()
     else
     {
         StartAttack();
+
+        // sound
+        wstring SoundKeyArrow = L"sound\\wav\\CharaBossChimera2\\0021_RayArrow.wav";
+        GamePlayStatic::Play2DSound(SoundKeyArrow, 1, SOUND_ELFILIS);
     }
 }
 
@@ -357,6 +361,10 @@ void CElfilisAirArrow::Attack()
 
             // Spawn Drop
             ELFFSM->SpawnDropStar(NewPos);
+
+            // sound
+            wstring SoundKeyArrowCol = L"sound\\wav\\CharaBossChimera2\\0023_RayArrowCollision.wav";
+            GamePlayStatic::Play2DSound(SoundKeyArrowCol, 1, SOUND_ELFILIS);
         }
 
         if (m_AccTime > 1.f)

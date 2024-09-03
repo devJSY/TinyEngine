@@ -131,6 +131,10 @@ void CElfilisDimensionLaser::Wait()
         m_Step = 3;
         m_Laser->SetStart();
         m_Laser->GetOwner()->SetActive(true);
+
+        // sound
+        wstring SoundKeyLaserStart = L"sound\\wav\\CharaBossChimeraSoul\\0014_DimensionLaser_LaserReady.wav";
+        GamePlayStatic::Play2DSound(SoundKeyLaserStart, 1, SOUND_ELFILIS);
     }
 }
 

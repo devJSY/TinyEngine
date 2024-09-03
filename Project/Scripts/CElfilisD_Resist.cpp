@@ -63,6 +63,10 @@ void CElfilisD_Resist::Enter_Step()
 
         CBossMgr::GetBossFlowMgr()->ChangeFlow(BossLevelFlow::DemoPlay);
 
+        // Sound
+        wstring Damage = L"sound\\wav\\CharaBossChimera2\\0060_ResistDamage.wav";
+        GamePlayStatic::Play2DSound(Damage, 1, SOUND_ELFILIS);
+
         // Camera : 에피리스 타겟 (진입위치, 각도 등 항상 같음)
         CAMERACTRL->SetMainTarget(BOSS);
         CAMERACTRL->SetOffset(Vec3(0.f, 0.f, 0.f));
@@ -86,6 +90,10 @@ void CElfilisD_Resist::Enter_Step()
         //GetOwner()->Animator()->Play(ANIMPREFIX("ResistStart"), false, false, 1.5f);
         CBossMgr::GetBossFlowMgr()->ChangeFlow(BossLevelFlow::Fight);
         m_AccTime = 0.f;
+
+        // Sound
+        wstring Resist = L"sound\\wav\\CharaBossChimera2\\0062_Resist.wav";
+        GamePlayStatic::Play2DSound(Resist, 1, SOUND_ELFILIS);
 
         // Camera : 투타겟
         CAMERACTRL->LoadInitSetting(true);

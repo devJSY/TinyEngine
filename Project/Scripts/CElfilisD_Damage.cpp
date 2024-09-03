@@ -42,6 +42,10 @@ void CElfilisD_Damage::Enter_Step()
 
         CBossMgr::GetBossFlowMgr()->ChangeFlow(BossLevelFlow::DemoPlay);
 
+        // Sound
+        wstring Damage = L"sound\\wav\\CharaBossChimera2\\0018_Damage.wav";
+        GamePlayStatic::Play2DSound(Damage, 1, SOUND_ELFILIS);
+
         // Camera : Fixed View
         CAMERACTRL->SetMainTarget(BOSS);
         CAMERACTRL->FixedView(true, Vec3(-132.45f, 83.80f, -140.07f));

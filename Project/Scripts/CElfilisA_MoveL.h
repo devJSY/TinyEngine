@@ -10,6 +10,9 @@ private:
     bool m_bMoveLeft;
     bool m_bMoveUp;
 
+    // sound
+    vector<wstring> m_SoundKeyMoveAir;
+
 public:
     virtual void tick() override;
     virtual void Exit() override;
