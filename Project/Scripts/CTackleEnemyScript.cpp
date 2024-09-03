@@ -424,7 +424,12 @@ void CTackleEnemyScript::DashEffectOn()
 void CTackleEnemyScript::DashEffectOff()
 {
     if (nullptr != m_pDashEffect)
-        m_pDashEffect->GetScript<CUIDashEffectScript>()->ChangeState(DashEffectState::Stop);
+    {
+        if (m_pDashEffect->GetScript<CUIDashEffectScript>())
+        {
+            m_pDashEffect->GetScript<CUIDashEffectScript>()->ChangeState(DashEffectState::Stop);
+        }
+    }
 }
 
 Vec3 CTackleEnemyScript::TrackDir(Vec3 _vPos)

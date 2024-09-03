@@ -18,6 +18,8 @@
 #include "CUIHPScript.h"
 #include "CKirbyDropOutUIScript.h"
 
+#include "CUIContinueUIScript.h"
+
 CLevelFlowMgr::CLevelFlowMgr(UINT _Type)
     : CScript(_Type)
     , m_CurLevelPath{}
@@ -149,6 +151,11 @@ void CLevelFlowMgr::begin()
         m_pClearUI = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"UI_LevelClear");
         if (nullptr != m_pClearUI)
             TurnOffStageClearUI();
+
+        // Continue UI
+        m_pContinueUI = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"UI_ContinueButton");
+        if (nullptr != m_pContinueUI)
+            ContinueUIOff();
     }
 }
 
@@ -393,6 +400,8 @@ void CLevelFlowMgr::LevelEnd()
     // HP UI Turn Off
     TurnOffPlayerHP();
     TurnOffBossHP();
+    ContinueUIOff();
+
     if (nullptr != m_pDropUI)
         m_pDropUI->SetActive(false);
 
@@ -438,6 +447,7 @@ void CLevelFlowMgr::LevelRestart()
     // UI (Fade Out)
     TurnOffPlayerHP();
     TurnOffBossHP();
+    ContinueUIOff();
 
     if (L"Start Level" != m_CurLevelPath)
         SetFadeEffect(Vec3(255.f, 0.f, 255.f), false, 1.f, 1.25f, false);
@@ -475,6 +485,7 @@ void CLevelFlowMgr::RobbyLevel()
     // UI (Fade Out)s
     TurnOffPlayerHP();
     TurnOffBossHP();
+    ContinueUIOff();
 
     SetFadeEffect(Vec3(252.f, 75.f, 129.f), false, 1.f, 1.25f, false);
 
@@ -605,6 +616,7 @@ void CLevelFlowMgr::TurnOnStageclearUI()
     if (nullptr != m_pClearUI)
     {
         m_pClearUI->SetActive(true);
+        ContinueUIOn();
     }
 }
 
@@ -816,6 +828,24 @@ void CLevelFlowMgr::ActiveOnDropUI()
 {
     if (nullptr != m_pDropUI)
         m_pDropUI->SetActive(true);
+}
+
+void CLevelFlowMgr::ContinueUIOn()
+{
+    if (nullptr != m_pContinueUI)
+    {
+        if (nullptr != m_pContinueUI->GetScript<CUIContinueUIScript>())
+            m_pContinueUI->GetScript<CUIContinueUIScript>()->ChangeState(UIContinueUIState::Progress);
+    }
+}
+
+void CLevelFlowMgr::ContinueUIOff()
+{
+    if (nullptr != m_pContinueUI)
+    {
+        if (nullptr != m_pContinueUI->GetScript<CUIContinueUIScript>())
+            m_pContinueUI->GetScript<CUIContinueUIScript>()->ChangeState(UIContinueUIState::End);
+    }
 }
 
 void CLevelFlowMgr::TurnOffDropUI()

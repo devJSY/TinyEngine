@@ -46,6 +46,7 @@ private:
     CGameObject* m_pDropUI;
     CEnterUIScript* m_pEnterUIScript;
     CGameObject* m_pClearUI;
+    CGameObject* m_pContinueUI;
 
     bool m_bEnterLevel;
     float m_fFadeInAccTime;
@@ -57,6 +58,7 @@ private:
     bool m_bUILevel;
     bool m_bLoadingUIWait;
     bool m_bAlreayEnterBossUI;
+    bool m_bContinuUIOn;
 
     CFadeEffectScript* m_FadeEffectScript;
 
@@ -128,6 +130,9 @@ public:
 
     void ActiveOffDropUI();
     void ActiveOnDropUI();
+
+    void ContinueUIOn();
+    void ContinueUIOff();
 
 public:
     void ResetFadeEffectTimer();

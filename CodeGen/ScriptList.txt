@@ -129,3 +129,5 @@ CMorphoShockWaveWave
 CKirbySwordTornadoScript
 CUICommonHitEffectScript
 CUISlashEffectScript
+CUIAbsorbUIScript
+CUIContinueUIScript

@@ -991,6 +991,12 @@
     <ClInclude Include="CUISlashEffectScript.h">
       <Filter>Scripts\UI\UIEffect\UISlashEffect</Filter>
     </ClInclude>
+    <ClInclude Include="CUIAbsorbUIScript.h">
+      <Filter>Scripts\UI\UIAnimation\CUIAbsorbUIScript</Filter>
+    </ClInclude>
+    <ClInclude Include="CUIContinueUIScript.h">
+      <Filter>Scripts\UI\UIAnimation\UIContinueUIScript</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1991,6 +1997,12 @@
     </ClCompile>
     <ClCompile Include="CUISlashEffectScript.cpp">
       <Filter>Scripts\UI\UIEffect\UISlashEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIAbsorbUIScript.cpp">
+      <Filter>Scripts\UI\UIAnimation\CUIAbsorbUIScript</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIContinueUIScript.cpp">
+      <Filter>Scripts\UI\UIAnimation\UIContinueUIScript</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -3130,6 +3142,12 @@
     </Filter>
     <Filter Include="Scripts\UI\UIEffect\UISlashEffect">
       <UniqueIdentifier>{0a93117f-c0f3-45e3-9061-4c56e33193a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIAnimation\UIContinueUIScript">
+      <UniqueIdentifier>{4d42c785-9d81-4cdc-b6b0-e301957e2d9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\UI\UIAnimation\CUIAbsorbUIScript">
+      <UniqueIdentifier>{d70dd261-725d-4853-b2f8-944915913e0b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
