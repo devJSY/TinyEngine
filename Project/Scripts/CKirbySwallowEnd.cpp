@@ -16,6 +16,7 @@ void CKirbySwallowEnd::tick()
 {
     if (PLAYER->Animator()->IsFinish())
     {
+        PLAYERFSM->SetGlobalState(false);
         ChangeState(L"CHANGE_ABILITY");
     }
 
@@ -29,7 +30,7 @@ void CKirbySwallowEnd::Enter()
     PLAYERFSM->SetInvincible(true);
 
     // 커비 SwallowEnd 애니메이션 재생
-    PLAYER->Animator()->Play(ANIMPREFIX("SwallowStart"), false, false, 2.f);
+    PLAYER->Animator()->Play(ANIMPREFIX("SwallowEnd"), false, false, 2.f);
 
     // MoveController Lock
     PLAYERCTRL->LockInput();
@@ -53,6 +54,9 @@ void CKirbySwallowEnd::Enter()
 
 void CKirbySwallowEnd::Exit()
 {
+    PLAYERFSM->SetSkrr(false);
+    PLAYERFSM->SetInvincible(false);
+
     // MoveController Lock
     PLAYERCTRL->UnlockInput();
     PLAYERCTRL->UnlockJump();
@@ -70,9 +74,5 @@ void CKirbySwallowEnd::Exit()
     // 타임 스케일 조정
     CTimeMgr::GetInst()->SetTimeScale(1.f);
     PLAYERCTRL->Animator()->SetAnimatorUpdateMode(AnimatorUpdateMode::Normal);
-
-    // Emissive를 다시 받도록 수정
-    PLAYERFSM->SetSkrr(false);
-    PLAYERFSM->SetInvincible(false);
 
 }

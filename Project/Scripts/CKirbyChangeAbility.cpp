@@ -25,8 +25,22 @@ void CKirbyChangeAbility::tick()
         PLAYER->Animator()->SetPlay(true);
     }
 
+    if (!m_StarEffect && CHECK_ANIMFRM(GetOwner(), 19))
+    {
+        GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\Skrr.wav", 1, KIRBY_EFFECTSOUND);
+
+        CGameObject* pStarEffect =
+            CAssetMgr::GetInst()
+                ->Load<CPrefab>(L"prefab\\Effect_KirbyChangeAbilityStarSpawn.pref", L"prefab\\Effect_KirbyChangeAbilityStarSpawn.pref")
+                ->Instantiate();
+
+        GamePlayStatic::SpawnGameObject(pStarEffect, pStarEffect->GetLayerIdx());
+
+        m_StarEffect = true;
+    }
+
     // 애니메이션 재생중 필요한 작업
-    PLAYERFSM->GetNextAbility()->ChangeAbility();
+    PLAYERFSM->GetCurAbility()->ChangeAbility();
 
     if (PLAYER->Animator()->IsFinish())
     {
@@ -57,7 +71,13 @@ void CKirbyChangeAbility::tick()
 
 void CKirbyChangeAbility::Enter()
 {
-    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\Skrr.wav", 1, KIRBY_EFFECTSOUND);
+    CGameObject* Smoke = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\LandingSmokeSpawner.pref")->Instantiate();
+    Smoke->Transform()->SetWorldPos(PLAYER->Transform()->GetWorldPos());
+    GamePlayStatic::SpawnGameObject(Smoke, Smoke->GetLayerIdx());
+
+    m_StarEffect = false;
+
+    PLAYERFSM->ChangeNextAbility();
 
     m_bFrameEnter = false;
 
@@ -67,7 +87,7 @@ void CKirbyChangeAbility::Enter()
     PLAYERFSM->SetInvincible(true);
 
     // 소켓 꽂아주기
-    PLAYERFSM->GetNextAbility()->ChangeAbilityEnter();
+    PLAYERFSM->GetCurAbility()->ChangeAbilityEnter();
 
     // 커비 변신 애니메이션 재생
     PLAYER->Animator()->Play(ANIMPREFIX("CopyFirst"), false, false, 1.f);
@@ -107,7 +127,7 @@ void CKirbyChangeAbility::Exit()
     PLAYERCTRL->UnlockJump();
     PLAYERCTRL->UnlockMove();
 
-    PLAYERFSM->GetNextAbility()->ChangeAbilityExit();
+    PLAYERFSM->GetCurAbility()->ChangeAbilityExit();
 
     // 커비 표정 복구
     CPlayerMgr::ClearMouthMtrl();

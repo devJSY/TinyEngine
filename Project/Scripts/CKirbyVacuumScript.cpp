@@ -101,7 +101,7 @@ void CKirbyVacuumScript::tick()
     // »ö º¯°æ
     if (m_Acc < m_ScalingDuration)
     {
-        float Ratio = (m_Acc / m_ScalingDuration) * XM_PI * 0.25;
+        float Ratio = (m_Acc / m_ScalingDuration) * XM_PI * 0.25f;
 
         Vec4 CurColor = m_InitColor + (m_StartColor - m_InitColor) * sinf(Ratio);
         CurColor /= 255.f;

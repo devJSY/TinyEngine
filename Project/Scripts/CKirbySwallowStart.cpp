@@ -16,6 +16,7 @@ void CKirbySwallowStart::tick()
 {
     if (PLAYER->Animator()->IsFinish())
     {
+        PLAYERFSM->SetGlobalState(false);
         ChangeState(L"SWALLOW_END");
     }
 }
@@ -85,6 +86,9 @@ void CKirbySwallowStart::Enter()
 
 void CKirbySwallowStart::Exit()
 {
+    PLAYERFSM->SetSkrr(false);
+    PLAYERFSM->SetInvincible(false);
+
     // MoveController Lock
     PLAYERCTRL->UnlockInput();
     PLAYERCTRL->UnlockJump();
@@ -103,7 +107,5 @@ void CKirbySwallowStart::Exit()
     CTimeMgr::GetInst()->SetTimeScale(1.f);
     PLAYERCTRL->Animator()->SetAnimatorUpdateMode(AnimatorUpdateMode::Normal);
 
-    // Emissive를 다시 받도록 수정
-    PLAYERFSM->SetSkrr(false);
-    PLAYERFSM->SetInvincible(false);
+
 }

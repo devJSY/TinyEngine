@@ -160,6 +160,7 @@ public:
     void SetUnstuffReverse(bool _Unstuffed) { m_bUnstuffReverse = _Unstuffed; }
     void SetMtrlShader(Ptr<CGraphicsShader> _Shader);
     void SaveLastCameraSetup(UINT _Setup) { m_LastCameraSetup = _Setup; }
+    void ChangeNextAbility();
 
     virtual CKirbyUnitScript* GetUnit() override { return (CKirbyUnitScript*)m_Unit; }
     CKirbyAbility* GetCurAbility() const { return m_arrAbility[(UINT)m_CurAbility]; }
