@@ -1,7 +1,7 @@
 #pragma once
 #include <Engine\\CScript.h>
 
-class CShcokWaveScript : public CScript
+class CShockWaveScript : public CScript
 {
 private:
     float m_CircleSize;
@@ -14,10 +14,10 @@ public:
     virtual UINT SaveToLevelFile(FILE* _File) override;
     virtual UINT LoadFromLevelFile(FILE* _File) override;
 
-    CLONE(CShcokWaveScript);
+    CLONE(CShockWaveScript);
 
 public:
-    CShcokWaveScript();
-    CShcokWaveScript(const CShcokWaveScript& origin);
-    virtual ~CShcokWaveScript();
+    CShockWaveScript();
+    CShockWaveScript(const CShockWaveScript& origin);
+    virtual ~CShockWaveScript();
 };

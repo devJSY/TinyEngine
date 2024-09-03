@@ -120,7 +120,7 @@
 #include "CFireOnHitEffect.h"
 #include "CDamageStarEffect.h"
 #include "CMonsterDeadEffectSpawnScript.h"
-#include "CShcokWaveScript.h"
+#include "CShockWaveScript.h"
 #include "CUIBurstStarSpawnEffectScript.h"
 #include "CUIChangeAbilityStarSpawnEffectScript.h"
 #include "CUIChangeAbilityStarEffect.h"
@@ -252,7 +252,7 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CFireOnHitEffect");
 	_vec.push_back(L"CDamageStarEffect");
 	_vec.push_back(L"CMonsterDeadEffectSpawnScript");
-	_vec.push_back(L"CShcokWaveScript");
+	_vec.push_back(L"CShockWaveScript");
 	_vec.push_back(L"CUIBurstStarSpawnEffectScript");
 	_vec.push_back(L"CUIChangeAbilityStarSpawnEffectScript");
 	_vec.push_back(L"CUIChangeAbilityStarEffect");
@@ -504,8 +504,8 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CDamageStarEffect;
 	if (L"CMonsterDeadEffectSpawnScript" == _strScriptName)
 		return new CMonsterDeadEffectSpawnScript;
-	if (L"CShcokWaveScript" == _strScriptName)
-		return new CShcokWaveScript;
+	if (L"CShockWaveScript" == _strScriptName)
+		return new CShockWaveScript;
 	if (L"CUIBurstStarSpawnEffectScript" == _strScriptName)
 		return new CUIBurstStarSpawnEffectScript;
 	if (L"CUIChangeAbilityStarSpawnEffectScript" == _strScriptName)
@@ -769,8 +769,8 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CDamageStarEffect;
 	case (UINT)SCRIPT_TYPE::MONSTERDEADEFFECTSPAWNSCRIPT:
 		return new CMonsterDeadEffectSpawnScript;
-	case (UINT)SCRIPT_TYPE::SHCOKWAVESCRIPT:
-		return new CShcokWaveScript;
+	case (UINT)SCRIPT_TYPE::SHOCKWAVESCRIPT:
+		return new CShockWaveScript;
 	case (UINT)SCRIPT_TYPE::UIBURSTSTARSPAWNEFFECTSCRIPT:
 		return new CUIBurstStarSpawnEffectScript;
 	case (UINT)SCRIPT_TYPE::UICHANGEABILITYSTARSPAWNEFFECTSCRIPT:
@@ -1035,8 +1035,8 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CDamageStarEffect";
 	case SCRIPT_TYPE::MONSTERDEADEFFECTSPAWNSCRIPT:
 		return L"CMonsterDeadEffectSpawnScript";
-	case SCRIPT_TYPE::SHCOKWAVESCRIPT:
-		return L"CShcokWaveScript";
+	case SCRIPT_TYPE::SHOCKWAVESCRIPT:
+		return L"CShockWaveScript";
 	case SCRIPT_TYPE::UIBURSTSTARSPAWNEFFECTSCRIPT:
 		return L"CUIBurstStarSpawnEffectScript";
 	case SCRIPT_TYPE::UICHANGEABILITYSTARSPAWNEFFECTSCRIPT:

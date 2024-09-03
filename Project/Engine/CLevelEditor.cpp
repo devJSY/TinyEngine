@@ -417,6 +417,10 @@ void CLevelEditor::render_WorldSettings()
     ImGui::Checkbox("Render Outline", (bool*)&g_Global.g_RenderOutline);
     ImGui::Checkbox("Draw WireFrame", (bool*)&g_Global.g_DrawAsWireFrame);
 
+    bool bLockSelectedObject = CEditorMgr::GetInst()->IsLockSelectedObject();
+    if (ImGui::Checkbox("Lock Selected Object", &bLockSelectedObject))
+        CEditorMgr::GetInst()->LockSelectedObject(bLockSelectedObject);
+
     bool bEnableBloom = CRenderMgr::GetInst()->IsEnableBloom();
     if (ImGui::Checkbox("Enable Bloom", &bEnableBloom))
         CRenderMgr::GetInst()->SetEnableBloom(bEnableBloom);

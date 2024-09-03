@@ -742,12 +742,14 @@ void GamePlayStatic::Play2DSound(const wstring& _SoundPath, int _Loop, float _Vo
 
     if (nullptr != pSound)
     {
-        if (_Reset)
+        if (!_Reset && pSound->IsPaused())
         {
-            pSound->SetPosition(0);
+            pSound->Pause(false);
         }
-
-        pSound->Play2D(_Loop, _Volume, _Overlap);
+        else
+        {
+            pSound->Play2D(_Loop, _Volume, _Overlap);
+        }
     }
 }
 
@@ -758,12 +760,14 @@ void GamePlayStatic::Play3DSound(const wstring& _SoundPath, Vec3 _WorldPos, int 
 
     if (nullptr != pSound)
     {
-        if (_Reset)
+        if (!_Reset && pSound->IsPaused())
         {
-            pSound->SetPosition(0);
+            pSound->Pause(false);
         }
-
-        pSound->Play3D(_WorldPos, _Loop, _Volume, _Overlap, _Mindistance, _Maxdistance);
+        else
+        {
+            pSound->Play3D(_WorldPos, _Loop, _Volume, _Overlap, _Mindistance, _Maxdistance);
+        }
     }
 }
 
@@ -775,10 +779,17 @@ void GamePlayStatic::PlayBGM(const wstring& _SoundPath, float _Volume)
 
     if (nullptr != pSound)
     {
-        // 현재 재생 중인 BGM 이라면 볼륨만 변경
         if (CurBGM == pSound)
         {
-            CurBGM->SetVolume(_Volume);
+            // 현재 재생 중인 BGM 이라면 볼륨만 변경
+            if (CurBGM->IsPlaying())
+            {
+                CurBGM->SetVolume(_Volume);
+            }
+            else
+            {
+                CurBGM->Play2D(0, _Volume);
+            }
         }
         // BGM 변경
         else
@@ -811,6 +822,16 @@ void GamePlayStatic::StopSound(const wstring& _SoundPath)
     if (nullptr != pSound)
     {
         pSound->Stop();
+    }
+}
+
+void GamePlayStatic::StopAllSound()
+{
+    const map<wstring, Ptr<CAsset>>& mapSound = CAssetMgr::GetInst()->GetMapAsset(ASSET_TYPE::SOUND);
+    for (const auto& pSound : mapSound)
+    {
+        Ptr<CSound> ptrSound = dynamic_cast<CSound*>(pSound.second.Get());
+        ptrSound->Stop();
     }
 }
 
@@ -1783,9 +1804,27 @@ Vec3 QuaternionToEulerAngles(Quaternion q)
     // pitch (y-axis rotation)
     float sinp = 2.f * (normalizedQ.w * normalizedQ.y - normalizedQ.x * normalizedQ.z);
     // Clamp pitch to the range [-1, 1] to avoid NaN due to domain errors
-    if (std::fabs(sinp) >= 1.f)
+    sinp = std::clamp(sinp, -1.f, 1.f);
+
+    // Check for potential gimbal lock
+    if (std::fabs(sinp) >= 0.9999f) // Adjust this threshold if necessary
     {
-        retAngles.y = std::copysign(XM_PI / 2.f, sinp); // Use 90 degrees if sinp is out of bounds
+        // Special case for pitch when sinp is close to ±1
+        const float xx = normalizedQ.x * normalizedQ.x;
+        const float yy = normalizedQ.y * normalizedQ.y;
+        const float zz = normalizedQ.z * normalizedQ.z;
+
+        const float m31 = 2.f * normalizedQ.x * normalizedQ.z + 2.f * normalizedQ.y * normalizedQ.w;
+        const float m32 = 2.f * normalizedQ.y * normalizedQ.z - 2.f * normalizedQ.x * normalizedQ.w;
+        const float m33 = 1.f - 2.f * xx - 2.f * yy;
+
+        const float cy = std::sqrtf(m33 * m33 + m31 * m31);
+        const float cx = std::atan2f(-m32, cy);
+
+        const float m12 = 2.f * normalizedQ.x * normalizedQ.y + 2.f * normalizedQ.z * normalizedQ.w;
+        const float m22 = 1.f - 2.f * xx - 2.f * zz;
+
+        return Vec3(cx, std::atan2f(m31, m33), std::atan2f(m12, m22));
     }
     else
     {

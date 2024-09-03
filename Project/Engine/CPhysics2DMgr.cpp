@@ -483,7 +483,11 @@ void CPhysics2DMgr::LayerCheck(CLevel* _CurLevel, const wstring& _LeftLayer, con
     CLayer* pRightLayer = _CurLevel->GetLayer(_RightLayer);
 
     // 이름에 해당하는 Layer 가 존재하지 않으면
-    assert(pLeftLayer && pRightLayer);
+    if (nullptr == pLeftLayer || nullptr == pRightLayer)
+    {
+        assert(nullptr);
+        return;
+    }
 
     LayerCheck(pLeftLayer->GetLayerIdx(), pRightLayer->GetLayerIdx());
 }

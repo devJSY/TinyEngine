@@ -499,13 +499,13 @@ void CKirbyAbility_Sword::AttackCharge3End()
         // ==========================
         {
             CGameObject* pTornadoObj = m_KirbySwordTornadoPref->Instantiate();
-            pTornadoObj->Transform()->SetWorldPos(Pos + Vec3(0.f, 20.f, 0.f) + Dir * 100.f);
+            pTornadoObj->Transform()->SetWorldPos(Pos + Dir * 100.f);
             pTornadoObj->Transform()->SetDirection(Dir);
             pTornadoObj->GetScript<CKirbySwordTornadoScript>()->SetOriginRight(pTornadoObj->Transform()->GetWorldDir(DIR_TYPE::RIGHT));
             GamePlayStatic::SpawnGameObject(pTornadoObj, LAYER_PLAYERATK_TRIGGER);
 
             pTornadoObj = m_KirbySwordTornadoPref->Instantiate();
-            pTornadoObj->Transform()->SetWorldPos(Pos + Vec3(0.f, 20.f, 0.f) + Dir * 100.f);
+            pTornadoObj->Transform()->SetWorldPos(Pos + Dir * 100.f);
             pTornadoObj->Transform()->SetDirection(Dir);
             pTornadoObj->GetScript<CKirbySwordTornadoScript>()->SetOriginRight(-pTornadoObj->Transform()->GetWorldDir(DIR_TYPE::RIGHT));
             GamePlayStatic::SpawnGameObject(pTornadoObj, LAYER_PLAYERATK_TRIGGER);
@@ -570,7 +570,7 @@ void CKirbyAbility_Sword::AttackCharge3EndExit()
 void CKirbyAbility_Sword::JumpFallEnter()
 {
     PLAYER->Animator()->Play(ANIMPREFIX("JumpFall"), false, false, 2.5f, 0.3f);
-    
+
     PLAYERFSM->LockSlideCombo();
     if (PLAYERFSM->GetSlideComboLevel())
     {

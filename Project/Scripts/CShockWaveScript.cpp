@@ -1,16 +1,16 @@
 #include "pch.h"
-#include "CShcokWaveScript.h"
+#include "CShockWaveScript.h"
 #include <Engine\CRenderMgr.h>
 
-CShcokWaveScript::CShcokWaveScript()
-    : CScript(SHCOKWAVESCRIPT)
+CShockWaveScript::CShockWaveScript()
+    : CScript(SHOCKWAVESCRIPT)
     , m_CircleSize(0.f)
     , m_CircleSizeSpeed(1.f)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CircleSizeSpeed, "Circle Size Speed");
 }
 
-CShcokWaveScript::CShcokWaveScript(const CShcokWaveScript& origin)
+CShockWaveScript::CShockWaveScript(const CShockWaveScript& origin)
     : CScript(origin)
     , m_CircleSize(0.f)
     , m_CircleSizeSpeed(origin.m_CircleSizeSpeed)
@@ -18,20 +18,16 @@ CShcokWaveScript::CShcokWaveScript(const CShcokWaveScript& origin)
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_CircleSizeSpeed, "Circle Size Speed");
 }
 
-CShcokWaveScript::~CShcokWaveScript()
+CShockWaveScript::~CShockWaveScript()
 {
 }
 
-void CShcokWaveScript::tick()
+void CShockWaveScript::tick()
 {
-    CCamera* MainCam = CRenderMgr::GetInst()->GetMainCamera();
-
     // billboard
-    if (nullptr != MainCam)
+    if (nullptr != CAMERACTRL)
     {
-        Vec3 LookDir = MainCam->Transform()->GetWorldPos() - Transform()->GetWorldPos();
-        LookDir.y = 0.f;
-        LookDir.Normalize();
+        Vec3 LookDir = (CAMERACTRL->GetOwner()->Transform()->GetWorldPos() - Transform()->GetWorldPos()).Normalize();
         Transform()->SetDirection(LookDir);
     }
 
@@ -50,7 +46,7 @@ void CShcokWaveScript::tick()
     }
 }
 
-UINT CShcokWaveScript::SaveToLevelFile(FILE* _File)
+UINT CShockWaveScript::SaveToLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;
 
@@ -60,7 +56,7 @@ UINT CShcokWaveScript::SaveToLevelFile(FILE* _File)
     return MemoryByte;
 }
 
-UINT CShcokWaveScript::LoadFromLevelFile(FILE* _File)
+UINT CShockWaveScript::LoadFromLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;
 

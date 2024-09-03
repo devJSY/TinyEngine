@@ -22,6 +22,7 @@ private:
     CEditor* m_arrEditor[(UINT)EDITOR_TYPE::END];
 
     CGameObject* m_SelectedObj;
+    bool m_bLockSelectedObj;
 
     Vec2 m_ViewportSize;
     Vec2 m_ViewportMousePos;
@@ -40,7 +41,10 @@ public:
     bool IsEnabled() const { return m_bEnabled; }
 
     CGameObject* GetSelectedObject() const { return m_SelectedObj; }
-    void SetSelectedObject(CGameObject* obj) { m_SelectedObj = obj; }
+    void SetSelectedObject(CGameObject* obj);
+
+    bool IsLockSelectedObject() const { return m_bLockSelectedObj; }
+    void LockSelectedObject(bool _bLock) { m_bLockSelectedObj = _bLock; }
 
     void SetViewportSize(Vec2 size) { m_ViewportSize = size; }
     Vec2 GetViewportSize() const { return m_ViewportSize; }

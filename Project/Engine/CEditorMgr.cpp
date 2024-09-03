@@ -6,6 +6,8 @@
 #include "CAssetMgr.h"
 #include "CLevelMgr.h"
 
+#include "CLevel.h"
+
 #include "CLevelEditor.h"
 
 #include "CEngine.h"
@@ -19,6 +21,7 @@ CEditorMgr::CEditorMgr()
     : m_bEnabled(true)
     , m_arrEditor{}
     , m_SelectedObj(nullptr)
+    , m_bLockSelectedObj(false)
     , m_ViewportSize(Vec2())
     , m_ViewportMousePos(Vec2())
     , m_hObserver(nullptr)
@@ -230,6 +233,20 @@ void CEditorMgr::render()
         ImGui::UpdatePlatformWindows();
         ImGui::RenderPlatformWindowsDefault();
     }
+}
+
+void CEditorMgr::SetSelectedObject(CGameObject* obj)
+{
+    if (m_bLockSelectedObj)
+    {
+        if (nullptr == obj)
+        {
+            m_SelectedObj = nullptr;
+        }
+        return;
+    }
+
+    m_SelectedObj = obj;
 }
 
 void CEditorMgr::SetContentAutoLoad()
