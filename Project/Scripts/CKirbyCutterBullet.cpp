@@ -444,7 +444,7 @@ void CKirbyCutterBullet::OnTriggerEnter(CCollider* _OtherCollider)
 
             Monster->GetDamage(HitInfo);
 
-            GamePlayStatic::Play3DSound(L"sound\\wav\\HeroCutterMetal\\Cutter_AttackHit.wav", Transform()->GetWorldPos(), 1, KIRBY_EFFECTSOUND, true);
+            GamePlayStatic::Play3DSound(L"sound\\wav\\HeroCutterMetal\\Cutter_Hit.wav", Transform()->GetWorldPos(), 1, KIRBY_EFFECTSOUND, true);
 
         }
     }
