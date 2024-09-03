@@ -69,7 +69,7 @@ void CBladeKnightSwordScript::EnterState()
     }
     break;
     case BLADEKNIGHTSWORD_STATE::ThrustLoop: {
-        Animator()->Play(ANIMPREFIX("ThrustLoop"), true, false, 1.f, 0.);
+        Animator()->Play(ANIMPREFIX("ThrustLoop"), false, false, 1.f, 0.);
     }
     break;
     case BLADEKNIGHTSWORD_STATE::ThrustStart: {
