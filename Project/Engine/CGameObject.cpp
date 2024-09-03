@@ -83,7 +83,7 @@ CGameObject::~CGameObject()
 
 void CGameObject::begin()
 {
-    // 비활성화 상태 
+    // 비활성화 상태
     // 레이어에 소속되어있는 오브젝트가 아닌 경우
     // begin 을 이미 수행 한 경우
     if (!m_bActive || -1 == m_iLayerIdx || m_bBeginCalled)
@@ -194,7 +194,11 @@ void CGameObject::AddComponent(CComponent* _Component)
     if (type == COMPONENT_TYPE::SCRIPT)
     {
         // Script 타입 Component 가 실제로 Script 클래스가 아닌 경우
-        assert(dynamic_cast<CScript*>(_Component));
+        if (nullptr == dynamic_cast<CScript*>(_Component))
+        {
+            assert(nullptr);
+            return;
+        }
 
         m_vecScript.push_back((CScript*)_Component);
         _Component->m_Owner = this;
@@ -202,7 +206,11 @@ void CGameObject::AddComponent(CComponent* _Component)
     else
     {
         // 이미 해당 타입의 컴포넌트를 보유하고 있는 경우
-        assert(!m_arrCom[(UINT)type]);
+        if (nullptr != m_arrCom[(UINT)type])
+        {
+            assert(nullptr);
+            return;
+        }
 
         m_arrCom[(UINT)type] = _Component;
         _Component->m_Owner = this;
@@ -211,7 +219,11 @@ void CGameObject::AddComponent(CComponent* _Component)
         if (nullptr != pRenderCom)
         {
             // 이미 한 종류 이상의 RenderComponent 를 보유하고 있는 경우
-            assert(!m_RenderCom);
+            if (nullptr != m_RenderCom)
+            {
+                assert(nullptr);
+                return;
+            }
 
             m_RenderCom = pRenderCom;
         }

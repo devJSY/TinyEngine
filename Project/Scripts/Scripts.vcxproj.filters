@@ -952,7 +952,7 @@
     <ClInclude Include="CMonsterDeadEffectSpawnScript.h">
       <Filter>Scripts\UI\UIEffect\UIDamageStarSpawnEffect</Filter>
     </ClInclude>
-    <ClInclude Include="CShcokWaveScript.h">
+    <ClInclude Include="CShockWaveScript.h">
       <Filter>Scripts\Postprocess</Filter>
     </ClInclude>
     <ClInclude Include="CUIBurstStarSpawnEffectScript.h">
@@ -1959,7 +1959,7 @@
     <ClCompile Include="CMonsterDeadEffectSpawnScript.cpp">
       <Filter>Scripts\UI\UIEffect\UIDamageStarSpawnEffect</Filter>
     </ClCompile>
-    <ClCompile Include="CShcokWaveScript.cpp">
+    <ClCompile Include="CShockWaveScript.cpp">
       <Filter>Scripts\Postprocess</Filter>
     </ClCompile>
     <ClCompile Include="CUIBurstStarSpawnEffectScript.cpp">

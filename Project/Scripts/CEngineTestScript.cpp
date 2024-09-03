@@ -3,6 +3,7 @@
 #include <Engine\\CTransform.h>
 #include "CKirbyBulletScript.h"
 #include <Engine\\CTimeMgr.h>
+#include <Engine\\CRenderMgr.h>
 
 CEngineTestScript::CEngineTestScript()
     : CScript(ENGINETESTSCRIPT)
@@ -32,10 +33,24 @@ void CEngineTestScript::begin()
 
 void CEngineTestScript::tick()
 {
-    GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), 1000.f, Vec3(1.f, 1.f, 0.f), true);
 
-    Quat AxisQuat = Quat::CreateFromAxisAngle(Transform()->GetWorldDir(DIR_TYPE::FRONT), DT);
-    Transform()->SetWorldRotation(Transform()->GetWorldQuaternion() * AxisQuat);
+    GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), 1000.f, Vec3(0.f, 0.f, 1.f), true);
+    GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::UP), 1000.f, Vec3(0.f, 1.f, 0.f), true);
+    GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::RIGHT), 1000.f, Vec3(1.f, 0.f, 0.f), true);
+
+    Transform()->SetDirection(Transform()->GetWorldDir(DIR_TYPE::FRONT));
+
+    CCamera* pMainCam = CRenderMgr::GetInst()->GetMainCamera();
+    // billboard
+    if (nullptr != pMainCam)
+    {
+        Vec3 LookDir = (pMainCam->GetOwner()->Transform()->GetWorldPos() - Transform()->GetWorldPos()).Normalize();
+        Transform()->SetDirection(LookDir);
+    }
+
+    SoundTest();
+
+    // Transform()->SetDirection(Transform()->GetWorldDir(DIR_TYPE::FRONT), Transform()->GetWorldDir(DIR_TYPE::UP));
 
     // CharacterControllerTest();
 
@@ -281,6 +296,34 @@ void CEngineTestScript::SetDirection()
     GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), 1000.f, Vec3(0.f, 0.f, 1.f), true);
     GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::UP), 1000.f, Vec3(0.f, 1.f, 0.f), true);
     GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::RIGHT), 1000.f, Vec3(1.f, 0.f, 0.f), true);
+}
+
+void CEngineTestScript::SoundTest()
+{
+    if (KEY_TAP(KEY::NUM0))
+    {
+        GamePlayStatic::Play2DSound(L"sound\\wav\\GimmickSolarPanel\\0000.wav", 1, 0.5f, true, false);
+    }
+
+    if (KEY_TAP(KEY::NUM1))
+    {
+        GamePlayStatic::Play3DSound(L"sound\\wav\\GimmickSolarPanel\\0000.wav", Vec3(), 1, 0.5f, true, false);
+    }
+
+    if (KEY_TAP(KEY::NUM2))
+    {
+        GamePlayStatic::PauseSound(L"sound\\wav\\GimmickSolarPanel\\0000.wav");
+    }
+
+    if (KEY_TAP(KEY::NUM3))
+    {
+        GamePlayStatic::PlayBGM(L"sound\\stream\\K15_Grassland1\\K15_Grassland1.marker.wav", 0.5f);
+    }
+
+    if (KEY_TAP(KEY::K))
+    {
+        GamePlayStatic::StopAllSound();
+    }
 }
 
 void CEngineTestScript::OnCollisionEnter(CCollider* _OtherCollider)
