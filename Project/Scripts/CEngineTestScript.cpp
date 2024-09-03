@@ -34,8 +34,7 @@ void CEngineTestScript::tick()
 {
     GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), 1000.f, Vec3(1.f, 1.f, 0.f), true);
 
-    Quat quat = Transform()->GetWorldQuaternion() * Quat::CreateFromAxisAngle(Transform()->GetWorldDir(DIR_TYPE::FRONT), DT);
-    Transform()->SetWorldRotation(quat);
+    Transform()->SetDirection(Transform()->GetWorldDir(DIR_TYPE::FRONT));
 
     // Transform()->SetDirection(Transform()->GetWorldDir(DIR_TYPE::FRONT), Transform()->GetWorldDir(DIR_TYPE::UP));
 

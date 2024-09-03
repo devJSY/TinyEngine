@@ -779,10 +779,17 @@ void GamePlayStatic::PlayBGM(const wstring& _SoundPath, float _Volume)
 
     if (nullptr != pSound)
     {
-        // 현재 재생 중인 BGM 이라면 볼륨만 변경
         if (CurBGM == pSound)
         {
-            CurBGM->SetVolume(_Volume);
+            // 현재 재생 중인 BGM 이라면 볼륨만 변경
+            if (CurBGM->IsPlaying())
+            {
+                CurBGM->SetVolume(_Volume);
+            }
+            else
+            {
+                CurBGM->Play2D(0, _Volume);
+            }
         }
         // BGM 변경
         else

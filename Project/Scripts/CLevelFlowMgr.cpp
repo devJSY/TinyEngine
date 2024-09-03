@@ -425,6 +425,9 @@ void CLevelFlowMgr::LevelExit()
 {
     // Loding UI Ω√¿€
 
+    // Sound Stop
+    GamePlayStatic::StopAllSound();
+    
     // Level Change
     GamePlayStatic::ChangeLevelAsync(ToWstring(m_NextLevelPath), LEVEL_STATE::PLAY);
 }
