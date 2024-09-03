@@ -5,6 +5,7 @@ enum class AbsorbUIState
 {
     Progress,
     End,
+    EndOff,
 };
 
 class CUIAbsorbUIScript : public CScript
@@ -19,12 +20,18 @@ public:
     virtual void tick() override;
 
 public:
-    void ChangeState(AbsorbUIState _eState) { m_eState = _eState; }
+    void ChangeState(AbsorbUIState _eState)
+    {
+        if (AbsorbUIState::EndOff == m_eState)
+            return;
+        m_eState = _eState;
+    }
     void SetTarget(CGameObject* _pObj) { m_pObj = _pObj; }
 
 private:
     void Progress();
     void End();
+    void EndOff();
 
     void TargetTrack();
 

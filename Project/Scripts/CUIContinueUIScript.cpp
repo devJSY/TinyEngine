@@ -4,7 +4,7 @@
 CUIContinueUIScript::CUIContinueUIScript()
     : CScript(UICONTINUEUISCRIPT)
     , m_eState(UIContinueUIState::Progress)
-    , m_fWaitTime(1.5f)
+    , m_fWaitTime(2.5f)
     , m_fAccTime(0.f)
 {
 }

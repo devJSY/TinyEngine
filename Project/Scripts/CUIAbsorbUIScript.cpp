@@ -6,9 +6,10 @@
 CUIAbsorbUIScript::CUIAbsorbUIScript()
     : CScript(UIABSORBUISCRIPT)
     , m_pObj(nullptr)
-    , m_vOffset(Vec3(0.f, 50.f, 0.f))
+    , m_vOffset(Vec3(0.f, 300.f, 0.f))
     , m_eState(AbsorbUIState::Progress)
 {
+    AddScriptParam(SCRIPT_PARAM::VEC3, &m_vOffset, "Offset");
 }
 
 CUIAbsorbUIScript::CUIAbsorbUIScript(const CUIAbsorbUIScript& Origin)
@@ -17,6 +18,7 @@ CUIAbsorbUIScript::CUIAbsorbUIScript(const CUIAbsorbUIScript& Origin)
     , m_vOffset(Origin.m_vOffset)
     , m_eState(AbsorbUIState::Progress)
 {
+    AddScriptParam(SCRIPT_PARAM::VEC3, &m_vOffset, "Offset");
 }
 
 CUIAbsorbUIScript::~CUIAbsorbUIScript()
@@ -43,6 +45,10 @@ void CUIAbsorbUIScript::tick()
     break;
     case AbsorbUIState::End: {
         End();
+    }
+    break;
+    case AbsorbUIState::EndOff: {
+        EndOff();
     }
     break;
     default:
@@ -79,6 +85,19 @@ void CUIAbsorbUIScript::End()
     }
 }
 
+void CUIAbsorbUIScript::EndOff()
+{
+    CMeshRender* pRender = MeshRender();
+    if (nullptr != pRender)
+    {
+        if (nullptr != pRender->GetMaterial(0))
+        {
+            pRender->GetMaterial(0)->SetScalarParam(INT_3, 1);
+            pRender->GetMaterial(0)->SetScalarParam(FLOAT_1, 0.f);
+        }
+    }
+}
+
 void CUIAbsorbUIScript::TargetTrack()
 {
     Vec3 playerPos = m_pObj->Transform()->GetWorldPos();
@@ -101,6 +120,16 @@ void CUIAbsorbUIScript::TargetTrack()
     Matrix _VPInverseMatrix = _pCam->GetProjInvMat() * _pCam->GetViewInvMat();
 
     Vec3 WorldPos = Vector3::Transform(_vPlayerNDCPos, _VPInverseMatrix);
+
+    wstring ObjName = m_pObj->GetName();
+    if (ObjName == L"VendingMachine")
+    {
+        m_vOffset = Vec3(0.f, 386.f, 0.f);
+    }
+    else
+    {
+        m_vOffset = Vec3(0.f, 286.f, 0.f);
+    }
 
     GetOwner()->Transform()->SetWorldPos(WorldPos + m_vOffset);
 }

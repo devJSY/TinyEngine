@@ -19,6 +19,7 @@
 #include "CKirbyDropOutUIScript.h"
 
 #include "CUIContinueUIScript.h"
+#include "CUIAbsorbUIScript.h"
 
 CLevelFlowMgr::CLevelFlowMgr(UINT _Type)
     : CScript(_Type)
@@ -156,6 +157,11 @@ void CLevelFlowMgr::begin()
         m_pContinueUI = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"UI_ContinueButton");
         if (nullptr != m_pContinueUI)
             ContinueUIOff();
+
+        // Absourb UI
+        m_pAbsorbUI = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"UI_AbsorbGuide");
+        if (nullptr != m_pAbsorbUI)
+            AbsorbUIOff();
     }
 }
 
@@ -397,10 +403,14 @@ void CLevelFlowMgr::LevelEnd()
     if (m_pClearUI)
         TurnOffStageClearUI();
 
-    // HP UI Turn Off
-    TurnOffPlayerHP();
-    TurnOffBossHP();
-    ContinueUIOff();
+    // UI Turn Off
+    {
+        TurnOffPlayerHP();
+        TurnOffBossHP();
+        ContinueUIOff();
+        AbsorbUIEndOff();
+        ActiveOffDropUI();
+    }
 
     if (nullptr != m_pDropUI)
         m_pDropUI->SetActive(false);
@@ -444,10 +454,14 @@ void CLevelFlowMgr::LevelRestart()
     if (m_bIsChangedLevel == true)
         return;
 
-    // UI (Fade Out)
-    TurnOffPlayerHP();
-    TurnOffBossHP();
-    ContinueUIOff();
+    // UI Turn Off
+    {
+        TurnOffPlayerHP();
+        TurnOffBossHP();
+        ContinueUIOff();
+        AbsorbUIEndOff();
+        ActiveOffDropUI();
+    }
 
     if (L"Start Level" != m_CurLevelPath)
         SetFadeEffect(Vec3(255.f, 0.f, 255.f), false, 1.f, 1.25f, false);
@@ -482,10 +496,14 @@ void CLevelFlowMgr::RobbyLevel()
     if (m_bIsChangedLevel == true)
         return;
 
-    // UI (Fade Out)s
-    TurnOffPlayerHP();
-    TurnOffBossHP();
-    ContinueUIOff();
+    // UI Turn Off
+    {
+        TurnOffPlayerHP();
+        TurnOffBossHP();
+        ContinueUIOff();
+        AbsorbUIEndOff();
+        ActiveOffDropUI();
+    }
 
     SetFadeEffect(Vec3(252.f, 75.f, 129.f), false, 1.f, 1.25f, false);
 
@@ -845,6 +863,45 @@ void CLevelFlowMgr::ContinueUIOff()
     {
         if (nullptr != m_pContinueUI->GetScript<CUIContinueUIScript>())
             m_pContinueUI->GetScript<CUIContinueUIScript>()->ChangeState(UIContinueUIState::End);
+    }
+}
+
+void CLevelFlowMgr::AbsorbUIOn(CGameObject* _pObj)
+{
+    if (nullptr != m_pAbsorbUI)
+    {
+        CUIAbsorbUIScript* pScript = m_pAbsorbUI->GetScript<CUIAbsorbUIScript>();
+        if (nullptr != pScript)
+        {
+            pScript->ChangeState(AbsorbUIState::Progress);
+            pScript->SetTarget(_pObj);
+        }
+    }
+}
+
+void CLevelFlowMgr::AbsorbUIOff()
+{
+    if (nullptr != m_pAbsorbUI)
+    {
+        CUIAbsorbUIScript* pScript = m_pAbsorbUI->GetScript<CUIAbsorbUIScript>();
+        if (nullptr != pScript)
+        {
+            pScript->ChangeState(AbsorbUIState::End);
+            pScript->SetTarget(nullptr);
+        }
+    }
+}
+
+void CLevelFlowMgr::AbsorbUIEndOff()
+{
+    if (nullptr != m_pAbsorbUI)
+    {
+        CUIAbsorbUIScript* pScript = m_pAbsorbUI->GetScript<CUIAbsorbUIScript>();
+        if (nullptr != pScript)
+        {
+            pScript->ChangeState(AbsorbUIState::EndOff);
+            pScript->SetTarget(nullptr);
+        }
     }
 }
 

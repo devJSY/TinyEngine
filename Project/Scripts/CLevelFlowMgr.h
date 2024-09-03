@@ -47,6 +47,7 @@ private:
     CEnterUIScript* m_pEnterUIScript;
     CGameObject* m_pClearUI;
     CGameObject* m_pContinueUI;
+    CGameObject* m_pAbsorbUI;
 
     bool m_bEnterLevel;
     float m_fFadeInAccTime;
@@ -133,6 +134,10 @@ public:
 
     void ContinueUIOn();
     void ContinueUIOff();
+
+    void AbsorbUIOn(CGameObject* _pObj);
+    void AbsorbUIOff();
+    void AbsorbUIEndOff();
 
 public:
     void ResetFadeEffectTimer();
