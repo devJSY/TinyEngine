@@ -707,11 +707,13 @@ void CNormalEnemyScript::Damage()
     {
         ChangeState(NormalEnemyState::Death);
     }
-
-    if (Animator()->IsFinish())
+    else
     {
-        ChangeState(NormalEnemyState::Fall);
-        m_bFirst = false;
+        if (Animator()->IsFinish())
+        {
+            ChangeState(NormalEnemyState::Fall);
+            m_bFirst = false;
+        }
     }
 }
 

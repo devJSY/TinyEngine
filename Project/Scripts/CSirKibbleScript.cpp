@@ -655,8 +655,10 @@ void CSirKibbleScript::Damage()
     {
         ChangeState(SirKibbleState::Death);
     }
-
-    Animator()->IsFinish() ? ChangeState(SirKibbleState::Fall) : void();
+    else
+    {
+        Animator()->IsFinish() ? ChangeState(SirKibbleState::Fall) : void();
+    }
 }
 #pragma endregion
 

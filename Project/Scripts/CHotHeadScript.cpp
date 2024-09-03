@@ -621,8 +621,10 @@ void CHotHeadScript::Damage()
     {
         ChangeState(HotHeadState::Death);
     }
-
-    Animator()->IsFinish() ? ChangeState(HotHeadState::Fall) : void();
+    else
+    {
+        Animator()->IsFinish() ? ChangeState(HotHeadState::Fall) : void();
+    }
 }
 #pragma endregion
 

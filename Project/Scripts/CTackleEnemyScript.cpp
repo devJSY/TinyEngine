@@ -546,12 +546,14 @@ void CTackleEnemyScript::Landing()
 #pragma region DAMAGE
 void CTackleEnemyScript::Damage()
 {
-    if (GetCurInfo().HP <= 0.f)
+    if (GetCurInfo().HP <= 0.1f)
     {
         ChangeState(TackleEnemyState::Death);
     }
-
-    Animator()->IsFinish() ? ChangeState(TackleEnemyState::Fall) : void();
+    else
+    {
+        Animator()->IsFinish() ? ChangeState(TackleEnemyState::Fall) : void();
+    }
 }
 #pragma endregion
 

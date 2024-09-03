@@ -352,12 +352,14 @@ void CSpookStepScript::Landing()
 #pragma region DAMAGE
 void CSpookStepScript::Damage()
 {
-    if (GetCurInfo().HP <= 0.f)
+    if (GetCurInfo().HP <= 0.1f)
     {
         ChangeState(SpookStepState::Disappear);
     }
-
-    Animator()->IsFinish() ? ChangeState(SpookStepState::Fall) : void();
+    else
+    {
+        Animator()->IsFinish() ? ChangeState(SpookStepState::Fall) : void();
+    }
 }
 #pragma endregion
 
