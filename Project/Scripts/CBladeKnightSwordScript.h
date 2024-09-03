@@ -35,6 +35,9 @@ private:
     void ThrustWait();
 
 private:
+    void SlashEffect(Vec3 _vPos);
+
+private:
     virtual void OnTriggerEnter(CCollider* _OtherCollider);
 
 public:

@@ -89,6 +89,7 @@ void CSolarOnceScript::ChangeState(SolarOnceState _state)
 
 void CSolarOnceScript::EnterState(SolarOnceState _state)
 {
+    Vec3 vWorldPos = Transform()->GetWorldPos();
     switch (_state)
     {
     case SolarOnceState::ChargeOn: {
@@ -105,9 +106,11 @@ void CSolarOnceScript::EnterState(SolarOnceState _state)
         GetOwner()->MeshRender()->GetMaterial(17)->SetEmission(Vec4(1.f, 1.f, 0.f, 1.f));
         GetOwner()->MeshRender()->GetMaterial(18)->SetEmission(Vec4(1.f, 1.f, 0.f, 1.f));
         Animator()->Play(ANIMPREFIX("Charge"), false, false, 1.5f);
+        GamePlayStatic::Play2DSound(L"sound\\wav\\GimmickSolarPanel\\0000.wav", 1, 0.5f);
     }
     break;
     case SolarOnceState::ChargeOff: {
+        GamePlayStatic::Play2DSound(L"sound\\wav\\GimmickSolarPanel\\0002.wav", 1, 0.5f);
         Animator()->SetReverse(true);
     }
     break;
@@ -132,12 +135,8 @@ void CSolarOnceScript::EnterState(SolarOnceState _state)
         CGameObject* pObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(ToWstring(m_MovingObjName));
         if (nullptr != pObj)
             pObj->GetScript<CElevatorScript>()->SetState(ElevatorState::Move);
-        else
-        {
-            string tmp = string("Not Exist Elevator");
-            LOG(LOG_LEVEL::Log, tmp.c_str());
-        }
 
+        GamePlayStatic::Play2DSound(L"sound\\wav\\GimmickSolarPanel\\0001.wav", 1, 0.5f);
         Animator()->Play(ANIMPREFIX("OnWaitStart"), false);
     }
     break;
@@ -170,12 +169,15 @@ void CSolarOnceScript::ExitState(SolarOnceState _state)
     switch (_state)
     {
     case SolarOnceState::ChargeOn: {
+        CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\wav\\GimmickSolarPanel\\0000.wav")->Stop();
         m_fTermTime = 0.f;
         m_bOnOffFlag = false;
     }
     break;
-    case SolarOnceState::ChargeOff:
-        break;
+    case SolarOnceState::ChargeOff: {
+        CAssetMgr::GetInst()->FindAsset<CSound>(L"sound\\wav\\GimmickSolarPanel\\0002.wav")->Stop();
+    }
+    break;
     case SolarOnceState::OnWait:
         break;
     case SolarOnceState::OnWaitStart:

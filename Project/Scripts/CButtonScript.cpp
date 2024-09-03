@@ -99,6 +99,15 @@ CButtonScript::~CButtonScript()
 {
 }
 
+void CButtonScript::Enter()
+{
+    ButtonSoundUpdate();
+}
+
+void CButtonScript::Exit()
+{
+}
+
 void CButtonScript::Func()
 {
     ChangeState(ButtonState::DISABLED);
@@ -128,16 +137,20 @@ void CButtonScript::tick()
     if (m_eCurState == ButtonState::DISABLED)
         return;
 
-    ChangeState(ButtonState::NORMAL);
-
     if (IsMouseHovered())
     {
-        ChangeState(ButtonState::SELECTED);
+        if (m_eCurState == ButtonState::PRESSED)
+            return;
 
+        ChangeState(ButtonState::SELECTED);
         if (KEY_PRESSED(LBTN) || KEY_TAP(LBTN))
         {
             ChangeState(ButtonState::PRESSED);
         }
+    }
+    else
+    {
+        ChangeState(ButtonState::NORMAL);
     }
 }
 
@@ -323,6 +336,31 @@ void CButtonScript::ButtonUpdate()
     }
     break;
     case ButtonTransition::END:
+        break;
+    default:
+        break;
+    }
+}
+
+void CButtonScript::ButtonSoundUpdate()
+{
+    switch (m_eCurState)
+    {
+    case ButtonState::NORMAL:
+        break;
+    case ButtonState::HIGHLIGHTED:
+        break;
+    case ButtonState::PRESSED: {
+        GamePlayStatic::Play2DSound(L"sound\\wav\\UiMenu\\0007.wav", 1, 0.3f);
+    }
+    break;
+    case ButtonState::SELECTED: {
+        GamePlayStatic::Play2DSound(L"sound\\wav\\UiMenu\\0006.wav", 1, 0.3f);
+    }
+    break;
+    case ButtonState::DISABLED:
+        break;
+    case ButtonState::END:
         break;
     default:
         break;

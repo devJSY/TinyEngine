@@ -52,6 +52,7 @@ private:
     bool m_bSparkle;
     bool m_bHPCurrentSparkleFlag;
     bool m_bEmissionFlag;
+    bool m_bSoundFlag;
 
 public:
     virtual void tick() override;

@@ -71,6 +71,8 @@ private:
     void ZoomOut();
     void ZoomIn();
 
+    void BGMUpdate();
+
 private:
     void DragTick();
     void ZoomTick();

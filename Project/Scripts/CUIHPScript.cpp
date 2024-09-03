@@ -35,6 +35,7 @@ CUIHPScript::CUIHPScript()
     , m_bSparkle(false)
     , m_bEmissionFlag(false)
     , m_bHPCurrentSparkleFlag(false)
+    , m_bSoundFlag(false)
 {
     AddScriptParam(SCRIPT_PARAM::STRING, &m_TargetName, "TargetName");
     AddScriptParam(SCRIPT_PARAM::VEC4, &m_vBasicColor, "Basic Color");
@@ -71,6 +72,7 @@ CUIHPScript::CUIHPScript(const CUIHPScript& Origin)
     , m_bSparkle(false)
     , m_bEmissionFlag(false)
     , m_bHPCurrentSparkleFlag(false)
+    , m_bSoundFlag(false)
 {
     AddScriptParam(SCRIPT_PARAM::STRING, &m_TargetName, "TargetName");
     AddScriptParam(SCRIPT_PARAM::VEC4, &m_vBasicColor, "Basic Color");
@@ -110,12 +112,18 @@ void CUIHPScript::tick()
     m_fCurHP = m_pUnitScript->GetCurInfo().HP;
 
     // 현재 체력 상태에 따른 Flag 점화
-    if (m_fCurHP / m_fMaxHP <= 0.15f)
+    if (m_fCurHP / m_fMaxHP <= 0.25f)
     {
         m_bHPCurrentSparkleFlag = true;
+        if (!m_bSoundFlag)
+        {
+            m_bSoundFlag = true;
+            GamePlayStatic::Play2DSound(L"sound\\wav\\UiBasic\\0001.wav", 1, 0.3f);
+        }
     }
     else
     {
+        m_bSoundFlag = false;
         m_bHPCurrentSparkleFlag = false;
     }
 

@@ -13,6 +13,7 @@ public:
 
 private:
     virtual void OnTriggerStay(CCollider* _OtherCollider);
+    virtual void OnTriggerExit(CCollider* _OtherCollider);
 
 public:
     CLONE(CKirbyObjDetectCollider);

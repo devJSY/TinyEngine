@@ -50,15 +50,8 @@ void CButtonManagerScript::tick()
 
     ButtonManipulation();
 
-    if (m_iPrevBtn != m_iCurBtn)
-    {
-        m_vBtn[m_iPrevBtn]->ChangeState(ButtonState::NORMAL);
-        m_vBtn[m_iCurBtn]->ChangeState(ButtonState::SELECTED);
-
-        m_iPrevBtn = m_iCurBtn;
-    }
-
-    if (m_vBtn[m_iCurBtn]->GetState() != ButtonState::DISABLED && (KEY_RELEASED(m_eSelectKey) || (KEY_RELEASED(LBTN) && m_vBtn[m_iCurBtn]->IsHovered())))
+    if (m_vBtn[m_iCurBtn]->GetState() != ButtonState::DISABLED &&
+        (KEY_RELEASED(m_eSelectKey) || (KEY_RELEASED(LBTN) && m_vBtn[m_iCurBtn]->IsHovered())))
     {
         m_vBtn[m_iCurBtn]->Func();
     }
