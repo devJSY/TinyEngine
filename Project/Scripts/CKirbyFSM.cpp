@@ -342,6 +342,11 @@ void CKirbyFSM::begin()
             KirbyChildObject[i]->SetActive(false);
             GamePlayStatic::AddChildObject(GetOwner(), KirbyChildObject[i], L"Wing");
         }
+        else if (ObjName == L"FireSmokeSpawner")
+        {
+            KirbyChildObject[i]->SetActive(false);
+        }
+
         else if (ObjName == L"SleepSnotBubble")
         {
             GamePlayStatic::AddChildObject(GetOwner(), KirbyChildObject[i], L"Mouth");
