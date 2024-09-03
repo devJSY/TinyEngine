@@ -58,6 +58,10 @@ void CElfilisG_SwordWaveLR::Enter_Step()
     {
     case StateStep::Start: {
         GetOwner()->Animator()->Play(ANIMPREFIX("SwingRightStart"), false, false, 2.5f, 0.5f);
+
+        // sound
+        wstring Start = L"sound\\wav\\CharaBossChimera2\\0002_SwingStart.wav";
+        GamePlayStatic::Play2DSound(Start, 1, SOUND_ELFILIS * 0.7f);
     }
     break;
     case StateStep::Wait: {
@@ -68,6 +72,10 @@ void CElfilisG_SwordWaveLR::Enter_Step()
         GetOwner()->Animator()->Play(ANIMPREFIX("SwingRight"), false);
         ELFFSM->OnWeaponTrigger();
         m_bFrmEnter = true;
+
+        // sound
+        wstring Start = L"sound\\wav\\CharaBossChimeraSoulCore\\0000_Slash.wav";
+        GamePlayStatic::Play2DSound(Start, 1, SOUND_ELFILIS);
     }
     break;
     case StateStep::End: {

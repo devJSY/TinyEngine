@@ -76,6 +76,10 @@ void CElfilisG_NormalAtkTeleportL::Enter_Step()
     {
     case StateStep::Start: {
         GetOwner()->Animator()->Play(ANIMPREFIX("SwingLeftStart"), false, false, 1.5f, 0.5f);
+
+        // sound
+        wstring Start = L"sound\\wav\\CharaBossChimera2\\0002_SwingStart.wav";
+        GamePlayStatic::Play2DSound(Start, 1, SOUND_ELFILIS * 0.7f);
     }
     break;
     case StateStep::Wait: {
@@ -91,6 +95,10 @@ void CElfilisG_NormalAtkTeleportL::Enter_Step()
         GetOwner()->Animator()->Play(ANIMPREFIX("SwingLeft"), false, false, 1.5f);
         ELFFSM->OnWeaponTrigger();
         m_bFrmEnter = true;
+
+        // sound
+        wstring Start = L"sound\\wav\\CharaBossChimera2\\0005_Swing.wav";
+        GamePlayStatic::Play2DSound(Start, 1, SOUND_ELFILIS * 0.8f);
     }
     break;
     case StateStep::End: {

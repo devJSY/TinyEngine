@@ -56,7 +56,7 @@ void CFlowMgr_BossElfilis::LevelStart()
 {
     CBossLevelFlowMgr::LevelStart();
 
-    //FadeInBGM(L"sound\\stream\\K15_BossChimeraPerfect_Stest\\K15_BossChimeraPerfect_Stest.marker.wav", 0.f, SOUND_BGM, 1.f);
+    FadeInBGM(L"sound\\stream\\K15_BossChimeraPerfect_Stest\\K15_BossChimeraPerfect_Stest.marker.wav", 0.f, SOUND_BGM, 1.f);
 }
 
 void CFlowMgr_BossElfilis::LevelEnd()
