@@ -43,7 +43,7 @@ CUIBossHPScript::CUIBossHPScript(const CUIBossHPScript& Origin)
     , m_fAccTime(0.f)
     , m_fComboTime(Origin.m_fComboTime)
     , m_bIsScaling(false)
-    , m_fDescSpeed(Origin.m_fDescSpeed)
+    , m_fDescSpeed(65.f)
     , m_vDecreaseColor(Origin.m_vDecreaseColor)
     , m_vBasicColor(Origin.m_vBasicColor)
     , m_fMaxHP(0.f)
@@ -131,7 +131,7 @@ void CUIBossHPScript::EnterState()
         m_pNameObj = GetOwner()->GetChildObject(L"UI_BossName1");
         m_pNameObj2 = GetOwner()->GetChildObject(L"UI_BossName2");
 
-        m_fDescSpeed = 30.f;
+        m_fDescSpeed = 70.f;
 
         if (m_bMolPho)
         {
@@ -192,26 +192,26 @@ void CUIBossHPScript::HPTick()
         // 데미지를 받음
         if (fCheckHP - m_fCurHP > 0.f)
         {
-            m_vDamageTask.push_back({m_fCurHP, fCheckHP});
-            m_bDamaged = true;
-
             if (m_bHpHealed)
             {
-                m_bHpHealed = false;
-                m_fCurPrevHP = m_fPrevHP = m_fCurHP;
+                float fPrevHP = m_vHealTask[0].fPrevHP;
+
+                if (fPrevHP >= m_fCurHP)
+                {
+                    m_bHpHealed = false;
+                    m_vHealTask.pop_back();
+                }
+            }
+            else
+            {
+                m_vDamageTask.push_back({m_fCurHP, fCheckHP});
+                m_bDamaged = true;
             }
         }
         // 체력을 회복함
         else if (fCheckHP - m_fCurHP < 0.f)
         {
             m_vHealTask.push_back({m_fCurHP, fCheckHP});
-            m_bHpHealed = true;
-
-            if (m_bDamaged)
-            {
-                m_bDamaged = false;
-                // m_fCurPrevHP = m_fPrevHP = m_fCurHP;
-            }
         }
     }
 
@@ -233,7 +233,7 @@ void CUIBossHPScript::HPTick()
 
     if (m_bIsHealedScaling)
     {
-        CaculateHealShading();
+        // CaculateHealShading();
     }
 }
 
@@ -258,7 +258,7 @@ void CUIBossHPScript::CaculateHealShading()
 
 void CUIBossHPScript::HealScaling()
 {
-    m_fPrevHP += CTimeMgr::GetInst()->GetDeltaTime() * m_fDescSpeed;
+    m_fPrevHP += CTimeMgr::GetInst()->GetDeltaTime() * 80.f;
 
     if (m_fCurHP <= m_fPrevHP)
     {
