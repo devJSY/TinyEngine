@@ -195,6 +195,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CSound.h" />
     <ClInclude Include="CSoundEditor.h" />
     <ClInclude Include="CSoundListener.h" />
+    <ClInclude Include="CSoundMgr.h" />
     <ClInclude Include="CSphereCollider.h" />
     <ClInclude Include="CSpriteEditor.h" />
     <ClInclude Include="CStructuredBuffer.h" />
@@ -326,6 +327,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CSound.cpp" />
     <ClCompile Include="CSoundEditor.cpp" />
     <ClCompile Include="CSoundListener.cpp" />
+    <ClCompile Include="CSoundMgr.cpp" />
     <ClCompile Include="CSphereCollider.cpp" />
     <ClCompile Include="CSpriteEditor.cpp" />
     <ClCompile Include="CStructuredBuffer.cpp" />
