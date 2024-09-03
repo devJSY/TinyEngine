@@ -8,6 +8,7 @@ private:
     bool            m_bRandom;
     bool            m_bDirRandom;
     bool            m_bRotRandom;
+    bool            m_bHorizontalDir;
 
     // 랜덤으로 생성할 경우 최대 Max값을 가진다.
     float           m_MinLifeTime;
