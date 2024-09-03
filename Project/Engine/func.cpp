@@ -1804,9 +1804,12 @@ Vec3 QuaternionToEulerAngles(Quaternion q)
     // pitch (y-axis rotation)
     float sinp = 2.f * (normalizedQ.w * normalizedQ.y - normalizedQ.x * normalizedQ.z);
     // Clamp pitch to the range [-1, 1] to avoid NaN due to domain errors
-    if (std::fabs(sinp) >= 1.f)
+    sinp = std::clamp(sinp, -1.f, 1.f);
+
+    // Check for potential gimbal lock
+    if (std::fabs(sinp) >= 0.9999f) // Adjust this threshold if necessary
     {
-        // Quaternion::ToEuler() Exception Handling
+        // Special case for pitch when sinp is close to ¡¾1
         const float xx = normalizedQ.x * normalizedQ.x;
         const float yy = normalizedQ.y * normalizedQ.y;
         const float zz = normalizedQ.z * normalizedQ.z;
@@ -1815,13 +1818,13 @@ Vec3 QuaternionToEulerAngles(Quaternion q)
         const float m32 = 2.f * normalizedQ.y * normalizedQ.z - 2.f * normalizedQ.x * normalizedQ.w;
         const float m33 = 1.f - 2.f * xx - 2.f * yy;
 
-        const float cy = sqrtf(m33 * m33 + m31 * m31);
-        const float cx = atan2f(-m32, cy);
+        const float cy = std::sqrtf(m33 * m33 + m31 * m31);
+        const float cx = std::atan2f(-m32, cy);
 
         const float m12 = 2.f * normalizedQ.x * normalizedQ.y + 2.f * normalizedQ.z * normalizedQ.w;
         const float m22 = 1.f - 2.f * xx - 2.f * zz;
 
-        return Vector3(cx, atan2f(m31, m33), atan2f(m12, m22));
+        return Vec3(cx, std::atan2f(m31, m33), std::atan2f(m12, m22));
     }
     else
     {

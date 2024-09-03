@@ -3,6 +3,7 @@
 #include <Engine\\CTransform.h>
 #include "CKirbyBulletScript.h"
 #include <Engine\\CTimeMgr.h>
+#include <Engine\\CRenderMgr.h>
 
 CEngineTestScript::CEngineTestScript()
     : CScript(ENGINETESTSCRIPT)
@@ -32,9 +33,22 @@ void CEngineTestScript::begin()
 
 void CEngineTestScript::tick()
 {
-    GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), 1000.f, Vec3(1.f, 1.f, 0.f), true);
+
+    GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::FRONT), 1000.f, Vec3(0.f, 0.f, 1.f), true);
+    GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::UP), 1000.f, Vec3(0.f, 1.f, 0.f), true);
+    GamePlayStatic::DrawDebugLine(Transform()->GetWorldPos(), Transform()->GetWorldDir(DIR_TYPE::RIGHT), 1000.f, Vec3(1.f, 0.f, 0.f), true);
 
     Transform()->SetDirection(Transform()->GetWorldDir(DIR_TYPE::FRONT));
+
+    CCamera* pMainCam = CRenderMgr::GetInst()->GetMainCamera();
+    // billboard
+    if (nullptr != pMainCam)
+    {
+        Vec3 LookDir = (pMainCam->GetOwner()->Transform()->GetWorldPos() - Transform()->GetWorldPos()).Normalize();
+        Transform()->SetDirection(LookDir);
+    }
+
+    SoundTest();
 
     // Transform()->SetDirection(Transform()->GetWorldDir(DIR_TYPE::FRONT), Transform()->GetWorldDir(DIR_TYPE::UP));
 
