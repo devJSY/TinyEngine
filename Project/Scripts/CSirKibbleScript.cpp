@@ -183,7 +183,7 @@ void CSirKibbleScript::EnterState(SirKibbleState _state)
     }
     break;
     case SirKibbleState::FindWait: {
-        Animator()->Play(ANIMPREFIX("FindWait"), true, false, 1.5f);
+        Animator()->Play(ANIMPREFIX("FindWait"), false, false, 1.5f);
     }
     break;
     case SirKibbleState::AirCutterJumpStart: {
