@@ -44,7 +44,7 @@
 #define LAYER_UI                        15
 
 #define SOUND_BGM                       0.5f
-#define SOUND_ELFILIS                   0.3f
+#define SOUND_ELFILIS                   0.2f
 
 #define PLAY_CURSTATE(STATE)                                                                                                                         \
     CKirbyFSM* KirbyFSM = CPlayerMgr::GetPlayerFSM();                                                                                                \

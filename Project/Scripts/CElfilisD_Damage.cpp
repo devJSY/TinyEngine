@@ -67,6 +67,11 @@ void CElfilisD_Damage::Enter_Step()
         m_ForceDir.y = 0.f;
         m_ForceDir.Normalize();
         m_TargetPos = m_ForceDir * 300.f;
+
+        // Sound
+        wstring ResistBGM = L"sound\\stream\\K15_ChimeraSoulCoreStart\\K15_ChimeraSoulCoreStart.wav";
+        GamePlayStatic::Play2DSound(ResistBGM, 1, SOUND_BGM);
+        CBossMgr::GetBossFlowMgr()->ChangeBGMSize(0.f, 1.f);
     }
     break;
     }

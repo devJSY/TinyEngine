@@ -48,8 +48,10 @@ void CElfilisD_ResistFail::Enter_Step()
         ELFFSM->SetGlobalState(true);
 
         // Sound
+        // Sound
         wstring Resist = L"sound\\wav\\CharaBossChimeraSoul\\0002_Death.wav";
         GamePlayStatic::Play2DSound(Resist, 1, SOUND_ELFILIS);
+        CBossMgr::GetBossFlowMgr()->ChangeBGMSize(0.f, 1.f);
 
         // TimeScale & Camera Àá±ñ ¸ØÃã
         CTimeMgr::GetInst()->SetTimeScale(0.5f, 0.f);
