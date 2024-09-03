@@ -604,6 +604,14 @@ void CLevelFlowMgr::TurnOffBossHP()
     }
 }
 
+void CLevelFlowMgr::BossRevive()
+{
+    if (nullptr != m_pBossHP)
+    {
+        m_pBossHP->GetScript<CUIBossHPScript>()->BossRevive();
+    }
+}
+
 void CLevelFlowMgr::TurnOnPlayerHP()
 {
     if (nullptr != m_pPlayerHP)

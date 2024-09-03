@@ -115,6 +115,8 @@ protected:
 public:
     void TurnOnBossHP();
     void TurnOffBossHP();
+    void BossRevive();
+
     void TurnOnPlayerHP();
     void TurnOffPlayerHP();
 

@@ -98,6 +98,11 @@ void CUIBossHPScript::ChangeState(HPState _state)
     EnterState();
 }
 
+void CUIBossHPScript::BossRevive()
+{
+    m_bIsHealedScaling = true;
+}
+
 void CUIBossHPScript::EnterState()
 {
     switch (m_eState)
@@ -181,6 +186,11 @@ void CUIBossHPScript::HPTick()
     if (!m_pUnitScript)
         return;
 
+    if (KEY_TAP(I))
+    {
+        BossRevive();
+    }
+
     // 데미지가 달면 현재 체력과 달라짐
     float fCheckHP = m_fCurHP;
     m_fCurHP = m_pUnitScript->GetCurInfo().HP;
@@ -212,6 +222,7 @@ void CUIBossHPScript::HPTick()
         else if (fCheckHP - m_fCurHP < 0.f)
         {
             m_vHealTask.push_back({m_fCurHP, fCheckHP});
+            m_bHpHealed = true;
         }
     }
 
@@ -233,7 +244,7 @@ void CUIBossHPScript::HPTick()
 
     if (m_bIsHealedScaling)
     {
-        // CaculateHealShading();
+        CaculateHealShading();
     }
 }
 
@@ -251,9 +262,12 @@ void CUIBossHPScript::CaculateShading()
 
 void CUIBossHPScript::CaculateHealShading()
 {
-    float _fShadingRatio = m_fPrevHP / m_fMaxHP;
+    float _fShadingRatio = m_fCurHP / m_fMaxHP;
     m_pRenderer->GetMaterial(0)->SetScalarParam(FLOAT_0, _fShadingRatio);
+    m_pRenderer->GetMaterial(0)->SetScalarParam(FLOAT_1, _fShadingRatio);
     m_bIsHealedScaling = false;
+    m_bHpHealed = false;
+    m_vDamageTask.pop_back();
 }
 
 void CUIBossHPScript::HealScaling()
@@ -263,8 +277,6 @@ void CUIBossHPScript::HealScaling()
     if (m_fCurHP <= m_fPrevHP)
     {
         m_fPrevHP = m_fCurHP;
-        m_bIsHealedScaling = true;
-        m_bHpHealed = false;
     }
     m_pRenderer->GetMaterial(0)->SetScalarParam(VEC4_1, Vec4(0.f, 176.f, 151.f, 255.f) / 255.f);
     float _fScalingRatio = m_fPrevHP / m_fMaxHP;

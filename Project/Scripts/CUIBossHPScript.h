@@ -63,6 +63,7 @@ public:
     virtual void tick() override;
 
     void ChangeState(HPState _state);
+    void BossRevive();
 
 private:
     void EnterState();
