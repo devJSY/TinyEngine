@@ -102,6 +102,8 @@ public:
     void FadeInBGM(const wstring& _SoundPath, float _StartVolume, float _EndVolume, float _Duration);
     void FadeOutBGM(float _Duration);
 
+    void FadeOutSound();
+
 public:
     virtual void LevelStart();
     virtual void LevelEnd();

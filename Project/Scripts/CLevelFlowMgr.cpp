@@ -804,6 +804,11 @@ void CLevelFlowMgr::FadeOutBGM(float _Duration)
     m_BGMDuration = _Duration;
 }
 
+void CLevelFlowMgr::FadeOutSound()
+{
+    GamePlayStatic::Play2DSound(L"sound\\wav\\UiResident\\0004.wav", 1, 0.5f);
+}
+
 void CLevelFlowMgr::SetToneMappingParam(bool _bBloomEnable, bool _bBlendMode, float _BloomStrength, float _Threshold, float _FilterRadius,
                                         float _Exposure, float _Gamma)
 {
