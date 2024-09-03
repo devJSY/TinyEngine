@@ -226,6 +226,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CKirbyVacuum2.h" />
     <ClInclude Include="CKirbyVacuum2Run.h" />
     <ClInclude Include="CKirbyVacuum2Start.h" />
+    <ClInclude Include="CKirbyVacuumScript.h" />
     <ClInclude Include="CLensFlareScript.h" />
     <ClInclude Include="CLevelFlowMgr.h" />
     <ClInclude Include="CKirbyAbility_Sleep.h" />
@@ -577,6 +578,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CKirbyVacuum2.cpp" />
     <ClCompile Include="CKirbyVacuum2Run.cpp" />
     <ClCompile Include="CKirbyVacuum2Start.cpp" />
+    <ClCompile Include="CKirbyVacuumScript.cpp" />
     <ClCompile Include="CLensFlareScript.cpp" />
     <ClCompile Include="CLevelFlowMgr.cpp" />
     <ClCompile Include="CKirbyAbility_Sleep.cpp" />

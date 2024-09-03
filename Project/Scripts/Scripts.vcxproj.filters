@@ -985,6 +985,9 @@
     <ClInclude Include="CKirbySwordTornadoScript.h">
       <Filter>Scripts\Character\Kirby\KirbySwordTornado</Filter>
     </ClInclude>
+    <ClInclude Include="CKirbyVacuumScript.h">
+      <Filter>Scripts\Character\Kirby\KirbyVacuumScript</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -1979,6 +1982,9 @@
     </ClCompile>
     <ClCompile Include="CKirbySwordTornadoScript.cpp">
       <Filter>Scripts\Character\Kirby\KirbySwordTornado</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyVacuumScript.cpp">
+      <Filter>Scripts\Character\Kirby\KirbyVacuumScript</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -3112,6 +3118,9 @@
     </Filter>
     <Filter Include="Scripts\Character\Kirby\KirbySwordTornado">
       <UniqueIdentifier>{9b8f6e59-73cd-4fec-886f-6020f6c1cdc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Kirby\KirbyVacuumScript">
+      <UniqueIdentifier>{ef3775f5-a505-4c55-91cd-13f4cfb5abff}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

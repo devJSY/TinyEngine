@@ -1282,4 +1282,52 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
         pShader->SetName(L"MeshDistortionShader");
         AddAsset(L"MeshDistortionShader", pShader);
     }
+
+    // =================================
+    // Vacuum Effect Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\UnrealPBRVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\VacuumEffectPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetDSType(DS_TYPE::NO_WRITE);
+        pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+
+
+        pShader->AddScalarParam(FLOAT_0, "Gradation Alpha");
+
+        pShader->AddTexParam(TEX_0, "Color Texture");
+        pShader->AddTexParam(TEX_1, "Alpha Texture");
+        pShader->AddTexParam(TEX_2, "Gradation Texture");
+
+
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
+
+        pShader->SetName(L"VacuumEffectShader");
+        AddAsset(L"VacuumEffectShader", pShader);
+    }
+
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\UnrealPBRVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\VacuumEffectPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_FRONT);
+        pShader->SetDSType(DS_TYPE::NO_WRITE);
+        pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+
+        pShader->AddScalarParam(FLOAT_0, "Gradation Alpha");
+
+        pShader->AddTexParam(TEX_0, "Color Texture");
+        pShader->AddTexParam(TEX_1, "Alpha Texture");
+        pShader->AddTexParam(TEX_2, "Gradation Texture");
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
+
+        pShader->SetName(L"VacuumInsideEffectShader");
+        AddAsset(L"VacuumInsideEffectShader", pShader);
+    }
 }
