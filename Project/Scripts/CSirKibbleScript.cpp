@@ -440,6 +440,9 @@ void CSirKibbleScript::ProjectileAttack(bool _bFlag)
 
 void CSirKibbleScript::ChangeState(SirKibbleState _state)
 {
+    if (m_eState == SirKibbleState::Death)
+        return;
+
     ExitState(m_eState);
     m_eState = _state;
     EnterState(m_eState);

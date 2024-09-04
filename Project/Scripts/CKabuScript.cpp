@@ -188,6 +188,9 @@ UINT CKabuScript::LoadFromLevelFile(FILE* _File)
 
 void CKabuScript::ChangeState(KabuState _state)
 {
+    if (m_eState == KabuState::Death)
+        return;
+
     ExitState(m_eState);
     m_eState = _state;
     EnterState(m_eState);

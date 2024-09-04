@@ -365,6 +365,9 @@ void CTackleEnemyScript::ExitState(TackleEnemyState _state)
 
 void CTackleEnemyScript::ChangeState(TackleEnemyState _state)
 {
+    if (TackleEnemyState::Death == m_eState)
+        return;
+
     ExitState(m_eState);
     m_eState = _state;
     EnterState(m_eState);

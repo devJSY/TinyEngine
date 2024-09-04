@@ -22,7 +22,7 @@ class CTackleEnemyScript : public CMonsterUnitScript
 private:
     TackleEnemyState m_eState;
     CGameObject* m_pDashEffect;
-    
+
     float m_fAccTime;
     float m_fWaitTime;
 
@@ -47,6 +47,7 @@ private:
     void ExitState(TackleEnemyState _state);
     void ChangeState(TackleEnemyState _state);
     void CheckDamage();
+
     Vec3 TrackDir(Vec3 _vPos);
     void ApplyDir(Vec3 _vFront, bool _flag);
     void DashEffectOn();
@@ -68,9 +69,6 @@ private:
     void Eaten();
     void Wait();
     void Death();
-
-private:
-
 
 public:
     CLONE(CTackleEnemyScript)

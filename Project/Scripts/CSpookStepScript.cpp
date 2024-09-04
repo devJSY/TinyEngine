@@ -32,6 +32,8 @@ void CSpookStepScript::tick()
 
     CheckDamage();
 
+    IsDead();
+
     FSM();
 
     if (SpookStepState::Eaten != m_eState && GetResistState())
@@ -119,28 +121,9 @@ void CSpookStepScript::EnterState()
     }
     break;
     case SpookStepState::Damage: {
-        Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, false);
-        Vec3 vFollowDir = (PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos()).Normalize();
-        vFollowDir.y = 0.f;
-
-        Transform()->SetDirection(vFollowDir);
-
-        Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
-
-        Vec3 vHitDir = GetOwner()->GetScript<CUnitScript>()->GetHitDir();
-        float fForce = 0.f;
-        if (GetCurInfo().HP <= 0.1f)
-        {
-            fForce = 9.f;
-            vHitDir.y = 1.5f;
-        }
-        else
-        {
-            fForce = 6.f;
-            vHitDir.y = 1.f;
-        }
-
-        Rigidbody()->AddForce(vHitDir.Normalize() * fForce, ForceMode::Impulse);
+        Vec3 vDir = GetOwner()->GetScript<CUnitScript>()->GetHitDir();
+        vDir.y = 1.f;
+        AttackKnockBack(vDir, 6.f);
 
         Animator()->Play(ANIMPREFIX("Damage"), false, false, 1.f);
     }
@@ -150,6 +133,9 @@ void CSpookStepScript::EnterState()
     }
     break;
     case SpookStepState::Disappear: {
+        Vec3 vDir = GetOwner()->GetScript<CUnitScript>()->GetHitDir();
+        vDir.y = 1.5f;
+        AttackKnockBack(vDir, 9.f);
         SpawnDeadSmokeEffect();
         Animator()->Play(ANIMPREFIX("Disappear"), false);
     }
@@ -163,6 +149,11 @@ void CSpookStepScript::EnterState()
 
 void CSpookStepScript::FSM()
 {
+    if (!IsGround())
+    {
+        ChangeState(SpookStepState::Fall);
+    }
+
     switch (m_eState)
     {
     case SpookStepState::Appear: {
@@ -206,11 +197,6 @@ void CSpookStepScript::FSM()
     default:
         break;
     }
-
-    if (!IsGround())
-    {
-        ChangeState(SpookStepState::Fall);
-    }
 }
 
 void CSpookStepScript::ExitState()
@@ -246,6 +232,11 @@ void CSpookStepScript::ExitState()
 
 void CSpookStepScript::ChangeState(SpookStepState _state)
 {
+    if (SpookStepState::Disappear == m_eState)
+    {
+        return;
+    }
+
     ExitState();
     m_eState = _state;
     EnterState();
@@ -256,6 +247,14 @@ void CSpookStepScript::CheckDamage()
     if (IsGetDamage())
     {
         ChangeState(SpookStepState::Damage);
+    }
+}
+
+void CSpookStepScript::IsDead()
+{
+    if (m_CurInfo.HP <= 0.1f)
+    {
+        ChangeState(SpookStepState::Disappear);
     }
 }
 

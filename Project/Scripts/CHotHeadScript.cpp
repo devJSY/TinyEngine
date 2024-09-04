@@ -434,6 +434,9 @@ void CHotHeadScript::ExitState(HotHeadState _state)
 
 void CHotHeadScript::ChangeState(HotHeadState _state)
 {
+    if (HotHeadState::Death == m_eState)
+        return;
+
     ExitState(m_eState);
     m_eState = _state;
     EnterState(m_eState);

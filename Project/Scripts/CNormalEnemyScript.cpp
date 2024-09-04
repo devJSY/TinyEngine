@@ -442,8 +442,9 @@ void CNormalEnemyScript::ExitState(NormalEnemyState _state)
 
 void CNormalEnemyScript::ChangeState(NormalEnemyState _state)
 {
-    string iState = std::to_string((int)_state);
-    LOG(LOG_LEVEL::Log, (string("[Monster State Change] : ") + iState).c_str());
+    if (m_eState == NormalEnemyState::Death)
+        return;
+
     ExitState(m_eState);
     m_eState = _state;
     EnterState(m_eState);
