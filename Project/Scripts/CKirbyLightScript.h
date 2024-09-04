@@ -12,6 +12,7 @@ enum class KirbyLightState
 class CKirbyLightScript : public CScript
 {
 private:
+    Ptr<CMaterial> m_GlassMtrl;
     float m_MinFallOfEnd;
     float m_MaxFallOfEnd;
     float m_FallRatio;
@@ -30,6 +31,9 @@ public:
     void Drop();
     void TurnOn();
     void TurnOff();
+
+    private:
+    void ChangeGlassEmission(float _LightRatio);
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;
