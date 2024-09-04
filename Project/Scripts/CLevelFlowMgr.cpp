@@ -832,12 +832,6 @@ void CLevelFlowMgr::LevelLoading()
 void CLevelFlowMgr::SetUIDOFEffect()
 {
     CRenderMgr::GetInst()->SetEnableDOF(false);
-    static Ptr<CMaterial> pDOFMtrl = CAssetMgr::GetInst()->Load<CMaterial>(L"DOFMtrl");
-
-    pDOFMtrl->SetScalarParam(VEC2_0, Vec2(-0.5f, -0.5f));
-
-    pDOFMtrl->SetScalarParam(FLOAT_0, 1.f);
-    pDOFMtrl->SetScalarParam(FLOAT_0, 3000.f);
 }
 
 void CLevelFlowMgr::TurnOnDropUI()
