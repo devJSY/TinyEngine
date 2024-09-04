@@ -139,6 +139,10 @@ void CElfilisArrowScript::ChangeStep(UINT _Step)
         break;
     case 3: {
         m_bSpawnDropStar = false;
+
+        // sound
+        wstring ArrowStart = L"sound\\wav\\CharaBossChimera2\\0021_RayArrow.wav";
+        GamePlayStatic::Play2DSound(ArrowStart, 1, SOUND_ELFILIS * 0.8f);
     }
     break;
     }

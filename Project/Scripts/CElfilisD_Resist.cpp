@@ -6,6 +6,7 @@
 
 CElfilisD_Resist::CElfilisD_Resist()
     : m_AccTime(0.f)
+    , m_bFrmEnter(false)
 {
 }
 
@@ -63,6 +64,10 @@ void CElfilisD_Resist::Enter_Step()
 
         CBossMgr::GetBossFlowMgr()->ChangeFlow(BossLevelFlow::DemoPlay);
 
+        // Sound
+        wstring Damage = L"sound\\wav\\CharaBossChimera2\\0060_ResistDamage.wav";
+        GamePlayStatic::Play2DSound(Damage, 1, SOUND_ELFILIS);
+
         // Camera : 에피리스 타겟 (진입위치, 각도 등 항상 같음)
         CAMERACTRL->SetMainTarget(BOSS);
         CAMERACTRL->SetOffset(Vec3(0.f, 0.f, 0.f));
@@ -76,6 +81,11 @@ void CElfilisD_Resist::Enter_Step()
     case StateStep::Ready: {
         GetOwner()->Animator()->Play(ANIMPREFIX("LastDamageWait"), false, false, 1.5f);
         m_AccTime = 0.f;
+        m_bFrmEnter = true;
+
+        // Sound
+        wstring Resist = L"sound\\wav\\CharaBossChimera2\\0062_Resist.wav";
+        GamePlayStatic::Play2DSound(Resist, 1, SOUND_ELFILIS);
 
         // Camera : 줌인
         CAMERACTRL->SetLookDir(Vec3(-0.8f, -0.1f, -0.9f).Normalize());
@@ -83,7 +93,7 @@ void CElfilisD_Resist::Enter_Step()
     }
     break;
     case StateStep::Start: {
-        //GetOwner()->Animator()->Play(ANIMPREFIX("ResistStart"), false, false, 1.5f);
+        // GetOwner()->Animator()->Play(ANIMPREFIX("ResistStart"), false, false, 1.5f);
         CBossMgr::GetBossFlowMgr()->ChangeFlow(BossLevelFlow::Fight);
         m_AccTime = 0.f;
 
@@ -120,6 +130,15 @@ void CElfilisD_Resist::Exit_Step()
 
 void CElfilisD_Resist::ReadyStart()
 {
+    // Sound
+    if (CHECK_ANIMFRM(GetOwner(), 60) && m_bFrmEnter)
+    {
+        m_bFrmEnter = false;
+
+        wstring DropHalberd = L"sound\\wav\\CharaBossChimera2\\0061_ResistDropHalberd.wav";
+        GamePlayStatic::Play2DSound(DropHalberd, 1, SOUND_ELFILIS * 0.7f);
+    }
+
     if (GetOwner()->Animator()->IsFinish())
     {
         ChangeStep(StateStep::Ready);

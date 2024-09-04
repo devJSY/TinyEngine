@@ -4,6 +4,7 @@
 #include "CCameraController.h"
 
 CMorphoAtkG_NormalNear_Atk3::CMorphoAtkG_NormalNear_Atk3()
+    : m_bFrmEnter(true)
 {
 }
 
@@ -39,6 +40,7 @@ void CMorphoAtkG_NormalNear_Atk3::Enter_Step()
     case StateStep::Progress: {
         GetOwner()->Animator()->Play(ANIMPREFIX("Attack3"), false, false, 1.5f);
         MRPFSM->OnWeaponRTrigger();
+        m_bFrmEnter = true;
 
         // move dir
         m_ForceDir = PLAYER->Transform()->GetWorldPos() - GetOwner()->Transform()->GetWorldPos();
@@ -85,6 +87,16 @@ void CMorphoAtkG_NormalNear_Atk3::Progress()
     float NewSpeed = 15.f * sinf(t * XM_PI / 2.f);
     Vec3 NewVeloc = m_ForceDir * NewSpeed;
     GetOwner()->Rigidbody()->SetVelocity(NewVeloc);
+
+    // sound
+    if (m_bFrmEnter && CHECK_ANIMFRM(GetOwner(), 10))
+    {
+        m_bFrmEnter = false;
+
+        // Sound
+        wstring Sound = L"sound\\wav\\CharaMorphoknight\\Swing1.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_MORPHO);
+    }
 
     // Change Step
     if (GetOwner()->Animator()->IsFinish())

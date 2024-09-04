@@ -131,3 +131,5 @@ CUICommonHitEffectScript
 CUISlashEffectScript
 CUIAbsorbUIScript
 CUIContinueUIScript
+CKirbyVacuumScript
+CAutoDelete

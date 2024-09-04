@@ -373,6 +373,9 @@
     <ClInclude Include="CSoundListener.h">
       <Filter>08. Component\SoundListener</Filter>
     </ClInclude>
+    <ClInclude Include="CSoundMgr.h">
+      <Filter>04. Manager\SoundMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -731,6 +734,9 @@
     </ClCompile>
     <ClCompile Include="CSoundListener.cpp">
       <Filter>08. Component\SoundListener</Filter>
+    </ClCompile>
+    <ClCompile Include="CSoundMgr.cpp">
+      <Filter>04. Manager\SoundMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1169,6 +1175,9 @@
     <Filter Include="ShaderCode\Kirby\UIShader\DashEffectMaskingShader">
       <UniqueIdentifier>{70507765-f9da-4c56-b8bd-04eb4e384943}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. Manager\SoundMgr">
+      <UniqueIdentifier>{113b04b3-c9d0-4b5e-b950-9c1f97936e2b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="global.hlsli">
@@ -1524,7 +1533,7 @@
     <FxCompile Include="RadialBlurPS.hlsl">
       <Filter>ShaderCode\Render\Postprocess</Filter>
     </FxCompile>
-    <FxCompile Include="TornadoEffectPS.hlsl">
+    <FxCompile Include="VacuumEffectPS.hlsl">
       <Filter>ShaderCode\Kirby\Common</Filter>
     </FxCompile>
     <FxCompile Include="UIKirbyFontPS.hlsl">

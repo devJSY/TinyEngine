@@ -102,6 +102,14 @@ private:
     // Shader
     Ptr<CGraphicsShader> m_OriginShader;
 
+    // CameraSetupSave
+    UINT m_LastCameraSetup;
+
+    // Burning Particle Spawn
+    bool m_bBurningParticle;
+    float m_BurningParticleAcc;
+    float m_BurningParticleCoolTime;
+
 public:
     void begin() override;
     void tick() override;
@@ -156,6 +164,14 @@ public:
     void SetGlidingGravity(float _Gravity) { m_GlidingGravity = _Gravity; }
     void SetUnstuffReverse(bool _Unstuffed) { m_bUnstuffReverse = _Unstuffed; }
     void SetMtrlShader(Ptr<CGraphicsShader> _Shader);
+    void SaveLastCameraSetup(UINT _Setup) { m_LastCameraSetup = _Setup; }
+    void SetBurningParticleSpawn(bool _b) { m_bBurningParticle = _b; }
+    void ResetBurningParticleSpawn()
+    {
+        m_BurningParticleAcc = 0.f;
+        m_BurningParticleCoolTime = 0.1f;
+    }
+    void ChangeNextAbility();
 
     virtual CKirbyUnitScript* GetUnit() override { return (CKirbyUnitScript*)m_Unit; }
     CKirbyAbility* GetCurAbility() const { return m_arrAbility[(UINT)m_CurAbility]; }
@@ -204,6 +220,7 @@ public:
     Vec3 GetLadderTop() const { return m_LadderTop; }
     Vec3 GetLadderBottom() const { return m_LadderBottom; }
     bool GetEscapeLadder() const { return m_bEscapeLadder; }
+    UINT GetLastCameraSetup() const { return m_LastCameraSetup; }
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

@@ -51,7 +51,11 @@ void CKirbyObject::ParseDemoMesh(Ptr<CMeshData> _pMesh)
 void CKirbyObject::ChangeState(const wstring& _strStateName)
 {
     CFSMScript* OwnerFSM = (CFSMScript*)CPlayerMgr::GetPlayerFSM();
-    assert(OwnerFSM);
+    if (!OwnerFSM)
+    {
+        assert(0);
+        return;
+    }
 
     OwnerFSM->ChangeState(_strStateName);
 }
@@ -199,6 +203,13 @@ void CKirbyObject::ChangeObject()
 {
     if (m_bFrmEnter && CHECK_ANIMFRM(PLAYER, m_MeshChangeIdx))
     {
+        CGameObject* pStarEffect =
+            CAssetMgr::GetInst()
+                ->Load<CPrefab>(L"prefab\\Effect_KirbyChangeAbilityStarSpawn.pref", L"prefab\\Effect_KirbyChangeAbilityStarSpawn.pref")
+                ->Instantiate();
+
+        GamePlayStatic::SpawnGameObject(pStarEffect, pStarEffect->GetLayerIdx());
+
         PLAYER->GetRenderComponent()->SetMaterial(nullptr, m_DemoMeshIdx_BodyA);
         PLAYER->GetRenderComponent()->SetMaterial(CPlayerMgr::GetPlayerBodyDemoMtrl(), m_DemoMeshIdx_BodyB);
 
@@ -213,6 +224,8 @@ void CKirbyObject::ChangeObject()
 
 void CKirbyObject::ChangeObjectEnter()
 {
+
+
     PLAYER->MeshRender()->SetMeshData(m_DemoMesh);
     PLAYER->Animator()->Play(ANIMPREFIX("DeformFirst"), false);
     PLAYER->GetRenderComponent()->SetMaterial(nullptr, m_DemoMeshIdx_BodyB);

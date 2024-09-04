@@ -24,6 +24,11 @@ CGameObject* CState::GetOwner()
 
 void CState::ChangeState(const wstring& _strStateName)
 {
-    assert(m_OwnerFSM);
+    if (!m_OwnerFSM)
+    {
+        assert(0);
+        return;
+    }
+
     m_OwnerFSM->ChangeState(_strStateName);
 }

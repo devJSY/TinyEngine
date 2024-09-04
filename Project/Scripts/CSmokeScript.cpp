@@ -18,6 +18,7 @@ CSmokeScript::CSmokeScript()
     , m_MaxScale(20.f)
     , m_Dir{}
     , m_FadeOutAlpha(0.5f)
+    , m_bHorizontalDir(false)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_LifeTime, "Life Time", 0.1f);
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Speed, "Speed");
@@ -32,6 +33,7 @@ CSmokeScript::CSmokeScript()
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_MinScale, "Min Scale");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_MaxScale, "Max Scale");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_FadeOutAlpha, "FadeOut Alpha(0~1)", 0.1f);
+    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bHorizontalDir, "Is Rot Horizontal?");
 }
 
 CSmokeScript::CSmokeScript(const CSmokeScript& _Origin)
@@ -51,6 +53,7 @@ CSmokeScript::CSmokeScript(const CSmokeScript& _Origin)
     , m_Scale(_Origin.m_Scale)
     , m_Dir(_Origin.m_Dir)
     , m_FadeOutAlpha(_Origin.m_FadeOutAlpha)
+    , m_bHorizontalDir(_Origin.m_bHorizontalDir)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_LifeTime, "Life Time", 0.1f);
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Speed, "Speed");
@@ -65,6 +68,7 @@ CSmokeScript::CSmokeScript(const CSmokeScript& _Origin)
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_MinScale, "Min Scale");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_MaxScale, "Max Scale");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_FadeOutAlpha, "FadeOut Alpha(0~1)", 0.1f);
+    AddScriptParam(SCRIPT_PARAM::BOOL, &m_bHorizontalDir, "Is Rot Horizontal?");
 }
 
 CSmokeScript::~CSmokeScript()
@@ -100,7 +104,14 @@ void CSmokeScript::begin()
     {
         m_Dir = Vec3(simpleNoise(-1.f, 1.f), simpleNoise(0.f, 1.f), simpleNoise(-1.f, 1.f));
     }
-    else
+    else if (m_bHorizontalDir)
+    {
+        m_Dir = Vec3(simpleNoise(-1.f, 1.f), 0.f, simpleNoise(-1.f, 1.f));
+        m_Dir.Normalize();
+        m_Dir.y += simpleNoise(0.f, 0.3f);
+        m_Dir.Normalize();
+    }
+    else 
     {
         m_Dir = Transform()->GetWorldDir(DIR_TYPE::FRONT);
         m_Dir.y += simpleNoise(0.f, 0.6f);
@@ -171,6 +182,7 @@ UINT CSmokeScript::SaveToLevelFile(FILE* _File)
     fwrite(&m_MinScale, sizeof(float), 1, _File);
     fwrite(&m_MaxScale, sizeof(float), 1, _File);
     fwrite(&m_FadeOutAlpha, sizeof(float), 1, _File);
+    fwrite(&m_bHorizontalDir, sizeof(bool), 1, _File);
 
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
@@ -185,6 +197,7 @@ UINT CSmokeScript::SaveToLevelFile(FILE* _File)
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
+    MemoryByte += sizeof(bool);
 
     return MemoryByte;
 }
@@ -206,6 +219,7 @@ UINT CSmokeScript::LoadFromLevelFile(FILE* _File)
     fread(&m_MinScale, sizeof(float), 1, _File);
     fread(&m_MaxScale, sizeof(float), 1, _File);
     fread(&m_FadeOutAlpha, sizeof(float), 1, _File);
+    fread(&m_bHorizontalDir, sizeof(bool), 1, _File);
 
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
@@ -220,6 +234,7 @@ UINT CSmokeScript::LoadFromLevelFile(FILE* _File)
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
     MemoryByte += sizeof(float);
+    MemoryByte += sizeof(bool);
 
     return MemoryByte;
 }

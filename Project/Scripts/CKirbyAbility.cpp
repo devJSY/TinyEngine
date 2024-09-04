@@ -28,7 +28,11 @@ CKirbyAbility::~CKirbyAbility()
 void CKirbyAbility::ChangeState(const wstring& _strStateName)
 {
     CFSMScript* OwnerFSM = (CFSMScript*)CPlayerMgr::GetPlayerFSM();
-    assert(OwnerFSM);
+    if (!OwnerFSM)
+    {
+        assert(nullptr);
+        return;
+    }
 
     OwnerFSM->ChangeState(_strStateName);
 }
@@ -78,6 +82,8 @@ void CKirbyAbility::LandingEnter()
     }
     else
     {
+        GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\Landing.wav", 1, KIRBY_EFFECTSOUND);
+
         PLAYER->Animator()->Play(ANIMPREFIX("Landing"), false, false, 1.5f);
 
         // Smoke Spawn

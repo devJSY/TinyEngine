@@ -9,7 +9,9 @@ CElfilisArrowSetScript::CElfilisArrowSetScript()
     , m_RotSpeed(3.5f)
     , m_CurSpeed(5.f)
     , m_AccTime(0.f)
-    , m_bArrowStart{false,}
+    , m_bArrowStart{
+          false,
+      }
 {
 }
 
@@ -63,6 +65,10 @@ void CElfilisArrowSetScript::Spawn()
         {
             m_bArrowStart[i] = true;
             ArrowParents[i]->GetChildObject()[0]->GetScript<CElfilisArrowScript>()->StartSpawn();
+
+            // sound
+            wstring ArrowSpawn = L"sound\\wav\\CharaBossChimera2\\0020_RayArrowSpawn.wav";
+            GamePlayStatic::Play2DSound(ArrowSpawn, 1, SOUND_ELFILIS * 0.3f);
         }
     }
 

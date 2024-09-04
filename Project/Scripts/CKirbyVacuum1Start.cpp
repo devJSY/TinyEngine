@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "CKirbyVacuum1Start.h"
 
+#include "CKirbyVacuumScript.h"
+
 CKirbyVacuum1Start::CKirbyVacuum1Start()
     : m_SavedSpeed(0.f)
 {
@@ -31,6 +33,18 @@ void CKirbyVacuum1Start::tick()
 
 void CKirbyVacuum1Start::Enter()
 {
+    // Vacuum Effect
+    CGameObject* VacuumEffect = PLAYER->GetChildObject(L"Vacuum");
+    if (VacuumEffect != nullptr)
+    {
+        CKirbyVacuumScript* VacuumScript = VacuumEffect->GetScript<CKirbyVacuumScript>();
+        VacuumScript->Reset();
+
+        VacuumEffect->SetActive(true);
+    }
+
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\Vacuum.wav", 2, KIRBY_EFFECTSOUND);
+
     PLAYER->Animator()->Play(ANIMPREFIX("VacuumStart2"), false);
     CPlayerMgr::ClearBodyMtrl();
     CPlayerMgr::ClearMouthMtrl();
@@ -43,6 +57,15 @@ void CKirbyVacuum1Start::Enter()
 
 void CKirbyVacuum1Start::Exit()
 {
+    // Vacuum Effect
+    CGameObject* VacuumEffect = PLAYER->GetChildObject(L"Vacuum");
+    if (VacuumEffect != nullptr)
+    {
+        VacuumEffect->SetActive(false);
+    }
+
+    GamePlayStatic::PauseSound(L"sound\\wav\\HeroBasic\\Vacuum.wav");
+
     CPlayerMgr::ClearBodyMtrl();
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyNormal));
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));

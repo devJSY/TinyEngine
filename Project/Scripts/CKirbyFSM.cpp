@@ -145,7 +145,12 @@ CKirbyFSM::CKirbyFSM(const CKirbyFSM& _Origin)
             continue;
 
         CKirbyAbility* pAbil = _Origin.m_arrAbility[i]->Clone();
-        assert(pAbil);
+        if (!pAbil)
+        {
+            assert(nullptr);
+            return;
+        }
+
         m_arrAbility[i] = pAbil;
     }
 
@@ -156,7 +161,12 @@ CKirbyFSM::CKirbyFSM(const CKirbyFSM& _Origin)
             continue;
 
         CKirbyObject* pObjCopy = _Origin.m_arrObject[i]->Clone();
-        assert(pObjCopy);
+        if (!pObjCopy)
+        {
+            assert(0);
+            return;
+        }
+
         m_arrObject[i] = pObjCopy;
     }
 
@@ -285,6 +295,9 @@ CKirbyFSM::~CKirbyFSM()
 #include "CKirbyLadderWaitStart.h"
 #include "CKirbyLadderExit.h"
 #include "CKirbyFall.h"
+#include "CKirbySwallowStart.h"
+#include "CKirbySwallowEnd.h"
+
 
 void CKirbyFSM::begin()
 {
@@ -339,6 +352,11 @@ void CKirbyFSM::begin()
             KirbyChildObject[i]->SetActive(false);
             GamePlayStatic::AddChildObject(GetOwner(), KirbyChildObject[i], L"Wing");
         }
+        else if (ObjName == L"FireSmokeSpawner")
+        {
+            KirbyChildObject[i]->SetActive(false);
+        }
+
         else if (ObjName == L"SleepSnotBubble")
         {
             GamePlayStatic::AddChildObject(GetOwner(), KirbyChildObject[i], L"Mouth");
@@ -484,6 +502,8 @@ void CKirbyFSM::begin()
     AddState(L"DODGE2", new CKirbyDodge2);
     AddState(L"DAMAGE", new CKirbyDamage);
     AddState(L"BACKJUMP", new CKirbyBackJump);
+    AddState(L"SWALLOW_START", new CKirbySwallowStart);
+    AddState(L"SWALLOW_END", new CKirbySwallowEnd);
     AddState(L"CHANGE_ABILITY", new CKirbyChangeAbility);
     AddState(L"CHANGE_ABILITY_WAIT", new CKirbyChangeAbilityWait);
     AddState(L"CHANGE_ABILITY_END", new CKirbyChangeAbilityEnd);
@@ -657,6 +677,35 @@ void CKirbyFSM::tick()
         }
     }
 
+    if (m_bBurningParticle)
+    {
+        // Particle Spawn
+        Vec3 Raystart = GetOwner()->Transform()->GetWorldPos();
+
+        Vec3 RayDir = Vec3(0.f, -1.f, 0.f);
+
+        float RayLength = 100.f;
+
+        static vector<wstring> FireParticleCollision{L"World Static"};
+        RaycastHit Hit = CPhysicsMgr::GetInst()->RayCast(Raystart, RayDir, RayLength, FireParticleCollision);
+
+        if (Hit.pCollisionObj != nullptr)
+        {
+            m_BurningParticleAcc += DT;
+
+            if (m_BurningParticleAcc > m_BurningParticleCoolTime)
+            {
+                Ptr<CPrefab> ParticlePrefab = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\BurningFireLandParticle.pref");
+                CGameObject* ParticleObj = ParticlePrefab->Instantiate();
+                ParticleObj->Transform()->SetWorldPos(Hit.Point);
+
+                GamePlayStatic::SpawnGameObject(ParticleObj, ParticleObj->GetLayerIdx());
+
+                m_BurningParticleAcc -= m_BurningParticleCoolTime;
+            }
+        }
+    }
+
     CFSMScript::tick();
 }
 void CKirbyFSM::ChangeAbilityCopy(AbilityCopyType _Type)
@@ -683,8 +732,7 @@ void CKirbyFSM::ChangeAbilityCopy(AbilityCopyType _Type)
         }
 
         m_NextAbility = _Type;
-        ChangeState(L"CHANGE_ABILITY");
-        m_CurAbility = _Type;
+        ChangeState(L"SWALLOW_START");
     }
 }
 
@@ -835,6 +883,13 @@ void CKirbyFSM::SetMtrlShader(Ptr<CGraphicsShader> _Shader)
     CPlayerMgr::GetPlayerBodyMtrl()->SetShader(_Shader);
 }
 
+void CKirbyFSM::ChangeNextAbility()
+{
+    if ((UINT)m_NextAbility >= 1 && (UINT)m_NextAbility <=5)
+
+    m_CurAbility = m_NextAbility;
+}
+
 void CKirbyFSM::ClearCurHatWeapon()
 {
     if (m_CurHat)
@@ -894,6 +949,7 @@ void CKirbyFSM::ClearMtrlShader()
 {
     SetMtrlShader(m_OriginShader);
 }
+
 
 bool CKirbyFSM::IsDrawing() const
 {

@@ -11,6 +11,9 @@ private:
     float m_AccTime;
     bool m_bFrmEnter;
 
+    // Sound
+    UINT m_SoundIdx;
+
 public:
     virtual void tick() override;
     virtual void Exit() override;

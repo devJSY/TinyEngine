@@ -520,7 +520,7 @@ void CElfilisFSM::tick()
     //{
     //    Rigidbody()->SetVelocity(Vec3());
     //    Rigidbody()->SetAngularVelocity(Vec3());
-    //    ChangeStateGroup(ElfilisStateGroup::AirSmallAtk2, L"AIR_ATKS_DIMENSIONLASER");
+    //    ChangeStateGroup(ElfilisStateGroup::GroundAtkNear);
     //    //ChangeStateGroup(ElfilisStateGroup::GroundToAir);
     //}
 }

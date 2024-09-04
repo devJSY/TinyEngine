@@ -5,6 +5,7 @@ class CMorphoDemo_Phase2 : public CBossState
 {
 private:
     float m_AccTime;
+    bool m_bFrmEnter;
 
 public:
     virtual void tick() override;

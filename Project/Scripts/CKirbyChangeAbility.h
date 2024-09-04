@@ -5,6 +5,8 @@ class CKirbyChangeAbility : public CState
 {
 private:
     bool m_bFrameEnter;
+    bool m_StarEffect;
+
     UINT m_SaveSetup;
 
 public:

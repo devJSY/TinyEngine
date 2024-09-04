@@ -45,21 +45,29 @@ void CFlowMgr_BossElfilis::begin()
 
 void CFlowMgr_BossElfilis::TriggerEvent(UINT _Idx)
 {
+    // Spawn Elfilis Trigger
     if (_Idx == 0)
     {
         SpawnElfilis();
     }
 }
 
+void CFlowMgr_BossElfilis::LevelStart()
+{
+    CBossLevelFlowMgr::LevelStart();
+
+    FadeInBGM(L"sound\\stream\\K15_BossChimeraPerfect_Stest\\K15_BossChimeraPerfect_Stest.marker.wav", 0.f, SOUND_BGM, 1.f);
+}
+
 void CFlowMgr_BossElfilis::LevelEnd()
 {
-    CLevelFlowMgr::LevelEnd();
+    CBossLevelFlowMgr::LevelEnd();
     SetFadeEffectColor(Vec3(252.f, 75.f, 129.f));
 }
 
 void CFlowMgr_BossElfilis::LevelRestart()
 {
-    CLevelFlowMgr::LevelRestart();
+    CBossLevelFlowMgr::LevelRestart();
     SetFadeEffectColor(Vec3(180.f, 140.f, 200.f));
 }
 

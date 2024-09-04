@@ -64,6 +64,11 @@ void CBossLevelFlowMgr::ChangeFlow(BossLevelFlow _State)
     EnterFlow(_State);
 }
 
+void CBossLevelFlowMgr::ChangeBGMSize(float _Size, float _Durtaion)
+{
+    FadeInBGM(GetBGM()->GetKey(), GetVolume(), _Size, _Durtaion);
+}
+
 void CBossLevelFlowMgr::EnterFlow(BossLevelFlow _State)
 {
     switch (_State)

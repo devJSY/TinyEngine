@@ -60,6 +60,10 @@ void CElfilisD_Jump::Enter_Step()
         GetOwner()->Rigidbody()->SetVelocity(Vec3::Zero);
         GetOwner()->Rigidbody()->AddForce(JumpDir * 3800.f, ForceMode::Impulse);
 
+        // Sound
+        wstring MoveAir = L"sound\\wav\\CharaBossChimera2\\0025_MoveAir.wav";
+        GamePlayStatic::Play2DSound(MoveAir, 1, SOUND_ELFILIS);
+
         // Camera : Àá±ñ°íÁ¤
         CAMERACTRL->Normal(false);
 

@@ -4,6 +4,7 @@
 #include "CElfilisBigFSM.h"
 #include "CMomentaryObjScript.h"
 #include "CCameraController.h"
+#include <Engine\CSoundMgr.h>
 
 CElfilisBig_SwingL::CElfilisBig_SwingL()
     : m_bComboSuccess(false)
@@ -44,6 +45,10 @@ void CElfilisBig_SwingL::Enter_Step()
         if (ELFBIGFSM->GetComboLevel() == 0)
         {
             GetOwner()->Animator()->Play(ANIMPREFIX("BigSwingLeftStart"), false, false, 4.f, 2.f);
+
+            // sound
+            wstring Wind = L"sound\\wav\\CharaBossChimera2\\0036_DimensionSpikeReady.wav";
+            GamePlayStatic::Play2DSound(Wind, 1, SOUND_ELFILIS * 1.5f);
         }
         else
         {
@@ -62,6 +67,10 @@ void CElfilisBig_SwingL::Enter_Step()
     case StateStep::Progress: {
         GetOwner()->Animator()->Play(ANIMPREFIX("BigSwingLeft"), false, false, 4.f, m_ProgressChangeDuration);
         m_bFrmEnter = true;
+
+        // sound
+        wstring Wind = L"sound\\wav\\CharaBossChimera2\\0037_BigSwing.wav";
+        GamePlayStatic::Play2DSound(Wind, 1, SOUND_ELFILIS * 1.5f);
     }
     break;
     case StateStep::End: {
@@ -86,6 +95,10 @@ void CElfilisBig_SwingL::Exit_Step()
         {
             ELFBIGFSM->ClearComboLevel();
         }
+
+        // sound
+        wstring Wind = L"sound\\wav\\CharaBossChimera2\\0037_BigSwing.wav";
+        CSoundMgr::GetInst()->FadeSound(Wind, SOUND_ELFILIS * 1.5f, 0.f, 0.5f, false);
     }
     break;
     case StateStep::End:

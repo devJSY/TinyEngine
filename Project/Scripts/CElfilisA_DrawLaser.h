@@ -9,6 +9,14 @@ private:
     CElfilisLaser* m_LaserScript;
     float m_AccTime;
 
+    // sound
+    Ptr<CSound> m_SoundLaser;
+    Ptr<CSound> m_SoundLaserWait;
+    wstring m_SoundKeyLaserCharging;
+    wstring m_SoundKeyLaserChargingFinish;
+    wstring m_SoundKeyLaser;
+    wstring m_SoundKeyLaserWait;
+
 public:
     virtual void tick() override;
     virtual void Enter() override;
