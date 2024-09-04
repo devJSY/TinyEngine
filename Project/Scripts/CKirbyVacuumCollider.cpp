@@ -118,6 +118,7 @@ void CKirbyVacuumCollider::OnTriggerEnter(CCollider* _OtherCollider)
         PLAYERCTRL->LockMove();
         PLAYERFSM->SetGlobalState(true);
         PLAYERFSM->SetInvincible(true);
+        LOG(Log, "Invincible!");
 
         m_FindTarget = _OtherCollider->GetOwner();
         m_FindType = newType;
