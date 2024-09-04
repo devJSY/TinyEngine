@@ -4,6 +4,7 @@
 #include "CKirbyBulletScript.h"
 #include <Engine\\CTimeMgr.h>
 #include <Engine\\CRenderMgr.h>
+#include <Engine\\CSoundMgr.h>
 
 CEngineTestScript::CEngineTestScript()
     : CScript(ENGINETESTSCRIPT)
@@ -323,6 +324,21 @@ void CEngineTestScript::SoundTest()
     if (KEY_TAP(KEY::K))
     {
         GamePlayStatic::StopAllSound();
+    }
+
+    // ====================
+    // SoundMgr
+    // ====================
+    if (KEY_TAP(KEY::NUM4))
+    {
+        // Fade In
+        CSoundMgr::GetInst()->FadeSound(L"sound\\stream\\K15_Grassland1\\K15_Grassland1.marker.wav", 0.f, 0.5f, 2.f, true);
+    }
+
+    if (KEY_TAP(KEY::NUM5))
+    {
+        // Fade Out
+        CSoundMgr::GetInst()->FadeSound(L"sound\\stream\\K15_Grassland1\\K15_Grassland1.marker.wav", 0.5f, 0.f, 2.f, false);
     }
 }
 

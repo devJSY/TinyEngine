@@ -51,7 +51,11 @@ void CKirbyObject::ParseDemoMesh(Ptr<CMeshData> _pMesh)
 void CKirbyObject::ChangeState(const wstring& _strStateName)
 {
     CFSMScript* OwnerFSM = (CFSMScript*)CPlayerMgr::GetPlayerFSM();
-    assert(OwnerFSM);
+    if (!OwnerFSM)
+    {
+        assert(0);
+        return;
+    }
 
     OwnerFSM->ChangeState(_strStateName);
 }

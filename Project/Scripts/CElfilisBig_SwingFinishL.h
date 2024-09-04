@@ -9,6 +9,9 @@ private:
     float m_PrevAlpha;
     bool m_bFrmEnter;
 
+    // sound
+    UINT m_SoundIdx;
+
 public:
     virtual void tick() override;
     virtual void Enter() override;

@@ -79,6 +79,10 @@ void CElfilisA_Stab::Enter_Step()
     {
     case StateStep::Ready: {
         GetOwner()->Animator()->Play(ANIMPREFIX("StabReady"), false);
+
+        // sound
+        wstring Ready = L"sound\\wav\\CharaBossChimera2\\0011_StabReady.wav";
+        GamePlayStatic::Play2DSound(Ready, 1, SOUND_ELFILIS * 0.3f);
     }
     break;
     case StateStep::Start: {
@@ -101,6 +105,10 @@ void CElfilisA_Stab::Enter_Step()
         ElfilisDir.y = 0.f;
         ElfilisDir.Normalize();
         GetOwner()->Transform()->SetDirection(ElfilisDir);
+
+        // sound
+        wstring Wind = L"sound\\wav\\CharaBossChimera2\\0051_RoarStabWind.wav";
+        GamePlayStatic::Play2DSound(Wind, 1, SOUND_ELFILIS * 1.3f);
     }
     break;
     case StateStep::Progress: {
@@ -138,6 +146,10 @@ void CElfilisA_Stab::Enter_Step()
             ELFFSM->SpawnDropStar(NewPos + NewDir * 100.f);
         }
 
+        // sound
+        wstring Collision = L"sound\\wav\\CharaBossChimera2\\0052_RoarStabCollision.wav";
+        GamePlayStatic::Play2DSound(Collision, 1, SOUND_ELFILIS);
+
         // Camera : Åõ Å¸°Ù & Shake
         CAMERACTRL->Shake(0.5f, 10.f, 50.f);
         CAMERACTRL->SetElfilisTwoTarget();
@@ -145,6 +157,10 @@ void CElfilisA_Stab::Enter_Step()
     break;
     case StateStep::End: {
         GetOwner()->Animator()->Play(ANIMPREFIX("StabEnd"), false);
+
+        // sound
+        wstring End = L"sound\\wav\\CharaBossChimera2\\0053_RoarStabEnd.wav";
+        GamePlayStatic::Play2DSound(End, 1, SOUND_ELFILIS * 0.3f);
     }
     break;
     }

@@ -35,6 +35,10 @@ void CMorphoMoveG_JumpFall::Enter_Step()
     break;
     case StateStep::End: {
         GetOwner()->Animator()->Play(ANIMPREFIX("Landing"), false, false, 1.5f);
+
+        // sound
+        wstring Sound = L"sound\\wav\\CharaMorphoknight\\0001_Landing.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_MORPHO * 1.3f);
     }
     break;
     }

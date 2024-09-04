@@ -338,7 +338,11 @@ void CLevelFlowMgr::LevelStart()
             PlayerPrefab = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Kirby.pref", L"prefab\\Kirby.pref");
 
             // Kirby Prefab이 없다면 assert 게임 시작 불가능
-            assert(PlayerPrefab.Get());
+            if (PlayerPrefab == nullptr)
+            {
+                assert(0);
+                return;
+            }
 
             MainPlayer = PlayerPrefab->Instantiate();
         }
@@ -832,12 +836,6 @@ void CLevelFlowMgr::LevelLoading()
 void CLevelFlowMgr::SetUIDOFEffect()
 {
     CRenderMgr::GetInst()->SetEnableDOF(false);
-    static Ptr<CMaterial> pDOFMtrl = CAssetMgr::GetInst()->Load<CMaterial>(L"DOFMtrl");
-
-    pDOFMtrl->SetScalarParam(VEC2_0, Vec2(-0.5f, -0.5f));
-
-    pDOFMtrl->SetScalarParam(FLOAT_0, 1.f);
-    pDOFMtrl->SetScalarParam(FLOAT_0, 3000.f);
 }
 
 void CLevelFlowMgr::TurnOnDropUI()

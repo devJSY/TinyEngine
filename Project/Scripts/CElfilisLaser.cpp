@@ -142,6 +142,17 @@ void CElfilisLaser::SetWait()
     m_Step = StateStep::Progress;
     Animator()->Play(ANIMPREFIX("Loop"));
     PlayOuter(ANIMPREFIX("Loop"));
+
+    // sound
+    wstring SoundKeyLaser;
+    int RandIdx = GetRandomInt(0, 1);
+
+    if (RandIdx == 0)
+        SoundKeyLaser = L"sound\\wav\\CharaBossChimeraSoul\\0015_DimensionLaser_Laser.wav";
+    else
+        SoundKeyLaser = L"sound\\wav\\CharaBossChimeraSoul\\0016_DimensionLAser_Laser.wav";
+
+    GamePlayStatic::Play2DSound(SoundKeyLaser, 1, SOUND_ELFILIS);
 }
 
 void CElfilisLaser::SetEnd()

@@ -20,6 +20,8 @@ public:
     void ChangeFlow(BossLevelFlow _State);
     void SetDemoType(BossDemoType _Type) { m_DemoType = _Type; }
 
+    void ChangeBGMSize(float _Size, float _Durtaion);
+
 protected:
     void EnterFlow(BossLevelFlow _State);
     void ExitFlow(BossLevelFlow _State);

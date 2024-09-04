@@ -75,6 +75,10 @@ void CMorphoAtkA_DoubleSwordAtkLR::Exit()
 
     MRPFSM->OffWeaponLTrigger();
     MRPFSM->OffWeaponRTrigger();
+
+    // sound
+    wstring Sound = L"sound\\wav\\CharaMorphoknight\\0034_FireNoise.wav";
+    GamePlayStatic::StopSound(Sound);
 }
 
 void CMorphoAtkA_DoubleSwordAtkLR::Enter_Step()
@@ -86,16 +90,28 @@ void CMorphoAtkA_DoubleSwordAtkLR::Enter_Step()
         MRPFSM->OnWeaponLTrigger();
         MRPFSM->OnWeaponRTrigger();
         //@EFFECT Â÷Â¡ÀÌÆåÆ®
+
+        // sound
+        wstring Sound = L"sound\\wav\\CharaMorphoknight\\DoubleSwordCharging.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_MORPHO * 0.9f);
     }
     break;
     case StateStep::Progress: {
         GetOwner()->Animator()->Play(ANIMPREFIX("DoubleSwordAttack3"), false, false, 1.5f);
         m_bFrmEnter = true;
+
+        // sound
+        wstring Sound = L"sound\\wav\\CharaMorphoknight\\DoubleSwordAttackStart.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_MORPHO * 0.8f);
     }
     break;
     case StateStep::End: {
         GetOwner()->Animator()->Play(ANIMPREFIX("DoubleSwordAttack3End"), false, false, 1.5f);
         m_bFrmEnter = true;
+
+        // sound
+        wstring Sound = L"sound\\wav\\CharaMorphoknight\\DoubleSwordAttackStart.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_MORPHO * 0.4f);
     }
     break;
     case StateStep::EndWait: {
@@ -115,7 +131,11 @@ void CMorphoAtkA_DoubleSwordAtkLR::Exit_Step()
 {
     switch (m_Step)
     {
-    case StateStep::Start:
+    case StateStep::Start: {
+        // sound
+        wstring SoundCharging = L"sound\\wav\\CharaMorphoknight\\DoubleSwordCharging.wav";
+        CSoundMgr::GetInst()->FadeSound(SoundCharging, SOUND_MORPHO * 0.9f, 0.f, 0.5f, false);
+    }
         break;
     case StateStep::Progress: {
         for (int i = 0; i < 2; ++i)
@@ -129,8 +149,12 @@ void CMorphoAtkA_DoubleSwordAtkLR::Exit_Step()
     break;
     case StateStep::End:
         break;
-    case StateStep::EndWait:
-        break;
+    case StateStep::EndWait: {
+        // sound
+        wstring Sound = L"sound\\wav\\CharaMorphoknight\\0034_FireNoise.wav";
+        GamePlayStatic::StopSound(Sound);
+    }
+    break;
     case StateStep::EndEnd: {
         // Spawn DropStar
         if (m_FireSwipe)
@@ -263,7 +287,15 @@ void CMorphoAtkA_DoubleSwordAtkLR::Progress()
 
             m_SwipeOriginScale = m_FireSwipe[0]->Transform()->GetLocalScale();
             GamePlayStatic::SpawnGameObject(m_FireSwipe[1], LAYER_MONSTERATK_TRIGGER);
+
+            // sound
+            wstring Sound = L"sound\\wav\\CharaMorphoknight\\0034_FireNoise.wav";
+            GamePlayStatic::Play2DSound(Sound, 0, SOUND_MORPHO * 0.8f);
         }
+
+        // sound
+        wstring Sound = L"sound\\wav\\CharaMorphoknight\\DoubleSwordAttackCollision.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_MORPHO * 1.5f);
 
         CAMERACTRL->Shake(0.6f, 30.f, 55.f);
     }
@@ -359,6 +391,10 @@ void CMorphoAtkA_DoubleSwordAtkLR::EndWait()
                 }
             }
         }
+
+        // sound
+        wstring Sound = L"sound\\wav\\CharaMorphoknight\\DoubleSwordFireBurning.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_MORPHO * 1.3f);
 
         CAMERACTRL->Shake(0.3f, 20.f, 20.f);
     }

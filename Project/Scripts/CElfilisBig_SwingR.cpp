@@ -44,6 +44,10 @@ void CElfilisBig_SwingR::Enter_Step()
         if (ELFBIGFSM->GetComboLevel() == 0)
         {
             GetOwner()->Animator()->Play(ANIMPREFIX("BigSwingRightStart"), false, false, 4.f, 2.f);
+
+            // sound
+            wstring Wind = L"sound\\wav\\CharaBossChimera2\\0036_DimensionSpikeReady.wav";
+            GamePlayStatic::Play2DSound(Wind, 1, SOUND_ELFILIS * 1.5f);
         }
         else
         {
@@ -62,6 +66,10 @@ void CElfilisBig_SwingR::Enter_Step()
         {
             ELFFSM->ProcPatternStep();
         }
+
+        // sound
+        wstring Wind = L"sound\\wav\\CharaBossChimera2\\0037_BigSwing.wav";
+        GamePlayStatic::Play2DSound(Wind, 1, SOUND_ELFILIS * 1.5f);
     }
     break;
     case StateStep::End: {
@@ -86,6 +94,10 @@ void CElfilisBig_SwingR::Exit_Step()
         {
             ELFBIGFSM->ClearComboLevel();
         }
+
+        // sound
+        wstring Wind = L"sound\\wav\\CharaBossChimera2\\0037_BigSwing.wav";
+        CSoundMgr::GetInst()->FadeSound(Wind, SOUND_ELFILIS * 1.5f, 0.f, 0.5f, false);
     }
     break;
     case StateStep::End:

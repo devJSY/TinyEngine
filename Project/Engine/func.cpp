@@ -1801,18 +1801,17 @@ void ImGui_SetWindowClass(EDITOR_TYPE _Type)
 Vec3 QuaternionToEulerAngles(Quaternion q)
 {
     // Ensure the quaternion is normalized
-    Quaternion normalizedQ = q;
-    normalizedQ.Normalize();
+    q.Normalize();
 
     Vec3 retAngles;
 
     // roll (x-axis rotation)
-    float sinr_cosp = 2.f * (normalizedQ.w * normalizedQ.x + normalizedQ.y * normalizedQ.z);
-    float cosr_cosp = 1.f - 2.f * (normalizedQ.x * normalizedQ.x + normalizedQ.y * normalizedQ.y);
+    float sinr_cosp = 2.f * (q.w * q.x + q.y * q.z);
+    float cosr_cosp = 1.f - 2.f * (q.x * q.x + q.y * q.y);
     retAngles.x = std::atan2f(sinr_cosp, cosr_cosp);
 
     // pitch (y-axis rotation)
-    float sinp = 2.f * (normalizedQ.w * normalizedQ.y - normalizedQ.x * normalizedQ.z);
+    float sinp = 2.f * (q.w * q.y - q.x * q.z);
     // Clamp pitch to the range [-1, 1] to avoid NaN due to domain errors
     sinp = std::clamp(sinp, -1.f, 1.f);
 
@@ -1820,31 +1819,18 @@ Vec3 QuaternionToEulerAngles(Quaternion q)
     if (std::fabs(sinp) >= 0.9999f) // Adjust this threshold if necessary
     {
         // Special case for pitch when sinp is close to ¡¾1
-        const float xx = normalizedQ.x * normalizedQ.x;
-        const float yy = normalizedQ.y * normalizedQ.y;
-        const float zz = normalizedQ.z * normalizedQ.z;
-
-        const float m31 = 2.f * normalizedQ.x * normalizedQ.z + 2.f * normalizedQ.y * normalizedQ.w;
-        const float m32 = 2.f * normalizedQ.y * normalizedQ.z - 2.f * normalizedQ.x * normalizedQ.w;
-        const float m33 = 1.f - 2.f * xx - 2.f * yy;
-
-        const float cy = std::sqrtf(m33 * m33 + m31 * m31);
-        const float cx = std::atan2f(-m32, cy);
-
-        const float m12 = 2.f * normalizedQ.x * normalizedQ.y + 2.f * normalizedQ.z * normalizedQ.w;
-        const float m22 = 1.f - 2.f * xx - 2.f * zz;
-
-        return Vec3(cx, std::atan2f(m31, m33), std::atan2f(m12, m22));
+        retAngles = q.ToEuler();
     }
     else
     {
-        retAngles.y = std::asinf(sinp); // Pitch angle
-    }
+        // Pitch angle
+        retAngles.y = std::asinf(sinp);
 
-    // yaw (z-axis rotation)
-    float siny_cosp = 2.f * (normalizedQ.w * normalizedQ.z + normalizedQ.x * normalizedQ.y);
-    float cosy_cosp = 1.f - 2.f * (normalizedQ.y * normalizedQ.y + normalizedQ.z * normalizedQ.z);
-    retAngles.z = std::atan2f(siny_cosp, cosy_cosp);
+        // yaw (z-axis rotation)
+        float siny_cosp = 2.f * (q.w * q.z + q.x * q.y);
+        float cosy_cosp = 1.f - 2.f * (q.y * q.y + q.z * q.z);
+        retAngles.z = std::atan2f(siny_cosp, cosy_cosp);
+    }
 
     // Check for NaN and set to zero
     if (!std::isfinite(retAngles.x) || !std::isfinite(retAngles.y) || !std::isfinite(retAngles.z))

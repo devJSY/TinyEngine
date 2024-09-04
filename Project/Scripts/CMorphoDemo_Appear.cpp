@@ -63,6 +63,10 @@ void CMorphoDemo_Appear::Enter_Step()
         m_AccTime = 0.f;
         m_bFrmEnter = true;
 
+        // sound
+        wstring Sound = L"sound\\wav\\DemoBossMorphoKnight\\0009_Appear.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_MORPHO);
+
         // Camera : 점점 몰포 가까이
         CGameObject* Target = BOSS->GetChildObject(L"CameraTarget");
 
@@ -85,6 +89,10 @@ void CMorphoDemo_Appear::Enter_Step()
 
         // Particle On
         MRPFSM->EnableTeleportParticle(true);
+
+        // sound
+        wstring Sound = L"sound\\wav\\DemoBossMorphoKnight\\0010_Fly.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_MORPHO * 0.7f);
 
         // Camera : 투타겟
         CAMERACTRL->LoadInitSetting(true);
@@ -144,6 +152,10 @@ void CMorphoDemo_Appear::Start()
         MRPFSM->GetParticleButterflyPink()->ParticleSystem()->EnableModule(PARTICLE_MODULE::SPAWN, true);
         MRPFSM->GetParticleButterflyYellowPink()->ParticleSystem()->EnableModule(PARTICLE_MODULE::SPAWN, true);
         MRPFSM->GetParticleCircleDust()->ParticleSystem()->EnableModule(PARTICLE_MODULE::SPAWN, true);
+
+        // sound
+        wstring Sound = L"sound\\wav\\DemoBossBasic\\0000_AppearName.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_MORPHO);
 
         // Camera : 뒤로 이동(고정)
         CAMERACTRL->SetLookDir(Vec3(0.f, 0.35f, -0.937f));

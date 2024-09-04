@@ -246,10 +246,11 @@ void CKirbyVacuumCollider::CheckDrawing()
     // clear vacuum collider
     EnableCollider(false);
 
-    // clone
+    // target clone
     CGameObject* TargetClone = m_FindTarget->Clone();
     int Layer = m_FindTarget->GetLayerIdx();
     wstring Name = L"(Vacuum Target) " + m_FindTarget->GetName();
+    Vec3 WorldPos = m_FindTarget->Transform()->GetWorldPos();
     GamePlayStatic::DestroyGameObject(m_FindTarget);
 
     m_FindTarget = TargetClone;
@@ -257,7 +258,21 @@ void CKirbyVacuumCollider::CheckDrawing()
     GamePlayStatic::SpawnGameObject(m_FindTarget, Layer);
 
     // clean-up script & copmonents
+    m_FindTarget->Transform()->SetAbsolute(true);
+    m_FindTarget->Transform()->SetWorldPos(WorldPos);
     m_FindTarget->RemoveComponent(COMPONENT_TYPE::RIGIDBODY);
+
+    if (m_FindTarget->Animator())
+    {
+        if (m_FindHoldTime > 0.f)
+        {
+            m_FindTarget->Animator()->Play(ANIMPREFIX("Brake"), true, false, 1.5f);
+        }
+        else
+        {
+            m_FindTarget->Animator()->Play(ANIMPREFIX("Damage"), true, false, 1.5f);
+        }
+    }
 
     std::deque<CGameObject*> Queue{m_FindTarget};
     while (!Queue.empty())
@@ -319,7 +334,15 @@ void CKirbyVacuumCollider::DrawingTarget()
         m_FindHoldAccTime += DT;
 
         float t = m_FindHoldAccTime / m_FindHoldTime;
-        NewPos += Dir * (m_FindDistance - 10.f * t);
+        NewPos += Dir * (m_FindDistance * (1.f - 0.5f * t));
+
+        if (m_FindHoldAccTime >= m_FindHoldTime)
+        {
+            if (m_FindTarget->Animator())
+            {
+                m_FindTarget->Animator()->Play(ANIMPREFIX("Damage"), true, false, 1.5f);
+            }
+        }
     }
     else
     {
@@ -330,7 +353,7 @@ void CKirbyVacuumCollider::DrawingTarget()
 
         if (m_FindHoldTime > 0.f)
         {
-            NewPos += Dir * ((m_FindDistance - 10.f) * cosf(t * XM_PI / 2.f));
+            NewPos += Dir * ((m_FindDistance * 0.5f) * cosf(t * XM_PI / 2.f));
         }
         else
         {

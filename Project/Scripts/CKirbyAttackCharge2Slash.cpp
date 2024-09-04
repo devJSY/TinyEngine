@@ -43,6 +43,10 @@ void CKirbyAttackCharge2Slash::Enter()
 
     m_PlayTime = 1.5f;
     m_bEnableFireParticle = true;
+
+    // sound
+    wstring Sound = L"sound\\wav\\HeroSwordBasic\\Spin_Long.wav";
+    GamePlayStatic::Play2DSound(Sound, 1, SOUND_KIRBY);
 }
 
 void CKirbyAttackCharge2Slash::Exit()

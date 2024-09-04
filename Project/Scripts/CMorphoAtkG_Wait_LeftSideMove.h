@@ -5,6 +5,7 @@ class CMorphoAtkG_Wait_LeftSideMove : public CBossState
 {
 private:
     float m_AccTime;
+    int m_SoundIdx;
 
 public:
     virtual void tick() override;
