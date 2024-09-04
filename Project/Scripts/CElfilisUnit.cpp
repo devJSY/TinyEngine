@@ -8,8 +8,8 @@ CElfilisUnit::CElfilisUnit()
     : CUnitScript(ELFILISUNIT)
 {
     UnitInfo ElfilisInfo = {
-        850.f, // HP
-        850.f, // MaxHP
+        700.f, // HP
+        700.f, // MaxHP
         10.f,   // Speed
         10.f,   // Rotation Speed
         10.f,   // JumpPower
@@ -24,8 +24,8 @@ CElfilisUnit::CElfilisUnit(const CElfilisUnit& _Origin)
     : CUnitScript(_Origin)
 {
     UnitInfo ElfilisInfo = {
-        850.f, // HP
-        850.f, // MaxHP
+        700.f, // HP
+        700.f, // MaxHP
         10.f,   // Speed
         10.f,   // Rotation Speed
         10.f,   // JumpPower
