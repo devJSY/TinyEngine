@@ -564,6 +564,8 @@ void CElfilisFSM::ProcPatternStep()
         if (m_PatternStep == 0)
         {
             ChangeStateGroup_Set(ElfilisStateGroup::GroundMove, L"GROUND_MOVE_TELEPORT");
+            Animator()->Play(ANIMPREFIX("Wait"), false, false, 1.5f, 0.f);
+            Animator()->SetClipFrameIndex(1);
         }
         else if (m_PatternStep == 1)
         {
