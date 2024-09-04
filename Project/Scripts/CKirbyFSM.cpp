@@ -145,7 +145,12 @@ CKirbyFSM::CKirbyFSM(const CKirbyFSM& _Origin)
             continue;
 
         CKirbyAbility* pAbil = _Origin.m_arrAbility[i]->Clone();
-        assert(pAbil);
+        if (!pAbil)
+        {
+            assert(nullptr);
+            return;
+        }
+
         m_arrAbility[i] = pAbil;
     }
 
@@ -156,7 +161,12 @@ CKirbyFSM::CKirbyFSM(const CKirbyFSM& _Origin)
             continue;
 
         CKirbyObject* pObjCopy = _Origin.m_arrObject[i]->Clone();
-        assert(pObjCopy);
+        if (!pObjCopy)
+        {
+            assert(0);
+            return;
+        }
+
         m_arrObject[i] = pObjCopy;
     }
 

@@ -95,7 +95,11 @@ void CFSMScript::ChangeState(const wstring& _strState)
 
     // 1. next state check
     CState* pNextState = FindState(_strState);
-    assert(pNextState);
+    if (!pNextState)
+    {
+        assert(nullptr);
+        return;
+    }
 
     ChangeState_proc(pNextState);
 
