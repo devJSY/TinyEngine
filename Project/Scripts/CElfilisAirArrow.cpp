@@ -283,6 +283,10 @@ void CElfilisAirArrow::Aim()
     else
     {
         StartAttack();
+
+        // sound
+        wstring SoundKeyArrow = L"sound\\wav\\CharaBossChimera2\\0021_RayArrow.wav";
+        GamePlayStatic::Play2DSound(SoundKeyArrow, 1, SOUND_ELFILIS);
     }
 }
 
@@ -290,7 +294,7 @@ void CElfilisAirArrow::Attack()
 {
     if (!m_bGround)
     {
-        float DetectRange = 200.f;
+        float DetectRange = 300.f;
         Vec3 CurTargetDiff = m_Target->Transform()->GetWorldPos() - Transform()->GetWorldPos();
         float Diff = CurTargetDiff.Length();
 
@@ -313,7 +317,7 @@ void CElfilisAirArrow::Attack()
             // 1.f ~ : 타겟방향으로 위치 lerp
             else
             {
-                m_AttackSpeed += 170.f * DT;
+                m_AttackSpeed += 190.f * DT;
                 float t = m_AttackSpeed / m_TargetDist;
 
                 Vec3 CurPos = Transform()->GetWorldPos();
@@ -333,11 +337,9 @@ void CElfilisAirArrow::Attack()
 
             if (NewDiff < DetectRange)
             {
-                Vec3 CurDir = (CurPos - PrevPos).Normalize();
-                float Speed = (CurDir).Length() / DT;
-
+                Vec3 CurForce = CurPos - PrevPos;
                 Rigidbody()->SetKinematic(false);
-                Rigidbody()->SetVelocity(CurDir * Speed);
+                Rigidbody()->SetVelocity(CurForce);
             }
         }
     }
@@ -357,6 +359,10 @@ void CElfilisAirArrow::Attack()
 
             // Spawn Drop
             ELFFSM->SpawnDropStar(NewPos);
+
+            // sound
+            wstring SoundKeyArrowCol = L"sound\\wav\\CharaBossChimera2\\0023_RayArrowCollision.wav";
+            GamePlayStatic::Play2DSound(SoundKeyArrowCol, 1, SOUND_ELFILIS);
         }
 
         if (m_AccTime > 1.f)

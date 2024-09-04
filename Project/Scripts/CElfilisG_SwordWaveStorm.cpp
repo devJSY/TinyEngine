@@ -48,6 +48,10 @@ void CElfilisG_SwordWaveStorm::Enter_Step()
     {
     case StateStep::Start: {
         GetOwner()->Animator()->Play(ANIMPREFIX("DimensionSpikeStart"), false);
+
+        // sound
+        wstring Sound = L"sound\\wav\\CharaBossChimeraSoul\\0001_HalberdCharging.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_ELFILIS);
     }
     break;
     case StateStep::Progress: {
@@ -64,6 +68,10 @@ void CElfilisG_SwordWaveStorm::Enter_Step()
         {
             m_PlayTime = m_Storm->GetRemainTime();
         }
+
+        // sound
+        wstring Sound = L"sound\\wav\\CharaBossChimera2\\0012_StartStorm.wav";
+        GamePlayStatic::Play2DSound(Sound, 0, SOUND_ELFILIS * 0.8f);
     }
     break;
     case StateStep::End: {
@@ -83,7 +91,11 @@ void CElfilisG_SwordWaveStorm::Exit_Step()
         ELFFSM->OffWeaponTrigger();
     }
     break;
-    case StateStep::Wait:
+    case StateStep::Wait: {
+        // sound
+        wstring Sound = L"sound\\wav\\CharaBossChimera2\\0012_StartStorm.wav";
+        GamePlayStatic::StopSound(Sound);
+    }
         break;
     case StateStep::End:
         break;
@@ -125,7 +137,11 @@ void CElfilisG_SwordWaveStorm::Progress()
             }
         }
 
-        // Camera Shake
+        // sound
+        wstring Sound = L"sound\\wav\\CharaBossChimera2\\0065_Storm.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_ELFILIS);
+
+        // Camera : Shake
         CAMERACTRL->Shake(0.4f, 60.f, 40.f);
 
         m_bFrmEnter = false;

@@ -101,6 +101,9 @@ public:
 
     void FadeInBGM(const wstring& _SoundPath, float _StartVolume, float _EndVolume, float _Duration);
     void FadeOutBGM(float _Duration);
+    //void ChangeBGMSize(float _)
+    Ptr<CSound> GetBGM() { return m_BGM; }
+    float GetVolume() { return m_EndBGMVolume; }
 
     void FadeOutSound();
 

@@ -20,6 +20,12 @@ CMorphoTrackingSoul::~CMorphoTrackingSoul()
 
 void CMorphoTrackingSoul::begin()
 {
+    // Sound
+    m_Sound = L"sound\\wav\\CharaMorphoknight\\TrackingSoulSound";
+    int RandIdx = GetRandomInt(0, 2);
+    m_Sound += to_wstring(RandIdx) + L".wav";
+
+    GamePlayStatic::Play2DSound(m_Sound, 0, SOUND_MORPHO * 0.3f);
 }
 
 void CMorphoTrackingSoul::tick()
@@ -147,6 +153,9 @@ void CMorphoTrackingSoul::Disappear()
     if (m_AccTime > DisappearTime)
     {
         GamePlayStatic::DestroyGameObject(GetOwner());
+
+        // sound
+        GamePlayStatic::StopSound(m_Sound);
     }
 }
 

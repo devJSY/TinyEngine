@@ -28,7 +28,11 @@ CKirbyAbility::~CKirbyAbility()
 void CKirbyAbility::ChangeState(const wstring& _strStateName)
 {
     CFSMScript* OwnerFSM = (CFSMScript*)CPlayerMgr::GetPlayerFSM();
-    assert(OwnerFSM);
+    if (!OwnerFSM)
+    {
+        assert(nullptr);
+        return;
+    }
 
     OwnerFSM->ChangeState(_strStateName);
 }

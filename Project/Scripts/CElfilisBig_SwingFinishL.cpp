@@ -60,6 +60,11 @@ void CElfilisBig_SwingFinishL::Enter_Step()
     case StateStep::Progress: {
         GetOwner()->Animator()->Play(ANIMPREFIX("BigSwingFinishLeft"), false, false, 4.f, 1.f);
         m_bFrmEnter = true;
+        m_SoundIdx = 0;
+
+        // sound
+        wstring Wind = L"sound\\wav\\CharaBossChimera2\\0037_BigSwing.wav";
+        GamePlayStatic::Play2DSound(Wind, 1, SOUND_ELFILIS);
     }
     break;
     case StateStep::End: {
@@ -126,6 +131,16 @@ void CElfilisBig_SwingFinishL::Progress()
             ELFFSM->ProcPatternStep();
             ChangeStep(StateStep::EndWait);
         }
+    }
+
+    // sound
+    if (m_SoundIdx == 0 && CHECK_ANIMFRM(GetOwner(), 400))
+    {
+        m_SoundIdx++;
+
+        // sound
+        wstring Wind = L"sound\\wav\\CharaBossChimera2\\0045_SlashWind.wav";
+        GamePlayStatic::Play2DSound(Wind, 1, SOUND_ELFILIS * 2.f);
     }
 
     if (GetOwner()->Animator()->IsFinish())

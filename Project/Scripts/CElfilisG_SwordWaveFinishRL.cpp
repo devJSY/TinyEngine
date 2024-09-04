@@ -48,6 +48,10 @@ void CElfilisG_SwordWaveFinishRL::Enter_Step()
         GetOwner()->Animator()->Play(ANIMPREFIX("SwingFinishLeft"), false);
         ELFFSM->OnWeaponTrigger();
         m_bFrmEnter = true;
+
+        // sound
+        wstring Start = L"sound\\wav\\CharaBossChimeraSoulCore\\0000_Slash.wav";
+        GamePlayStatic::Play2DSound(Start, 1, SOUND_ELFILIS);
     }
     break;
     }

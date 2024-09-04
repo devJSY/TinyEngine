@@ -13,6 +13,7 @@ public:
     virtual void begin() override;
     virtual void TriggerEvent(UINT _Idx);
 
+    virtual void LevelStart() override;
     virtual void LevelEnd() override;
     virtual void LevelRestart() override;
 

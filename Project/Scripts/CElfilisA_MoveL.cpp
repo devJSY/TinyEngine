@@ -7,6 +7,8 @@ CElfilisA_MoveL::CElfilisA_MoveL()
     , m_bMoveLeft(false)
     , m_bMoveUp(false)
 {
+    m_SoundKeyMoveAir.push_back(L"sound\\wav\\CharaBossChimera2\\0024_MoveAir.wav");
+    m_SoundKeyMoveAir.push_back(L"sound\\wav\\CharaBossChimera2\\0026_MoveAir.wav");
 }
 
 CElfilisA_MoveL::~CElfilisA_MoveL()
@@ -59,6 +61,10 @@ void CElfilisA_MoveL::Enter_Step()
         GetOwner()->Rigidbody()->SetDrag(2.f);
         GetOwner()->Rigidbody()->SetVelocity(Vec3::Zero);
         GetOwner()->Rigidbody()->AddForce(DownForce, ForceMode::Impulse);
+
+        // sound
+        int RandIdx = GetRandomInt(0, 1);
+        GamePlayStatic::Play2DSound(m_SoundKeyMoveAir[RandIdx], 1, SOUND_ELFILIS * 0.8f);
     }
     break;
     case StateStep::Progress: {

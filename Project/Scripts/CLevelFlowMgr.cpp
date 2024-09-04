@@ -338,7 +338,11 @@ void CLevelFlowMgr::LevelStart()
             PlayerPrefab = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Kirby.pref", L"prefab\\Kirby.pref");
 
             // Kirby Prefab이 없다면 assert 게임 시작 불가능
-            assert(PlayerPrefab.Get());
+            if (PlayerPrefab == nullptr)
+            {
+                assert(0);
+                return;
+            }
 
             MainPlayer = PlayerPrefab->Instantiate();
         }

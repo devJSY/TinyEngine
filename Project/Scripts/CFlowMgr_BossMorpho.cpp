@@ -39,6 +39,12 @@ void CFlowMgr_BossMorpho::begin()
     m_BarricadeScale = (m_Barricade) ? m_Barricade->Transform()->GetLocalScale() : Vec3();
 }
 
+void CFlowMgr_BossMorpho::LevelStart()
+{
+    CLevelFlowMgr::LevelStart();
+    FadeInBGM(L"sound\\stream\\K15_MorphoKnight1\\K15_MorphoKnight1.marker.wav", 0.f, SOUND_BGM, 1.f);
+}
+
 void CFlowMgr_BossMorpho::LevelEnd()
 {
     CLevelFlowMgr::LevelEnd();

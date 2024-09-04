@@ -8,6 +8,11 @@ CElfilisA_DrawLaser::CElfilisA_DrawLaser()
     , m_AccTime(0.f)
 {
     m_LaserPref = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\ElfilisLaser.pref", L"prefab\\ElfilisLaser.pref");
+
+    m_SoundKeyLaser = L"sound\\wav\\CharaBossChimera2\\0032_DimensionLaser.wav";
+    m_SoundKeyLaserWait = L"sound\\wav\\CharaBossChimera2\\0057_RecoveryWait.wav";
+    m_SoundLaser = CAssetMgr::GetInst()->Load<CSound>(m_SoundKeyLaser);
+    m_SoundLaserWait = CAssetMgr::GetInst()->Load<CSound>(m_SoundKeyLaserWait);
 }
 
 CElfilisA_DrawLaser::~CElfilisA_DrawLaser()
@@ -65,6 +70,10 @@ void CElfilisA_DrawLaser::Enter_Step()
     case StateStep::Ready: {
         GetOwner()->Animator()->Play(ANIMPREFIX("DimensionLaserReady"), false);
         //@Effect Â÷Â¡ ÆÄÆ¼Å¬
+
+        // Sound
+        wstring Sound = L"sound\\wav\\CharaBossChimera2\\0030_DimensionLaserCharge.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_ELFILIS, true);
     }
     break;
     case StateStep::Charge: {
@@ -73,12 +82,16 @@ void CElfilisA_DrawLaser::Enter_Step()
     break;
     case StateStep::Start: {
         GetOwner()->Animator()->Play(ANIMPREFIX("DimensionLaserStart"), false);
+
+        // Sound
+        wstring Sound = L"sound\\wav\\CharaBossChimera2\\0031_DimensionLaserChargeFinish.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_ELFILIS, true);
     }
     break;
     case StateStep::Progress: {
         GetOwner()->Animator()->Play(ANIMPREFIX("DimensionLaser"));
         m_AccTime = 0.f;
-        
+
         // Laser Spawn
         if (m_LaserPref != nullptr)
         {
@@ -93,6 +106,9 @@ void CElfilisA_DrawLaser::Enter_Step()
             m_LaserScript->SetAutoPlay(true);
             GamePlayStatic::SpawnGameObject(Laser, LAYER_MONSTERATK_TRIGGER);
         }
+
+        // Sound
+        GamePlayStatic::Play2DSound(m_SoundKeyLaser, 1, SOUND_ELFILIS * 1.4f, true);
     }
     break;
     case StateStep::End: {
@@ -118,8 +134,10 @@ void CElfilisA_DrawLaser::Exit_Step()
         break;
     case StateStep::Start:
         break;
-    case StateStep::Progress:
-        break;
+    case StateStep::Progress: {
+        CSoundMgr::GetInst()->FadeSound(m_SoundKeyLaserWait, SOUND_ELFILIS, 0.f, 0.5f, false);
+    }
+    break;
     case StateStep::End:
         break;
     }
@@ -159,6 +177,12 @@ void CElfilisA_DrawLaser::Progress()
         CGameObject* Laser = m_LaserScript->GetOwner();
         Vec3 NewDir = (PLAYER->Transform()->GetWorldPos() - GetOwner()->Transform()->GetWorldPos()).Normalize();
         Laser->Transform()->Slerp(NewDir, 2.f * DT);
+    }
+
+    // sound
+    if (m_SoundLaser != nullptr && m_SoundLaserWait != nullptr && !m_SoundLaser->IsPlaying() && !m_SoundLaserWait->IsPlaying())
+    {
+        GamePlayStatic::Play2DSound(m_SoundKeyLaserWait, 0, SOUND_ELFILIS);
     }
 
     if (m_AccTime > 15.f)

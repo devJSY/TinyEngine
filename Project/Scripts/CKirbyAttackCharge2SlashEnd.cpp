@@ -30,6 +30,10 @@ void CKirbyAttackCharge2SlashEnd::Enter()
     PLAYERFSM->SetInvincible(true);
 
     PLAYERFSM->GetCurWeapon()->GetChildObject(L"KirbySwordFireParticle")->ParticleSystem()->EnableModule(PARTICLE_MODULE::SPAWN, false);
+
+    // sound
+    wstring Sound = L"sound\\wav\\HeroSwordMorpho\\0003_Fire.wav";
+    GamePlayStatic::Play2DSound(Sound, 1, SOUND_KIRBY * 0.8f);
 }
 
 void CKirbyAttackCharge2SlashEnd::Exit()

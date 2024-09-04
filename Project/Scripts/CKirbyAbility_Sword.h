@@ -20,6 +20,9 @@ private:
     float m_AccTime;
     bool m_bFrmEnter;
 
+    // sound
+    UINT m_SoundIdx;
+
 public:
     // Idle
     virtual void IdleEnter() override;
