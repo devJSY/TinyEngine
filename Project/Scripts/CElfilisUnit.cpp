@@ -10,10 +10,10 @@ CElfilisUnit::CElfilisUnit()
     UnitInfo ElfilisInfo = {
         700.f, // HP
         700.f, // MaxHP
-        10.f,   // Speed
-        10.f,   // Rotation Speed
-        10.f,   // JumpPower
-        0.f,    // ATK
+        10.f,  // Speed
+        10.f,  // Rotation Speed
+        10.f,  // JumpPower
+        0.f,   // ATK
     };
     SetInitInfo(ElfilisInfo);
 
@@ -26,10 +26,10 @@ CElfilisUnit::CElfilisUnit(const CElfilisUnit& _Origin)
     UnitInfo ElfilisInfo = {
         700.f, // HP
         700.f, // MaxHP
-        10.f,   // Speed
-        10.f,   // Rotation Speed
-        10.f,   // JumpPower
-        0.f,    // ATK
+        10.f,  // Speed
+        10.f,  // Rotation Speed
+        10.f,  // JumpPower
+        0.f,   // ATK
     };
     SetInitInfo(ElfilisInfo);
 
@@ -94,6 +94,9 @@ void CElfilisUnit::ResistSuccess()
 
 void CElfilisUnit::PlayTeleportEffect(CGameObject** _BeforeUnit, CGameObject** _BeforeEffect, CGameObject** _AfterEffect, Vec3 _Pos)
 {
+    // off collider
+    ELFFSM->DisableCollider();
+
     // copy object
     CGameObject* BeforeUnit = new CGameObject;
     BeforeUnit->AddComponent(Transform()->Clone());

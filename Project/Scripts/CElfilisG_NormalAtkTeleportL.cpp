@@ -118,6 +118,7 @@ void CElfilisG_NormalAtkTeleportL::Exit_Step()
         break;
     case StateStep::StartEnd: {
         ELFFSM->ReleaseDynamicMtrl();
+        ELFFSM->EnableCollider();
 
         if (m_BeforeObj)
         {

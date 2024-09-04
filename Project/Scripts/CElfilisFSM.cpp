@@ -470,6 +470,7 @@ void CElfilisFSM::begin()
     }
 
     // get childs
+    m_BodyCollider = GetOwner()->GetChildObject(L"Body Collider")->CapsuleCollider();
     m_Weapon = GetOwner()->GetChildObject(L"Halberd");
 
     CGameObject* Hitbox = GetOwner()->GetChildObject(L"Hitbox");
@@ -671,6 +672,30 @@ void CElfilisFSM::ResetEmissive()
         m_listWeaponMtrl[i]->SetEmission(Vec4(m_listWeaponEmissive[i], 0.f));
         m_listWeaponMtrl[i]->SetTexParam(TEX_PARAM::TEX_7, m_listWeaponEmissiveTex[i]);
     }
+}
+
+void CElfilisFSM::EnableCollider()
+{
+    CapsuleCollider()->SetEnabled(true);
+
+    if (m_BodyCollider)
+    {
+        m_BodyCollider->SetEnabled(true);
+    }
+
+    OnWeaponTrigger();
+}
+
+void CElfilisFSM::DisableCollider()
+{
+    CapsuleCollider()->SetEnabled(false);
+
+    if (m_BodyCollider)
+    {
+        m_BodyCollider->SetEnabled(false);
+    }
+
+    OffWeaponTrigger();
 }
 
 void CElfilisFSM::ReleaseDynamicMtrl()
