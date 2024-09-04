@@ -171,6 +171,8 @@ void CKirbyBulletScript::OnTriggerEnter(CCollider* _OtherCollider)
 
     if (LayerIdx == LAYER_MONSTER_TRIGGER)
     {
+        GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\0008.wav", 1, KIRBY_EFFECTSOUND);
+
         if (_OtherCollider->GetOwner()->GetName() == L"Body Collider")
         {
             CUnitScript* pMonster = _OtherCollider->GetOwner()->GetParent()->GetScript<CUnitScript>();

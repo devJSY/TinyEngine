@@ -43,6 +43,9 @@ void CKirbyAbility_Fire::AttackCharge1Start()
 
 void CKirbyAbility_Fire::AttackCharge1StartEnter()
 {
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroFire\\0000.wav", 1, KIRBY_EFFECTSOUND, false, true);
+
+
     // Projectile CoolTime, Acc 초기화
     m_ProjectileAcc = 0.f;
     m_ProjectileCooltime = 0.1f;
@@ -66,6 +69,8 @@ void CKirbyAbility_Fire::AttackCharge1StartEnter()
 
 void CKirbyAbility_Fire::AttackCharge1StartExit()
 {
+    GamePlayStatic::PauseSound(L"sound\\wav\\HeroFire\\0000.wav");
+
     // 커비 표정 바꿔주기
     CPlayerMgr::ClearMouthMtrl();
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));
@@ -122,6 +127,8 @@ void CKirbyAbility_Fire::AttackCharge1()
 
 void CKirbyAbility_Fire::AttackCharge1Enter()
 {
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroFire\\0000.wav", 2, KIRBY_EFFECTSOUND, true, false);
+
     // 애니메이션 재생
     PLAYER->Animator()->Play(ANIMPREFIX("FireBreath"), true, false, 2.f);
 
@@ -167,6 +174,8 @@ void CKirbyAbility_Fire::AttackCharge1End()
 
 void CKirbyAbility_Fire::AttackCharge1EndEnter()
 {
+    GamePlayStatic::PauseSound(L"sound\\wav\\HeroFire\\0000.wav");
+
     m_ProjectileAcc = 0.f;
 
     // 애니메이션 재생
@@ -223,6 +232,8 @@ void CKirbyAbility_Fire::AttackCharge1Run()
 
 void CKirbyAbility_Fire::AttackCharge1RunEnter()
 {
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroFire\\0000.wav", 2, KIRBY_EFFECTSOUND, true, false);
+
     // 애니메이션 재생
     PLAYER->Animator()->Play(ANIMPREFIX("FireWalk"), true, false, 2.f);
 
@@ -243,6 +254,8 @@ void CKirbyAbility_Fire::AttackCharge1RunEnter()
 
 void CKirbyAbility_Fire::AttackCharge1RunExit()
 {
+    GamePlayStatic::PauseSound(L"sound\\wav\\HeroFire\\0000.wav");
+
     // 커비 표정 바꿔주기
     CPlayerMgr::SetPlayerFace(FaceType::Normal);
 

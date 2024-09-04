@@ -85,6 +85,18 @@ UINT CKirbyHatBlade::LoadFromLevelFile(FILE* _File)
 
 void CKirbyHatBlade::Attack()
 {
+    Ptr<CPrefab> CutterAttackSmokeSpawner = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\CutterAttackSmoke.pref");
+
+    if (CutterAttackSmokeSpawner.Get())
+    {
+        CGameObject* Spawner = CutterAttackSmokeSpawner->Instantiate();
+        Vec3 Pos = PLAYER->Transform()->GetWorldPos();
+        Pos.y += 50.f;
+        Spawner->Transform()->SetWorldPos(Pos);
+
+        GamePlayStatic::SpawnGameObject(Spawner, Spawner->GetLayerIdx());
+    }
+
     // 공격을 하는 순간 물체가 렌더링안되게 한다.
     MeshRender()->SetMaterial(nullptr, 0);
 
