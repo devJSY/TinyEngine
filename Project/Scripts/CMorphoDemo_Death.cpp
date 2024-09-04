@@ -64,6 +64,11 @@ void CMorphoDemo_Death::Enter_Step()
         MRPFSM->SetGlobalState(true);
 
         CBossMgr::GetBossFlowMgr()->ChangeFlow(BossLevelFlow::Death);
+        CBossMgr::GetBossFlowMgr()->FadeOutBGM(0.5f);
+
+        // Sound
+        wstring Sound = L"sound\\wav\\CharaMorphoknight\\0029_DeathShock.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_MORPHO);
 
         // Camera : Àá±ñ¸ØÃã
         CAMERACTRL->SetLock(true, 0.5f);
@@ -88,6 +93,10 @@ void CMorphoDemo_Death::Enter_Step()
         GetOwner()->Animator()->Play(ANIMPREFIX("Damage2Wait"), true, false, 1.5f);
         m_AccTime = 0.f;
         m_bFrmEnter = true;
+
+        // Sound
+        wstring Sound = L"sound\\wav\\CharaMorphoknight\\morpho_death_cinematic.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_MORPHO);
     }
     break;
     case StateStep::End: {
@@ -177,6 +186,10 @@ void CMorphoDemo_Death::End()
 
             GamePlayStatic::SpawnGameObject(Particle, LAYER_EFFECT);
         }
+
+        // Sound
+        wstring Sound = L"sound\\wav\\DemoBossLv7Chimera2After\\0000_Disappear.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_MORPHO);
     }
 
     if (GetOwner()->Animator()->IsFinish())

@@ -11,6 +11,9 @@ private:
     float m_AccTime;
     float m_PlayTime;
 
+    // sound
+    wstring m_Sound;
+
 public:
     virtual void begin() override;
     virtual void tick() override;

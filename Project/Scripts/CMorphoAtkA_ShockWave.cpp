@@ -78,6 +78,17 @@ void CMorphoAtkA_ShockWave::Enter_Step()
     case StateStep::Charge: {
         GetOwner()->Animator()->Play(ANIMPREFIX("ButterflyScalesChargeStart"), false, false, 1.5f);
         GetOwner()->Rigidbody()->SetUseGravity(false);
+
+        // sound
+        wstring Sound = L"sound\\wav\\CharaMorphoknight\\ShockWaveCharging";
+        int RandIdx = GetRandomInt(0, 1);
+
+        if (RandIdx == 0)
+            Sound += L"1.wav";
+        else
+            Sound += L"2.wav";
+
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_MORPHO);
     }
     break;
     case StateStep::ChargeWait: {
@@ -102,6 +113,10 @@ void CMorphoAtkA_ShockWave::Enter_Step()
 
         MRPFSM->SpawnDropStar(SpawnPos - RightDir * 50.f);
         MRPFSM->SpawnDropStar(SpawnPos + RightDir * 50.f);
+
+        // Sound
+        wstring Sound = L"sound\\wav\\CharaMorphoknight\\ShowWaveCombo1.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_MORPHO);
     }
     break;
     case StateStep::Wait: {

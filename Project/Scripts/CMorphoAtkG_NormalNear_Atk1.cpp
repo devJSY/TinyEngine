@@ -61,6 +61,10 @@ void CMorphoAtkG_NormalNear_Atk1::Enter_Step()
     break;
     case StateStep::Charge: {
         GetOwner()->Animator()->Play(ANIMPREFIX("Attack1Charge"), false, false, 1.5f);
+
+        // Sound
+        wstring Sound = L"sound\\wav\\CharaMorphoknight\\Charging1.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_MORPHO);
     }
     break;
     case StateStep::Progress: {
@@ -71,6 +75,10 @@ void CMorphoAtkG_NormalNear_Atk1::Enter_Step()
         m_ForceDir = PLAYER->Transform()->GetWorldPos() - GetOwner()->Transform()->GetWorldPos();
         m_ForceDir.y = 0.f;
         m_ForceDir.Normalize();
+
+        // Sound
+        wstring Sound = L"sound\\wav\\CharaMorphoknight\\Swing0.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_MORPHO);
 
         CAMERACTRL->Shake(0.3f, 20.f, 20.f);
     }

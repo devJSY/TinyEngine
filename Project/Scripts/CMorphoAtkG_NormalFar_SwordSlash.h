@@ -9,6 +9,8 @@ private:
     float m_SlashSpeed;
     bool m_bFrmEnter;
 
+    UINT m_SoundIdx;
+
 public:
     virtual void tick() override;
     virtual void Exit() override;

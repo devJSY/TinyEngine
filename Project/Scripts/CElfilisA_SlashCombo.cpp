@@ -75,6 +75,10 @@ void CElfilisA_SlashCombo::Enter_Step()
 
         ELFFSM->OnWeaponTrigger();
         m_StartPos = GetOwner()->Transform()->GetWorldPos();
+
+        // sound
+        wstring MoveAir = L"sound\\wav\\CharaBossChimera2\\0024_MoveAir.wav";
+        GamePlayStatic::Play2DSound(MoveAir, 1, SOUND_ELFILIS);
     }
     break;
     case StateStep::Start: {
@@ -82,6 +86,10 @@ void CElfilisA_SlashCombo::Enter_Step()
         GetOwner()->Rigidbody()->SetVelocity(Vec3::Zero);
         GetOwner()->Rigidbody()->AddForce(Vec3(0.f, -1200.f, 1.f), ForceMode::Impulse);
         //@Effect Halberd Æ®·¹ÀÏ ÀÌÆåÆ®
+
+        // sound
+        wstring Wind = L"sound\\wav\\CharaBossChimera2\\0045_SlashWind.wav";
+        GamePlayStatic::Play2DSound(Wind, 1, SOUND_ELFILIS);
     }
     break;
     case StateStep::Progress: {
@@ -99,6 +107,21 @@ void CElfilisA_SlashCombo::Enter_Step()
         GetOwner()->Rigidbody()->AddForce(Dir * 150.f, ForceMode::VelocityChange);
 
         //@Effect °ø±âÆÎ ÀÌÆåÆ®
+
+        // sound
+        wstring Crash = L"sound\\wav\\CharaBossChimera2\\0046_SlashCrash.wav";
+        wstring Fire;
+
+        int RandIdx = GetRandomInt(0, 2);
+        if (RandIdx == 0)
+            Fire = L"sound\\wav\\CharaBossChimera2\\0047_SlashFire.wav";
+        else if (RandIdx == 1)
+            Fire = L"sound\\wav\\CharaBossChimera2\\0048_SlashFire.wav";
+        else
+            Fire = L"sound\\wav\\CharaBossChimera2\\0049_SlashFire.wav";
+
+        GamePlayStatic::Play2DSound(Crash, 1, SOUND_ELFILIS * 0.5f);
+        GamePlayStatic::Play2DSound(Fire, 1, SOUND_ELFILIS * 0.3f);
     }
     break;
     case StateStep::Wait: {
@@ -107,6 +130,10 @@ void CElfilisA_SlashCombo::Enter_Step()
         // Up
         GetOwner()->Rigidbody()->SetVelocity(Vec3::Zero);
         GetOwner()->Rigidbody()->AddForce(Vec3(0.f, 1000.f, 1.f), ForceMode::Impulse);
+
+        // sound
+        wstring MapOver = L"sound\\wav\\CharaBossChimera2\\0050_SlashMapOver.wav";
+        GamePlayStatic::Play2DSound(MapOver, 1, SOUND_ELFILIS * 0.2f);
     }
     break;
     }
@@ -165,7 +192,7 @@ void CElfilisA_SlashCombo::Progress()
     CurPos.y = 0.f;
 
     // Camera Shake
-    Vec3 PlayerPos = PLAYER->Transform()->GetWorldPos(); 
+    Vec3 PlayerPos = PLAYER->Transform()->GetWorldPos();
     if (!m_bCamShake && CurPos.Cross(PlayerPos).Dot(m_PrevPos.Cross(PlayerPos)) < 0.f)
     {
         m_bCamShake = true;

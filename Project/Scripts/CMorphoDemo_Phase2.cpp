@@ -55,11 +55,16 @@ void CMorphoDemo_Phase2::Enter_Step()
         GetOwner()->Rigidbody()->SetVelocity(Vec3(0.f, 5.f, 0.f));
         MRPFSM->SetGlobalState(true);
 
+        // Sound
+        wstring Sound = L"sound\\wav\\CharaMetaknight\\0027_Damage.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_MORPHO * 1.3f);
+
         CAMERACTRL->Shake(0.7f, 20.f, 25.f);
     }
     break;
     case StateStep::StartEnd: {
         GetOwner()->Animator()->Play(ANIMPREFIX("DeathLanding"), false, false, 1.5f);
+        m_bFrmEnter = true;
     }
     break;
     case StateStep::Progress: {
@@ -67,6 +72,7 @@ void CMorphoDemo_Phase2::Enter_Step()
 
         CBossMgr::GetBossFlowMgr()->SetDemoType(BossDemoType::StartPhase2);
         CBossMgr::GetBossFlowMgr()->ChangeFlow(BossLevelFlow::DemoPlay);
+        m_bFrmEnter = true;
 
         // Camera : ¸ôÆ÷ Å¸°Ù Distortion
         CAMERACTRL->SetMainTarget(BOSS);
@@ -117,6 +123,15 @@ void CMorphoDemo_Phase2::Start()
 
 void CMorphoDemo_Phase2::StartEnd()
 {
+    // Sound
+    if (m_bFrmEnter && CHECK_ANIMFRM(GetOwner(), 30))
+    {
+        m_bFrmEnter = false;
+
+        wstring Sound = L"sound\\wav\\CharaMisterFrostyEx\\0003_FallDamage.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_MORPHO);
+    }
+
     if (GetOwner()->Animator()->IsFinish())
     {
         ChangeStep(StateStep::Progress);
@@ -125,6 +140,15 @@ void CMorphoDemo_Phase2::StartEnd()
 
 void CMorphoDemo_Phase2::Progress()
 {
+    // Sound
+    if (m_bFrmEnter && CHECK_ANIMFRM(GetOwner(), 50))
+    {
+        m_bFrmEnter = false;
+
+        wstring Sound = L"sound\\wav\\CharaMorphoknight\\Phase2_Enter.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_MORPHO * 1.5f);
+    }
+
     if (GetOwner()->Animator()->IsFinish())
     {
         MRPFSM->SetGlobalState(false);

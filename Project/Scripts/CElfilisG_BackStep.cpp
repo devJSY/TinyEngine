@@ -60,6 +60,10 @@ void CElfilisG_BackStep::Enter_Step()
 
         m_StartPos = GetOwner()->Transform()->GetWorldPos();
         m_TargetPos = m_StartPos + m_ForceDir * 400.f;
+
+        // sound
+        wstring Start = L"sound\\wav\\CharaBossChimera2\\0024_MoveAir.wav";
+        GamePlayStatic::Play2DSound(Start, 1, SOUND_ELFILIS * 0.6f);
     }
     break;
     case StateStep::End: {

@@ -5,6 +5,7 @@
 #include "CBossLevelFlowMgr.h"
 
 CElfilisD_ResistSuccess::CElfilisD_ResistSuccess()
+    : m_bFrmEnter(true)
 {
 }
 
@@ -43,10 +44,15 @@ void CElfilisD_ResistSuccess::Enter_Step()
         ELFFSM->GetUnit()->ResistSuccess();
 
         CBossMgr::GetBossFlowMgr()->ChangeFlow(BossLevelFlow::Fight);
+
+        // Sound
+        wstring Roar = L"sound\\wav\\CharaBossChimera2\\0027_Roar.wav";
+        GamePlayStatic::Play2DSound(Roar, 1, SOUND_ELFILIS);
     }
     break;
     case StateStep::End: {
         GetOwner()->Animator()->Play(ANIMPREFIX("Roar"), false, false, 1.5f, 0.3f);
+        m_bFrmEnter = true;
     }
     break;
     }
@@ -73,6 +79,15 @@ void CElfilisD_ResistSuccess::Start()
 
 void CElfilisD_ResistSuccess::End()
 {
+    // Sound
+    if (CHECK_ANIMFRM(GetOwner(), 140) && m_bFrmEnter)
+    {
+        m_bFrmEnter = false;
+
+        wstring Recovery = L"sound\\wav\\CharaBossChimera2\\0059_RecoveryEnd.wav";
+        GamePlayStatic::Play2DSound(Recovery, 1, SOUND_ELFILIS);
+    }
+
     if (GetOwner()->Animator()->IsFinish())
     {
         ELFFSM->ChangeStateGroup(ElfilisStateGroup::GroundMove);

@@ -42,6 +42,10 @@ void CMorphoMoveG_Jump::Enter_Step()
         GetOwner()->Rigidbody()->SetVelocity(Vec3::Zero);
         GetOwner()->Rigidbody()->AddForce(Vec3(0.f, 25.f, 0.f), ForceMode::Impulse);
         m_StartHeight = GetOwner()->Transform()->GetWorldPos().y;
+
+        // sound
+        wstring Sound = L"sound\\wav\\CharaMorphoknight\\0002_Jump.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_MORPHO);
     }
     break;
     }

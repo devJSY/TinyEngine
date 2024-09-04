@@ -115,7 +115,11 @@ void CElfilisBigFSM::ChangeState(const wstring& _strState)
         pNextState = FindState(_strState);
     }
 
-    assert(pNextState);
+    if (!pNextState)
+    {
+        assert(nullptr);
+        return;
+    }
 
     ChangeState_proc(pNextState);
 }

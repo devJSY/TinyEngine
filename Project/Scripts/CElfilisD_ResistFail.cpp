@@ -47,6 +47,12 @@ void CElfilisD_ResistFail::Enter_Step()
         ELFFSM->SetResist(true);
         ELFFSM->SetGlobalState(true);
 
+        // Sound
+        // Sound
+        wstring Resist = L"sound\\wav\\CharaBossChimeraSoul\\0002_Death.wav";
+        GamePlayStatic::Play2DSound(Resist, 1, SOUND_ELFILIS);
+        CBossMgr::GetBossFlowMgr()->ChangeBGMSize(0.f, 1.f);
+
         // TimeScale & Camera Àá±ñ ¸ØÃã
         CTimeMgr::GetInst()->SetTimeScale(0.5f, 0.f);
         CAMERACTRL->Shake(0.3f, 30.f, 30.f);
@@ -61,6 +67,10 @@ void CElfilisD_ResistFail::Enter_Step()
 
         // Flow Mgr
         CBossMgr::GetBossFlowMgr()->ChangeFlow(BossLevelFlow::Death);
+
+        // Sound
+        wstring Resist = L"sound\\wav\\CharaBossChimera2\\0069_Death.wav";
+        GamePlayStatic::Play2DSound(Resist, 1, SOUND_ELFILIS);
 
         // CAMERA : ¿¡ÇÇ¸®½º Å¸°Ù, ½Ã³×¸¶ºä
         CAMERACTRL->SetMainTarget(BOSS);
@@ -128,6 +138,12 @@ void CElfilisD_ResistFail::Progress()
         if (m_bFrmEnter)
         {
             //@EFFECT ÅÍÁö´Â ÆÄÆ¼Å¬
+
+            // Sound
+            wstring EndBGM = L"sound\\stream\\K15_ChimeraSoulAfter1\\K15_ChimeraSoulAfter1.marker.dspadpcm.wav";
+            GamePlayStatic::PlayBGM(EndBGM, SOUND_BGM);
+
+            m_bFrmEnter = false;
         }
 
         ELFFSM->SetGlobalState(false);

@@ -46,6 +46,10 @@ void CMorphoAtkG_Teleport_TrackingSoul::Enter()
 {
     m_Step = StateStep::Charge;
     Enter_Step();
+
+    // Sound
+    wstring Charging = L"sound\\wav\\CharaMorphoknight\\Tracking_Soul_Spawn.wav";
+    GamePlayStatic::StopSound(Charging);
 }
 
 void CMorphoAtkG_Teleport_TrackingSoul::Enter_Step()
@@ -54,6 +58,10 @@ void CMorphoAtkG_Teleport_TrackingSoul::Enter_Step()
     {
     case StateStep::Charge: {
         GetOwner()->Animator()->Play(ANIMPREFIX("AttackHiChargeStart"), false, false, 1.5f);
+
+        // Sound
+        wstring Sound = L"sound\\wav\\CharaMorphoknight\\Tracking_Soul_Spawn.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_MORPHO);
     }
     break;
     case StateStep::ChargeWait: {
@@ -66,6 +74,10 @@ void CMorphoAtkG_Teleport_TrackingSoul::Enter_Step()
         GetOwner()->Animator()->Play(ANIMPREFIX("AttackHiStart"), false, false, 1.5f);
         MRPFSM->OnWeaponRTrigger();
         //@EFFECT Â÷Â¡¿Ï·áÀÌÆåÆ®
+        
+        // Sound
+        wstring Sound = L"sound\\wav\\CharaMorphoknight\\Charging1.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_MORPHO);
     }
     break;
     case StateStep::Wait: {
@@ -90,6 +102,10 @@ void CMorphoAtkG_Teleport_TrackingSoul::Enter_Step()
 
             GamePlayStatic::SpawnGameObject(pSoul, LAYER_MONSTERATK);
         }
+
+        // Sound
+        wstring Sound = L"sound\\wav\\CharaMorphoknight\\FireWallStart.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_MORPHO);
     }
     break;
     case StateStep::End: {
@@ -105,7 +121,11 @@ void CMorphoAtkG_Teleport_TrackingSoul::Exit_Step()
     {
     case StateStep::Charge:
         break;
-    case StateStep::ChargeWait:
+    case StateStep::ChargeWait: {
+        // Sound
+        wstring Charging = L"sound\\wav\\CharaMorphoknight\\Tracking_Soul_Spawn.wav";
+        GamePlayStatic::StopSound(Charging);
+    }
         break;
     case StateStep::Start: {
         MRPFSM->OffWeaponRTrigger();

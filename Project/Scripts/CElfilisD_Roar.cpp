@@ -60,11 +60,18 @@ void CElfilisD_Roar::Enter()
     CAMERACTRL->SetZoomThreshold(100.f);
 
     CAMERACTRL->Shake(4.5f, 60.f, 60.f);
+
+    // sound
+    wstring Roar = L"sound\\wav\\CharaBossChimera2\\0027_Roar.wav";
+    GamePlayStatic::Play2DSound(Roar, 1, SOUND_ELFILIS);
 }
 
 void CElfilisD_Roar::Exit()
 {
     CBossMgr::GetBossFlowMgr()->ChangeFlow(BossLevelFlow::Fight);
+
+    // Sound
+    CBossMgr::GetBossFlowMgr()->ChangeBGMSize(SOUND_BGM, 3.f);
 
     // Camera : ÇÏ´Ã ºä
     CAMERACTRL->SetElfilisSky();

@@ -5,6 +5,7 @@ class CElfilisD_Resist : public CBossState
 {
 private:
     float m_AccTime;
+    bool m_bFrmEnter;
 
 public:
     virtual void tick() override;

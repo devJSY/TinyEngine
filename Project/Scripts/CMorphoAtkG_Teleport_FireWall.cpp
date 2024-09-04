@@ -53,12 +53,22 @@ void CMorphoAtkG_Teleport_FireWall::Enter_Step()
     {
     case StateStep::Start: {
         GetOwner()->Animator()->Play(ANIMPREFIX("GigaMoonCharge"), false, false, 2.f);
+
+        // Sound
+        wstring Sound = L"sound\\wav\\CharaMorphoknight\\Charging0.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_MORPHO * 1.3f);
     }
     break;
     case StateStep::Progress: {
         GetOwner()->Animator()->Play(ANIMPREFIX("GigaMoonShotComb1"), false, false, 2.f);
         MRPFSM->OnWeaponRTrigger();
         m_bFrmEnter = true;
+
+        // Sound
+        wstring Spawn = L"sound\\wav\\CharaMetaknight\\0013_FireWallSpawn.wav";
+        wstring FireWall = L"sound\\wav\\CharaMetaknight\\0017_FireWall.wav";
+        GamePlayStatic::Play2DSound(Spawn, 1, SOUND_MORPHO);
+        GamePlayStatic::Play2DSound(FireWall, 1, SOUND_MORPHO * 0.9f);
     }
     break;
     case StateStep::End: {

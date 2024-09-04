@@ -56,6 +56,10 @@ void CMorphoMoveG_HoverDash::Enter_Step()
     break;
     case StateStep::Progress: {
         GetOwner()->Animator()->Play(ANIMPREFIX("HoverDash"), true, false, 1.5f);
+
+        // sound
+        wstring Sound = L"sound\\wav\\CharaMisterFrosty\\0003_Fly.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_MORPHO);
     }
     break;
     case StateStep::End: {
@@ -123,6 +127,10 @@ void CMorphoMoveG_HoverDash::EndWait()
     if (MRPFSM->IsGround())
     {
         MRPFSM->Attack();
+
+        // sound
+        wstring Sound = L"sound\\wav\\CharaMorphoknight\\0001_Landing.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_MORPHO * 1.3f);
     }
 }
 

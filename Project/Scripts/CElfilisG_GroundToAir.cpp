@@ -50,6 +50,10 @@ void CElfilisG_GroundToAir::Enter_Step()
         m_TargetPos = -GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT) * ELFFSM->GetAirPos().z + Vec3(0.f, ELFFSM->GetAirPos().y, 0.f);
         m_ForceDir = m_TargetPos - m_StartPos;
         m_ForceDir.Normalize();
+
+        // sound
+        wstring Start = L"sound\\wav\\CharaBossChimera2\\0025_MoveAir.wav";
+        GamePlayStatic::Play2DSound(Start, 1, SOUND_ELFILIS * 0.6f);
     }
     break;
     case StateStep::End: {

@@ -48,6 +48,10 @@ void CElfilisG_RayArrow::Enter_Step()
     case StateStep::Start: {
         GetOwner()->Animator()->Play(ANIMPREFIX("RayArrowReady"), false);
 
+        // sound
+        wstring ArrowStart = L"sound\\wav\\CharaBossChimera2\\0019_RayArrowStart.wav";
+        GamePlayStatic::Play2DSound(ArrowStart, 1, SOUND_ELFILIS);
+
         if (ELFFSM->GetPhase() != 1)
         {
             ELFBIGFSM->Activate();
