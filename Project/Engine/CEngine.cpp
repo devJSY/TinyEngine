@@ -15,6 +15,7 @@
 #include "CFontMgr.h"
 #include "CPhysicsMgr.h"
 #include "CInstancingBuffer.h"
+#include "CSoundMgr.h"
 
 #include "CSound.h"
 
@@ -78,6 +79,7 @@ void CEngine::progress()
         CPhysicsMgr::GetInst()->tick();
 
         // FMOD Update
+        CSoundMgr::GetInst()->tick();
         CSound::g_pFMOD->update();
     }
 
