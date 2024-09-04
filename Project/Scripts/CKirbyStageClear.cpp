@@ -3,6 +3,8 @@
 #include "CCameraController.h"
 #include "CLevelFlowMgr.h"
 
+#include "CBossLevelFlowMgr.h"
+
 CKirbyStageClear::CKirbyStageClear()
 {
 }
@@ -246,6 +248,25 @@ void CKirbyStageClear::tick()
 
 void CKirbyStageClear::Enter()
 {
+    CGameObject* Manager = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager");
+    CBossLevelFlowMgr* FlowMgr = Manager->GetScript<CBossLevelFlowMgr>();
+
+    // BossLevel이 아니라면 몬스터 관련 레이어의 오브젝트를 모두 삭제한다.
+    if (FlowMgr == nullptr)
+    {
+        for (int i = LAYER_MONSTER; i <= LAYER_MONSTERATK_TRIGGER; ++i)
+        {
+            const vector<CGameObject*>& CurLayerObjects = CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(i)->GetParentObjects();
+
+            for (size_t j = 0; j < CurLayerObjects.size(); ++j)
+            {
+                GamePlayStatic::DestroyGameObject(CurLayerObjects[j]);
+            }
+        }
+    }
+
+
+
     // 애니메이션 재생
     PLAYER->Animator()->Play(ANIMPREFIX("ClearDanceLong"), false, false, 2.f);
 
