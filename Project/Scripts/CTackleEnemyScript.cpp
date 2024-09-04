@@ -75,6 +75,8 @@ void CTackleEnemyScript::begin()
         GamePlayStatic::AddChildObject(GetOwner(), m_pDashEffect);
     }
 
+    SetRayCast(15.f);
+
     SetResistTime(2.f);
 }
 
@@ -214,6 +216,7 @@ void CTackleEnemyScript::EnterState(TackleEnemyState _state)
     break;
     case TackleEnemyState::Landing: {
         DashEffectOff();
+        LandingSmokeEffect(Vec3(0.f, -15.f, 0.f));
         GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
             TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\TackleEnemy\\TackleEnemyEye.00.png",
                                                         L"fbx\\Characters\\Monster\\TackleEnemy\\TackleEnemyEye.00.png"));

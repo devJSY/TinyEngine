@@ -73,6 +73,8 @@ void CKabuScript::begin()
     }
         
     m_pSmokeSpawner = GetOwner()->GetChildObject(L"KabuSmokeSpawner");
+
+    SetRayCast(15.f);
 }
 
 void CKabuScript::tick()
@@ -226,6 +228,7 @@ void CKabuScript::EnterState(KabuState _state)
     }
     break;
     case KabuState::Landing: {
+        LandingSmokeEffect(Vec3(0.f, -15.f, 0.f));
         SmokeSpawnOff();
         Animator()->Play(ANIMPREFIX("Landing"), false, false, 1.5f);
     }

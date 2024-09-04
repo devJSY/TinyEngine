@@ -23,6 +23,8 @@ void CSpookStepScript::begin()
 {
     CMonsterUnitScript::begin();
 
+    SetRayCast(15.f);
+
     ChangeState(SpookStepState::Appear);
 }
 
@@ -116,6 +118,7 @@ void CSpookStepScript::EnterState()
     }
     break;
     case SpookStepState::Landing: {
+        LandingSmokeEffect(Vec3(0.f, -15.f, 0.f));
         Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
         Animator()->Play(ANIMPREFIX("Landing"), false);
     }

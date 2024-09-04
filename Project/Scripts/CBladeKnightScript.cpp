@@ -249,6 +249,7 @@ void CBladeKnightScript::EnterState()
     }
     break;
     case BLADEKNIGHT_STATE::Landing: {
+        LandingSmokeEffect(Vec3(0.f, -20.f, 0.f));
         Animator()->Play(ANIMPREFIX("Landing"), false, false, 1.f);
     }
     break;

@@ -181,10 +181,12 @@ void CNoddyScript::EnterState()
     }
     break;
     case NODDY_STATE::Landing: {
+        LandingSmokeEffect(Vec3(0.f, -15.f, 0.f));
         Animator()->Play(ANIMPREFIX("Landing"), false);
     }
     break;
     case NODDY_STATE::LandingSleep: {
+        LandingSmokeEffect(Vec3(0.f, -15.f, 0.f));
         Animator()->Play(ANIMPREFIX("LandingSleep"), false);
     }
     break;

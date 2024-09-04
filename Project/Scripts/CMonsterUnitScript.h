@@ -35,6 +35,8 @@ public:
     void BodyAttackSound();
     void FindSound();
 
+    void SetRayCast(float _fValue) { m_RaycastDist = _fValue; }
+
 public:
     virtual void begin() override;
     virtual void tick() override;
@@ -53,6 +55,7 @@ protected:
     void SpawnDeadEffect(int _iSize);
     void SpawnDeadSmokeEffect();
     void AttackKnockBack(Vec3 _fHitDir, float _fForce);
+    void LandingSmokeEffect(Vec3 _vOffset);
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

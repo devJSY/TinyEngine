@@ -65,6 +65,8 @@ void CSirKibbleScript::begin()
     {
         ChangeState(SirKibbleState::Idle);
     }
+
+    SetRayCast(15.f);
 }
 
 void CSirKibbleScript::tick()
@@ -260,6 +262,8 @@ void CSirKibbleScript::EnterState(SirKibbleState _state)
     }
     break;
     case SirKibbleState::Land: {
+        LandingSmokeEffect(Vec3(0.f, -15.f, 0.f));
+
         Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
 
         Animator()->Play(ANIMPREFIX("Landing"), false);

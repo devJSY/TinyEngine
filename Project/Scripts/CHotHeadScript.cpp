@@ -167,6 +167,7 @@ void CHotHeadScript::OnTriggerExit(CCollider* _OtherCollider)
 void CHotHeadScript::InitSetting()
 {
     GetOwner()->MeshRender()->GetDynamicMaterial(0);
+    SetRayCast(15.f);
 }
 
 void CHotHeadScript::EnterState(HotHeadState _state)
@@ -241,6 +242,7 @@ void CHotHeadScript::EnterState(HotHeadState _state)
     }
     break;
     case HotHeadState::Landing: {
+        LandingSmokeEffect(Vec3(0.f, -15.f, 0.f));
         GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
             TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\HotHead\\FaceTexturePattern.00.png",
                                                         L"fbx\\Characters\\Monster\\HotHead\\FaceTexturePattern.00.png"));
