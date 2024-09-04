@@ -199,13 +199,7 @@ void CKirbyObject::ChangeObject()
 {
     if (m_bFrmEnter && CHECK_ANIMFRM(PLAYER, m_MeshChangeIdx))
     {
-        CGameObject* pStarEffect =
-            CAssetMgr::GetInst()
-                ->Load<CPrefab>(L"prefab\\Effect_KirbyChangeAbilityStarSpawn.pref", L"prefab\\Effect_KirbyChangeAbilityStarSpawn.pref")
-                ->Instantiate();
-
-        GamePlayStatic::SpawnGameObject(pStarEffect, pStarEffect->GetLayerIdx());
-
+        
         PLAYER->GetRenderComponent()->SetMaterial(nullptr, m_DemoMeshIdx_BodyA);
         PLAYER->GetRenderComponent()->SetMaterial(CPlayerMgr::GetPlayerBodyDemoMtrl(), m_DemoMeshIdx_BodyB);
 
@@ -268,6 +262,13 @@ void CKirbyObject::ChangeObjectEndEnter()
     }
 
     PLAYER->Animator()->Play(ANIMPREFIX("DemoEndFirst"), false, false, 2.5f);
+
+    CGameObject* pStarEffect =
+        CAssetMgr::GetInst()
+            ->Load<CPrefab>(L"prefab\\Effect_KirbyChangeAbilityStarSpawn.pref", L"prefab\\Effect_KirbyChangeAbilityStarSpawn.pref")
+            ->Instantiate();
+
+    GamePlayStatic::SpawnGameObject(pStarEffect, pStarEffect->GetLayerIdx());
 
     PLAYERCTRL->LockMove();
     PLAYERCTRL->LockJump();

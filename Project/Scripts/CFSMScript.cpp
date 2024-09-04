@@ -119,7 +119,7 @@ void CFSMScript::ChangeState_proc(CState* _pNextState)
     m_CurState = _pNextState;
     m_CurState->Enter();
 
-    if (GetOwner()->GetLayerIdx() != LAYER_PLAYER)
+    if (GetOwner()->GetLayerIdx() == LAYER_PLAYER)
     {
         LOG(LOG_LEVEL::Log, (string("[State Change] : ") + ToString(m_CurState->GetName())).c_str());
     }

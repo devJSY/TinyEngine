@@ -249,8 +249,6 @@ void CKirbyStageClear::Enter()
     // 애니메이션 재생
     PLAYER->Animator()->Play(ANIMPREFIX("ClearDanceLong"), false, false, 2.f);
 
-
-
     CAMERACTRL->TurnOffMonsterLayer();
 
     // MoveController Lock
@@ -270,6 +268,8 @@ void CKirbyStageClear::Enter()
     FlowMgrScript->TurnOffBossHP();
     FlowMgrScript->TurnOffPlayerHP();
     FlowMgrScript->ActiveOffDropUI();
+
+    FlowMgrScript->FadeOutBGM(0.1f);
 
     m_Step = 0;
     m_Duration = 2.f;
