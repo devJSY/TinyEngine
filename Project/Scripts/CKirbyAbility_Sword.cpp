@@ -795,6 +795,7 @@ void CKirbyAbility_Sword::LandingEnter()
         PLAYERFSM->SetInvincible(true);
 
         //@Effect 내려찍는 충격효과, 나비
+        SpawnButterflyParticle();
 
         // sound
         wstring Sound = L"sound\\wav\\HeroSwordMorpho\\SlideCombo_Landing.wav";
