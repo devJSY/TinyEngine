@@ -122,6 +122,10 @@ void CKirbyAbility_Sword::AttackEnter()
     m_bFrmEnter = true;
 
     //@Effect Effect 재생
+
+    // sound
+    wstring Sound = L"sound\\wav\\HeroSwordBasic\\Swing0.wav";
+    GamePlayStatic::Play2DSound(Sound, 1, SOUND_KIRBY, true);
 }
 
 void CKirbyAbility_Sword::AttackExit()
@@ -161,6 +165,10 @@ void CKirbyAbility_Sword::AttackCombo1Enter()
     PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(true);
 
     m_bFrmEnter = true;
+
+    // sound
+    wstring Sound = L"sound\\wav\\HeroSwordBasic\\Swing0.wav";
+    GamePlayStatic::Play2DSound(Sound, 1, SOUND_KIRBY, true);
 }
 
 void CKirbyAbility_Sword::AttackCombo1Exit()
@@ -181,6 +189,15 @@ void CKirbyAbility_Sword::AttackCombo1Exit()
 
 void CKirbyAbility_Sword::AttackCombo2()
 {
+    if (m_SoundIdx == 0 && CHECK_ANIMFRM(PLAYER, 10))
+    {
+        m_SoundIdx++;
+
+        // sound
+        wstring Sound = L"sound\\wav\\HeroSwordBasic\\Swing1.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_KIRBY, true);
+    }
+
     if (CHECK_ANIMFRM(PLAYER, 17) && m_bFrmEnter)
     {
         m_bFrmEnter = false;
@@ -202,6 +219,7 @@ void CKirbyAbility_Sword::AttackCombo2Enter()
     PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(true);
 
     m_bFrmEnter = true;
+    m_SoundIdx = 0;
 }
 
 void CKirbyAbility_Sword::AttackCombo2Exit()
@@ -237,6 +255,10 @@ void CKirbyAbility_Sword::AttackCharge1Enter()
 
     PLAYERFSM->SetInvincible(true);
     PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(true);
+
+    // sound
+    wstring Sound = L"sound\\wav\\HeroSwordBasic\\Spin_Short.wav";
+    GamePlayStatic::Play2DSound(Sound, 1, SOUND_KIRBY, true);
 }
 
 void CKirbyAbility_Sword::AttackCharge1Exit()
@@ -262,6 +284,12 @@ void CKirbyAbility_Sword::AttackCharge1StartEnter()
     PLAYERCTRL->SetSpeed(3.f);
     PLAYERCTRL->LockDirection();
     PLAYERCTRL->LockJump();
+
+    // sound
+    wstring Sound = L"sound\\wav\\HeroSwordMorpho\\ChargeFinishLv1.wav";
+    wstring Charge = L"sound\\wav\\HeroSwordCharge\\0002_Charge.wav";
+    GamePlayStatic::Play2DSound(Sound, 1, SOUND_KIRBY);
+    GamePlayStatic::Play2DSound(Charge, 0, SOUND_KIRBY);
 }
 
 void CKirbyAbility_Sword::AttackCharge1StartExit()
@@ -269,6 +297,10 @@ void CKirbyAbility_Sword::AttackCharge1StartExit()
     PLAYERCTRL->SetSpeed(m_PrevSpeed);
     PLAYERCTRL->UnlockDirection();
     PLAYERCTRL->UnlockJump();
+
+    // sound
+    wstring Charge = L"sound\\wav\\HeroSwordCharge\\0002_Charge.wav";
+    GamePlayStatic::StopSound(Charge);
 }
 
 // End (charge attack end)
@@ -319,6 +351,10 @@ void CKirbyAbility_Sword::AttackCharge2Enter()
     PLAYERCTRL->SetSpeed(3.f);
     PLAYERCTRL->LockDirection();
     PLAYERCTRL->LockJump();
+
+    // sound
+    wstring Charge = L"sound\\wav\\HeroSwordCharge\\0004_Charge.wav";
+    GamePlayStatic::Play2DSound(Charge, 0, SOUND_KIRBY, true, false);
 }
 
 void CKirbyAbility_Sword::AttackCharge2Exit()
@@ -326,6 +362,10 @@ void CKirbyAbility_Sword::AttackCharge2Exit()
     PLAYERCTRL->SetSpeed(m_PrevSpeed);
     PLAYERCTRL->UnlockDirection();
     PLAYERCTRL->UnlockJump();
+
+    // sound
+    wstring Charge = L"sound\\wav\\HeroSwordCharge\\0004_Charge.wav";
+    GamePlayStatic::StopSound(Charge);
 }
 
 // start (charge start)
@@ -342,6 +382,12 @@ void CKirbyAbility_Sword::AttackCharge2StartEnter()
     PLAYERCTRL->SetSpeed(3.f);
     PLAYERCTRL->LockDirection();
     PLAYERCTRL->LockJump();
+
+    // sound
+    wstring Sound = L"sound\\wav\\HeroSwordMorpho\\ChargeFinishLv2.wav";
+    wstring Charge = L"sound\\wav\\HeroSwordCharge\\0004_Charge.wav";
+    GamePlayStatic::Play2DSound(Sound, 1, SOUND_KIRBY);
+    GamePlayStatic::Play2DSound(Charge, 0, SOUND_KIRBY);
 }
 
 void CKirbyAbility_Sword::AttackCharge2StartExit()
@@ -349,6 +395,10 @@ void CKirbyAbility_Sword::AttackCharge2StartExit()
     PLAYERCTRL->SetSpeed(m_PrevSpeed);
     PLAYERCTRL->UnlockDirection();
     PLAYERCTRL->UnlockJump();
+
+    // sound
+    wstring Charge = L"sound\\wav\\HeroSwordCharge\\0004_Charge.wav";
+    GamePlayStatic::PauseSound(Charge);
 }
 
 // ===============
@@ -394,6 +444,10 @@ void CKirbyAbility_Sword::AttackCharge3Enter()
     PLAYERFSM->GetCurWeapon()->Transform()->SetLocalScale(m_BigWeaponScale);
 
     m_bFrmEnter = true;
+
+    // sound
+    wstring Charge = L"sound\\wav\\HeroSwordCharge\\Charge_Repeat.wav";
+    GamePlayStatic::Play2DSound(Charge, 0, SOUND_KIRBY * 0.6f, true, false);
 }
 
 void CKirbyAbility_Sword::AttackCharge3Exit()
@@ -404,6 +458,10 @@ void CKirbyAbility_Sword::AttackCharge3Exit()
     PLAYERCTRL->UnlockJump();
 
     PLAYERFSM->GetCurWeapon()->Transform()->SetLocalScale(m_PrevWeaponScale);
+
+    // sound
+    wstring Charge = L"sound\\wav\\HeroSwordCharge\\Charge_Repeat.wav";
+    GamePlayStatic::StopSound(Charge);
 }
 
 // Start (charge start)
@@ -430,6 +488,12 @@ void CKirbyAbility_Sword::AttackCharge3StartEnter()
     PLAYERCTRL->LockJump();
 
     m_PrevWeaponScale = PLAYERFSM->GetCurWeapon()->Transform()->GetLocalScale();
+
+    // sound
+    wstring Sound = L"sound\\wav\\HeroSwordMorpho\\ChargeFinishLv3.wav";
+    wstring Charge = L"sound\\wav\\HeroSwordCharge\\Charge_Repeat.wav";
+    GamePlayStatic::Play2DSound(Sound, 1, SOUND_KIRBY);
+    GamePlayStatic::Play2DSound(Charge, 0, SOUND_KIRBY * 0.7f);
 }
 
 void CKirbyAbility_Sword::AttackCharge3StartExit()
@@ -439,6 +503,10 @@ void CKirbyAbility_Sword::AttackCharge3StartExit()
     PLAYERCTRL->UnlockJump();
 
     PLAYERFSM->GetCurWeapon()->Transform()->SetLocalScale(m_PrevWeaponScale);
+
+    // sound
+    wstring Charge = L"sound\\wav\\HeroSwordCharge\\Charge_Repeat.wav";
+    GamePlayStatic::StopSound(Charge);
 }
 
 // End (attack)
@@ -456,6 +524,8 @@ void CKirbyAbility_Sword::AttackCharge3End()
     // ButterFlyPtcl & Thunder & Tornado Effect
     if (m_bFrmEnter && CHECK_ANIMFRM(PLAYER, 35))
     {
+        m_bFrmEnter = false;
+
         Vec3 Pos = PLAYER->Transform()->GetWorldPos();
         Vec3 Dir = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT);
 
@@ -522,15 +592,29 @@ void CKirbyAbility_Sword::AttackCharge3End()
             GamePlayStatic::SpawnGameObject(m_pLightningEffect, LAYER_EFFECT);
         }
 
+        // sound
+        wstring Sound = L"sound\\wav\\HeroSwordMorpho\\0012_BigSwordCollision.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_KIRBY * 1.4f);
+
         CAMERACTRL->Shake(0.3f, 50.f, 50.f);
-        m_bFrmEnter = false;
+    }
+
+    // sound
+    if (m_SoundIdx == 0 && CHECK_ANIMFRM(PLAYER, 20))
+    {
+        m_SoundIdx++;
+
+        wstring Sound = L"sound\\wav\\HeroSwordMorpho\\0006_BigSwordWind.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_KIRBY * 0.7f);
+
+        PLAYER->Animator()->SetPlaySpeed(1.f);
     }
 }
 
 void CKirbyAbility_Sword::AttackCharge3EndEnter()
 {
-    PLAYER->Animator()->Play(ANIMPREFIX("GigantChargeAttack"), false, false, 1.5f, 0.f);
-    PLAYER->Animator()->SetClipFrameIndex(25);
+    PLAYER->Animator()->Play(ANIMPREFIX("GigantChargeAttack"), false, false, 0.5f, 0.f);
+    PLAYER->Animator()->SetClipFrameIndex(15);
     //@Effect 번개
 
     PLAYERCTRL->LockMove();
@@ -542,6 +626,11 @@ void CKirbyAbility_Sword::AttackCharge3EndEnter()
     PLAYERFSM->GetCurWeapon()->Transform()->SetLocalScale(m_BigWeaponScale);
 
     m_bFrmEnter = true;
+
+    // sound
+    m_SoundIdx = 0;
+    wstring Sound = L"sound\\wav\\HeroSwordMeta\\0002_SwordTwinkle.wav";
+    GamePlayStatic::Play2DSound(Sound, 1, SOUND_KIRBY);
 }
 
 void CKirbyAbility_Sword::AttackCharge3EndExit()
@@ -633,6 +722,12 @@ void CKirbyAbility_Sword::JumpAttackEnter()
     PLAYERFSM->LockSlideCombo();
     m_bFrmEnter = true;
     SpawnSwordSlash(Vec3(50.f, 30.f, 30.f), true);
+
+    // sound
+    wstring Sound = L"sound\\wav\\HeroSwordBasic\\JumpSpin";
+    int RandIdx = GetRandomInt(0, 1);
+    Sound += to_wstring(RandIdx) + L".wav";
+    GamePlayStatic::Play2DSound(Sound, 1, SOUND_KIRBY * 0.8f);
 }
 
 void CKirbyAbility_Sword::JumpAttackExit()
@@ -677,6 +772,8 @@ void CKirbyAbility_Sword::JumpAttackStartExit()
 
 void CKirbyAbility_Sword::LandingEnter()
 {
+    CKirbyAbility::LandingEnter();
+
     if (PLAYERFSM->GetLastJump() == LastJumpType::LOW)
     {
         PLAYER->Animator()->Play(ANIMPREFIX("LandingSmall"), false);
@@ -694,6 +791,10 @@ void CKirbyAbility_Sword::LandingEnter()
         PLAYERFSM->SetInvincible(true);
 
         //@Effect 내려찍는 충격효과, 나비
+
+        // sound
+        wstring Sound = L"sound\\wav\\HeroSwordMorpho\\SlideCombo_Landing.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_KIRBY * 0.8f);
     }
 
     PLAYERCTRL->LockJump();
@@ -738,6 +839,10 @@ void CKirbyAbility_Sword::GuardRunEnter()
     PLAYERCTRL->LockJump();
 
     PLAYERFSM->SetInvincible(true);
+
+    // sound
+    wstring Sound = L"sound\\wav\\HeroSwordMorpho\\GuardRun.wav";
+    GamePlayStatic::Play2DSound(Sound, 1, SOUND_KIRBY);
 }
 
 void CKirbyAbility_Sword::GuardRunExit()
@@ -754,6 +859,10 @@ void CKirbyAbility_Sword::GuardRunExit()
     PLAYERCTRL->SetVelocity(vel);
 
     PLAYERFSM->SetInvincible(false);
+
+    // sound
+    wstring Sound = L"sound\\wav\\HeroSwordMorpho\\0006_BigSwordWind.wav";
+    GamePlayStatic::Play2DSound(Sound, 1, SOUND_KIRBY);
 }
 
 // ===============
@@ -849,6 +958,10 @@ void CKirbyAbility_Sword::SlideAttackEnter()
     PLAYERFSM->SetInvincible(true);
 
     m_bFrmEnter = true;
+
+    // sound
+    wstring Sound = L"sound\\wav\\HeroSwordBasic\\SlideCombo_UpSlash.wav";
+    GamePlayStatic::Play2DSound(Sound, 1, SOUND_KIRBY);
 }
 
 void CKirbyAbility_Sword::SlideAttackExit()
@@ -947,6 +1060,10 @@ void CKirbyAbility_Sword::SpawnSwordSlash(Vec3 _SlashScale, bool _bVertical)
 
     SwordSlash->SetName(L"KirbyAttack_SwordSlash");
     GamePlayStatic::SpawnGameObject(SwordSlash, LAYER_PLAYERATK_TRIGGER);
+
+    // sound
+    wstring Sound = L"sound\\wav\\HeroSwordMorpho\\SwordSlash.wav";
+    GamePlayStatic::Play2DSound(Sound, 1, SOUND_KIRBY * 0.7f);
 }
 
 void CKirbyAbility_Sword::SpawnButterflyParticle()

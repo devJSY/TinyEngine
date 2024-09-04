@@ -26,6 +26,12 @@ void CKirbySwordTornadoScript::begin()
     m_OriginPosition = Transform()->GetWorldPos();
     m_OriginFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
     m_OriginScale = Transform()->GetWorldScale();
+
+    // sound
+    m_Sound = L"sound\\wav\\HeroSwordMorpho\\Tornado";
+    int RandIdx = GetRandomInt(0, 1);
+    m_Sound += to_wstring(RandIdx) + L".wav";
+    GamePlayStatic::Play2DSound(m_Sound, 1, SOUND_KIRBY * 0.6f);
 }
 
 void CKirbySwordTornadoScript::tick()
@@ -65,6 +71,9 @@ void CKirbySwordTornadoScript::tick()
     {
         Transform()->SetLocalScale(m_OriginScale * Vec3(0.f, 1.f, 0.f));
         GamePlayStatic::DestroyGameObject(GetOwner());
+        
+        // Sound
+        GamePlayStatic::StopSound(m_Sound); //@TODO : Fadeout
     }
 }
 
