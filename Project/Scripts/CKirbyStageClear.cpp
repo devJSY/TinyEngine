@@ -40,6 +40,9 @@ void CKirbyStageClear::tick()
 
     if (m_Step == 1 && m_Acc > m_Duration)
     {
+        // StageClear Sound
+        GamePlayStatic::Play2DSound(L"sound\\stream\\K15_KirbyDanceLong\\K15_KirbyDanceLong.marker.dspadpcm.wav", 1, KIRBY_EFFECTSOUND);
+
         PLAYER->Animator()->SetPlay(true);
         CPlayerMgr::SetPlayerFace(FaceType::Frown);
 
@@ -191,6 +194,8 @@ void CKirbyStageClear::tick()
 
     if (m_Step == 21 && CHECK_ANIMFRM(GetOwner(), 316))
     {
+        GamePlayStatic::Play2DSound(L"sound\\wav\\HeroVoice\\0047.wav", 1, KIRBY_EFFECTSOUND);
+
         CPlayerMgr::SetPlayerFace(FaceType::Normal);
         CPlayerMgr::ClearMouthMtrl();
         CPlayerMgr::SetPlayerMtrl(CPlayerMgr::GetPlayerMeshIdx().MouthSmileOpen);
@@ -242,9 +247,9 @@ void CKirbyStageClear::tick()
 void CKirbyStageClear::Enter()
 {
     // 애니메이션 재생
-    PLAYER->Animator()->Play(ANIMPREFIX("ClearDanceLong"), false, false, 1.7f);
+    PLAYER->Animator()->Play(ANIMPREFIX("ClearDanceLong"), false, false, 2.f);
 
-    // @TODO StageClear Sound
+
 
     CAMERACTRL->TurnOffMonsterLayer();
 

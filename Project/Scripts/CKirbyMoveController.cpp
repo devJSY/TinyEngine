@@ -64,6 +64,11 @@ void CKirbyMoveController::begin()
     m_bGround = false;
     m_bLimitFallSpeed = false;
     m_CheckPointPos = Transform()->GetWorldPos();
+
+    UnlockDirection();
+    UnlockJump();
+    UnlockInput();
+    UnlockMove();
 }
 
 void CKirbyMoveController::tick()

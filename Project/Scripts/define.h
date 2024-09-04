@@ -62,6 +62,8 @@
 #define CHECK_ANIMFRM(OBJ, IDX) (!OBJ->Animator()->IsChainging() && OBJ->Animator()->GetClipFrameIndex() >= IDX)
 #define CHECK_ANIMFRM_UNDER(OBJ, IDX) (!OBJ->Animator()->IsChainging() && OBJ->Animator()->GetClipFrameIndex() <= IDX)
 
+#define KIRBY_EFFECTSOUND 0.5f
+
 enum class AbilityCopyType
 {
     NONE,

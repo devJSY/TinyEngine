@@ -1,49 +1,46 @@
 #include "pch.h"
-#include "CKirbyChangeObject.h"
+#include "CKirbySwallowStart.h"
 
 #include "CCameraController.h"
 #include "CLevelFlowMgr.h"
 
-CKirbyChangeObject::CKirbyChangeObject()
+CKirbySwallowStart::CKirbySwallowStart()
 {
 }
 
-CKirbyChangeObject::~CKirbyChangeObject()
+CKirbySwallowStart::~CKirbySwallowStart()
 {
 }
 
-void CKirbyChangeObject::tick()
+void CKirbySwallowStart::tick()
 {
-    PLAYERFSM->GetNextObject()->ChangeObject();
-
-    // State Change
-    switch (PLAYERFSM->GetNextObjectIdx())
+    if (PLAYER->Animator()->IsFinish())
     {
-    case ObjectCopyType::CONE:
-    case ObjectCopyType::VENDING_MACHINE:
-    case ObjectCopyType::LIGHT: {
-        if (PLAYER->Animator()->IsFinish())
-        {
-            PLAYERFSM->SetGlobalState(false);
-            ChangeState(L"CHANGE_OBJECT_END");
-        }
-    }
-    break;
+        PLAYERFSM->SetGlobalState(false);
+        ChangeState(L"SWALLOW_END");
     }
 }
 
-void CKirbyChangeObject::Enter()
+void CKirbySwallowStart::Enter()
 {
-    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\0018.wav", 1, KIRBY_EFFECTSOUND);
-
-    PLAYERFSM->SetGlobalState(true);
-    PLAYERFSM->GetNextObject()->ChangeObjectEnter();
-
     // 변신 중일 땐 커비가 이미시브 효과를 받지않도록 한다.
     PLAYERFSM->SetSkrr(true);
+    PLAYERFSM->SetGlobalState(true);
     PLAYERFSM->SetInvincible(true);
 
-    // CameraSetting
+    // 커비 SwallowStart 애니메이션 재생
+    PLAYER->Animator()->Play(ANIMPREFIX("SwallowStart"), false, false, 2.f);
+
+    // MoveController Lock
+    PLAYERCTRL->LockInput();
+    PLAYERCTRL->LockJump();
+    PLAYERCTRL->LockMove();
+
+    // 커비를 제외한 모든 오브젝트가 멈추도록 타임 스케일을 조절
+    CTimeMgr::GetInst()->SetTimeScale(0.f);
+    PLAYERCTRL->Animator()->SetAnimatorUpdateMode(AnimatorUpdateMode::UnscaledTime);
+
+    // CameraCtrl
     CCameraController* CamCtrl = CAMERACTRL;
     CamCtrl->SaveSetting();
 
@@ -68,8 +65,12 @@ void CKirbyChangeObject::Enter()
     CamCtrl->SetLookDir(DirToKirby);
     CamCtrl->SetLookDist(250.f);
 
+    CamCtrl->SetZoomMinSpeed(100.f);
+    CamCtrl->SetZoomMaxSpeed(500.f);
+    CamCtrl->SetZoomThreshold(100.f);
+
     // Normal Setup으로 변경
-    m_SaveSetup = (UINT)CamCtrl->GetCameraSetup();
+    PLAYERFSM->SaveLastCameraSetup((UINT)CamCtrl->GetCameraSetup());
     CamCtrl->SetCameraSetup(CameraSetup::NORMAL);
 
     // 배경 블러 효과
@@ -81,20 +82,17 @@ void CKirbyChangeObject::Enter()
         FLowMgrScript->OnDimensionFade(0.3f);
     }
 
-    // 커비를 제외한 모든 오브젝트가 멈추도록 타임 스케일을 조절
-    CTimeMgr::GetInst()->SetTimeScale(0.f);
-    PLAYERCTRL->Animator()->SetAnimatorUpdateMode(AnimatorUpdateMode::UnscaledTime);
 }
 
-void CKirbyChangeObject::Exit()
+void CKirbySwallowStart::Exit()
 {
-    PLAYERFSM->GetNextObject()->ChangeObjectExit();
+    PLAYERFSM->SetSkrr(false);
+    PLAYERFSM->SetInvincible(false);
 
-    // CameraSetting
-    CCameraController* CamCtrl = CAMERACTRL;
-    CamCtrl->LoadSetting();
-
-    CamCtrl->SetCameraSetup((CameraSetup)m_SaveSetup);
+    // MoveController Lock
+    PLAYERCTRL->UnlockInput();
+    PLAYERCTRL->UnlockJump();
+    PLAYERCTRL->UnlockMove();
 
     // 배경 블러 효과 복구
     CGameObject* Manager = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager");
@@ -109,7 +107,5 @@ void CKirbyChangeObject::Exit()
     CTimeMgr::GetInst()->SetTimeScale(1.f);
     PLAYERCTRL->Animator()->SetAnimatorUpdateMode(AnimatorUpdateMode::Normal);
 
-    // Emissive를 다시 받도록 수정
-    PLAYERFSM->SetSkrr(false);
-    PLAYERFSM->SetInvincible(false);
+
 }

@@ -36,6 +36,13 @@ void CKirbyVacuum2Start::tick()
 
 void CKirbyVacuum2Start::Enter()
 {
+    // Vacuum Effect
+    CGameObject* VacuumEffect = PLAYER->GetChildObject(L"Vacuum");
+    if (VacuumEffect != nullptr)
+    {
+        VacuumEffect->SetActive(true);
+    }
+
     PLAYER->Animator()->Play(ANIMPREFIX("SuperInhaleStart"), false);
     CPlayerMgr::SetPlayerFace(FaceType::UpTail);
     CPlayerMgr::ClearBodyMtrl();
@@ -50,7 +57,14 @@ void CKirbyVacuum2Start::Enter()
 }
 
 void CKirbyVacuum2Start::Exit()
-{
+{ 
+    // Vacuum Effect
+    CGameObject* VacuumEffect = PLAYER->GetChildObject(L"Vacuum");
+    if (VacuumEffect != nullptr)
+    {
+        VacuumEffect->SetActive(false);
+    }
+
     CPlayerMgr::ClearBodyMtrl();
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(BodyNormal));
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));

@@ -44,7 +44,7 @@ void CKirbyAbility_Normal::Attack()
         {
             CGameObject* BulletInst = BulletPref->Instantiate();
             Vec3 InitPos = PLAYER->Transform()->GetWorldPos();
-            InitPos += PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT) * 3.f * PLAYER->Transform()->GetLocalScale();
+            InitPos += PLAYERCTRL->GetInputWorld() * 3.f * PLAYER->Transform()->GetLocalScale();
             InitPos += PLAYER->Transform()->GetWorldDir(DIR_TYPE::UP) * 2.f * PLAYER->Transform()->GetLocalScale();
 
             BulletInst->Transform()->SetLocalPos(InitPos);
@@ -53,7 +53,16 @@ void CKirbyAbility_Normal::Attack()
             CKirbyBulletScript* bulletScript = BulletInst->GetScript<CKirbyBulletScript>();
             if (nullptr != bulletScript)
             {
-                Vec3 InitDir = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+                Vec3 InitDir = PLAYERCTRL->GetInputWorld();
+                if (InitDir.Length() == 0.f)
+                {
+                    InitDir = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+                }
+                else
+                {
+                    PLAYERCTRL->ForceDir({ForceDirType::STATE, InitDir, true});
+                }
+
                 InitDir.y = 0.f;
                 bulletScript->SetInitVelocity(InitDir * 30.f);
             }
@@ -63,6 +72,8 @@ void CKirbyAbility_Normal::Attack()
 
 void CKirbyAbility_Normal::AttackEnter()
 {
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\AttackNormal.wav", 1, KIRBY_EFFECTSOUND);
+
     if (PLAYERCTRL->IsGround())
     {
         PLAYER->Animator()->Play(ANIMPREFIX("Spit"), false);

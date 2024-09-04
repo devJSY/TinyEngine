@@ -120,6 +120,15 @@ void CKirbyDropAbility::Enter()
 
 void CKirbyDropAbility::Exit()
 {
+    CGameObject* pStarEffect =
+        CAssetMgr::GetInst()
+            ->Load<CPrefab>(L"prefab\\Effect_KirbyChangeAbilityStarSpawn.pref", L"prefab\\Effect_KirbyChangeAbilityStarSpawn.pref")
+            ->Instantiate();
+
+    GamePlayStatic::SpawnGameObject(pStarEffect, pStarEffect->GetLayerIdx());
+
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\DropAbility.wav", 1, KIRBY_EFFECTSOUND);
+
     // Change State
     // ---------------
     PLAYERFSM->GetPrevAbility()->DropAbilityExit();
