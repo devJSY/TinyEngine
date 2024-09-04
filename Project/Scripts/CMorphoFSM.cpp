@@ -199,10 +199,10 @@ void CMorphoFSM::tick()
 {
     CFSMScript::tick();
 
-    if (KEY_TAP(KEY::ENTER))
-    {
-        ChangeStateGroup(MorphoStateGroup::MoveToGround, L"MOVEG_JUMP");
-    }
+    //if (KEY_TAP(KEY::ENTER))
+    //{
+    //    ChangeStateGroup(MorphoStateGroup::MoveToGround, L"MOVEG_JUMP");
+    //}
 
     // Emissive
     if (m_TeleportAppearTime > 0.f)
