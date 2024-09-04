@@ -83,18 +83,26 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
 
         pShader->SetRSType(RS_TYPE::CULL_BACK);
         pShader->SetDSType(DS_TYPE::LESS);
-        pShader->SetBSType(BS_TYPE::DEFAULT);
+        pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
 
-        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_DEFERRED);
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
 
         pShader->AddTexParam(TEX_0, "Masking Texture1");
-        pShader->AddTexParam(TEX_1, "Masking Texture2");
+        pShader->AddTexParam(TEX_1, "Gradation Texture");
 
         pShader->AddTexParam(TEX_5, "Normal Wind Masking Texture1");
 
         pShader->AddScalarParam(INT_0, "Invert NormalMapping");
         pShader->AddScalarParam(VEC4_0, "Dash Color", 0.1f);
-        pShader->AddScalarParam(FLOAT_0, "UV Value", 0.1f);
+
+        pShader->AddScalarParam(VEC2_0, "Masking Texture1 Scale UVOffset", 0.1f);
+        pShader->AddScalarParam(VEC2_1, "Masking Texture2 Scael UVOffset", 0.1f);
+        pShader->AddScalarParam(VEC2_2, "BackGround Texture Offset", 0.1f);
+
+        pShader->AddScalarParam(FLOAT_0, "Progress Value", 0.1f);
+        pShader->AddScalarParam(FLOAT_1, "ThreshHold", 0.1f);
+        pShader->AddScalarParam(FLOAT_2, "BackGround Alpha", 0.1f);
+        pShader->AddScalarParam(FLOAT_3, "Pow Value", 0.1f);
 
         pShader->SetName(L"DashEffectMaskingShader");
         AddAsset(L"DashEffectMaskingShader", pShader);
@@ -277,7 +285,7 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
         pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
 
         pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
-        
+
         string TeleprotDesc = "[Teleport Info]\n- (x) Flag(false, Down, Up)\n- (y) Teleport WorldY\n- (z) Radius";
         pShader->AddScalarParam(VEC4_3, TeleprotDesc);
 
@@ -299,7 +307,7 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
         pShader->SetName(L"ElfilisTailShader");
         AddAsset(L"ElfilisTailShader", pShader);
     }
-    
+
     // =================================
     // Transparent Elfilis Shader
     // =================================
@@ -1049,6 +1057,28 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
     }
 
     // =================================
+    // Kirby Vignette Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\postprocessVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\KirbyVignettePS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_NONE);
+        pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
+
+        pShader->AddScalarParam(FLOAT_0, "Red Color", 0.01f);
+        pShader->AddScalarParam(FLOAT_1, "Green Color", 0.01f);
+        pShader->AddScalarParam(FLOAT_2, "Blue Color", 0.01f);
+
+        pShader->AddScalarParam(VEC2_0, "Inner Value", 0.01f);
+
+        pShader->SetName(L"KirbyVignetteShader");
+        AddAsset(L"KirbyVignetteShader", pShader);
+    }
+
+    // =================================
     // Fire Shader
     // =================================
     {
@@ -1262,7 +1292,7 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
         pShader->SetName(L"TextureDistortionRenderShader");
         AddAsset(L"TextureDistortionRenderShader", pShader);
     }
-    
+
     // =================================
     // Mesh Distortion Shader
     // =================================
@@ -1281,5 +1311,53 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
 
         pShader->SetName(L"MeshDistortionShader");
         AddAsset(L"MeshDistortionShader", pShader);
+    }
+
+    // =================================
+    // Vacuum Effect Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\UnrealPBRVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\VacuumEffectPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetDSType(DS_TYPE::NO_WRITE);
+        pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+
+
+        pShader->AddScalarParam(FLOAT_0, "Gradation Alpha");
+
+        pShader->AddTexParam(TEX_0, "Color Texture");
+        pShader->AddTexParam(TEX_1, "Alpha Texture");
+        pShader->AddTexParam(TEX_2, "Gradation Texture");
+
+
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
+
+        pShader->SetName(L"VacuumEffectShader");
+        AddAsset(L"VacuumEffectShader", pShader);
+    }
+
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\UnrealPBRVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\VacuumEffectPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_FRONT);
+        pShader->SetDSType(DS_TYPE::NO_WRITE);
+        pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+
+        pShader->AddScalarParam(FLOAT_0, "Gradation Alpha");
+
+        pShader->AddTexParam(TEX_0, "Color Texture");
+        pShader->AddTexParam(TEX_1, "Alpha Texture");
+        pShader->AddTexParam(TEX_2, "Gradation Texture");
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
+
+        pShader->SetName(L"VacuumInsideEffectShader");
+        AddAsset(L"VacuumInsideEffectShader", pShader);
     }
 }

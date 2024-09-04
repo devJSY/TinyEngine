@@ -50,6 +50,8 @@ private:
     void AttackBack();
     void Destroy();
 
+    void SlashEffect(Vec3 _vPos);
+
 private:
     CLONE(CCutterProjectileScript)
     CCutterProjectileScript();

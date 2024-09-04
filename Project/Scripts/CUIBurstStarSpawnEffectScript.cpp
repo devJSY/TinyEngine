@@ -38,6 +38,16 @@ void CUIBurstStarSpawnEffectScript::StarEnter()
 {
     Vec3 vOwnerPos = GetOwner()->Transform()->GetWorldPos();
 
+    // Common Hit Spawn
+    {
+        CGameObject* pCommonHitSpawn =
+            CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Effect_CommonHit.pref", L"prefab\\Effect_CommonHit.pref")->Instantiate();
+
+        pCommonHitSpawn->Transform()->SetWorldPos(vOwnerPos);
+
+        GamePlayStatic::SpawnGameObject(pCommonHitSpawn, pCommonHitSpawn->GetLayerIdx());
+    }
+
     // Star Spawn
     for (int i = 0; i < 8; i++)
     {

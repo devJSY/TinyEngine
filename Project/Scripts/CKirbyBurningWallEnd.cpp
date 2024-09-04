@@ -30,7 +30,15 @@ void CKirbyBurningWallEnd::tick()
 
 void CKirbyBurningWallEnd::Enter()
 {
-    // @TODO smoke 이펙트 커비 이미시브
+    Ptr<CPrefab> FireWallSmokeSpawner = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\FireWallSmokeSpawner.pref");
+
+    if (FireWallSmokeSpawner.Get())
+    {
+        CGameObject* FireWallSmokeSpawnerObj = FireWallSmokeSpawner->Instantiate();
+        FireWallSmokeSpawnerObj->Transform()->SetWorldPos(PLAYER->Transform()->GetWorldPos());
+
+        GamePlayStatic::SpawnGameObject(FireWallSmokeSpawnerObj, FireWallSmokeSpawnerObj->GetLayerIdx());
+    }
 
     // 애니메이션 재생
     PLAYER->Animator()->Play(ANIMPREFIX("BurningWallEnd"), false, false, 2.5f);

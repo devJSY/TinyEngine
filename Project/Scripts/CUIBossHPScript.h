@@ -56,11 +56,14 @@ private:
     bool m_bMolPho;
     bool m_bElfilis;
 
+    bool m_bSoundFlag;
+
 public:
     virtual void begin() override;
     virtual void tick() override;
 
     void ChangeState(HPState _state);
+    void BossRevive();
 
 private:
     void EnterState();

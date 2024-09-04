@@ -112,6 +112,8 @@ void CKirbyLongDiveLanding::tick()
 
 void CKirbyLongDiveLanding::Enter()
 {
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\LongDive.wav", 1, KIRBY_EFFECTSOUND);
+
     // Change State
     if (PLAYERFSM->GetCurObjectIdx() != ObjectCopyType::NONE)
     {

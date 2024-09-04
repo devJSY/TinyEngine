@@ -183,6 +183,8 @@ void CKirbyObject_Lightbulb::Attack()
 
 void CKirbyObject_Lightbulb::AttackEnter()
 {
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroDeformLightbulb\\Lightbulb_Attack.wav", 1, KIRBY_EFFECTSOUND);
+
     // LightÄÑ±â
     PLAYER->Animator()->Play(ANIMPREFIX("LightOn"), false, false, 2.5f, 0.2);
     CPlayerMgr::SetPlayerFace(FaceType::Frown);

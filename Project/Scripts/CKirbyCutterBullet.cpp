@@ -195,8 +195,6 @@ void CKirbyCutterBullet::tick()
             }
 
             m_MoveDir.Normalize();
-
-
         }
         else
         {
@@ -293,6 +291,7 @@ void CKirbyCutterBullet::SetState(BulletState _State)
     }
     break;
     case BulletState::DRAG: {
+        GamePlayStatic::Play3DSound(L"sound\\wav\\HeroCutterMetal\\AttackCutter.wav", Transform()->GetWorldPos(), 1, KIRBY_EFFECTSOUND, true);
         m_Duration = 0.7f;
     }
     break;
@@ -311,6 +310,7 @@ void CKirbyCutterBullet::SetState(BulletState _State)
     }
     break;
     case BulletState::RAGE: {
+        GamePlayStatic::Play3DSound(L"sound\\wav\\HeroCutterMetal\\Cutter_Burning.wav", Transform()->GetWorldPos(), 1, KIRBY_EFFECTSOUND, true);
         m_Duration = 3.f;
     }
     break;
@@ -322,6 +322,7 @@ void CKirbyCutterBullet::SetState(BulletState _State)
     }
     break;
     case BulletState::BURNING: {
+        GamePlayStatic::Play3DSound(L"sound\\wav\\HeroCutterMetal\\Cutter_Burning.wav", Transform()->GetWorldPos(), 1, KIRBY_EFFECTSOUND, true);
         m_Duration = 3.f;
         m_bBuning = true;
     }
@@ -338,6 +339,8 @@ bool CKirbyCutterBullet::StepUp()
     switch (m_CurStep)
     {
     case BuningStep::NONE: {
+        GamePlayStatic::Play2DSound(L"sound\\wav\\HeroCutterBaisc\\Cutter_Rage0.wav", 1, KIRBY_EFFECTSOUND);
+
         m_CurStep = BuningStep::STEP_1;
 
         Ptr<CMaterial> DynamicMtrl = MeshRender()->GetMaterial(0);
@@ -345,6 +348,7 @@ bool CKirbyCutterBullet::StepUp()
     }
     break;
     case BuningStep::STEP_1: {
+        GamePlayStatic::Play2DSound(L"sound\\wav\\HeroCutterBaisc\\Cutter_Rage1.wav", 1, KIRBY_EFFECTSOUND);
         m_CurStep = BuningStep::STEP_2;
 
         Ptr<CMaterial> DynamicMtrl = MeshRender()->GetMaterial(0);
@@ -352,6 +356,7 @@ bool CKirbyCutterBullet::StepUp()
     }
     break;
     case BuningStep::STEP_2: {
+        GamePlayStatic::Play2DSound(L"sound\\wav\\HeroCutterBaisc\\Cutter_Rage2.wav", 1, KIRBY_EFFECTSOUND);
         m_CurStep = BuningStep::STEP_3;
 
         Ptr<CMaterial> DynamicMtrl = MeshRender()->GetMaterial(0);
@@ -374,6 +379,8 @@ void CKirbyCutterBullet::OnCollisionEnter(CCollider* _OtherCollider)
     // WorldStatic
     if (LayerIdx == LAYER_STATIC)
     {
+        GamePlayStatic::Play3DSound(L"sound\\wav\\HeroCutterMetal\\Cutter_Hit.wav", Transform()->GetWorldPos(), 1, KIRBY_EFFECTSOUND, true);
+
         Vec3 RayDir = m_MoveDir;
         RayDir.y = 0.f;
         RayDir.Normalize();
@@ -394,7 +401,6 @@ void CKirbyCutterBullet::OnCollisionEnter(CCollider* _OtherCollider)
 
         SetState(BulletState::HOLD_WALL);
     }
-
 }
 
 void CKirbyCutterBullet::OnTriggerEnter(CCollider* _OtherCollider)
@@ -407,6 +413,7 @@ void CKirbyCutterBullet::OnTriggerEnter(CCollider* _OtherCollider)
         // 커비한테 돌아가는 상태라면
         if (m_IsBack)
         {
+            GamePlayStatic::Play3DSound(L"sound\\wav\\HeroCutterMetal\\ReturnCutter.wav", Transform()->GetWorldPos(), 1, KIRBY_EFFECTSOUND, true);
             GamePlayStatic::DestroyGameObject(GetOwner());
 
             if (PLAYERFSM->GetCurAbilityIdx() == AbilityCopyType::CUTTER && PLAYERFSM->GetCurObjectIdx() == ObjectCopyType::NONE)
@@ -430,13 +437,31 @@ void CKirbyCutterBullet::OnTriggerEnter(CCollider* _OtherCollider)
             HitDir.Normalize();
             UnitHit HitInfo = {DAMAGE_TYPE::NORMAL, HitDir, 10.f, 0.f, 0.f};
 
+            for (UINT i = 0; i < 2; i++)
+            {
+                SpawnSlashEffect(_OtherCollider->Transform()->GetWorldPos());
+            }
+
             Monster->GetDamage(HitInfo);
+
+            GamePlayStatic::Play3DSound(L"sound\\wav\\HeroCutterMetal\\Cutter_Hit.wav", Transform()->GetWorldPos(), 1, KIRBY_EFFECTSOUND, true);
+
         }
     }
 }
 
 void CKirbyCutterBullet::OnTriggerExit(CCollider* _OtherCollider)
 {
+}
+
+void CKirbyCutterBullet::SpawnSlashEffect(Vec3 _vPos)
+{
+    CGameObject* pSpawnEffect =
+        CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Effect_SlashEffect.pref", L"prefab\\Effect_SlashEffect.pref")->Instantiate();
+
+    _vPos.y += 35.f;
+    pSpawnEffect->Transform()->SetWorldPos(_vPos);
+    GamePlayStatic::SpawnGameObject(pSpawnEffect, pSpawnEffect->GetLayerIdx());
 }
 
 UINT CKirbyCutterBullet::SaveToLevelFile(FILE* _File)

@@ -28,6 +28,8 @@ void CKirbyHoveringStart::tick()
 
 void CKirbyHoveringStart::Enter()
 {
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\HoveringStart.wav", 1, KIRBY_EFFECTSOUND);
+
     GetOwner()->Animator()->Play(ANIMPREFIX("FlightStart"), false);
     CPlayerMgr::ClearMouthMtrl();
     CPlayerMgr::ClearBodyMtrl();

@@ -66,6 +66,14 @@ void CKirbyBurning::tick()
 
 void CKirbyBurning::Enter()
 {
+    CGameObject* Spawner = PLAYER->GetChildObject(L"FireSmokeSpawner");
+    if (Spawner != nullptr)
+    {
+        Spawner->SetActive(true);
+    }
+
+    PLAYERFSM->SetBurningParticleSpawn(true);
+
     CPlayerMgr::SetPlayerFace(FaceType::UpTail);
 
 
@@ -104,6 +112,14 @@ void CKirbyBurning::Enter()
 
 void CKirbyBurning::Exit()
 {
+    CGameObject* Spawner = PLAYER->GetChildObject(L"FireSmokeSpawner");
+    if (Spawner != nullptr)
+    {
+        Spawner->SetActive(false);
+    }
+
+    PLAYERFSM->SetBurningParticleSpawn(false);
+
     CPlayerMgr::SetPlayerFace(FaceType::Normal);
 
     CGameObject* Wing = PLAYER->GetChildObject(L"KirbyDragon");

@@ -135,6 +135,17 @@ void CBladeKnightSwordScript::ThrustWait()
 {
 }
 
+void CBladeKnightSwordScript::SlashEffect(Vec3 _vPos)
+{
+    CGameObject* pSpawnEffect =
+        CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Effect_SlashEffect.pref", L"prefab\\Effect_SlashEffect.pref")->Instantiate();
+
+    Vec3 vPos = _vPos;
+    vPos.y += 35.f;
+    pSpawnEffect->Transform()->SetWorldPos(vPos);
+    GamePlayStatic::SpawnGameObject(pSpawnEffect, pSpawnEffect->GetLayerIdx());
+}
+
 void CBladeKnightSwordScript::OnTriggerEnter(CCollider* _OtherCollider)
 {
     int Layeridx = _OtherCollider->GetOwner()->GetLayerIdx();
@@ -144,6 +155,8 @@ void CBladeKnightSwordScript::OnTriggerEnter(CCollider* _OtherCollider)
         Vec3 HitDir = _OtherCollider->Transform()->GetWorldPos() - Transform()->GetWorldPos();
         HitDir.Normalize();
         UnitHit HitInfo = {DAMAGE_TYPE::NORMAL, HitDir, 10.f, 0.f, 0.f};
+
+        SlashEffect(_OtherCollider->GetOwner()->Transform()->GetWorldPos());
 
         PLAYERUNIT->GetDamage(HitInfo);
     }

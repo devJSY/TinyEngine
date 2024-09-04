@@ -138,6 +138,7 @@ void CHotHeadScript::OnTriggerEnter(CCollider* _OtherCollider)
     if (Layer == LAYER_PLAYER_TRIGGER && L"Body Collider" == pObj->GetName())
     {
         pObj->GetParent()->GetScript<CUnitScript>()->GetDamage(hitInfo);
+        BodyAttackSound();
     }
 }
 
@@ -181,6 +182,7 @@ void CHotHeadScript::EnterState(HotHeadState _state)
     }
     break;
     case HotHeadState::Find: {
+        FindSound();
         Animator()->Play(ANIMPREFIX("Find"), false, false, 1.5f);
     }
     break;
@@ -291,6 +293,8 @@ void CHotHeadScript::EnterState(HotHeadState _state)
     }
     break;
     case HotHeadState::Death: {
+        SpawnDeadSmokeEffect();
+
         GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
             TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\HotHead\\FaceTexturePattern.03.png",
                                                         L"fbx\\Characters\\Monster\\HotHead\\FaceTexturePattern.03.png"));
@@ -617,8 +621,10 @@ void CHotHeadScript::Damage()
     {
         ChangeState(HotHeadState::Death);
     }
-
-    Animator()->IsFinish() ? ChangeState(HotHeadState::Fall) : void();
+    else
+    {
+        Animator()->IsFinish() ? ChangeState(HotHeadState::Fall) : void();
+    }
 }
 #pragma endregion
 

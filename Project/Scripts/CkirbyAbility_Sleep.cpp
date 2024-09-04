@@ -120,6 +120,8 @@ void CKirbyAbility_Sleep::Attack()
 
 void CKirbyAbility_Sleep::AttackEnter()
 {
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroSleepBasic\\Sleep.wav", 10, KIRBY_EFFECTSOUND);
+
     PLAYER->Animator()->Play(ANIMPREFIX("Sleep"), true);
     CPlayerMgr::SetPlayerFace(FaceType::Close);
 
@@ -130,6 +132,8 @@ void CKirbyAbility_Sleep::AttackEnter()
 
 void CKirbyAbility_Sleep::AttackExit()
 {
+    GamePlayStatic::StopSound(L"sound\\wav\\HeroSleepBasic\\Sleep.wav");
+
     CPlayerMgr::SetPlayerFace(FaceType::Normal);
 
     PLAYERCTRL->UnlockMove();
@@ -140,6 +144,8 @@ void CKirbyAbility_Sleep::AttackExit()
 // Start
 void CKirbyAbility_Sleep::AttackStartEnter()
 {
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroSleep\\SleepStart.wav", 1, KIRBY_EFFECTSOUND);
+
     PLAYER->Animator()->Play(ANIMPREFIX("SleepStart"), false);
     CPlayerMgr::SetPlayerFace(FaceType::Close);
 
@@ -168,6 +174,7 @@ void CKirbyAbility_Sleep::AttackStartExit()
 // End
 void CKirbyAbility_Sleep::AttackEndEnter()
 {
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroSleepBasic\\SleepBreak.wav", 1, KIRBY_EFFECTSOUND);
     PLAYER->Animator()->Play(ANIMPREFIX("SleepEnd"), false, false, 1.5f);
     CPlayerMgr::SetPlayerFace(FaceType::Half);
 

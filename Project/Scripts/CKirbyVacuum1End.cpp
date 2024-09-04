@@ -27,6 +27,15 @@ void CKirbyVacuum1End::tick()
 
 void CKirbyVacuum1End::Enter()
 {
+    // Vacuum Effect
+    CGameObject* VacuumEffect = PLAYER->GetChildObject(L"Vacuum");
+    if (VacuumEffect != nullptr)
+    {
+        VacuumEffect->SetActive(false);
+    }
+
+    GamePlayStatic::PauseSound(L"sound\\wav\\HeroBasic\\Vacuum.wav");
+
     PLAYER->Animator()->Play(ANIMPREFIX("VacuumEnd"), false);
     CPlayerMgr::ClearBodyMtrl();
     CPlayerMgr::ClearMouthMtrl();

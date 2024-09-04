@@ -16,6 +16,7 @@ enum class KabuState
 class CKabuScript : public CMonsterUnitScript
 {
 private:
+    CGameObject* m_pSmokeSpawner;
     KabuState m_eState;
 
     Vec3 m_vCenterPos;
@@ -67,6 +68,10 @@ private:
     void Eaten();
     void Return();
     void Death();
+
+private:
+    void SmokeSpawnOn();
+    void SmokeSpawnOff();
 
 public:
     CLONE(CKabuScript)

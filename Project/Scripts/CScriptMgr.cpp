@@ -130,6 +130,12 @@
 #include "CDestroyParticleScript.h"
 #include "CMorphoShockWaveWave.h"
 #include "CKirbySwordTornadoScript.h"
+#include "CUICommonHitEffectScript.h"
+#include "CUISlashEffectScript.h"
+#include "CUIAbsorbUIScript.h"
+#include "CUIContinueUIScript.h"
+#include "CKirbyVacuumScript.h"
+#include "CAutoDelete.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -262,6 +268,12 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CDestroyParticleScript");
 	_vec.push_back(L"CMorphoShockWaveWave");
 	_vec.push_back(L"CKirbySwordTornadoScript");
+	_vec.push_back(L"CUICommonHitEffectScript");
+	_vec.push_back(L"CUISlashEffectScript");
+	_vec.push_back(L"CUIAbsorbUIScript");
+	_vec.push_back(L"CUIContinueUIScript");
+	_vec.push_back(L"CKirbyVacuumScript");
+	_vec.push_back(L"CAutoDelete");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -524,6 +536,18 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CMorphoShockWaveWave;
 	if (L"CKirbySwordTornadoScript" == _strScriptName)
 		return new CKirbySwordTornadoScript;
+	if (L"CUICommonHitEffectScript" == _strScriptName)
+		return new CUICommonHitEffectScript;
+	if (L"CUISlashEffectScript" == _strScriptName)
+		return new CUISlashEffectScript;
+	if (L"CUIAbsorbUIScript" == _strScriptName)
+		return new CUIAbsorbUIScript;
+	if (L"CUIContinueUIScript" == _strScriptName)
+		return new CUIContinueUIScript;
+	if (L"CKirbyVacuumScript" == _strScriptName)
+		return new CKirbyVacuumScript;
+	if (L"CAutoDelete" == _strScriptName)
+		return new CAutoDelete;
 	return nullptr;
 }
 
@@ -789,6 +813,18 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CMorphoShockWaveWave;
 	case (UINT)SCRIPT_TYPE::KIRBYSWORDTORNADOSCRIPT:
 		return new CKirbySwordTornadoScript;
+	case (UINT)SCRIPT_TYPE::UICOMMONHITEFFECTSCRIPT:
+		return new CUICommonHitEffectScript;
+	case (UINT)SCRIPT_TYPE::UISLASHEFFECTSCRIPT:
+		return new CUISlashEffectScript;
+	case (UINT)SCRIPT_TYPE::UIABSORBUISCRIPT:
+		return new CUIAbsorbUIScript;
+	case (UINT)SCRIPT_TYPE::UICONTINUEUISCRIPT:
+		return new CUIContinueUIScript;
+	case (UINT)SCRIPT_TYPE::KIRBYVACUUMSCRIPT:
+		return new CKirbyVacuumScript;
+	case (UINT)SCRIPT_TYPE::AUTODELETE:
+		return new CAutoDelete;
 	}
 	return nullptr;
 }
@@ -1055,6 +1091,18 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CMorphoShockWaveWave";
 	case SCRIPT_TYPE::KIRBYSWORDTORNADOSCRIPT:
 		return L"CKirbySwordTornadoScript";
+	case SCRIPT_TYPE::UICOMMONHITEFFECTSCRIPT:
+		return L"CUICommonHitEffectScript";
+	case SCRIPT_TYPE::UISLASHEFFECTSCRIPT:
+		return L"CUISlashEffectScript";
+	case SCRIPT_TYPE::UIABSORBUISCRIPT:
+		return L"CUIAbsorbUIScript";
+	case SCRIPT_TYPE::UICONTINUEUISCRIPT:
+		return L"CUIContinueUIScript";
+	case SCRIPT_TYPE::KIRBYVACUUMSCRIPT:
+		return L"CKirbyVacuumScript";
+	case SCRIPT_TYPE::AUTODELETE:
+		return L"CAutoDelete";
 	}
 	return nullptr;
 }

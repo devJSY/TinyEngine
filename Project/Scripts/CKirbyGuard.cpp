@@ -115,6 +115,8 @@ void CKirbyGuard::tick()
 
 void CKirbyGuard::Enter()
 {
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\Guard.wav", 1, KIRBY_EFFECTSOUND);
+
     // 애니메이션 재생
     CKirbyFSM* KirbyFSM = CPlayerMgr::GetPlayerFSM();
     KirbyFSM->GetCurAbility()->GuardEnter();
