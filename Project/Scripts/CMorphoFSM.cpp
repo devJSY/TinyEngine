@@ -201,7 +201,7 @@ void CMorphoFSM::tick()
 
     if (KEY_TAP(KEY::ENTER))
     {
-        ChangeStateGroup(MorphoStateGroup::AtkGroundWait, L"ATKG_WAIT_FRONTMOVE");
+        ChangeStateGroup(MorphoStateGroup::MoveToGround, L"MOVEG_JUMP");
     }
 
     // Emissive

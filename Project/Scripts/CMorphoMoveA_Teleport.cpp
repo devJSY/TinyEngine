@@ -55,6 +55,10 @@ void CMorphoMoveA_Teleport::Enter_Step()
         m_AfterPos.y = m_Height;
         m_AfterPos.z = GetRandomfloat(-MapSize.z, MapSize.z);
         m_AfterPos += MRPFSM->GetMapFloorOffset();
+
+        // sound
+        wstring Sound = L"sound\\wav\\CharaMorphoknight\\TeleportDisappear.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_MORPHO * 1.2f);
     }
     break;
     case StateStep::End: {
@@ -128,5 +132,9 @@ void CMorphoMoveA_Teleport::End()
     {
         MRPFSM->SetTeleportTime(true);
         MRPFSM->Attack();
+
+        // sound
+        wstring Sound = L"sound\\wav\\CharaMorphoknight\\TeleportAppear.wav";
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_MORPHO);
     }
 }
