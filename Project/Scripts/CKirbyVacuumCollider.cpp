@@ -262,6 +262,18 @@ void CKirbyVacuumCollider::CheckDrawing()
     m_FindTarget->Transform()->SetWorldPos(WorldPos);
     m_FindTarget->RemoveComponent(COMPONENT_TYPE::RIGIDBODY);
 
+    if (m_FindTarget->Animator())
+    {
+        if (m_FindHoldTime > 0.f)
+        {
+            m_FindTarget->Animator()->Play(ANIMPREFIX("Brake"), true, false, 1.5f);
+        }
+        else
+        {
+            m_FindTarget->Animator()->Play(ANIMPREFIX("Damage"), true, false, 1.5f);
+        }
+    }
+
     std::deque<CGameObject*> Queue{m_FindTarget};
     while (!Queue.empty())
     {
@@ -322,7 +334,15 @@ void CKirbyVacuumCollider::DrawingTarget()
         m_FindHoldAccTime += DT;
 
         float t = m_FindHoldAccTime / m_FindHoldTime;
-        NewPos += Dir * (m_FindDistance - 10.f * t);
+        NewPos += Dir * (m_FindDistance * (1.f - 0.5f * t));
+
+        if (m_FindHoldAccTime >= m_FindHoldTime)
+        {
+            if (m_FindTarget->Animator())
+            {
+                m_FindTarget->Animator()->Play(ANIMPREFIX("Damage"), true, false, 1.5f);
+            }
+        }
     }
     else
     {
@@ -333,7 +353,7 @@ void CKirbyVacuumCollider::DrawingTarget()
 
         if (m_FindHoldTime > 0.f)
         {
-            NewPos += Dir * ((m_FindDistance - 10.f) * cosf(t * XM_PI / 2.f));
+            NewPos += Dir * ((m_FindDistance * 0.5f) * cosf(t * XM_PI / 2.f));
         }
         else
         {
