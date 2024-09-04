@@ -997,6 +997,18 @@
     <ClInclude Include="CUIContinueUIScript.h">
       <Filter>Scripts\UI\UIAnimation\UIContinueUIScript</Filter>
     </ClInclude>
+    <ClInclude Include="CKirbyVacuumScript.h">
+      <Filter>Scripts\Character\Kirby\KirbyVacuumScript</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbySwallowEnd.h">
+      <Filter>State\KirbyState\ChangeAbility\SwallowEnd</Filter>
+    </ClInclude>
+    <ClInclude Include="CKirbySwallowStart.h">
+      <Filter>State\KirbyState\ChangeAbility\SwallowStart</Filter>
+    </ClInclude>
+    <ClInclude Include="CAutoDelete.h">
+      <Filter>Scripts\Common\AutoDelete</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -2003,6 +2015,18 @@
     </ClCompile>
     <ClCompile Include="CUIContinueUIScript.cpp">
       <Filter>Scripts\UI\UIAnimation\UIContinueUIScript</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbyVacuumScript.cpp">
+      <Filter>Scripts\Character\Kirby\KirbyVacuumScript</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbySwallowEnd.cpp">
+      <Filter>State\KirbyState\ChangeAbility\SwallowEnd</Filter>
+    </ClCompile>
+    <ClCompile Include="CKirbySwallowStart.cpp">
+      <Filter>State\KirbyState\ChangeAbility\SwallowStart</Filter>
+    </ClCompile>
+    <ClCompile Include="CAutoDelete.cpp">
+      <Filter>Scripts\Common\AutoDelete</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -3148,6 +3172,18 @@
     </Filter>
     <Filter Include="Scripts\UI\UIAnimation\CUIAbsorbUIScript">
       <UniqueIdentifier>{d70dd261-725d-4853-b2f8-944915913e0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Character\Kirby\KirbyVacuumScript">
+      <UniqueIdentifier>{ef3775f5-a505-4c55-91cd-13f4cfb5abff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\ChangeAbility\SwallowStart">
+      <UniqueIdentifier>{706c5834-cc2b-4863-951a-a4456dc9e8a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State\KirbyState\ChangeAbility\SwallowEnd">
+      <UniqueIdentifier>{4892a87b-8b3e-4363-ae2e-3cc3062fd043}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Common\AutoDelete">
+      <UniqueIdentifier>{d4dcc17f-ce62-4c4e-a9fb-4b02eeaae16f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

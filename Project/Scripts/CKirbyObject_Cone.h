@@ -37,6 +37,8 @@ public:
     virtual void DropObjectEnter();
     virtual void ChangeObjectEnter();
 
+    virtual void LandingEnter() override;
+
 public:
     CLONE(CKirbyObject_Cone)
     CKirbyObject_Cone();

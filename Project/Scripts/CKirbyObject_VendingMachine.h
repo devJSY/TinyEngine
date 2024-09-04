@@ -20,6 +20,8 @@ public:
     virtual void AttackEndEnter() override;
     virtual void AttackEndExit() override;
 
+    virtual void LandingEnter() override;
+
     // Change/Drop Object
     virtual void DropObjectEnter() override;
     virtual void ChangeObjectEnter() override;

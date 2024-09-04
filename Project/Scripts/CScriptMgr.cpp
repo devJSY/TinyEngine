@@ -134,6 +134,8 @@
 #include "CUISlashEffectScript.h"
 #include "CUIAbsorbUIScript.h"
 #include "CUIContinueUIScript.h"
+#include "CKirbyVacuumScript.h"
+#include "CAutoDelete.h"
 
 void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 {
@@ -270,6 +272,8 @@ void CScriptMgr::GetScriptInfo(vector<wstring>& _vec)
 	_vec.push_back(L"CUISlashEffectScript");
 	_vec.push_back(L"CUIAbsorbUIScript");
 	_vec.push_back(L"CUIContinueUIScript");
+	_vec.push_back(L"CKirbyVacuumScript");
+	_vec.push_back(L"CAutoDelete");
 }
 
 CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
@@ -540,6 +544,10 @@ CScript* CScriptMgr::GetScript(const wstring& _strScriptName)
 		return new CUIAbsorbUIScript;
 	if (L"CUIContinueUIScript" == _strScriptName)
 		return new CUIContinueUIScript;
+	if (L"CKirbyVacuumScript" == _strScriptName)
+		return new CKirbyVacuumScript;
+	if (L"CAutoDelete" == _strScriptName)
+		return new CAutoDelete;
 	return nullptr;
 }
 
@@ -813,6 +821,10 @@ CScript* CScriptMgr::GetScript(UINT _iScriptType)
 		return new CUIAbsorbUIScript;
 	case (UINT)SCRIPT_TYPE::UICONTINUEUISCRIPT:
 		return new CUIContinueUIScript;
+	case (UINT)SCRIPT_TYPE::KIRBYVACUUMSCRIPT:
+		return new CKirbyVacuumScript;
+	case (UINT)SCRIPT_TYPE::AUTODELETE:
+		return new CAutoDelete;
 	}
 	return nullptr;
 }
@@ -1087,6 +1099,10 @@ const wchar_t* CScriptMgr::GetScriptName(CScript* _pScript)
 		return L"CUIAbsorbUIScript";
 	case SCRIPT_TYPE::UICONTINUEUISCRIPT:
 		return L"CUIContinueUIScript";
+	case SCRIPT_TYPE::KIRBYVACUUMSCRIPT:
+		return L"CKirbyVacuumScript";
+	case SCRIPT_TYPE::AUTODELETE:
+		return L"CAutoDelete";
 	}
 	return nullptr;
 }

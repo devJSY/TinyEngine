@@ -1524,7 +1524,7 @@
     <FxCompile Include="RadialBlurPS.hlsl">
       <Filter>ShaderCode\Render\Postprocess</Filter>
     </FxCompile>
-    <FxCompile Include="TornadoEffectPS.hlsl">
+    <FxCompile Include="VacuumEffectPS.hlsl">
       <Filter>ShaderCode\Kirby\Common</Filter>
     </FxCompile>
     <FxCompile Include="UIKirbyFontPS.hlsl">

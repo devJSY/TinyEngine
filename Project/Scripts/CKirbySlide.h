@@ -3,6 +3,8 @@
 class CKirbySlide : public CState
 {
 private:
+    CGameObject* m_Spawner;
+
     float   m_Speed;
     float   m_Acc;
     float   m_Duration;
