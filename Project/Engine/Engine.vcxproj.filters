@@ -1587,5 +1587,8 @@
     <FxCompile Include="DimensionGatePS.hlsl">
       <Filter>ShaderCode\Kirby\Characters\Boss\Elfilis</Filter>
     </FxCompile>
+    <FxCompile Include="ElfilisSkyPS.hlsl">
+      <Filter>ShaderCode\Kirby\Characters\Boss\Elfilis</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
