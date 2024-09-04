@@ -133,7 +133,7 @@ void CMonsterUnitScript::AttackKnockBack(Vec3 _fHitDir, float _fForce)
 void CMonsterUnitScript::LandingSmokeEffect(Vec3 _vOffset)
 {
     CGameObject* pLandingSpawn = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\LandingSmokeSpawner.pref")->Instantiate();
-    pLandingSpawn->Transform()->SetWorldPos(Transform()->GetWorldPos() + m_vTestOffset);
+    pLandingSpawn->Transform()->SetWorldPos(Transform()->GetWorldPos() + _vOffset);
 
     GamePlayStatic::SpawnGameObject(pLandingSpawn, pLandingSpawn->GetLayerIdx());
 }

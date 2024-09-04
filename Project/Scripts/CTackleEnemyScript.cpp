@@ -75,7 +75,7 @@ void CTackleEnemyScript::begin()
         GamePlayStatic::AddChildObject(GetOwner(), m_pDashEffect);
     }
 
-    SetRayCast(15.f);
+    SetRayCast(50.f);
 
     SetResistTime(2.f);
 }
@@ -216,7 +216,7 @@ void CTackleEnemyScript::EnterState(TackleEnemyState _state)
     break;
     case TackleEnemyState::Landing: {
         DashEffectOff();
-        LandingSmokeEffect(Vec3(0.f, -15.f, 0.f));
+        LandingSmokeEffect(Vec3(0.f, -45.f, 0.f));
         GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
             TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\TackleEnemy\\TackleEnemyEye.00.png",
                                                         L"fbx\\Characters\\Monster\\TackleEnemy\\TackleEnemyEye.00.png"));
@@ -470,10 +470,17 @@ Vec3 CTackleEnemyScript::TrackDir(Vec3 _vPos)
 #pragma region IDLE
 void CTackleEnemyScript::Idle()
 {
-    if (nullptr != GetTarget())
+    if (IsGround())
     {
-        Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, false);
-        ChangeState(TackleEnemyState::Find);
+        if (nullptr != GetTarget())
+        {
+            Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, false);
+            ChangeState(TackleEnemyState::Find);
+        }
+    }
+    else
+    {
+        ChangeState(TackleEnemyState::Fall);
     }
 }
 #pragma endregion
