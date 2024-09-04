@@ -34,6 +34,9 @@ private:
     float m_fThreshHoldRushLerp;
 
 public:
+    TackleEnemyState GetState() { return m_eState; }
+
+public:
     virtual void begin() override;
     virtual void tick() override;
 
