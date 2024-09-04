@@ -73,7 +73,7 @@ void CKirbySwordTornadoScript::tick()
         GamePlayStatic::DestroyGameObject(GetOwner());
         
         // Sound
-        GamePlayStatic::StopSound(m_Sound); //@TODO : Fadeout
+        CSoundMgr::GetInst()->FadeSound(m_Sound, SOUND_KIRBY * 0.6f, 0.f, 0.5f, false);
     }
 }
 

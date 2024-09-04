@@ -135,7 +135,7 @@ void CElfilisA_DrawLaser::Exit_Step()
     case StateStep::Start:
         break;
     case StateStep::Progress: {
-        GamePlayStatic::StopSound(m_SoundKeyLaserWait);
+        CSoundMgr::GetInst()->FadeSound(m_SoundKeyLaserWait, SOUND_ELFILIS, 0.f, 0.5f, false);
     }
     break;
     case StateStep::End:

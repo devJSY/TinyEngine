@@ -4,6 +4,7 @@
 #include "CElfilisBigFSM.h"
 #include "CMomentaryObjScript.h"
 #include "CCameraController.h"
+#include <Engine\CSoundMgr.h>
 
 CElfilisBig_SwingL::CElfilisBig_SwingL()
     : m_bComboSuccess(false)
@@ -97,7 +98,7 @@ void CElfilisBig_SwingL::Exit_Step()
 
         // sound
         wstring Wind = L"sound\\wav\\CharaBossChimera2\\0037_BigSwing.wav";
-        GamePlayStatic::StopSound(Wind); //@TODO : FadeOut
+        CSoundMgr::GetInst()->FadeSound(Wind, SOUND_ELFILIS * 1.5f, 0.f, 0.5f, false);
     }
     break;
     case StateStep::End:

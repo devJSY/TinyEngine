@@ -71,7 +71,7 @@ void CMorphoAtkG_Teleport_Tornado::Exit()
 
     // Sound
     wstring Storm = L"sound\\wav\\CharaMorphoknight\\0031_Storm.wav";
-    GamePlayStatic::StopSound(Storm); //@TODO FadeOut
+    CSoundMgr::GetInst()->FadeSound(Storm, SOUND_MORPHO, 0.f, 0.5f, false);
 }
 
 void CMorphoAtkG_Teleport_Tornado::Enter_Step()
@@ -152,7 +152,7 @@ void CMorphoAtkG_Teleport_Tornado::Enter_Step()
 
         // Sound
         wstring Sound = L"sound\\wav\\CharaMorphoknight\\0031_Storm.wav";
-        GamePlayStatic::Play2DSound(Sound, 0, SOUND_MORPHO); //@TODO FadeIn
+        CSoundMgr::GetInst()->FadeSound(Sound, 0.f, SOUND_MORPHO, 0.5f, true);
     }
     break;
     case StateStep::Wait: {
@@ -184,7 +184,7 @@ void CMorphoAtkG_Teleport_Tornado::Exit_Step()
     case StateStep::Wait: {
         // Sound
         wstring Storm = L"sound\\wav\\CharaMorphoknight\\0031_Storm.wav";
-        GamePlayStatic::StopSound(Storm); //@TODO FadeOut
+        CSoundMgr::GetInst()->FadeSound(Storm, SOUND_MORPHO, 0.f, 0.5f, false);
     }
     break;
     case StateStep::End:

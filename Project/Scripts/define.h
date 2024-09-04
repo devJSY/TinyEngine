@@ -2,6 +2,7 @@
 
 #include "CPlayerMgr.h"
 #include "CCameraController.h"
+#include <Engine/CSoundMgr.h>
 
 #define PLAYER CPlayerMgr::GetPlayer()
 #define PLAYERUNIT CPlayerMgr::GetPlayerScript()

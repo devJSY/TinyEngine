@@ -85,7 +85,7 @@ void CMorphoAtkA_DoubleSwordAtkL::Exit_Step()
     case StateStep::Start: {
         // sound
         wstring SoundCharging = L"sound\\wav\\CharaMorphoknight\\DoubleSwordCharging.wav";
-        GamePlayStatic::StopSound(SoundCharging); //@TODO : FadeOut
+        CSoundMgr::GetInst()->FadeSound(SoundCharging, SOUND_MORPHO * 0.9f, 0.f, 0.5f, false);
     }
         break;
     case StateStep::Progress:
