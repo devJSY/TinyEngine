@@ -136,7 +136,7 @@ void CSolarOnceScript::EnterState(SolarOnceState _state)
         if (nullptr != pObj)
             pObj->GetScript<CElevatorScript>()->SetState(ElevatorState::Move);
 
-        GamePlayStatic::Play2DSound(L"sound\\wav\\GimmickSolarPanel\\0001.wav", 1, 0.5f);
+        GamePlayStatic::Play2DSound(L"sound\\wav\\GimmickSolarPanel\\0001.wav", 1, MONSTER_EFFECTSOUND);
         Animator()->Play(ANIMPREFIX("OnWaitStart"), false);
     }
     break;

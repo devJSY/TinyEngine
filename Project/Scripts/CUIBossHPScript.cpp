@@ -169,7 +169,7 @@ void CUIBossHPScript::Enter()
 
     if (m_fMaxHP >= 0.1f && !m_bSoundFlag)
     {
-        GamePlayStatic::Play2DSound(L"sound\\wav\\UiBasic\\0000.wav", 0, 0.3f);
+        GamePlayStatic::Play2DSound(L"sound\\wav\\UiBasic\\0000.wav", 0, SOUND_UI * 2.f);
         m_bSoundFlag = true;
     }
 
