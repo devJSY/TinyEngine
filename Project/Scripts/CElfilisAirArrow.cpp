@@ -337,7 +337,9 @@ void CElfilisAirArrow::Attack()
 
             if (NewDiff < DetectRange)
             {
-                Vec3 CurForce = CurPos - PrevPos;
+                //Vec3 CurForce = (CurPos - PrevPos) / DT;
+                Vec3 CurForce = Transform()->GetWorldDir(DIR_TYPE::UP) * -100.f;
+
                 Rigidbody()->SetKinematic(false);
                 Rigidbody()->SetVelocity(CurForce);
             }

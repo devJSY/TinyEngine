@@ -49,6 +49,7 @@ void CKirbySlideStart::Enter()
     PLAYERCTRL->LockJump();
 
     PLAYERFSM->SetSlideComboLevel(0);
+    PLAYERFSM->SetInvincible(true);
 
     // 커비 표정 바꾸기 
     CPlayerMgr::SetPlayerFace(FaceType::UpTail);
@@ -62,6 +63,8 @@ void CKirbySlideStart::Exit()
     PLAYERCTRL->UnlockMove();
     PLAYERCTRL->UnlockDirection();
     PLAYERCTRL->UnlockJump();
+
+    PLAYERFSM->SetInvincible(false);
 
     // 커비 표정 바꾸기
     CPlayerMgr::SetPlayerFace(FaceType::Normal);

@@ -12,8 +12,8 @@ CMorphoUnit::CMorphoUnit()
     : CUnitScript(MORPHOUNIT)
 {
     UnitInfo MorphoInfo = {
-        700.f, // HP
-        700.f, // MaxHP
+        800.f, // HP
+        800.f, // MaxHP
         10.f,  // Speed
         10.f,  // Rotation Speed
         10.f,  // JumpPower
@@ -28,8 +28,8 @@ CMorphoUnit::CMorphoUnit(const CMorphoUnit& _Origin)
     : CUnitScript(_Origin)
 {
     UnitInfo MorphoInfo = {
-        700.f, // HP
-        700.f, // MaxHP
+        800.f, // HP
+        800.f, // MaxHP
         10.f,  // Speed
         10.f,  // Rotation Speed
         10.f,  // JumpPower
@@ -173,10 +173,16 @@ CGameObject* CMorphoUnit::SpawnCircleDustEffect(Vec3 _Pos)
 
 UINT CMorphoUnit::SaveToLevelFile(FILE* _File)
 {
-    return 0;
+    UINT MemoryByte = 0;
+    //MemoryByte += CUnitScript::SaveToLevelFile(_File);
+    
+    return MemoryByte;
 }
 
 UINT CMorphoUnit::LoadFromLevelFile(FILE* _File)
 {
-    return 0;
+    UINT MemoryByte = 0;
+    // MemoryByte += CUnitScript::LoadFromLevelFile(_File);
+
+    return MemoryByte;
 }

@@ -381,10 +381,13 @@ void CMorphoAtkA_DoubleSwordAtkLR::EndWait()
 
                         if (nullptr != pParticleSystem)
                         {
-                            pParticleSystem->EnableModule(PARTICLE_MODULE::SCALE, true);
                             tParticleModule Module = pParticleSystem->GetParticleModule();
-                            float RandomFlaot = GetRandomfloat(2.f, 8.f);
-                            Module.vScaleRatio = Vec4(2.f, RandomFlaot, 2.f, 2.f);
+                            Module.vSpawnMinScale *= 2.f;
+                            Module.vSpawnMaxScale *= 2.f;
+                            Module.MinLife = 0.5f;
+                            Module.MaxLife = 0.8f;
+                            Module.MinSpeed = 180.f;
+                            Module.MaxSpeed = 180.f;
                             pParticleSystem->SetParticleModule(Module);
                         }
                     }

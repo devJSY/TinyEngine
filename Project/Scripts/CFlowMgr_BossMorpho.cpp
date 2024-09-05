@@ -191,6 +191,7 @@ void CFlowMgr_BossMorpho::EnterDeath()
 {
     CBossLevelFlowMgr::EnterDeath();
 
+    SetPlayerPos(m_DefaultDemoPos, -m_DefaultDemoPos);
     PLAYERCTRL->LockInput();
 }
 

@@ -26,6 +26,8 @@ void CKirbyLightScript::begin()
         MessageBox(nullptr, L"Light 컴포넌트 없음, 직접 추가 권장", L"Failed To Find Light (KirbyLightScript)", MB_OK);
         GetOwner()->AddComponent(new CLight);
     }
+
+    m_GlassMtrl = CAssetMgr::GetInst()->Load<CMaterial>(L"material\\KirbyLightbulb_GlassFrontC.mtrl");
 }
 
 void CKirbyLightScript::tick()
@@ -43,6 +45,7 @@ void CKirbyLightScript::tick()
         GetOwner()->Light()->SetFallOffEnd(NewRadius);
         GetOwner()->Light()->SetFallOffStart(NewRadius * m_FallRatio);
         GetOwner()->Light()->SetLightRadiance(m_RadianceWhite);
+        ChangeGlassEmission(t);
 
         if (m_AccTime > m_TurnOnTime)
         {
@@ -58,14 +61,11 @@ void CKirbyLightScript::tick()
         GetOwner()->Light()->SetFallOffEnd(NewRadius);
         GetOwner()->Light()->SetFallOffStart(NewRadius * m_FallRatio);
         GetOwner()->Light()->SetLightRadiance(m_RadianceRed);
+        ChangeGlassEmission(t);
 
         if (m_AccTime > m_TurnOffTime)
         {
-            if (m_State == KirbyLightState::Drop)
-            {
-                GetOwner()->SetActive(false);
-            }
-
+            ChangeGlassEmission(0.f);
             m_State = KirbyLightState::NONE;
         }
     }
@@ -82,6 +82,7 @@ void CKirbyLightScript::tick()
         if (m_AccTime > m_TurnOffTime)
         {
             m_State = KirbyLightState::NONE;
+            ChangeGlassEmission(0.f);
             GetOwner()->SetActive(false);
         }
     }
@@ -93,6 +94,8 @@ void CKirbyLightScript::Init()
     GetOwner()->Light()->SetFallOffEnd(m_MinFallOfEnd);
     GetOwner()->Light()->SetFallOffStart(m_MinFallOfEnd * m_FallRatio);
     GetOwner()->Light()->SetLightRadiance(m_RadianceRed);
+
+    ChangeGlassEmission(0.f);
 }
 
 void CKirbyLightScript::Drop()
@@ -130,6 +133,15 @@ void CKirbyLightScript::TurnOff()
     }
 
     m_State = KirbyLightState::TurningOff;
+}
+
+void CKirbyLightScript::ChangeGlassEmission(float _LightRatio)
+{
+    float Power = 500.f / 255.f * _LightRatio;
+    Vec4 Emission(Power);
+    Emission.w = 0.f;
+
+    m_GlassMtrl->SetEmission(Emission);
 }
 
 UINT CKirbyLightScript::SaveToLevelFile(FILE* _File)

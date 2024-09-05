@@ -74,6 +74,37 @@ void CAssetMgr::CreateDefaultGraphicsShader_Kirby()
     }
 
     // =================================
+    // Elfilis SkySphere Shader
+    // =================================
+    {
+        Ptr<CGraphicsShader> pShader = new CGraphicsShader;
+        pShader->CreateVertexShader(L"shader\\SkyBoxVS.hlsl", "main");
+        pShader->CreatePixelShader(L"shader\\ElfilisSkyPS.hlsl", "main");
+
+        pShader->SetRSType(RS_TYPE::CULL_BACK);
+        pShader->SetDSType(DS_TYPE::LESS);
+        pShader->SetBSType(BS_TYPE::DEFAULT);
+
+        pShader->SetDomain(SHADER_DOMAIN::DOMAIN_OPAQUE);
+
+        pShader->AddScalarParam(FLOAT_0, "Mask UV Scale");
+        pShader->AddScalarParam(FLOAT_1, "Color UV Scale");
+        pShader->AddScalarParam(FLOAT_2, "Emissive Power");
+        pShader->AddScalarParam(VEC2_0, "Distortion Speed");
+        pShader->AddScalarParam(VEC2_1, "Distortion Scale");
+
+        pShader->AddTexParam(TEX_0, "Color Masking Texture");
+        pShader->AddTexParam(TEX_1, "Noise Texture");
+        pShader->AddTexParam(TEX_2, "ColorMap Texture");
+        pShader->AddTexParam(TEX_4, "Color Nosie Texture");
+        pShader->AddTexParam(TEX_3, "Shadow Texture");
+        pShader->AddTexParam(TEX_5, "Emissive Masking Texture");
+
+        pShader->SetName(L"ElfilisSkySphereShader");
+        AddAsset(L"ElfilisSkySphereShader", pShader);
+    }
+
+    // =================================
     // Dash Effect Shader
     // =================================
     {

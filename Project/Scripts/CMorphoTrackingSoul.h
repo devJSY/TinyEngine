@@ -18,6 +18,8 @@ public:
     virtual void begin() override;
     virtual void tick() override;
 
+    void StopSound();
+
 private:
     virtual void OnTriggerEnter(CCollider* _OtherCollider) override;
 

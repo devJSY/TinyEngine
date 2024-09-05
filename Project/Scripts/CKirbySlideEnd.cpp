@@ -71,6 +71,7 @@ void CKirbySlideEnd::Enter()
     PLAYERCTRL->LockJump();
 
     PLAYERFSM->SetSlideComboLevel(0);
+    PLAYERFSM->SetInvincible(true);
 }
 
 void CKirbySlideEnd::Exit()
@@ -84,4 +85,6 @@ void CKirbySlideEnd::Exit()
     PLAYERCTRL->UnlockMove();
     PLAYERCTRL->UnlockDirection();
     PLAYERCTRL->UnlockJump();
+
+    PLAYERFSM->SetInvincible(false);
 }

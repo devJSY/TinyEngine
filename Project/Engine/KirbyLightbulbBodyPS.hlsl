@@ -1,5 +1,6 @@
 #include "struct.hlsli"
 #include "global.hlsli"
+#include "func.hlsli"
 #include "UnrealPBRCommon.hlsli"
 
 #define Albedo0Tex g_tex_0
@@ -52,21 +53,11 @@ PS_OUT_FORWARD main(PS_IN input)
     // normal
     if (dot(eyeBase.rgb, float3(1.0, 1.0, 1.0)) / 3.f > 0.99f)
     {
-        normalWorld = normalize(input.vNormalWorld);
-        float3 normal = eyeNormal.rgb;
-        normal.b = 1.f;
-        normal = 2.0 * normal - 1.0;
-        
-        float3 N = normalWorld;
-        float3 T = normalize(input.vTangentWorld - dot(input.vTangentWorld, N) * N);
-        float3 B = normalize(cross(N, T));
-        
-        float3x3 TBN = float3x3(T, B, N);
-        normalWorld = normalize(mul(normal, TBN));
+        normalWorld = float4(g_btex_2 ? NormalMapping(input, Albedo2Tex, input.vUV0, g_LinearClampSampler) : normalize(input.vNormalWorld), 1.f);
     }
     else
     {
-        normalWorld = normalize(input.vNormalWorld);
+        normalWorld = float4(normalize(input.vNormalWorld), 1.f);
     }
 
     float metallic = MtrlMetallic;
@@ -109,6 +100,8 @@ PS_OUT_FORWARD main(PS_IN input)
             InnerLighting += ApplyColor * att;
         }
     }
+    
+    InnerLighting *= (1.f - EyeAlpha);
     
     PS_OUT_FORWARD output;
     output.vColor = float4(ambientLighting + directLighting + InnerLighting + emission, 1.0);

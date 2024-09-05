@@ -8,12 +8,12 @@ CElfilisUnit::CElfilisUnit()
     : CUnitScript(ELFILISUNIT)
 {
     UnitInfo ElfilisInfo = {
-        700.f, // HP
-        700.f, // MaxHP
-        10.f,   // Speed
-        10.f,   // Rotation Speed
-        10.f,   // JumpPower
-        0.f,    // ATK
+        800.f, // HP
+        800.f, // MaxHP
+        10.f,  // Speed
+        10.f,  // Rotation Speed
+        10.f,  // JumpPower
+        0.f,   // ATK
     };
     SetInitInfo(ElfilisInfo);
 
@@ -24,12 +24,12 @@ CElfilisUnit::CElfilisUnit(const CElfilisUnit& _Origin)
     : CUnitScript(_Origin)
 {
     UnitInfo ElfilisInfo = {
-        700.f, // HP
-        700.f, // MaxHP
-        10.f,   // Speed
-        10.f,   // Rotation Speed
-        10.f,   // JumpPower
-        0.f,    // ATK
+        800.f, // HP
+        800.f, // MaxHP
+        10.f,  // Speed
+        10.f,  // Rotation Speed
+        10.f,  // JumpPower
+        0.f,   // ATK
     };
     SetInitInfo(ElfilisInfo);
 
@@ -40,19 +40,21 @@ CElfilisUnit::~CElfilisUnit()
 {
 }
 
+#include "CBossMgr.h"
+#include "CBossLevelFlowMgr.h"
 void CElfilisUnit::tick()
 {
     CUnitScript::tick();
 
     // Death & Resist
-    if (m_CurInfo.HP <= m_InitInfo.MAXHP * 0.05f && !ELFFSM->IsResist())
+    if (m_CurInfo.HP <= 0.f && !ELFFSM->IsResist())
     {
         ElfilisStateGroup CurStateGroup = ELFFSM->GetCurStateGroup();
         if ((CurStateGroup >= ElfilisStateGroup::GroundIdle || CurStateGroup <= ElfilisStateGroup::GroundAtkFar))
         {
             ELFFSM->ResetFSM();
-            m_CurInfo.HP = m_InitInfo.MAXHP * 0.05f;
             ELFFSM->ChangeStateGroup(ElfilisStateGroup::DEMO, L"DEMO_RESIST");
+            AddResistHP();
         }
     }
 
@@ -87,13 +89,16 @@ void CElfilisUnit::tick()
     }
 }
 
-void CElfilisUnit::ResistSuccess()
+void CElfilisUnit::AddResistHP()
 {
     m_CurInfo.HP += m_CurInfo.MAXHP * 0.1f;
 }
 
 void CElfilisUnit::PlayTeleportEffect(CGameObject** _BeforeUnit, CGameObject** _BeforeEffect, CGameObject** _AfterEffect, Vec3 _Pos)
 {
+    // off collider
+    ELFFSM->DisableCollider();
+
     // copy object
     CGameObject* BeforeUnit = new CGameObject;
     BeforeUnit->AddComponent(Transform()->Clone());
@@ -144,16 +149,7 @@ void CElfilisUnit::PlayTeleportEffect(CGameObject** _BeforeUnit, CGameObject** _
 UINT CElfilisUnit::SaveToLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;
-    UnitInfo ElfilisInfo = {
-        2000.f, // HP
-        2000.f, // MaxHP
-        10.f,   // Speed
-        10.f,   // Rotation Speed
-        10.f,   // JumpPower
-        0.f,    // ATK
-    };
-    SetInitInfo(ElfilisInfo);
-    MemoryByte += CUnitScript::SaveToLevelFile(_File);
+    // MemoryByte += CUnitScript::SaveToLevelFile(_File);
 
     return MemoryByte;
 }
@@ -161,16 +157,7 @@ UINT CElfilisUnit::SaveToLevelFile(FILE* _File)
 UINT CElfilisUnit::LoadFromLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;
+    // MemoryByte += CUnitScript::LoadFromLevelFile(_File);
 
-    MemoryByte += CUnitScript::LoadFromLevelFile(_File);
-    UnitInfo ElfilisInfo = {
-        2000.f, // HP
-        2000.f, // MaxHP
-        10.f,   // Speed
-        10.f,   // Rotation Speed
-        10.f,   // JumpPower
-        0.f,    // ATK
-    };
-    SetInitInfo(ElfilisInfo);
     return MemoryByte;
 }
