@@ -20,6 +20,8 @@ private:
     float m_WaitingTime;
     bool m_bPlayAddMotion;
 
+    bool m_YaySound;
+
 public:
     virtual void tick();
     virtual void Enter();

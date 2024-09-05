@@ -78,6 +78,8 @@ void CNormalEnemyScript::begin()
     m_fRushLerp = 0.8f;
     m_fRushSpeedLerp = 0.2f;
     m_fThreshHoldRushSpeedLerp = 0.1f;
+
+    SetRayCast(15.f);
 }
 
 void CNormalEnemyScript::tick()
@@ -322,6 +324,8 @@ void CNormalEnemyScript::EnterState(NormalEnemyState _state)
     }
     break;
     case NormalEnemyState::Land: {
+        LandingSmokeEffect(Vec3(0.f, -13.f, 0.f));
+
         GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
             TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemyEye.00.png",
                                                         L"fbx\\Characters\\Monster\\NormalEnemy\\NormalEnemyEye.00.png"));
@@ -442,8 +446,9 @@ void CNormalEnemyScript::ExitState(NormalEnemyState _state)
 
 void CNormalEnemyScript::ChangeState(NormalEnemyState _state)
 {
-    string iState = std::to_string((int)_state);
-    LOG(LOG_LEVEL::Log, (string("[Monster State Change] : ") + iState).c_str());
+    if (m_eState == NormalEnemyState::Death)
+        return;
+
     ExitState(m_eState);
     m_eState = _state;
     EnterState(m_eState);

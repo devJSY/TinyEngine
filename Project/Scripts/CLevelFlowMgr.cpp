@@ -277,8 +277,15 @@ void CLevelFlowMgr::tick()
     {
         m_BGMAcc += DT_ENGINE;
 
-        float Volume = Lerp(m_StartBGMVolume, m_EndBGMVolume, m_BGMAcc / m_BGMDuration);
-        GamePlayStatic::PlayBGM(m_BGM->GetRelativePath(), Volume);
+        if (m_BGMAcc > m_BGMDuration && m_EndBGMVolume <= 0.f)
+        {
+            m_BGM->Stop();
+        }
+        else
+        {
+            float Volume = Lerp(m_StartBGMVolume, m_EndBGMVolume, m_BGMAcc / m_BGMDuration);
+            GamePlayStatic::PlayBGM(m_BGM->GetRelativePath(), Volume);
+        }
     }
 
     // tick마다 넣어줘야 하는 Param setting
@@ -450,7 +457,7 @@ void CLevelFlowMgr::LevelExit()
 
     // Sound Stop
     GamePlayStatic::StopAllSound();
-    
+
     // Level Change
     GamePlayStatic::ChangeLevelAsync(ToWstring(m_NextLevelPath), LEVEL_STATE::PLAY);
 }
@@ -649,6 +656,7 @@ void CLevelFlowMgr::TurnOnStageclearUI()
     if (nullptr != m_pClearUI)
     {
         m_pClearUI->SetActive(true);
+        AbsorbUIEndOff();
         ContinueUIOn();
     }
 }

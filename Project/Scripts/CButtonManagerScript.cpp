@@ -54,6 +54,11 @@ void CButtonManagerScript::tick()
         (KEY_RELEASED(m_eSelectKey) || (KEY_RELEASED(LBTN) && m_vBtn[m_iCurBtn]->IsHovered())))
     {
         m_vBtn[m_iCurBtn]->Func();
+
+        for (size_t i = 0; i < m_vBtn.size(); i++)
+        {
+            m_vBtn[i]->ChangeState(ButtonState::DISABLED);
+        }
     }
 
     if (m_vStageBtn.empty())

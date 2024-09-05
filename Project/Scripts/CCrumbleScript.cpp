@@ -8,7 +8,7 @@ CCrumbleScript::CCrumbleScript()
     , m_pPlayer(nullptr)
     , m_eState(CrumbleState::Wait)
     , m_fAccTime(0.f)
-    , m_fWaitTime(2.f)
+    , m_fWaitTime(1.8f)
 {
 }
 
@@ -17,7 +17,7 @@ CCrumbleScript::CCrumbleScript(const CCrumbleScript& Origin)
     , m_pPlayer(nullptr)
     , m_eState(CrumbleState::Wait)
     , m_fAccTime(0.f)
-    , m_fWaitTime(2.f)
+    , m_fWaitTime(1.8f)
 {
 }
 

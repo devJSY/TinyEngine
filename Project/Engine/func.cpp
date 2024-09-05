@@ -7,6 +7,7 @@
 #include "CLevelMgr.h"
 #include "CRenderMgr.h"
 #include "CEditorMgr.h"
+#include "CSoundMgr.h"
 #include "CEngine.h"
 #include "func.h"
 #include "components.h"
@@ -742,7 +743,12 @@ void GamePlayStatic::Play2DSound(const wstring& _SoundPath, int _Loop, float _Vo
 
     if (nullptr != pSound)
     {
-        if (!_Reset && pSound->IsPaused())
+        if (_Reset)
+        {
+            pSound->SetPosition(0);
+        }
+
+        if (pSound->IsPaused())
         {
             pSound->Pause(false);
         }
@@ -760,7 +766,12 @@ void GamePlayStatic::Play3DSound(const wstring& _SoundPath, Vec3 _WorldPos, int 
 
     if (nullptr != pSound)
     {
-        if (!_Reset && pSound->IsPaused())
+        if (_Reset)
+        {
+            pSound->SetPosition(0);
+        }
+
+        if (pSound->IsPaused())
         {
             pSound->Pause(false);
         }
@@ -827,6 +838,8 @@ void GamePlayStatic::StopSound(const wstring& _SoundPath)
 
 void GamePlayStatic::StopAllSound()
 {
+    CSoundMgr::GetInst()->ClearSoundEvent();
+
     const map<wstring, Ptr<CAsset>>& mapSound = CAssetMgr::GetInst()->GetMapAsset(ASSET_TYPE::SOUND);
     for (const auto& pSound : mapSound)
     {

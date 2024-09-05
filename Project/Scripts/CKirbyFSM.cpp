@@ -343,10 +343,19 @@ void CKirbyFSM::begin()
         }
         else if (ObjName.find(L"Weapon") != wstring::npos)
         {
-            m_CurWeapon = KirbyChildObject[i]->Clone();
-            m_CurWeapon->SetActive(true);
-            m_CurWeapon->MeshRender()->SetEnabled(true);
-            GamePlayStatic::DestroyGameObject(KirbyChildObject[i]);
+            if (ObjName.find(L"KirbyMetalCutterWeapon") != wstring::npos)
+            {
+                m_CurWeapon = KirbyChildObject[i]->Clone();
+                m_CurWeapon->SetActive(false);
+                GamePlayStatic::DestroyGameObject(KirbyChildObject[i]);
+            }
+            else
+            {
+                m_CurWeapon = KirbyChildObject[i]->Clone();
+                m_CurWeapon->SetActive(true);
+                m_CurWeapon->MeshRender()->SetEnabled(true);
+                GamePlayStatic::DestroyGameObject(KirbyChildObject[i]);
+            }
         }
         else if (ObjName == L"KirbyDragon")
         {

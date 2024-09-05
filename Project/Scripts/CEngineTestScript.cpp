@@ -303,12 +303,12 @@ void CEngineTestScript::SoundTest()
 {
     if (KEY_TAP(KEY::NUM0))
     {
-        GamePlayStatic::Play2DSound(L"sound\\wav\\GimmickSolarPanel\\0000.wav", 1, 0.5f, true, false);
+        GamePlayStatic::Play2DSound(L"sound\\wav\\HeroCutterMetal\\Cutter_Hit.wav", 1, 0.5f, true, true);
     }
 
     if (KEY_TAP(KEY::NUM1))
     {
-        GamePlayStatic::Play3DSound(L"sound\\wav\\GimmickSolarPanel\\0000.wav", Vec3(), 1, 0.5f, true, false);
+        GamePlayStatic::Play3DSound(L"sound\\wav\\HeroCutterMetal\\Cutter_Hit.wav", Transform()->GetWorldPos(), 1, 0.5f, true, true);
     }
 
     if (KEY_TAP(KEY::NUM2))
