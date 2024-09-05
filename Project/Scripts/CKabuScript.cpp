@@ -16,8 +16,11 @@ CKabuScript::CKabuScript()
     , m_bHalfCurved(false)
     , m_bHalfFlag(false)
     , m_fAccTime(0.f)
+    , m_fWaitTime(1.5f)
+    , m_fAccTime2(0.f)
     , m_vOriginPos{}
     , m_vDestPos{}
+    , m_bIsEnter(false)
 {
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_vCenterPos, "CenterPos");
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_vOriginPos, "OriginPos");
@@ -39,9 +42,12 @@ CKabuScript::CKabuScript(const CKabuScript& Origin)
     , m_bInverse(Origin.m_bInverse)
     , m_bHalfCurved(Origin.m_bHalfCurved)
     , m_bHalfFlag(Origin.m_bHalfFlag)
+    , m_fWaitTime(1.5f)
+    , m_fAccTime2(0.f)
     , m_fAccTime(0.f)
     , m_vOriginPos{}
     , m_vDestPos{}
+    , m_bIsEnter(false)
 {
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_vCenterPos, "CenterPos");
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_vOriginPos, "OriginPos");
@@ -59,7 +65,7 @@ void CKabuScript::begin()
 {
     CMonsterUnitScript::begin();
 
-    ChangeState(KabuState::Patrol);
+    ChangeState(KabuState::Fall);
 
     m_vOriginPos = Transform()->GetWorldPos();
 
@@ -71,7 +77,7 @@ void CKabuScript::begin()
     {
         m_vPrevDir = m_vDir = Vec3(1.f, 0.f, 0.f);
     }
-        
+
     m_pSmokeSpawner = GetOwner()->GetChildObject(L"KabuSmokeSpawner");
 
     SetRayCast(15.f);
@@ -412,7 +418,7 @@ void CKabuScript::CircleMove()
 
 void CKabuScript::LinearMove(bool _moveZ)
 {
-    Vec3 vPos = Transform()->GetLocalPos();
+    Vec3 vPos = Transform()->GetWorldPos();
 
     m_vDir.y = 0.f;
 
@@ -491,7 +497,19 @@ void CKabuScript::Landing()
 {
     if (Animator()->IsFinish())
     {
-        ChangeState(KabuState::Patrol);
+        if (!m_bIsEnter)
+        {
+            m_fAccTime2 += DT;
+            if (m_fAccTime2 >= m_fWaitTime)
+            {
+                m_bIsEnter = true;
+                m_fAccTime2 = 0.f;
+            }
+        }
+        else
+        {
+            ChangeState(KabuState::Patrol);
+        }
     }
 }
 #pragma endregion
