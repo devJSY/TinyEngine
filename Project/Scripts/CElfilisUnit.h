@@ -10,7 +10,7 @@ public:
     virtual void tick();
 
     // virtual void AttackReward();
-    void ResistSuccess();
+    void AddResistHP();
 
     void PlayTeleportEffect(__inout CGameObject** _BeforeUnit, __inout CGameObject** _BeforeEffect, __inout CGameObject** _AfterEffect, Vec3 _Pos);
     
