@@ -91,7 +91,7 @@ void CKirbyHatBlade::Attack()
     {
         CGameObject* Spawner = CutterAttackSmokeSpawner->Instantiate();
         Vec3 Pos = PLAYER->Transform()->GetWorldPos();
-        Pos.y += 50.f;
+        Pos.y += 30.f;
         Spawner->Transform()->SetWorldPos(Pos);
 
         GamePlayStatic::SpawnGameObject(Spawner, Spawner->GetLayerIdx());

@@ -42,6 +42,8 @@ void CKirbyStageClear::tick()
 
     if (m_Step == 1 && m_Acc > m_Duration)
     {
+
+
         // StageClear Sound
         GamePlayStatic::Play2DSound(L"sound\\stream\\K15_KirbyDanceLong\\K15_KirbyDanceLong.marker.dspadpcm.wav", 1, KIRBY_EFFECTSOUND);
 
@@ -281,6 +283,7 @@ void CKirbyStageClear::Enter()
 
     // UI 다 끄기
     CGameObject* ManagerObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager");
+    
 
     // Camera 속성을 초기값으로 돌린다.
     CAMERACTRL->LoadInitSetting(true);
@@ -289,8 +292,7 @@ void CKirbyStageClear::Enter()
     FlowMgrScript->TurnOffBossHP();
     FlowMgrScript->TurnOffPlayerHP();
     FlowMgrScript->ActiveOffDropUI();
-
-    FlowMgrScript->FadeOutBGM(0.1f);
+    GamePlayStatic::StopAllSound();
 
     m_Step = 0;
     m_Duration = 2.f;
