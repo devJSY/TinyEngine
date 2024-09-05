@@ -186,11 +186,6 @@ void CUIBossHPScript::HPTick()
     if (!m_pUnitScript)
         return;
 
-    if (KEY_TAP(I))
-    {
-        BossRevive();
-    }
-
     // 데미지가 달면 현재 체력과 달라짐
     float fCheckHP = m_fCurHP;
     m_fCurHP = m_pUnitScript->GetCurInfo().HP;
