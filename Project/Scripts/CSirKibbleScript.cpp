@@ -579,7 +579,7 @@ void CSirKibbleScript::AirCutterThrow()
 {
     if (CHECK_ANIMFRM(GetOwner(), 13) && m_bThrow)
     {
-        ProjectileAttack(false);
+        ProjectileAttack(true);
         m_bThrow = false;
     }
 
