@@ -106,7 +106,7 @@ void CSurpriseBoardScript::EnterState(SurpriseBoardState _state)
     case SurpriseBoardState::Break:
         break;
     case SurpriseBoardState::PopOut: {
-        GamePlayStatic::Play2DSound(L"sound\\wav\\GimmickSupriseBoard\\0001.wav", 1, 0.5f);
+        GamePlayStatic::Play2DSound(L"sound\\wav\\GimmickSupriseBoard\\0001.wav", 1, MONSTER_EFFECTSOUND);
         true == m_bIsRight ? Animator()->Play(ANIMPREFIX("PopOutR"), false, false, 1.5f)
                            : Animator()->Play(ANIMPREFIX("PopOutL"), false, false, 1.5f);
     }

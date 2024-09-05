@@ -25,7 +25,7 @@ public:
 public:
     // _iRoopCount : 0 (무한반복),  _fVolume : 0 ~ 1(Volume), _bOverlap : 소리 중첩 가능여부
     int Play2D(int _iRoopCount, float _fVolume = 0.5f, bool _bOverlap = false);
-    int Play3D(Vec3 _WorldPos, int _iRoopCount, float _fVolume = 0.5f, bool _bOverlap = false, float _Mindistance = 50.f, float _Maxdistance = 500.f);
+    int Play3D(Vec3 _WorldPos, int _iRoopCount, float _fVolume = 0.5f, bool _bOverlap = false, float _Mindistance = 100.f, float _Maxdistance = 1000.f);
     void Stop();
     void Pause(bool _Pause = true);
 

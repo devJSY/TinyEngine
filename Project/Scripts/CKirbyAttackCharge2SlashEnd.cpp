@@ -33,7 +33,7 @@ void CKirbyAttackCharge2SlashEnd::Enter()
 
     // sound
     wstring Sound = L"sound\\wav\\HeroSwordMorpho\\0003_Fire.wav";
-    GamePlayStatic::Play2DSound(Sound, 1, SOUND_KIRBY * 0.8f);
+    GamePlayStatic::Play2DSound(Sound, 1, SOUND_SWORDKIRBY * 0.8f);
 }
 
 void CKirbyAttackCharge2SlashEnd::Exit()

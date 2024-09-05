@@ -107,7 +107,7 @@ void CSolarChargeScript::EnterState()
         GetOwner()->MeshRender()->GetMaterial(8)->SetEmission(Vec4(0.f, 1.f, 0.f, 1.f));
         GetOwner()->MeshRender()->GetMaterial(12)->SetEmission(Vec4(0.f, 1.f, 0.f, 1.f));
         GetOwner()->MeshRender()->GetMaterial(13)->SetEmission(Vec4(0.f, 1.f, 0.f, 1.f));
-        GamePlayStatic::Play2DSound(L"sound\\wav\\GimmickSolarPanel\\0000.wav", 1, 0.5f);
+        GamePlayStatic::Play2DSound(L"sound\\wav\\GimmickSolarPanel\\0000.wav", 1, MONSTER_EFFECTSOUND);
         Animator()->Play(ANIMPREFIX("Charge"), false);
     }
     break;
@@ -123,7 +123,7 @@ void CSolarChargeScript::EnterState()
         GetOwner()->MeshRender()->GetMaterial(12)->SetEmission(Vec4(1.f, 1.f, 0.f, 1.f));
         GetOwner()->MeshRender()->GetMaterial(13)->SetEmission(Vec4(1.f, 1.f, 0.f, 1.f));
 
-        GamePlayStatic::Play2DSound(L"sound\\wav\\GimmickSolarPanel\\0001.wav", 1, 0.5f);
+        GamePlayStatic::Play2DSound(L"sound\\wav\\GimmickSolarPanel\\0001.wav", 1, MONSTER_EFFECTSOUND);
         Animator()->Play(ANIMPREFIX("ChargedStart"), false);
     }
     break;

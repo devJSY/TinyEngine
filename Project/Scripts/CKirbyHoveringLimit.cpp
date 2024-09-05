@@ -15,10 +15,9 @@ void CKirbyHoveringLimit::tick()
 {
     if (PLAYER->Animator()->IsFinish())
     {
-        GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\Hovering.wav", 1, KIRBY_EFFECTSOUND);
+        GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\Hovering.wav", 1, KIRBY_EFFECTSOUND, false);
         GetOwner()->Animator()->Play(ANIMPREFIX("FlightLimit"), false, false, 1.5f);
     }
-
 
     // Change State
     if (PLAYERFSM->GetYPressedTime() >= PLAYERFSM->GetDropCopyTime())

@@ -27,7 +27,7 @@ void CKirbyChangeAbility::tick()
 
     if (!m_StarEffect && CHECK_ANIMFRM(GetOwner(), 19))
     {
-        GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\Skrr.wav", 1, KIRBY_EFFECTSOUND);
+        GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\Skrr.wav", 1, KIRBY_EFFECTSOUND * 1.5f);
 
         CGameObject* pStarEffect =
             CAssetMgr::GetInst()

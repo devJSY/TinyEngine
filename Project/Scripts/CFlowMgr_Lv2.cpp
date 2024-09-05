@@ -46,13 +46,12 @@ void CFlowMgr_Lv2::LevelStart()
     SetFadeEffect(Vec3(164.f, 44.f, 174.f), true, 1.f, 1.25f, true);
 
     // BGM
-    FadeInBGM(L"sound\\stream\\K15_Park1\\K15_Park1.wav", 0.f, 0.5f, 1.f);
+    FadeInBGM(L"sound\\stream\\K15_Park1\\K15_Park1.wav", 0.f, SOUND_BGM, 1.f);
 }
 
 void CFlowMgr_Lv2::LevelEnd()
 {
     CLevelFlowMgr::LevelEnd();
-    FadeOutSound();
     SetFadeEffectColor(Vec3(164.f, 44.f, 174.f));
 }
 
