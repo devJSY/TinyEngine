@@ -29,6 +29,8 @@ void CKirbyVacuum2Run::tick()
 
 void CKirbyVacuum2Run::Enter()
 {
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\Vacuum.wav", 2, KIRBY_EFFECTSOUND, true, false);
+
     // Vacuum Effect
     CGameObject* VacuumEffect = PLAYER->GetChildObject(L"Vacuum");
     if (VacuumEffect != nullptr)
@@ -50,6 +52,8 @@ void CKirbyVacuum2Run::Enter()
 
 void CKirbyVacuum2Run::Exit()
 {
+    GamePlayStatic::PauseSound(L"sound\\wav\\HeroBasic\\Vacuum.wav");
+
     // Vacuum Effect
     CGameObject* VacuumEffect = PLAYER->GetChildObject(L"Vacuum");
     if (VacuumEffect != nullptr)

@@ -128,6 +128,8 @@ void CKirbyObject_Cone::AttackCombo1()
 
 void CKirbyObject_Cone::AttackCombo1Enter()
 {
+    CAMERACTRL->Shake(0.5f, 30.f, 30.f);
+
     GamePlayStatic::Play2DSound(L"sound\\wav\\HeroDeformCone\\0007.wav", 1, KIRBY_EFFECTSOUND);
 
     PLAYER->Animator()->Play(ANIMPREFIX("TurnLanding"), false, false, 2.f);

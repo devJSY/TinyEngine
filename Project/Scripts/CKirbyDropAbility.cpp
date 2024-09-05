@@ -26,6 +26,15 @@ void CKirbyDropAbility::tick()
         // spawn ability bubble
         if (nullptr != m_Bubble)
         {
+            GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\DropAbility.wav", 1, KIRBY_EFFECTSOUND);
+
+            CGameObject* pStarEffect =
+                CAssetMgr::GetInst()
+                    ->Load<CPrefab>(L"prefab\\Effect_KirbyChangeAbilityStarSpawn.pref", L"prefab\\Effect_KirbyChangeAbilityStarSpawn.pref")
+                    ->Instantiate();
+
+            GamePlayStatic::SpawnGameObject(pStarEffect, pStarEffect->GetLayerIdx());
+
             CGameObject* pBubble = m_Bubble->Instantiate();
 
             Vec3 InitPos = PLAYER->Transform()->GetWorldPos();
@@ -120,14 +129,7 @@ void CKirbyDropAbility::Enter()
 
 void CKirbyDropAbility::Exit()
 {
-    CGameObject* pStarEffect =
-        CAssetMgr::GetInst()
-            ->Load<CPrefab>(L"prefab\\Effect_KirbyChangeAbilityStarSpawn.pref", L"prefab\\Effect_KirbyChangeAbilityStarSpawn.pref")
-            ->Instantiate();
 
-    GamePlayStatic::SpawnGameObject(pStarEffect, pStarEffect->GetLayerIdx());
-
-    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\DropAbility.wav", 1, KIRBY_EFFECTSOUND);
 
     // Change State
     // ---------------

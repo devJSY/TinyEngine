@@ -742,7 +742,12 @@ void GamePlayStatic::Play2DSound(const wstring& _SoundPath, int _Loop, float _Vo
 
     if (nullptr != pSound)
     {
-        if (!_Reset && pSound->IsPaused())
+        if (_Reset)
+        {
+            pSound->Stop();
+        }
+
+        if (pSound->IsPaused())
         {
             pSound->Pause(false);
         }
@@ -760,7 +765,12 @@ void GamePlayStatic::Play3DSound(const wstring& _SoundPath, Vec3 _WorldPos, int 
 
     if (nullptr != pSound)
     {
-        if (!_Reset && pSound->IsPaused())
+        if (_Reset)
+        {
+            pSound->Stop();
+        }
+
+        if (pSound->IsPaused())
         {
             pSound->Pause(false);
         }

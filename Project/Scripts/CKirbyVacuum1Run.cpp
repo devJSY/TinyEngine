@@ -41,7 +41,7 @@ void CKirbyVacuum1Run::Enter()
     }
 
 
-    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\Vacuum.wav", 2, KIRBY_EFFECTSOUND, false);
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\Vacuum.wav", 2, KIRBY_EFFECTSOUND, true, false);
 
     PLAYER->Animator()->Play(ANIMPREFIX("VacuumWalk"), true, false, 2.f);
     CPlayerMgr::ClearBodyMtrl();
