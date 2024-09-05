@@ -8,8 +8,8 @@ CElfilisUnit::CElfilisUnit()
     : CUnitScript(ELFILISUNIT)
 {
     UnitInfo ElfilisInfo = {
-        700.f, // HP
-        700.f, // MaxHP
+        800.f, // HP
+        800.f, // MaxHP
         10.f,  // Speed
         10.f,  // Rotation Speed
         10.f,  // JumpPower
@@ -24,8 +24,8 @@ CElfilisUnit::CElfilisUnit(const CElfilisUnit& _Origin)
     : CUnitScript(_Origin)
 {
     UnitInfo ElfilisInfo = {
-        700.f, // HP
-        700.f, // MaxHP
+        800.f, // HP
+        800.f, // MaxHP
         10.f,  // Speed
         10.f,  // Rotation Speed
         10.f,  // JumpPower
@@ -147,16 +147,7 @@ void CElfilisUnit::PlayTeleportEffect(CGameObject** _BeforeUnit, CGameObject** _
 UINT CElfilisUnit::SaveToLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;
-    UnitInfo ElfilisInfo = {
-        2000.f, // HP
-        2000.f, // MaxHP
-        10.f,   // Speed
-        10.f,   // Rotation Speed
-        10.f,   // JumpPower
-        0.f,    // ATK
-    };
-    SetInitInfo(ElfilisInfo);
-    MemoryByte += CUnitScript::SaveToLevelFile(_File);
+    // MemoryByte += CUnitScript::SaveToLevelFile(_File);
 
     return MemoryByte;
 }
@@ -164,16 +155,7 @@ UINT CElfilisUnit::SaveToLevelFile(FILE* _File)
 UINT CElfilisUnit::LoadFromLevelFile(FILE* _File)
 {
     UINT MemoryByte = 0;
+    // MemoryByte += CUnitScript::LoadFromLevelFile(_File);
 
-    MemoryByte += CUnitScript::LoadFromLevelFile(_File);
-    UnitInfo ElfilisInfo = {
-        2000.f, // HP
-        2000.f, // MaxHP
-        10.f,   // Speed
-        10.f,   // Rotation Speed
-        10.f,   // JumpPower
-        0.f,    // ATK
-    };
-    SetInitInfo(ElfilisInfo);
     return MemoryByte;
 }
