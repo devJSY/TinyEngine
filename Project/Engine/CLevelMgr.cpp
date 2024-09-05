@@ -147,8 +147,7 @@ void CLevelMgr::ChangeLevel(CLevel* _NextLevel, LEVEL_STATE _StartState)
 
 void CLevelMgr::ChangeLevelAsync(const wstring& _strPath, LEVEL_STATE _StartState)
 {
-    // m_listLoadThread.push_back(std::thread(&CLevelMgr::ChangeLevelAsyncFunc, this, _strPath, _StartState));
-    GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(_strPath), _StartState);
+    m_listLoadThread.push_back(std::thread(&CLevelMgr::ChangeLevelAsyncFunc, this, _strPath, _StartState));
 }
 
 void CLevelMgr::ChangeLevelAsyncFunc(const wstring& _strPath, LEVEL_STATE _StartState)
