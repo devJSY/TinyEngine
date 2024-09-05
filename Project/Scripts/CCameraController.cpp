@@ -804,7 +804,7 @@ void CCameraController::ProcessEffet()
                 float minAngle = XMConvertToRadians(-80.0f);
                 float maxAngle = XMConvertToRadians(-100.0f);
                 float centerAngle = XMConvertToRadians(-90.0f);
-                float frequency = 1.0f;
+                float frequency = m_TiltFrequency;
 
                 float t = (CurEffet.Acc - tiltDuration) / frequency;
 
