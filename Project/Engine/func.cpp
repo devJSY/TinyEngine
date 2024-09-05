@@ -7,6 +7,7 @@
 #include "CLevelMgr.h"
 #include "CRenderMgr.h"
 #include "CEditorMgr.h"
+#include "CSoundMgr.h"
 #include "CEngine.h"
 #include "func.h"
 #include "components.h"
@@ -837,6 +838,8 @@ void GamePlayStatic::StopSound(const wstring& _SoundPath)
 
 void GamePlayStatic::StopAllSound()
 {
+    CSoundMgr::GetInst()->ClearSoundEvent();
+
     const map<wstring, Ptr<CAsset>>& mapSound = CAssetMgr::GetInst()->GetMapAsset(ASSET_TYPE::SOUND);
     for (const auto& pSound : mapSound)
     {
