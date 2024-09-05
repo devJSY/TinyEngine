@@ -804,7 +804,7 @@ void CCameraController::ProcessEffet()
                 float minAngle = XMConvertToRadians(-80.0f);
                 float maxAngle = XMConvertToRadians(-100.0f);
                 float centerAngle = XMConvertToRadians(-90.0f);
-                float frequency = 1.0f;
+                float frequency = m_TiltFrequency;
 
                 float t = (CurEffet.Acc - tiltDuration) / frequency;
 
@@ -1117,7 +1117,18 @@ void CCameraController::SetElfilisGround()
 
     SetTargetOffset(Vec3(0.f, 0.f, 0.f));
     SetOffset(Vec3(0.f, 0.f, 0.f));
-    SetLookDir(Vec3(0.f, -0.707f, 0.707f));
+
+    Vec3 Dir = Vec3(0.f, -0.707f, 0.707f);
+    if (BOSS != nullptr && PLAYER != nullptr)
+    {
+        Dir = BOSS->Transform()->GetWorldPos() - PLAYER->Transform()->GetWorldPos();
+        Dir.y = 0.f;
+        Dir.Normalize();
+
+        Dir.y = -0.707f;
+    }
+
+    SetLookDir(Dir);
     SetLookDist(700.f);
 
     // Setting
