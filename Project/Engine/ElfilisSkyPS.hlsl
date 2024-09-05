@@ -80,10 +80,10 @@ float4 main(PS_IN input) : SV_TARGET
     // ==========================
     if (g_btex_5)
     {
-        float EmissiveRatio = EmissiveTex.Sample(g_LinearWrapSampler, ColorNoiseUV);
-        EmissiveRatio = pow(EmissiveRatio, EmissivePower);
+        float EmissiveRatio = EmissiveTex.Sample(g_LinearWrapSampler, ColorNoiseUV).r;
+        EmissiveRatio = pow(abs(EmissiveRatio), EmissivePower);
         
-        OutColor.rgb += g_vEmission * EmissiveRatio;
+        OutColor.rgb += g_vEmission.rgb * EmissiveRatio;
     }
     
     return OutColor;
