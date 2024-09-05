@@ -99,7 +99,6 @@ void CKirbyObject_Cone::AttackEndEnter()
     //@Effect ¼Óµµ¼±
 
     PLAYERCTRL->LockDirection();
-    PLAYERCTRL->LockMove();
     PLAYERCTRL->SetLimitFallSpeed(false);
     PLAYERCTRL->ClearVelocityY();
     PLAYERCTRL->AddVelocity(Vec3(0.f, -30.f, 0.f));
@@ -110,7 +109,6 @@ void CKirbyObject_Cone::AttackEndEnter()
 void CKirbyObject_Cone::AttackEndExit()
 {
     PLAYERCTRL->UnlockDirection();
-    PLAYERCTRL->UnlockMove();
     PLAYERCTRL->SetLimitFallSpeed(true);
 
     PLAYERFSM->SetInvincible(false);

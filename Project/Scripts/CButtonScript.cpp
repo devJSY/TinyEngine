@@ -312,7 +312,12 @@ void CButtonScript::ButtonUpdate()
             for (size_t i = 0; i < pChildObj.size(); i++)
             {
                 if (nullptr != pChildObj[i])
-                    pChildObj[i]->SetActive(true);
+                {
+                    if (pChildObj[i]->GetName() != L"UI_FontTexture")
+                    {
+                        pChildObj[i]->SetActive(false);
+                    }
+                }
             }
         }
         CTransform* _pTr = GetOwner()->GetComponent<CTransform>();

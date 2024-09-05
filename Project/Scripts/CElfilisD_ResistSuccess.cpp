@@ -41,7 +41,8 @@ void CElfilisD_ResistSuccess::Enter_Step()
     case StateStep::Start: {
         GetOwner()->Animator()->Play(ANIMPREFIX("ResistSuccess"), false, false, 1.5f);
         ELFFSM->SetResist(true);
-        ELFFSM->GetUnit()->ResistSuccess();
+        ELFFSM->GetUnit()->AddResistHP();
+        CBossMgr::GetBossFlowMgr()->BossRevive();
 
         CBossMgr::GetBossFlowMgr()->ChangeFlow(BossLevelFlow::Fight);
 

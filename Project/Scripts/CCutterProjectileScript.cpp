@@ -149,6 +149,8 @@ void CCutterProjectileScript::AttackStop()
 
 void CCutterProjectileScript::AttackBack()
 {
+    m_fAccTime += DT;
+
     Vec3 vDir = m_pAttackPoint->Transform()->GetWorldPos() - Transform()->GetWorldPos();
 
     Vec3 vUP = vDir == Vec3(0.f, 0.f, -1.f) ? Vec3(0.f, -1.f, 0.f) : Vec3(0.f, 1.f, 0.f);
@@ -165,6 +167,11 @@ void CCutterProjectileScript::AttackBack()
     }
 
     Rigidbody()->SetVelocity(vFront * (m_fSpeed * 1.5f));
+
+    if (m_fAccTime >= 7.f)
+    {
+        ChangeState(CUTTERPROJECTILE_STATE::Destroy);
+    }
 }
 
 void CCutterProjectileScript::Destroy()
@@ -198,7 +205,7 @@ void CCutterProjectileScript::OnTriggerEnter(CCollider* _OtherCollider)
     if (LAYER_PLAYER == pObj->GetLayerIdx() && L"Main Player" == pObj->GetName())
     {
         UnitHit hitInfo = {DAMAGE_TYPE::NORMAL, GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT), 6.f, 0.f, 0.f};
-
+        GamePlayStatic::Play2DSound(L"sound\\wav\\CharaBasic\\0011.wav", 1, 0.4f);
         SlashEffect(pObj->Transform()->GetWorldPos());
         pObj->GetScript<CUnitScript>()->GetDamage(hitInfo);
     }

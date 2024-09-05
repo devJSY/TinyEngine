@@ -116,6 +116,7 @@ void CKirbyAbility_Sword::AttackEnter()
     PLAYERCTRL->LockMove();
     PLAYERCTRL->LockDirection();
     PLAYERCTRL->LockJump();
+    PLAYERCTRL->ImmediateRotate();
 
     PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(true);
 
@@ -161,6 +162,7 @@ void CKirbyAbility_Sword::AttackCombo1Enter()
     PLAYERCTRL->SetSpeed(3.f);
     PLAYERCTRL->LockDirection();
     PLAYERCTRL->LockJump();
+    PLAYERCTRL->ImmediateRotate();
 
     PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(true);
 
@@ -213,6 +215,7 @@ void CKirbyAbility_Sword::AttackCombo2Enter()
     PLAYERCTRL->SetSpeed(3.f);
     PLAYERCTRL->LockDirection();
     PLAYERCTRL->LockJump();
+    PLAYERCTRL->ImmediateRotate();
 
     //@Effect Effect 재생
     PLAYERFSM->SetInvincible(true);
@@ -716,6 +719,7 @@ void CKirbyAbility_Sword::JumpAttackEnter()
     PLAYERCTRL->SetGravity(0.f);
     PLAYERCTRL->ClearVelocityY();
     PLAYERCTRL->LockDirection();
+    PLAYERCTRL->ImmediateRotate();
 
     PLAYERFSM->SetInvincible(true);
     PLAYERFSM->GetCurWeapon()->BoxCollider()->SetEnabled(true);
@@ -791,6 +795,7 @@ void CKirbyAbility_Sword::LandingEnter()
         PLAYERFSM->SetInvincible(true);
 
         //@Effect 내려찍는 충격효과, 나비
+        SpawnButterflyParticle();
 
         // sound
         wstring Sound = L"sound\\wav\\HeroSwordMorpho\\SlideCombo_Landing.wav";
@@ -1036,7 +1041,7 @@ void CKirbyAbility_Sword::SpawnSwordSlash(Vec3 _SlashScale, bool _bVertical)
         return;
 
     CGameObject* SwordSlash = m_KirbySwordSlashPref->Instantiate();
-    Vec3 Dir = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+    Vec3 Dir = PLAYERCTRL->ImmediateRotate();
     Vec3 Pos = PLAYER->Transform()->GetWorldPos() + Dir * 10.f;
 
     SwordSlash->Transform()->SetWorldScale(_SlashScale);

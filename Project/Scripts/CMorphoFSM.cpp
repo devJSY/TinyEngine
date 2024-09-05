@@ -201,7 +201,7 @@ void CMorphoFSM::tick()
 
     //if (KEY_TAP(KEY::ENTER))
     //{
-    //    ChangeStateGroup(MorphoStateGroup::MoveToGround, L"MOVEG_JUMP");
+    //    ChangeStateGroup(MorphoStateGroup::MoveToGround, L"MOVEG_TELEPORT_NEAR");
     //}
 
     // Emissive

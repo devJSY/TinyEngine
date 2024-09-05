@@ -64,6 +64,7 @@ private:
     CElfilisBigFSM* m_BigElfilisFSM;
 
     // childs
+    CCapsuleCollider* m_BodyCollider;
     CGameObject* m_Weapon;
     CBoxCollider* m_Hitbox;
 
@@ -94,8 +95,10 @@ public:
     void OffWeaponTrigger();
     void Teleport(UINT _Flag, float _WorldY = 0.f) { Teleport(GetOwner(), _Flag, _WorldY); }
     void Teleport(CGameObject* _TeleportObject, UINT _Flag, float _WorldY = 0.f);
-    void ResetEmissive();
     void ReleaseDynamicMtrl();
+    void ResetEmissive();
+    void EnableCollider();
+    void DisableCollider();
 
     void SpawnDropStar(Vec3 _Pos);
     void DestroySumon();

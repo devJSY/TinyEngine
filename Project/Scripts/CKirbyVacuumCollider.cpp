@@ -117,6 +117,8 @@ void CKirbyVacuumCollider::OnTriggerEnter(CCollider* _OtherCollider)
         PLAYERCTRL->LockDirection();
         PLAYERCTRL->LockMove();
         PLAYERFSM->SetGlobalState(true);
+        PLAYERFSM->SetInvincible(true);
+        LOG(Log, "Invincible!");
 
         m_FindTarget = _OtherCollider->GetOwner();
         m_FindType = newType;
@@ -137,6 +139,7 @@ void CKirbyVacuumCollider::DrawingCollisionEnter(CGameObject* _CollisionObject)
     PLAYERCTRL->UnlockDirection();
     PLAYERCTRL->UnlockMove();
     PLAYERFSM->SetGlobalState(false);
+    PLAYERFSM->SetInvincible(false);
 
     // Change Player State
     switch (m_FindType)

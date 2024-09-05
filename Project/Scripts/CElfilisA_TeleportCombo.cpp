@@ -63,6 +63,7 @@ void CElfilisA_TeleportCombo::Exit()
     Exit_Step();
 
     ELFFSM->ReleaseDynamicMtrl();
+    ELFFSM->EnableCollider();
     GetOwner()->Animator()->SetPlay(true);
 
     if (m_BeforeObj)

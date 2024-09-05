@@ -99,7 +99,8 @@ void CSurpriseBoardScript::EnterState(SurpriseBoardState _state)
     switch (m_eState)
     {
     case SurpriseBoardState::ArmMove: {
-        true == m_bIsRight ? Animator()->Play(ANIMPREFIX("ArmMoveR"), false) : Animator()->Play(ANIMPREFIX("ArmMoveL"), false);
+        true == m_bIsRight ? Animator()->Play(ANIMPREFIX("ArmMoveR"), false, false, 2.f)
+                           : Animator()->Play(ANIMPREFIX("ArmMoveL"), false, false, 2.f);
     }
     break;
     case SurpriseBoardState::Break:

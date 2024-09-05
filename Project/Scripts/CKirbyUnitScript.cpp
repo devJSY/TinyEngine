@@ -81,7 +81,7 @@ void CKirbyUnitScript::tick()
     wstring State = PLAYERFSM->GetCurState()->GetName();
     AbilityCopyType CurAbility = PLAYERFSM->GetCurAbilityIdx();
     ObjectCopyType CurObject = PLAYERFSM->GetCurObjectIdx();
-
+    
     if (NewDamage > 0.f)
     {
         if (State == L"DODGE_START" || State == L"DODGE1" || State == L"DODGE2")

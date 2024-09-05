@@ -55,6 +55,7 @@ void CKirbySlideAttack::Enter()
 
     PLAYERFSM->SetSlideComboLevel(1);
     PLAYERFSM->LockSlideCombo();
+    PLAYERFSM->SetInvincible(true);
 
     m_PlayTime = 0.3f;
 }
@@ -65,4 +66,5 @@ void CKirbySlideAttack::Exit()
     KirbyFSM->GetCurAbility()->SlideAttackExit();
 
     PLAYERFSM->UnlockSlideCombo();
+    PLAYERFSM->SetInvincible(false);
 }

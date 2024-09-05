@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "CUIDashEffectScript.h"
 
+#include "CTackleEnemyScript.h"
+
 CUIDashEffectScript::CUIDashEffectScript()
     : CScript(UIDASHEFFECTSCRIPT)
     , m_eState(DashEffectState::Start)
@@ -49,7 +51,7 @@ void CUIDashEffectScript::SetBackGroundAlpha(const float _fValue)
 
 void CUIDashEffectScript::begin()
 {
-    ChangeState(DashEffectState::Start);
+    ChangeState(DashEffectState::Stop);
     m_fRatioSpeed = 0.3f;
     MeshRender()->GetMaterial(0)->SetScalarParam(FLOAT_2, 0.5f);
     MeshRender()->SetCastShadow(false);
@@ -57,6 +59,8 @@ void CUIDashEffectScript::begin()
 
 void CUIDashEffectScript::tick()
 {
+    CGameObject* pParent = GetOwner()->GetParent();
+
     switch (m_eState)
     {
     case DashEffectState::Start: {
@@ -106,8 +110,16 @@ void CUIDashEffectScript::Enter()
         m_fAccTime = 0.f;
     }
     break;
-    case DashEffectState::Stop:
-        break;
+    case DashEffectState::Stop: {
+        CMeshRender* pRender = MeshRender();
+        if (nullptr != pRender)
+        {
+            pRender->GetMaterial(0)->SetScalarParam(INT_1, 0);
+            pRender->GetMaterial(0)->SetScalarParam(FLOAT_0, 0.f);
+            pRender->GetMaterial(0)->SetScalarParam(VEC2_3, Vec2(0.f, 0.f));
+        }
+    }
+    break;
     case DashEffectState::End:
         break;
     default:
@@ -169,7 +181,6 @@ void CUIDashEffectScript::Progress()
 
 void CUIDashEffectScript::Stop()
 {
-    GamePlayStatic::DestroyGameObject(GetOwner());
 }
 
 UINT CUIDashEffectScript::SaveToLevelFile(FILE* _File)
