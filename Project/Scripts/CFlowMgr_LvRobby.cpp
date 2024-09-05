@@ -331,11 +331,11 @@ void CFlowMgr_LvRobby::EnterDragState()
     switch (m_eDragState)
     {
     case DragState::MovePlus: {
-        GamePlayStatic::Play2DSound(L"sound\\wav\\UiMenu\\0003.wav", 1, 0.2f);
+        GamePlayStatic::Play2DSound(L"sound\\wav\\UiMenu\\0003.wav", 1, SOUND_BGM);
     }
     break;
     case DragState::MoveMinus: {
-        GamePlayStatic::Play2DSound(L"sound\\wav\\UiMenu\\0003.wav", 1, 0.2f);
+        GamePlayStatic::Play2DSound(L"sound\\wav\\UiMenu\\0003.wav", 1, SOUND_BGM);
     }
     break;
     case DragState::Stop:
@@ -498,27 +498,27 @@ void CFlowMgr_LvRobby::BGMUpdate()
     // 튜토리얼 레벨
     if (0 == m_iCurStage)
     {
-        FadeInBGM(L"sound\\stream\\K15_Grassland1\\K15_Grassland1.marker.wav", 0.f, 0.5f, 1.f);
+        FadeInBGM(L"sound\\stream\\K15_Grassland1\\K15_Grassland1.marker.wav", 0.f, SOUND_BGM, 1.f);
     }
     // 레벨 1
     else if (1 == m_iCurStage)
     {
-        FadeInBGM(L"sound\\stream\\K15_Grassland1\\K15_Grassland1.marker.wav", 0.f, 0.5f, 1.f);
+        FadeInBGM(L"sound\\stream\\K15_Grassland1\\K15_Grassland1.marker.wav", 0.f, SOUND_BGM, 1.f);
     }
     // 레벨3
     else if (2 == m_iCurStage)
     {
-        FadeInBGM(L"sound\\stream\\K15_Park1\\K15_Park1.wav", 0.f, 0.5f, 1.f);
+        FadeInBGM(L"sound\\stream\\K15_Park1\\K15_Park1.wav", 0.f, SOUND_BGM, 1.f);
     }
     // 몰포
     else if (3 == m_iCurStage)
     {
-        FadeInBGM(L"sound\\stream\\K15_MorphoKnight1\\K15_MorphoKnight1.marker.wav", 0.f, 0.5f, 1.f);
+        FadeInBGM(L"sound\\stream\\K15_MorphoKnight1\\K15_MorphoKnight1.marker.wav", 0.f, SOUND_BGM, 1.f);
     }
     // 에피리스
     else
     {
-        FadeInBGM(L"sound\\stream\\K15_BossChimeraPerfect_Stest\\K15_BossChimeraPerfect_Stest.marker.wav", 0.f, 0.5f, 1.f);
+        FadeInBGM(L"sound\\stream\\K15_BossChimeraPerfect_Stest\\K15_BossChimeraPerfect_Stest.marker.wav", 0.f, SOUND_BGM, 1.f);
     }
 }
 

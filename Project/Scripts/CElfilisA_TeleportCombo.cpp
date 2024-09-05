@@ -39,7 +39,21 @@ void CElfilisA_TeleportCombo::Enter()
     m_ComboLevel = 0;
     m_Step = StateStep::Start;
 
-    // @CAMERA : Teleport Camera Set
+    if (BOSS != nullptr && PLAYER != nullptr)
+    {
+        Vec3 Dir = BOSS->Transform()->GetWorldPos() - PLAYER->Transform()->GetWorldPos();
+        Dir.y = 0.f;
+        Dir.Normalize();
+
+        Dir.y = -0.55f;
+        Dir.Normalize();
+
+        CAMERACTRL->SetLookDir(Dir);
+    }
+
+    CAMERACTRL->SetLookDist(400.f);
+    CAMERACTRL->Normal(false);
+
 
     Enter_Step();
 }

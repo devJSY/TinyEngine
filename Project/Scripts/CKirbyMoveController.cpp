@@ -149,11 +149,14 @@ void CKirbyMoveController::Input()
         return;
 
     Vec3 Front = pCam->Transform()->GetWorldDir(DIR_TYPE::FRONT);
-    Vec3 Right = pCam->Transform()->GetWorldDir(DIR_TYPE::RIGHT);
+    Front.y = 0.f;
+    Front.Normalize();
 
     // y축 이동은 컴포넌트에 의해서 처리
-    Front.y = 0.f;
+
+    Vec3 Right = Vec3(0.f, 1.f, 0.f).Cross(Front);
     Right.y = 0.f;
+    Right.Normalize();
 
     if (m_bInputLock)
     {

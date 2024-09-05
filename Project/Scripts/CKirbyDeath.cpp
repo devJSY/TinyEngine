@@ -92,6 +92,7 @@ void CKirbyDeath::Enter()
     CamCtrl->LockSetup(true);
 
     CamCtrl->SetOffset(Vec3(0.f, 10.f, 0.f));
+    CamCtrl->SetTargetOffset(Vec3(0.f, 0.f, 0.f));
     CamCtrl->RotationLookDirRightAxis(50.f);
 
     CamCtrl->SetLookDist(100.f);

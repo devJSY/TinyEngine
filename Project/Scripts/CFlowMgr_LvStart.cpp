@@ -63,7 +63,7 @@ void CFlowMgr_LvStart::LevelStart()
     }
 
     // BGM
-    FadeInBGM(L"sound\\stream\\K15_TitleNewWorld1\\K15_TitleNewWorld1.marker.wav", 0.f, 0.5f, 1.f);
+    FadeInBGM(L"sound\\stream\\K15_TitleNewWorld1\\K15_TitleNewWorld1.marker.wav", 0.f, SOUND_BGM, 1.f);
 }
 
 void CFlowMgr_LvStart::LevelEnd()
