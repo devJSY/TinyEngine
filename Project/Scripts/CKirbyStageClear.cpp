@@ -22,19 +22,33 @@ void CKirbyStageClear::tick()
     {
         PLAYER->Animator()->SetPlay(false);
 
+        Vec3 Dir = -PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+        Dir.y = 0.f;
+        Dir.Normalize();
+
+        Dir.y = -tanf(5.f * XM_PI / 180.f);
+        Dir.Normalize();
+
         // CameraSetting
         CCameraController* CamCtrl = CAMERACTRL;
         CamCtrl->SetMainTarget(PLAYER);
-        CamCtrl->SetLookDir(-PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT));
+        CamCtrl->SetLookDir(Dir);
         CamCtrl->SetOffset(Vec3(0.f, 50.f, 0));
         CamCtrl->SetTargetOffset(Vec3(0.f, 0.f, 0.f));
         CamCtrl->SetLookDist(300.f);
-        CamCtrl->RotationLookDirRightAxis(5.f);
+        //CamCtrl->RotationLookDirRightAxis(5.f);
         CamCtrl->Normal(true);
 
 
+        Dir.y = 0.f;
+        Dir.Normalize();
+
+        Dir.y = -tanf(15.f * XM_PI / 180.f);
+        Dir.Normalize();
+
         CamCtrl->SetOffset(Vec3(0.f, -5.f, 0));
-        CamCtrl->RotationLookDirRightAxis(10.f);
+        //CamCtrl->RotationLookDirRightAxis(10.f);
+        CamCtrl->SetLookDir(Dir);
         CamCtrl->SetLookDist(200.f);
 
         m_Step = 1;
@@ -287,6 +301,15 @@ void CKirbyStageClear::Enter()
 
     // Camera 속성을 초기값으로 돌린다.
     CAMERACTRL->LoadInitSetting(true);
+
+    CAMERACTRL->SetRotationSpeed(30.f);
+    CAMERACTRL->SetZoomMinSpeed(0.f);
+    CAMERACTRL->SetZoomMaxSpeed(500.f);
+    CAMERACTRL->SetZoomThreshold(300.f);
+    CAMERACTRL->SetMinDegreeX(10.f);
+    CAMERACTRL->SetMaxDegreeX(30.f);
+    CAMERACTRL->SetMinDegreeY(5.f);
+    CAMERACTRL->SetMaxDegreeY(10.f);
 
     CLevelFlowMgr* FlowMgrScript = ManagerObj->GetScript<CLevelFlowMgr>();
     FlowMgrScript->TurnOffBossHP();
