@@ -56,7 +56,7 @@ void CMorphoMoveG_TeleportNear::Enter_Step()
             Dist = Vec3(1.f, 0.f, 1.f).Normalize();
         }
 
-        Dist *= MRPFSM->GetNearDist() * (GetRandomfloat(20.f, 100.f) / 100.f);
+        Dist *= MRPFSM->GetNearDist() * (GetRandomfloat(50.f, 150.f) / 100.f);
         m_AfterPos = PLAYER->Transform()->GetWorldPos() + Dist;
         m_AfterPos.y = 0.f;
 

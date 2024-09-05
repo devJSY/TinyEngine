@@ -521,7 +521,7 @@ void CElfilisFSM::tick()
     //{
     //    Rigidbody()->SetVelocity(Vec3());
     //    Rigidbody()->SetAngularVelocity(Vec3());
-    //    ChangeStateGroup(ElfilisStateGroup::GroundAtkNear);
+    //    ChangeStateGroup(ElfilisStateGroup::GroundMove, L"GROUND_MOVE_TELEPORT");
     //    //ChangeStateGroup(ElfilisStateGroup::GroundToAir);
     //}
 }
