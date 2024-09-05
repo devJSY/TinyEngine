@@ -108,6 +108,36 @@ void CMonsterUnitScript::SpawnDeadSmokeEffect()
         GamePlayStatic::AddChildObject(GetOwner(), pSpawnEffect);
 }
 
+void CMonsterUnitScript::AttackKnockBack(Vec3 _fHitDir, float _fForce)
+{
+    if (!PLAYER)
+        return;
+
+    Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, false);
+
+    SetSparkle(true);
+
+    Vec3 vFollowDir = (PLAYER->Transform()->GetWorldPos() - Transform()->GetWorldPos()).Normalize();
+    vFollowDir.y = 0.f;
+
+    if (nullptr == Transform() || nullptr == Rigidbody())
+        return;
+
+    Transform()->SetDirection(vFollowDir);
+
+    Rigidbody()->SetVelocity(Vec3(0.f, 0.f, 0.f));
+
+    Rigidbody()->AddForce(_fHitDir.Normalize() * _fForce, ForceMode::Impulse);
+}
+
+void CMonsterUnitScript::LandingSmokeEffect(Vec3 _vOffset)
+{
+    CGameObject* pLandingSpawn = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\LandingSmokeSpawner.pref")->Instantiate();
+    pLandingSpawn->Transform()->SetWorldPos(Transform()->GetWorldPos() + _vOffset);
+
+    GamePlayStatic::SpawnGameObject(pLandingSpawn, pLandingSpawn->GetLayerIdx());
+}
+
 void CMonsterUnitScript::BodyAttackSound()
 {
     CTransform* pTr = Transform();

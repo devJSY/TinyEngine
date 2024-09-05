@@ -65,6 +65,8 @@ void CSirKibbleScript::begin()
     {
         ChangeState(SirKibbleState::Idle);
     }
+
+    SetRayCast(15.f);
 }
 
 void CSirKibbleScript::tick()
@@ -260,6 +262,8 @@ void CSirKibbleScript::EnterState(SirKibbleState _state)
     }
     break;
     case SirKibbleState::Land: {
+        LandingSmokeEffect(Vec3(0.f, -15.f, 0.f));
+
         Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, true);
 
         Animator()->Play(ANIMPREFIX("Landing"), false);
@@ -440,6 +444,9 @@ void CSirKibbleScript::ProjectileAttack(bool _bFlag)
 
 void CSirKibbleScript::ChangeState(SirKibbleState _state)
 {
+    if (m_eState == SirKibbleState::Death)
+        return;
+
     ExitState(m_eState);
     m_eState = _state;
     EnterState(m_eState);
@@ -572,7 +579,7 @@ void CSirKibbleScript::AirCutterThrow()
 {
     if (CHECK_ANIMFRM(GetOwner(), 13) && m_bThrow)
     {
-        ProjectileAttack(false);
+        ProjectileAttack(true);
         m_bThrow = false;
     }
 

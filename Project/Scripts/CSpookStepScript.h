@@ -1,4 +1,5 @@
 #pragma once
+#pragma once
 
 #include "CMonsterUnitScript.h"
 enum class SpookStepState
@@ -30,6 +31,7 @@ private:
     void ExitState();
     void ChangeState(SpookStepState _state);
     void CheckDamage();
+    void IsDead();
 
 private:
     void Appear();

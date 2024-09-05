@@ -167,6 +167,7 @@ void CHotHeadScript::OnTriggerExit(CCollider* _OtherCollider)
 void CHotHeadScript::InitSetting()
 {
     GetOwner()->MeshRender()->GetDynamicMaterial(0);
+    SetRayCast(15.f);
 }
 
 void CHotHeadScript::EnterState(HotHeadState _state)
@@ -241,6 +242,7 @@ void CHotHeadScript::EnterState(HotHeadState _state)
     }
     break;
     case HotHeadState::Landing: {
+        LandingSmokeEffect(Vec3(0.f, -13.f, 0.f));
         GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
             TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\HotHead\\FaceTexturePattern.00.png",
                                                         L"fbx\\Characters\\Monster\\HotHead\\FaceTexturePattern.00.png"));
@@ -434,6 +436,9 @@ void CHotHeadScript::ExitState(HotHeadState _state)
 
 void CHotHeadScript::ChangeState(HotHeadState _state)
 {
+    if (HotHeadState::Death == m_eState)
+        return;
+
     ExitState(m_eState);
     m_eState = _state;
     EnterState(m_eState);
@@ -477,10 +482,17 @@ void CHotHeadScript::ProjectileAttack()
 #pragma region IDLE
 void CHotHeadScript::Idle()
 {
-    m_fAccTime += DT;
-    if (nullptr != GetTarget() && m_fAccTime >= 2.f)
+    if (IsGround())
     {
-        ChangeState(HotHeadState::Find);
+        m_fAccTime += DT;
+        if (nullptr != GetTarget() && m_fAccTime >= 2.f)
+        {
+            ChangeState(HotHeadState::Find);
+        }
+    }
+    else
+    {
+        ChangeState(HotHeadState::Fall);
     }
 }
 #pragma endregion

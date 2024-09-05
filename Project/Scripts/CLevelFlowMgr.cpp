@@ -450,7 +450,7 @@ void CLevelFlowMgr::LevelExit()
 
     // Sound Stop
     GamePlayStatic::StopAllSound();
-    
+
     // Level Change
     GamePlayStatic::ChangeLevelAsync(ToWstring(m_NextLevelPath), LEVEL_STATE::PLAY);
 }
@@ -649,6 +649,7 @@ void CLevelFlowMgr::TurnOnStageclearUI()
     if (nullptr != m_pClearUI)
     {
         m_pClearUI->SetActive(true);
+        AbsorbUIEndOff();
         ContinueUIOn();
     }
 }

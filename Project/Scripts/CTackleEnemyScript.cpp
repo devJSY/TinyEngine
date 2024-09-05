@@ -58,6 +58,25 @@ void CTackleEnemyScript::begin()
     m_fRushSpeedLerp = 0.2f;
     m_fThreshHoldRushLerp = 0.1f;
 
+    if (nullptr == GetOwner()->GetChildObject(L"Effect_DashEffect"))
+    {
+        m_pDashEffect = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Effect_DashEffect.pref", L"prefab\\Effect_DashEffect.pref")->Instantiate();
+        m_pDashEffect->Transform()->SetAbsolute(false);
+        m_pDashEffect->Transform()->SetLocalScale(Vec3(2.2f, 2.2f, 2.2f));
+        m_pDashEffect->Transform()->SetLocalPos(Vec3(0.f, 2.f, 1.f));
+        m_pDashEffect->Transform()->SetLocalRotation(Vec3(XM_PIDIV2, 0.f, 0.f));
+        m_pDashEffect->GetScript<CUIDashEffectScript>()->SetDashTime(1.f);
+        m_pDashEffect->GetScript<CUIDashEffectScript>()->SetRatioSpeed(0.01f);
+        m_pDashEffect->GetScript<CUIDashEffectScript>()->SetTextureSpeed(4.5f);
+        m_pDashEffect->GetScript<CUIDashEffectScript>()->SetBackGroundAlpha(0.15f);
+
+        m_pDashEffect->GetScript<CUIDashEffectScript>()->ChangeState(DashEffectState::Stop);
+
+        GamePlayStatic::AddChildObject(GetOwner(), m_pDashEffect);
+    }
+
+    SetRayCast(50.f);
+
     SetResistTime(2.f);
 }
 
@@ -187,6 +206,7 @@ void CTackleEnemyScript::EnterState(TackleEnemyState _state)
     }
     break;
     case TackleEnemyState::Fall: {
+        DashEffectOff();
         GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
             TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\TackleEnemy\\TackleEnemyEye.02.png",
                                                         L"fbx\\Characters\\Monster\\TackleEnemy\\TackleEnemyEye.02.png"));
@@ -196,6 +216,7 @@ void CTackleEnemyScript::EnterState(TackleEnemyState _state)
     break;
     case TackleEnemyState::Landing: {
         DashEffectOff();
+        LandingSmokeEffect(Vec3(0.f, -45.f, 0.f));
         GetOwner()->MeshRender()->GetMaterial(0)->SetTexParam(
             TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"fbx\\Characters\\Monster\\TackleEnemy\\TackleEnemyEye.00.png",
                                                         L"fbx\\Characters\\Monster\\TackleEnemy\\TackleEnemyEye.00.png"));
@@ -257,8 +278,8 @@ void CTackleEnemyScript::EnterState(TackleEnemyState _state)
     }
     break;
     case TackleEnemyState::Death:
-        SpawnDeadSmokeEffect();
         DashEffectOff();
+        SpawnDeadSmokeEffect();
         break;
     default:
         break;
@@ -365,6 +386,9 @@ void CTackleEnemyScript::ExitState(TackleEnemyState _state)
 
 void CTackleEnemyScript::ChangeState(TackleEnemyState _state)
 {
+    if (TackleEnemyState::Death == m_eState)
+        return;
+
     ExitState(m_eState);
     m_eState = _state;
     EnterState(m_eState);
@@ -409,27 +433,17 @@ void CTackleEnemyScript::ApplyDir(Vec3 _vFront, bool _flag)
 
 void CTackleEnemyScript::DashEffectOn()
 {
-    m_pDashEffect = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Effect_DashEffect.pref", L"prefab\\Effect_DashEffect.pref")->Instantiate();
-    m_pDashEffect->Transform()->SetAbsolute(false);
-    m_pDashEffect->Transform()->SetLocalScale(Vec3(2.2f, 2.2f, 2.2f));
-    m_pDashEffect->Transform()->SetLocalPos(Vec3(0.f, 2.f, 1.f));
-    m_pDashEffect->Transform()->SetLocalRotation(Vec3(XM_PIDIV2, 0.f, 0.f));
-    m_pDashEffect->GetScript<CUIDashEffectScript>()->SetDashTime(1.f);
-    m_pDashEffect->GetScript<CUIDashEffectScript>()->SetRatioSpeed(0.01f);
-    m_pDashEffect->GetScript<CUIDashEffectScript>()->SetTextureSpeed(4.5f);
-    m_pDashEffect->GetScript<CUIDashEffectScript>()->SetBackGroundAlpha(0.15f);
-
-    GamePlayStatic::AddChildObject(GetOwner(), m_pDashEffect);
+    if (nullptr != m_pDashEffect)
+    {
+        m_pDashEffect->GetScript<CUIDashEffectScript>()->ChangeState(DashEffectState::Start);
+    }
 }
 
 void CTackleEnemyScript::DashEffectOff()
 {
     if (nullptr != m_pDashEffect)
     {
-        if (m_pDashEffect->GetScript<CUIDashEffectScript>())
-        {
-            m_pDashEffect->GetScript<CUIDashEffectScript>()->ChangeState(DashEffectState::Stop);
-        }
+        m_pDashEffect->GetScript<CUIDashEffectScript>()->ChangeState(DashEffectState::Stop);
     }
 }
 
@@ -456,10 +470,17 @@ Vec3 CTackleEnemyScript::TrackDir(Vec3 _vPos)
 #pragma region IDLE
 void CTackleEnemyScript::Idle()
 {
-    if (nullptr != GetTarget())
+    if (IsGround())
     {
-        Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, false);
-        ChangeState(TackleEnemyState::Find);
+        if (nullptr != GetTarget())
+        {
+            Rigidbody()->SetFreezeRotation(AXIS_TYPE::Y, false);
+            ChangeState(TackleEnemyState::Find);
+        }
+    }
+    else
+    {
+        ChangeState(TackleEnemyState::Fall);
     }
 }
 #pragma endregion
