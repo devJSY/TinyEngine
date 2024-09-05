@@ -86,6 +86,7 @@ private:
 public:
     virtual void begin() override;
     virtual void tick() override;
+    Vec3 ImmediateRotate();
 
 private:
     void Input();
@@ -102,9 +103,9 @@ public:
     void UnlockJump() { m_bJumpLock = false; }
     void LockDirection() { m_bDirLock = true; }
     void UnlockDirection() { m_bDirLock = false; }
+
     void SetForwardMode(bool _Mode) { m_bForwardMode = _Mode; }
     void SetLimitFallSpeed(bool _b) { m_bLimitFallSpeed = _b; }
-
     void Jump() { m_bJump = true; }
     void VelocityCut(float _f) { _f == 0.f ? m_MoveVelocity.y = 0.f : m_MoveVelocity.y /= _f; }
     void SetFrictionMode(bool _Friction) { m_bActiveFriction = _Friction; }
@@ -129,8 +130,6 @@ public:
     void SetFowardMinSpeed(float _Speed) { m_FowardMinSpeed = _Speed; }
     void SetFowardDuration(float _Duration) { m_FowardDuration = _Duration; }
     void ClearFowardAcc() { m_FowardAcc = 0.f; }
-
-
 
     Vec3 GetInput() const { return m_Input; }
     Vec3 GetInputWorld() const { return m_InputWorld; }

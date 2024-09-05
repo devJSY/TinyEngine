@@ -317,6 +317,7 @@ void CKirbyFSM::begin()
     if (PointLight)
     {
         m_PointLight = PointLight->GetScript<CKirbyLightScript>();
+        m_PointLight->begin();
         m_PointLight->GetOwner()->SetActive(false);
     }
 

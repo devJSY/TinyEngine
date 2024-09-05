@@ -93,6 +93,7 @@ void CElfilisG_NormalAtkTeleportFinishL::Exit_Step()
         break;
     case StateStep::StartEnd: {
         ELFFSM->ReleaseDynamicMtrl();
+        ELFFSM->EnableCollider();
 
         if (m_BeforeObj)
         {
@@ -235,7 +236,7 @@ void CElfilisG_NormalAtkTeleportFinishL::SpawnTeleport()
     Vec3 Dist = GetOwner()->Transform()->GetWorldPos() - PLAYER->Transform()->GetWorldPos();
     Dist.y = 0.f;
     Dist.Normalize();
-    Dist *= ELFFSM->GetNearDist() * (GetRandomfloat(30.f, 100.f) / 100.f);
+    Dist *= ELFFSM->GetNearDist() * (GetRandomfloat(50.f, 150.f) / 100.f);
     m_AfterPos = PLAYER->Transform()->GetWorldPos() + Dist;
     m_AfterPos.y = 0.f;
 

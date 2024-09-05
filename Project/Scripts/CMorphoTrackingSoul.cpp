@@ -16,6 +16,7 @@ CMorphoTrackingSoul::CMorphoTrackingSoul()
 
 CMorphoTrackingSoul::~CMorphoTrackingSoul()
 {
+    StopSound();
 }
 
 void CMorphoTrackingSoul::begin()
@@ -50,6 +51,14 @@ void CMorphoTrackingSoul::tick()
     }
     break;
     }
+}
+
+void CMorphoTrackingSoul::StopSound()
+{
+    if (m_Sound.empty())
+        return;
+
+    GamePlayStatic::StopSound(m_Sound);
 }
 
 void CMorphoTrackingSoul::OnTriggerEnter(CCollider* _OtherCollider)
@@ -153,9 +162,7 @@ void CMorphoTrackingSoul::Disappear()
     if (m_AccTime > DisappearTime)
     {
         GamePlayStatic::DestroyGameObject(GetOwner());
-
-        // sound
-        GamePlayStatic::StopSound(m_Sound);
+        StopSound();
     }
 }
 
