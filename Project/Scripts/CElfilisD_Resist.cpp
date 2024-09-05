@@ -93,6 +93,7 @@ void CElfilisD_Resist::Enter_Step()
     }
     break;
     case StateStep::Start: {
+        ELFFSM->GetUnit()->AddResistHP();
         // GetOwner()->Animator()->Play(ANIMPREFIX("ResistStart"), false, false, 1.5f);
         CBossMgr::GetBossFlowMgr()->ChangeFlow(BossLevelFlow::Fight);
         m_AccTime = 0.f;

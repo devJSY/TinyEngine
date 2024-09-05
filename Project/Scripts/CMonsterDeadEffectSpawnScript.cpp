@@ -41,7 +41,7 @@ void CMonsterDeadEffectSpawnScript::tick()
 void CMonsterDeadEffectSpawnScript::Enter()
 {
     Vec3 vPos = Transform()->GetWorldPos();
-    GamePlayStatic::Play3DSound(L"sound\\wav\\CharaBasic\\0015.wav", vPos, 1, 0.4f);
+    GamePlayStatic::Play2DSound(L"sound\\wav\\CharaBasic\\0015.wav", 1, 0.4f);
 
     // Body Size ºÐ·ù
     wstring strSize = L"";
