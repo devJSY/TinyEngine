@@ -105,6 +105,7 @@ PS_OUT_FORWARD main(PS_IN input)
     
     PS_OUT_FORWARD output;
     output.vColor = float4(ambientLighting + directLighting + InnerLighting + emission, 1.0);
+    output.vColor.rgb = output.vColor.rgb * (1.f - EyeAlpha) + albedo.rgb * EyeAlpha;
     output.vColor = clamp(output.vColor, 0.0, 1000.0);
 
     output.vMotionVector.xy = input.vMotionVector.xy; // Vector
