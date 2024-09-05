@@ -739,13 +739,16 @@ void GamePlayStatic::Physics_Event(CGameObject* _pObj, Physics_EVENT_TYPE _Type)
 
 void GamePlayStatic::Play2DSound(const wstring& _SoundPath, int _Loop, float _Volume, bool _Overlap, bool _Reset)
 {
+    if (CSoundMgr::GetInst()->IsSoundLock())
+        return;
+
     Ptr<CSound> pSound = CAssetMgr::GetInst()->Load<CSound>(_SoundPath, _SoundPath);
 
     if (nullptr != pSound)
     {
         if (_Reset)
         {
-            pSound->SetPosition(0);
+            pSound->Stop();
         }
 
         if (pSound->IsPaused())
@@ -762,13 +765,16 @@ void GamePlayStatic::Play2DSound(const wstring& _SoundPath, int _Loop, float _Vo
 void GamePlayStatic::Play3DSound(const wstring& _SoundPath, Vec3 _WorldPos, int _Loop, float _Volume, bool _Overlap, bool _Reset, float _Mindistance,
                                  float _Maxdistance)
 {
+    if (CSoundMgr::GetInst()->IsSoundLock())
+        return;
+
     Ptr<CSound> pSound = CAssetMgr::GetInst()->Load<CSound>(_SoundPath, _SoundPath);
 
     if (nullptr != pSound)
     {
         if (_Reset)
         {
-            pSound->SetPosition(0);
+            pSound->Stop();
         }
 
         if (pSound->IsPaused())
@@ -784,6 +790,9 @@ void GamePlayStatic::Play3DSound(const wstring& _SoundPath, Vec3 _WorldPos, int 
 
 void GamePlayStatic::PlayBGM(const wstring& _SoundPath, float _Volume)
 {
+    if (CSoundMgr::GetInst()->IsSoundLock())
+        return;
+
     static Ptr<CSound> CurBGM = nullptr;
 
     Ptr<CSound> pSound = CAssetMgr::GetInst()->Load<CSound>(_SoundPath, _SoundPath);

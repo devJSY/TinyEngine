@@ -339,7 +339,6 @@ bool CKirbyCutterBullet::StepUp()
         m_CurStep = BuningStep::STEP_1;
 
         GetOwner()->Transform()->SetLocalScale(Vec3(25.f, 25.f, 25.f));
-
     }
     break;
     case BuningStep::STEP_1: {
@@ -369,7 +368,8 @@ void CKirbyCutterBullet::OnCollisionEnter(CCollider* _OtherCollider)
     // WorldStatic
     if (LayerIdx == LAYER_STATIC)
     {
-        GamePlayStatic::Play3DSound(L"sound\\wav\\HeroCutterMetal\\Cutter_Hit.wav", Transform()->GetWorldPos(), 1, KIRBY_EFFECTSOUND, true, true);
+        GamePlayStatic::Play3DSound(L"sound\\wav\\HeroCutterMetal\\Cutter_Hit.wav", Transform()->GetWorldPos(), 1, 2.f * KIRBY_EFFECTSOUND, true,
+                                    true);
 
         Vec3 RayDir = m_MoveDir;
         RayDir.y = 0.f;
@@ -403,7 +403,8 @@ void CKirbyCutterBullet::OnTriggerEnter(CCollider* _OtherCollider)
         // 커비한테 돌아가는 상태라면
         if (m_IsBack)
         {
-            GamePlayStatic::Play3DSound(L"sound\\wav\\HeroCutterMetal\\ReturnCutter.wav", Transform()->GetWorldPos(), 1, KIRBY_EFFECTSOUND, true, true);
+            GamePlayStatic::Play3DSound(L"sound\\wav\\HeroCutterMetal\\ReturnCutter.wav", Transform()->GetWorldPos(), 1, KIRBY_EFFECTSOUND, true,
+                                        true);
             GamePlayStatic::DestroyGameObject(GetOwner());
 
             if (PLAYERFSM->GetCurAbilityIdx() == AbilityCopyType::CUTTER && PLAYERFSM->GetCurObjectIdx() == ObjectCopyType::NONE)
@@ -439,8 +440,8 @@ void CKirbyCutterBullet::OnTriggerEnter(CCollider* _OtherCollider)
 
             Monster->GetDamage(HitInfo);
 
-            GamePlayStatic::Play3DSound(L"sound\\wav\\HeroCutterMetal\\Cutter_Hit.wav", Transform()->GetWorldPos(), 1, KIRBY_EFFECTSOUND, true, true);
-
+            GamePlayStatic::Play3DSound(L"sound\\wav\\HeroCutterMetal\\Cutter_Hit.wav", Transform()->GetWorldPos(), 1, 2.f * KIRBY_EFFECTSOUND, true,
+                                        true);
         }
     }
 }

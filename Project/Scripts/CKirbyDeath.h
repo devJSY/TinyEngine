@@ -10,6 +10,7 @@ private:
     float m_DeathDuraion;
 
     bool m_bFadeEffect;
+    bool m_bSoundPlay;
 
 public:
     virtual void tick();

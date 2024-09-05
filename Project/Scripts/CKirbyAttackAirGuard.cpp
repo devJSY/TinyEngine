@@ -70,7 +70,7 @@ void CKirbyAttackAirGuard::Enter()
 
     // sound
     wstring Sound = L"sound\\wav\\HeroSwordMorpho\\ShockWave.wav";
-    GamePlayStatic::Play2DSound(Sound, 1, SOUND_KIRBY * 1.2f);
+    GamePlayStatic::Play2DSound(Sound, 1, SOUND_SWORDKIRBY * 1.2f);
 }
 
 void CKirbyAttackAirGuard::Exit()

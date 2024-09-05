@@ -67,10 +67,9 @@ namespace GamePlayStatic
     void Physics2D_Event(CGameObject* _pObj, Physics2D_EVENT_TYPE _Type);
     void Physics_Event(CGameObject* _pObj, Physics_EVENT_TYPE _Type);
 
-    void Play2DSound(const wstring& _SoundPath, int _Loop, float _Volume, bool _Overlap = true, bool _Reset = true);
-    void Play3DSound(const wstring& _SoundPath, Vec3 _WorldPos, int _Loop, float _Volume, bool _Overlap = true, bool _Reset = true,
-                     float _Mindistance = 50.f,
-                     float _Maxdistance = 500.f);
+    void Play2DSound(const wstring& _SoundPath, int _Loop, float _Volume, bool _Overlap = false, bool _Reset = true);
+    void Play3DSound(const wstring& _SoundPath, Vec3 _WorldPos, int _Loop, float _Volume, bool _Overlap = false, bool _Reset = true,
+                     float _Mindistance = 100.f, float _Maxdistance = 1000.f);
 
     void PlayBGM(const wstring& _SoundPath, float _Volume);
     void PauseSound(const wstring& _SoundPath);

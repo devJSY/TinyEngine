@@ -31,7 +31,7 @@ void CKirbySwordTornadoScript::begin()
     m_Sound = L"sound\\wav\\HeroSwordMorpho\\Tornado";
     int RandIdx = GetRandomInt(0, 1);
     m_Sound += to_wstring(RandIdx) + L".wav";
-    GamePlayStatic::Play2DSound(m_Sound, 1, SOUND_KIRBY * 0.6f);
+    GamePlayStatic::Play2DSound(m_Sound, 1, SOUND_SWORDKIRBY * 0.6f);
 }
 
 void CKirbySwordTornadoScript::tick()
@@ -73,7 +73,7 @@ void CKirbySwordTornadoScript::tick()
         GamePlayStatic::DestroyGameObject(GetOwner());
         
         // Sound
-        CSoundMgr::GetInst()->FadeSound(m_Sound, SOUND_KIRBY * 0.6f, 0.f, 0.5f, false);
+        CSoundMgr::GetInst()->FadeSound(m_Sound, SOUND_SWORDKIRBY * 0.6f, 0.f, 0.5f, false);
     }
 }
 
