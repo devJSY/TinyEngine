@@ -396,7 +396,8 @@ void CLevelFlowMgr::LevelStart()
 
     if (nullptr != m_pDropUI)
         m_pDropUI->SetActive(true);
-    // @TODO BGM 재생
+
+    CSoundMgr::GetInst()->SetSoundLock(false);
 }
 
 void CLevelFlowMgr::LevelEnd()
@@ -438,8 +439,6 @@ void CLevelFlowMgr::LevelEnd()
         {
             GamePlayStatic::DeleteAsset(ASSET_TYPE::PREFAB, CurKirbyPref.Get());
         }
-
-        // CAssetMgr::GetInst()->ReplacePrefab(MainPlayerPref, L"prefab\\Main Player.pref");
     }
 
     m_bIsChangedLevel = true;
@@ -447,8 +446,11 @@ void CLevelFlowMgr::LevelEnd()
     m_fFadeInWaitTime = 1.f;
 
     // FadeIn 초기화
-
     FadeOutBGM(1.f);
+
+    CSoundMgr::GetInst()->SetSoundLock(false);
+    GamePlayStatic::Play2DSound(L"sound\\wav\\UiResident\\0004.wav", 1, SOUND_BGM);
+    CSoundMgr::GetInst()->SetSoundLock(true);
 }
 
 void CLevelFlowMgr::LevelExit()
@@ -814,11 +816,6 @@ void CLevelFlowMgr::FadeOutBGM(float _Duration)
     m_EndBGMVolume = 0.f;
     m_BGMAcc = 0.f;
     m_BGMDuration = _Duration;
-}
-
-void CLevelFlowMgr::FadeOutSound()
-{
-    GamePlayStatic::Play2DSound(L"sound\\wav\\UiResident\\0004.wav", 1, 0.5f);
 }
 
 void CLevelFlowMgr::SetToneMappingParam(bool _bBloomEnable, bool _bBlendMode, float _BloomStrength, float _Threshold, float _FilterRadius,

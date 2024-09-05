@@ -126,7 +126,7 @@ void CKirbyAbility_Sword::AttackEnter()
 
     // sound
     wstring Sound = L"sound\\wav\\HeroSwordBasic\\Swing0.wav";
-    GamePlayStatic::Play2DSound(Sound, 1, SOUND_KIRBY, true);
+    GamePlayStatic::Play2DSound(Sound, 1, SOUND_SWORDKIRBY, true);
 }
 
 void CKirbyAbility_Sword::AttackExit()
@@ -170,7 +170,7 @@ void CKirbyAbility_Sword::AttackCombo1Enter()
 
     // sound
     wstring Sound = L"sound\\wav\\HeroSwordBasic\\Swing0.wav";
-    GamePlayStatic::Play2DSound(Sound, 1, SOUND_KIRBY, true);
+    GamePlayStatic::Play2DSound(Sound, 1, SOUND_SWORDKIRBY, true);
 }
 
 void CKirbyAbility_Sword::AttackCombo1Exit()
@@ -197,7 +197,7 @@ void CKirbyAbility_Sword::AttackCombo2()
 
         // sound
         wstring Sound = L"sound\\wav\\HeroSwordBasic\\Swing1.wav";
-        GamePlayStatic::Play2DSound(Sound, 1, SOUND_KIRBY, true);
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_SWORDKIRBY, true);
     }
 
     if (CHECK_ANIMFRM(PLAYER, 17) && m_bFrmEnter)
@@ -261,7 +261,7 @@ void CKirbyAbility_Sword::AttackCharge1Enter()
 
     // sound
     wstring Sound = L"sound\\wav\\HeroSwordBasic\\Spin_Short.wav";
-    GamePlayStatic::Play2DSound(Sound, 1, SOUND_KIRBY, true);
+    GamePlayStatic::Play2DSound(Sound, 1, SOUND_SWORDKIRBY, true);
 }
 
 void CKirbyAbility_Sword::AttackCharge1Exit()
@@ -291,8 +291,8 @@ void CKirbyAbility_Sword::AttackCharge1StartEnter()
     // sound
     wstring Sound = L"sound\\wav\\HeroSwordMorpho\\ChargeFinishLv1.wav";
     wstring Charge = L"sound\\wav\\HeroSwordCharge\\0002_Charge.wav";
-    GamePlayStatic::Play2DSound(Sound, 1, SOUND_KIRBY);
-    GamePlayStatic::Play2DSound(Charge, 0, SOUND_KIRBY);
+    GamePlayStatic::Play2DSound(Sound, 1, SOUND_SWORDKIRBY);
+    GamePlayStatic::Play2DSound(Charge, 0, SOUND_SWORDKIRBY);
 }
 
 void CKirbyAbility_Sword::AttackCharge1StartExit()
@@ -357,7 +357,7 @@ void CKirbyAbility_Sword::AttackCharge2Enter()
 
     // sound
     wstring Charge = L"sound\\wav\\HeroSwordCharge\\0004_Charge.wav";
-    GamePlayStatic::Play2DSound(Charge, 0, SOUND_KIRBY, true, false);
+    GamePlayStatic::Play2DSound(Charge, 0, SOUND_SWORDKIRBY, true, false);
 }
 
 void CKirbyAbility_Sword::AttackCharge2Exit()
@@ -389,8 +389,8 @@ void CKirbyAbility_Sword::AttackCharge2StartEnter()
     // sound
     wstring Sound = L"sound\\wav\\HeroSwordMorpho\\ChargeFinishLv2.wav";
     wstring Charge = L"sound\\wav\\HeroSwordCharge\\0004_Charge.wav";
-    GamePlayStatic::Play2DSound(Sound, 1, SOUND_KIRBY);
-    GamePlayStatic::Play2DSound(Charge, 0, SOUND_KIRBY);
+    GamePlayStatic::Play2DSound(Sound, 1, SOUND_SWORDKIRBY);
+    GamePlayStatic::Play2DSound(Charge, 0, SOUND_SWORDKIRBY);
 }
 
 void CKirbyAbility_Sword::AttackCharge2StartExit()
@@ -450,7 +450,7 @@ void CKirbyAbility_Sword::AttackCharge3Enter()
 
     // sound
     wstring Charge = L"sound\\wav\\HeroSwordCharge\\Charge_Repeat.wav";
-    GamePlayStatic::Play2DSound(Charge, 0, SOUND_KIRBY * 0.6f, true, false);
+    GamePlayStatic::Play2DSound(Charge, 0, SOUND_SWORDKIRBY * 0.6f, true, false);
 }
 
 void CKirbyAbility_Sword::AttackCharge3Exit()
@@ -495,8 +495,8 @@ void CKirbyAbility_Sword::AttackCharge3StartEnter()
     // sound
     wstring Sound = L"sound\\wav\\HeroSwordMorpho\\ChargeFinishLv3.wav";
     wstring Charge = L"sound\\wav\\HeroSwordCharge\\Charge_Repeat.wav";
-    GamePlayStatic::Play2DSound(Sound, 1, SOUND_KIRBY);
-    GamePlayStatic::Play2DSound(Charge, 0, SOUND_KIRBY * 0.7f);
+    GamePlayStatic::Play2DSound(Sound, 1, SOUND_SWORDKIRBY);
+    GamePlayStatic::Play2DSound(Charge, 0, SOUND_SWORDKIRBY * 0.7f);
 }
 
 void CKirbyAbility_Sword::AttackCharge3StartExit()
@@ -597,7 +597,7 @@ void CKirbyAbility_Sword::AttackCharge3End()
 
         // sound
         wstring Sound = L"sound\\wav\\HeroSwordMorpho\\0012_BigSwordCollision.wav";
-        GamePlayStatic::Play2DSound(Sound, 1, SOUND_KIRBY * 1.4f);
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_SWORDKIRBY * 1.4f);
 
         CAMERACTRL->Shake(0.3f, 50.f, 50.f);
     }
@@ -608,7 +608,7 @@ void CKirbyAbility_Sword::AttackCharge3End()
         m_SoundIdx++;
 
         wstring Sound = L"sound\\wav\\HeroSwordMorpho\\0006_BigSwordWind.wav";
-        GamePlayStatic::Play2DSound(Sound, 1, SOUND_KIRBY * 0.7f);
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_SWORDKIRBY * 0.7f);
 
         PLAYER->Animator()->SetPlaySpeed(1.f);
     }
@@ -633,7 +633,7 @@ void CKirbyAbility_Sword::AttackCharge3EndEnter()
     // sound
     m_SoundIdx = 0;
     wstring Sound = L"sound\\wav\\HeroSwordMeta\\0002_SwordTwinkle.wav";
-    GamePlayStatic::Play2DSound(Sound, 1, SOUND_KIRBY);
+    GamePlayStatic::Play2DSound(Sound, 1, SOUND_SWORDKIRBY);
 }
 
 void CKirbyAbility_Sword::AttackCharge3EndExit()
@@ -731,7 +731,7 @@ void CKirbyAbility_Sword::JumpAttackEnter()
     wstring Sound = L"sound\\wav\\HeroSwordBasic\\JumpSpin";
     int RandIdx = GetRandomInt(0, 1);
     Sound += to_wstring(RandIdx) + L".wav";
-    GamePlayStatic::Play2DSound(Sound, 1, SOUND_KIRBY * 0.8f);
+    GamePlayStatic::Play2DSound(Sound, 1, SOUND_SWORDKIRBY * 0.8f);
 }
 
 void CKirbyAbility_Sword::JumpAttackExit()
@@ -799,7 +799,7 @@ void CKirbyAbility_Sword::LandingEnter()
 
         // sound
         wstring Sound = L"sound\\wav\\HeroSwordMorpho\\SlideCombo_Landing.wav";
-        GamePlayStatic::Play2DSound(Sound, 1, SOUND_KIRBY * 0.8f);
+        GamePlayStatic::Play2DSound(Sound, 1, SOUND_SWORDKIRBY * 0.8f);
     }
 
     PLAYERCTRL->LockJump();
@@ -847,7 +847,7 @@ void CKirbyAbility_Sword::GuardRunEnter()
 
     // sound
     wstring Sound = L"sound\\wav\\HeroSwordMorpho\\GuardRun.wav";
-    GamePlayStatic::Play2DSound(Sound, 1, SOUND_KIRBY);
+    GamePlayStatic::Play2DSound(Sound, 1, SOUND_SWORDKIRBY);
 }
 
 void CKirbyAbility_Sword::GuardRunExit()
@@ -867,7 +867,7 @@ void CKirbyAbility_Sword::GuardRunExit()
 
     // sound
     wstring Sound = L"sound\\wav\\HeroSwordMorpho\\0006_BigSwordWind.wav";
-    GamePlayStatic::Play2DSound(Sound, 1, SOUND_KIRBY);
+    GamePlayStatic::Play2DSound(Sound, 1, SOUND_SWORDKIRBY);
 }
 
 // ===============
@@ -966,7 +966,7 @@ void CKirbyAbility_Sword::SlideAttackEnter()
 
     // sound
     wstring Sound = L"sound\\wav\\HeroSwordBasic\\SlideCombo_UpSlash.wav";
-    GamePlayStatic::Play2DSound(Sound, 1, SOUND_KIRBY);
+    GamePlayStatic::Play2DSound(Sound, 1, SOUND_SWORDKIRBY);
 }
 
 void CKirbyAbility_Sword::SlideAttackExit()
@@ -1068,7 +1068,7 @@ void CKirbyAbility_Sword::SpawnSwordSlash(Vec3 _SlashScale, bool _bVertical)
 
     // sound
     wstring Sound = L"sound\\wav\\HeroSwordMorpho\\SwordSlash.wav";
-    GamePlayStatic::Play2DSound(Sound, 1, SOUND_KIRBY * 0.7f);
+    GamePlayStatic::Play2DSound(Sound, 1, SOUND_SWORDKIRBY * 0.7f);
 }
 
 void CKirbyAbility_Sword::SpawnButterflyParticle()

@@ -23,10 +23,15 @@ class CSoundMgr : public CSingleton<CSoundMgr>
 
 private:
     std::list<tSoundEvent> m_ListSoundEvent;
+    bool m_bSoundLock;
 
 public:
     void tick();
     void FadeSound(const wstring& _SoundPath, float _StartVolume, float _EndVolume, float _Duration, bool _bLoopAfterDuration, bool _bOverlap = true,
-                   bool _b3DSound = false, Vec3 _WorldPos = Vec3(), float _Mindistance = 50.f, float _Maxdistance = 500.f);
+                   bool _b3DSound = false, Vec3 _WorldPos = Vec3(), float _Mindistance = 100.f, float _Maxdistance = 1000.f);
     void ClearSoundEvent();
+
+public:
+    bool IsSoundLock() const { return m_bSoundLock; }
+    void SetSoundLock(bool _bLock) { m_bSoundLock = _bLock; }
 };

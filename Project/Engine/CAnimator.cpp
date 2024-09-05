@@ -388,7 +388,7 @@ void CAnimator::Play(const wstring& _strClipName, bool _bRepeat, bool _bReverse,
 
 void CAnimator::Play(int _ClipIndex, bool _bRepeat, bool _bReverse, float _PlaySpeed, double _ChangeDuration)
 {
-    if (-1 == _ClipIndex)
+    if (-1 == _ClipIndex || nullptr == m_SkeletalMesh || m_vecClipUpdateTime.empty())
         return;
 
     // Change Duration이 0이면 애니메이션 즉시 전환

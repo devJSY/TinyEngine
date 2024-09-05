@@ -51,7 +51,6 @@ void CFlowMgr_Lv1::LevelEnd()
     }
     else
     {
-        FadeOutSound();
         SetFadeEffectColor(Vec3(115.f, 156.f, 28.f));
     }
 }

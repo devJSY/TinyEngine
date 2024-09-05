@@ -184,7 +184,7 @@ void CBladeKnightScript::EnterState()
     switch (m_State)
     {
     case BLADEKNIGHT_STATE::Attack: {
-        GamePlayStatic::Play2DSound(L"sound\\wav\\CharaBladeKnight\\0000.wav", 1, 0.4f);
+        GamePlayStatic::Play2DSound(L"sound\\wav\\CharaBladeKnight\\0000.wav", 1, MONSTER_EFFECTSOUND);
         Rigidbody()->AddForce(Transform()->GetWorldDir(DIR_TYPE::FRONT) * m_StepPower, ForceMode::Impulse);
         Animator()->Play(ANIMPREFIX("Attack"), false, false, 1.5f);
         SetSwordEnable(true);
@@ -226,7 +226,7 @@ void CBladeKnightScript::EnterState()
     }
     break;
     case BLADEKNIGHT_STATE::DoubleAttack: {
-        GamePlayStatic::Play2DSound(L"sound\\wav\\CharaBladeKnight\\0000.wav", 1, 0.4f);
+        GamePlayStatic::Play2DSound(L"sound\\wav\\CharaBladeKnight\\0000.wav", 1, MONSTER_EFFECTSOUND);
         Rigidbody()->AddForce(Transform()->GetWorldDir(DIR_TYPE::FRONT) * m_StepPower, ForceMode::Impulse);
         Animator()->Play(ANIMPREFIX("DoubleAttack"), false, false, 1.5f);
         SetSwordEnable(true);
@@ -318,7 +318,7 @@ void CBladeKnightScript::EnterState()
     // }
     // break;
     case BLADEKNIGHT_STATE::TornadoAttack: {
-        GamePlayStatic::Play2DSound(L"sound\\wav\\CharaBladeKnight\\0005.wav", 1, 0.4f);
+        GamePlayStatic::Play2DSound(L"sound\\wav\\CharaBladeKnight\\0005.wav", 1, MONSTER_EFFECTSOUND);
         Animator()->Play(ANIMPREFIX("TornadoAttack"), false, false, 1.5f);
         SetSwordEnable(true);
     }

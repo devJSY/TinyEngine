@@ -46,7 +46,7 @@ void CKirbyAttackCharge2Slash::Enter()
 
     // sound
     wstring Sound = L"sound\\wav\\HeroSwordBasic\\Spin_Long.wav";
-    GamePlayStatic::Play2DSound(Sound, 1, SOUND_KIRBY);
+    GamePlayStatic::Play2DSound(Sound, 1, SOUND_SWORDKIRBY);
 }
 
 void CKirbyAttackCharge2Slash::Exit()

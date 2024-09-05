@@ -54,7 +54,7 @@ void CKirbyObject_Cone::Attack()
 
 void CKirbyObject_Cone::AttackEnter()
 {
-    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroDeformCone\\0006.wav", 1, KIRBY_EFFECTSOUND);
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroDeformCone\\0006.wav", 1, KIRBY_EFFECTSOUND * 2.f);
 
     PLAYER->Animator()->Play(ANIMPREFIX("TurnEnd"), false, false, 2.f);
 
@@ -138,7 +138,7 @@ void CKirbyObject_Cone::AttackCombo1Enter()
         CGameObject* pCrater = m_Crater->Instantiate();
         CMomentaryObjScript* pBulletScript = pCrater->GetScript<CMomentaryObjScript>();
         Vec3 InitPos = PLAYER->CharacterController()->GetFootPos();
-        
+
         pCrater->Transform()->SetLocalPos(InitPos);
         pBulletScript->SetInitVelocity(Vec3());
         pBulletScript->SetPlayTime(10.f);

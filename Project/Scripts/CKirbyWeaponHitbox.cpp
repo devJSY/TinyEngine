@@ -22,7 +22,7 @@ void CKirbyWeaponHitbox::OnTriggerEnter(CCollider* _OtherCollider)
     // monster : 데미지 가함
     if (LayerIdx == LAYER_MONSTER)
     {
-        GamePlayStatic::Play2DSound(L"sound\\wav\\HeroCutterMetal\\0004.wav", 1, KIRBY_EFFECTSOUND);
+        GamePlayStatic::Play2DSound(L"sound\\wav\\HeroCutterMetal\\0004.wav", 1, KIRBY_EFFECTSOUND, false);
 
         CUnitScript* pMonster = _OtherCollider->GetOwner()->GetScript<CUnitScript>();
         if (!pMonster)

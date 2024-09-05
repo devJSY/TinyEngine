@@ -11,7 +11,6 @@ CKirbyAbility_Cutter::CKirbyAbility_Cutter()
     m_CutterBulletPrefab = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\MetalCutter.pref", L"prefab\\MetalCutter.pref");
     m_Hat = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\MetalHat.pref", L"prefab\\MetalHat.pref");
     m_Weapon = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\KirbyMetalCutterWeapon.pref", L"prefab\\KirbyMetalCutterWeapon.pref");
-
 }
 
 CKirbyAbility_Cutter::CKirbyAbility_Cutter(const CKirbyAbility_Cutter& _Origin)
@@ -37,7 +36,7 @@ void CKirbyAbility_Cutter::Attack()
 
 void CKirbyAbility_Cutter::AttackEnter()
 {
-    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroCutterMetal\\AttackCutter.wav", 1, KIRBY_EFFECTSOUND);
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroCutterMetal\\AttackCutter.wav", 1, KIRBY_EFFECTSOUND, false);
 
     // 애니메이션 재생
     PLAYER->Animator()->Play(ANIMPREFIX("MetalCutterThrow"), false, false, 1.5f);
@@ -68,7 +67,6 @@ void CKirbyAbility_Cutter::AttackEnter()
     {
         CurInputWorld = PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT);
     }
-
 
     // Transform
     InstObj->Transform()->SetWorldPos(KirbyPos + Offset);
@@ -146,7 +144,6 @@ void CKirbyAbility_Cutter::AttackCombo1Exit()
 
 void CKirbyAbility_Cutter::AttackCombo2()
 {
-
 
     if (KEY_TAP(KEY_ATK))
     {

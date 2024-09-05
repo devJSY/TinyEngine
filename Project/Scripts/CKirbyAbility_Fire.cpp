@@ -37,14 +37,11 @@ CKirbyAbility_Fire::~CKirbyAbility_Fire()
 
 void CKirbyAbility_Fire::AttackCharge1Start()
 {
-
-
 }
 
 void CKirbyAbility_Fire::AttackCharge1StartEnter()
 {
-    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroFire\\0000.wav", 1, KIRBY_EFFECTSOUND, false, true);
-
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroFire\\0000.wav", 1, KIRBY_EFFECTSOUND * 2.f, false, true);
 
     // Projectile CoolTime, Acc 초기화
     m_ProjectileAcc = 0.f;
@@ -64,7 +61,7 @@ void CKirbyAbility_Fire::AttackCharge1StartEnter()
     m_SavedSpeed = PLAYERCTRL->GetSpeed();
 
     // 속도 변경
-    PLAYERCTRL->SetSpeed(m_SavedSpeed/2.f);
+    PLAYERCTRL->SetSpeed(m_SavedSpeed / 2.f);
 }
 
 void CKirbyAbility_Fire::AttackCharge1StartExit()
@@ -75,7 +72,7 @@ void CKirbyAbility_Fire::AttackCharge1StartExit()
     CPlayerMgr::ClearMouthMtrl();
     CPlayerMgr::SetPlayerMtrl(PLAYERMESH(MouthNormal));
     CPlayerMgr::SetPlayerFace(FaceType::Normal);
-    
+
     // Movement Unlock
     PLAYERCTRL->UnlockDirection();
     PLAYERCTRL->UnlockJump();
@@ -99,7 +96,6 @@ void CKirbyAbility_Fire::AttackCharge1()
     {
         PLAYERCTRL->UnlockDirection();
     }
-
 
     // tick
     m_ProjectileAcc += DT;
@@ -127,7 +123,7 @@ void CKirbyAbility_Fire::AttackCharge1()
 
 void CKirbyAbility_Fire::AttackCharge1Enter()
 {
-    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroFire\\0000.wav", 2, KIRBY_EFFECTSOUND, true, false);
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroFire\\0000.wav", 2, KIRBY_EFFECTSOUND * 2.f, true, false);
 
     // 애니메이션 재생
     PLAYER->Animator()->Play(ANIMPREFIX("FireBreath"), true, false, 2.f);
@@ -143,7 +139,6 @@ void CKirbyAbility_Fire::AttackCharge1Enter()
     // 회전 속도 제한
     m_SaveRotSpeed = PLAYERCTRL->GetRotSpeed();
     PLAYERCTRL->SetRotSpeed(m_SaveRotSpeed / 4.f);
-    
 }
 
 void CKirbyAbility_Fire::AttackCharge1Exit()
@@ -179,7 +174,7 @@ void CKirbyAbility_Fire::AttackCharge1EndEnter()
     m_ProjectileAcc = 0.f;
 
     // 애니메이션 재생
-    PLAYER->Animator()->Play(ANIMPREFIX("FireBreathEnd"), false, false , 2.f);
+    PLAYER->Animator()->Play(ANIMPREFIX("FireBreathEnd"), false, false, 2.f);
 
     // Movement 제한
     PLAYERCTRL->LockJump();
@@ -232,7 +227,7 @@ void CKirbyAbility_Fire::AttackCharge1Run()
 
 void CKirbyAbility_Fire::AttackCharge1RunEnter()
 {
-    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroFire\\0000.wav", 2, KIRBY_EFFECTSOUND, true, false);
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroFire\\0000.wav", 1, KIRBY_EFFECTSOUND * 2.f, true, false);
 
     // 애니메이션 재생
     PLAYER->Animator()->Play(ANIMPREFIX("FireWalk"), true, false, 2.f);
@@ -245,11 +240,9 @@ void CKirbyAbility_Fire::AttackCharge1RunEnter()
     // Kirby 표정 바꿔주기
     CPlayerMgr::SetPlayerFace(FaceType::UpTail);
 
-    
     // 회전 속도 제한
     m_SaveRotSpeed = PLAYERCTRL->GetRotSpeed();
     PLAYERCTRL->SetRotSpeed(m_SaveRotSpeed / 3.f);
-
 }
 
 void CKirbyAbility_Fire::AttackCharge1RunExit()
@@ -272,7 +265,6 @@ void CKirbyAbility_Fire::AttackCharge1RunExit()
     PLAYERCTRL->SetRotSpeed(m_SaveRotSpeed);
 }
 
-
 void CKirbyAbility_Fire::ChangeAbility()
 {
 }
@@ -287,7 +279,7 @@ void CKirbyAbility_Fire::ChangeAbilityEnter()
         PLAYERFSM->SetCurHat(pInstObj);
 
         // 애니메이션 재생
-        pInstObj->Animator()->Play(ANIMPREFIX("Deform"),false,false,2.5f,0);
+        pInstObj->Animator()->Play(ANIMPREFIX("Deform"), false, false, 2.5f, 0);
     }
 }
 

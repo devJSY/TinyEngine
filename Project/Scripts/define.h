@@ -47,11 +47,13 @@
 #define LAYER_EFFECT 14
 #define LAYER_UI 15
 
-#define SOUND_BGM                       0.2f
-#define SOUND_KIRBY                     0.4f
-#define SOUND_ELFILIS                   0.3f
-#define SOUND_MORPHO                    0.4f
-#define KIRBY_EFFECTSOUND               0.1f
+#define SOUND_BGM 0.2f
+#define SOUND_ELFILIS 0.3f
+#define SOUND_MORPHO 0.4f
+
+#define SOUND_SWORDKIRBY 0.1f
+#define KIRBY_EFFECTSOUND 0.1f
+#define MONSTER_EFFECTSOUND 0.1f
 
 #define PLAY_CURSTATE(STATE)                                                                                                                         \
     CKirbyFSM* KirbyFSM = CPlayerMgr::GetPlayerFSM();                                                                                                \
@@ -68,8 +70,6 @@
 #define ANIMPREFIX(NAME) ANIMPREFIX_STR L##NAME
 #define CHECK_ANIMFRM(OBJ, IDX) (!OBJ->Animator()->IsChainging() && OBJ->Animator()->GetClipFrameIndex() >= IDX)
 #define CHECK_ANIMFRM_UNDER(OBJ, IDX) (!OBJ->Animator()->IsChainging() && OBJ->Animator()->GetClipFrameIndex() <= IDX)
-
-
 
 enum class AbilityCopyType
 {
