@@ -91,3 +91,15 @@ void CSoundMgr::FadeSound(const wstring& _SoundPath, float _StartVolume, float _
 
     m_ListSoundEvent.push_back(SoundEvent);
 }
+
+void CSoundMgr::ClearSoundEvent()
+{
+    std::list<tSoundEvent>::iterator iter = m_ListSoundEvent.begin();
+
+    for (; iter != m_ListSoundEvent.end();)
+    {
+        (*iter).pSound->Stop();
+    }
+
+    m_ListSoundEvent.clear();
+}

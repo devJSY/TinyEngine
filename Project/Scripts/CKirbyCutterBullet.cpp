@@ -289,7 +289,7 @@ void CKirbyCutterBullet::SetState(BulletState _State)
     }
     break;
     case BulletState::DRAG: {
-        GamePlayStatic::Play3DSound(L"sound\\wav\\HeroCutterMetal\\AttackCutter.wav", Transform()->GetWorldPos(), 1, KIRBY_EFFECTSOUND, true, true, 1.f, 2000.f);
+        GamePlayStatic::Play3DSound(L"sound\\wav\\HeroCutterMetal\\AttackCutter.wav", Transform()->GetWorldPos(), 1, KIRBY_EFFECTSOUND, true, true);
         m_Duration = 0.7f;
     }
     break;
@@ -308,7 +308,7 @@ void CKirbyCutterBullet::SetState(BulletState _State)
     }
     break;
     case BulletState::RAGE: {
-        GamePlayStatic::Play3DSound(L"sound\\wav\\HeroCutterMetal\\Cutter_Burning.wav", Transform()->GetWorldPos(), 1, KIRBY_EFFECTSOUND, true, true, 1.f, 2000.f);
+        GamePlayStatic::Play3DSound(L"sound\\wav\\HeroCutterMetal\\Cutter_Burning.wav", Transform()->GetWorldPos(), 1, KIRBY_EFFECTSOUND, true, true);
         m_Duration = 3.f;
     }
     break;
@@ -317,7 +317,7 @@ void CKirbyCutterBullet::SetState(BulletState _State)
     }
     break;
     case BulletState::BURNING: {
-        GamePlayStatic::Play3DSound(L"sound\\wav\\HeroCutterMetal\\Cutter_Burning.wav", Transform()->GetWorldPos(), 1, KIRBY_EFFECTSOUND, true, true, 1.f, 2000.f);
+        GamePlayStatic::Play3DSound(L"sound\\wav\\HeroCutterMetal\\Cutter_Burning.wav", Transform()->GetWorldPos(), 1, KIRBY_EFFECTSOUND, true, true);
         m_Duration = 3.f;
     }
     break;
@@ -369,7 +369,7 @@ void CKirbyCutterBullet::OnCollisionEnter(CCollider* _OtherCollider)
     // WorldStatic
     if (LayerIdx == LAYER_STATIC)
     {
-        GamePlayStatic::Play3DSound(L"sound\\wav\\HeroCutterMetal\\Cutter_Hit.wav", Transform()->GetWorldPos(), 1, KIRBY_EFFECTSOUND, true,true, 1.f,2000.f);
+        GamePlayStatic::Play3DSound(L"sound\\wav\\HeroCutterMetal\\Cutter_Hit.wav", Transform()->GetWorldPos(), 1, KIRBY_EFFECTSOUND, true, true);
 
         Vec3 RayDir = m_MoveDir;
         RayDir.y = 0.f;
@@ -403,7 +403,7 @@ void CKirbyCutterBullet::OnTriggerEnter(CCollider* _OtherCollider)
         // 커비한테 돌아가는 상태라면
         if (m_IsBack)
         {
-            GamePlayStatic::Play3DSound(L"sound\\wav\\HeroCutterMetal\\ReturnCutter.wav", Transform()->GetWorldPos(), 1, KIRBY_EFFECTSOUND, true, true, 1.f, 2000.f);
+            GamePlayStatic::Play3DSound(L"sound\\wav\\HeroCutterMetal\\ReturnCutter.wav", Transform()->GetWorldPos(), 1, KIRBY_EFFECTSOUND, true, true);
             GamePlayStatic::DestroyGameObject(GetOwner());
 
             if (PLAYERFSM->GetCurAbilityIdx() == AbilityCopyType::CUTTER && PLAYERFSM->GetCurObjectIdx() == ObjectCopyType::NONE)
@@ -439,7 +439,7 @@ void CKirbyCutterBullet::OnTriggerEnter(CCollider* _OtherCollider)
 
             Monster->GetDamage(HitInfo);
 
-            GamePlayStatic::Play3DSound(L"sound\\wav\\HeroCutterMetal\\Cutter_Hit.wav", Transform()->GetWorldPos(), 1, KIRBY_EFFECTSOUND, true, true, 1.f, 2000.f);
+            GamePlayStatic::Play3DSound(L"sound\\wav\\HeroCutterMetal\\Cutter_Hit.wav", Transform()->GetWorldPos(), 1, KIRBY_EFFECTSOUND, true, true);
 
         }
     }

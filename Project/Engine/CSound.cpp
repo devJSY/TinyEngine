@@ -46,6 +46,7 @@ int CSound::Play2D(int _iRoopCount, float _fVolume, bool _bOverlap)
     if (nullptr == pChannel)
         return E_FAIL;
 
+    _fVolume = std::clamp(_fVolume, 0.f, 1.f);
     pChannel->setVolume(_fVolume);
 
     pChannel->setCallback(CHANNEL_CALLBACK);
@@ -102,6 +103,7 @@ int CSound::Play3D(Vec3 _WorldPos, int _iRoopCount, float _fVolume, bool _bOverl
     pChannel->set3DAttributes(&pos, nullptr);
     pChannel->set3DMinMaxDistance(_Mindistance, _Maxdistance);
 
+    _fVolume = std::clamp(_fVolume, 0.f, 1.f);
     pChannel->setVolume(_fVolume);
 
     pChannel->setCallback(CHANNEL_CALLBACK);

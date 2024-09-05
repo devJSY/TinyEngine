@@ -158,6 +158,17 @@ void CTransform::SetDirection(Vec3 _Forward, Vec3 _Up)
     if (_Forward == Vec3::Zero)
         return;
 
+    // Forward & Up 동일한 방향일때 예외처리
+    if (fabs(_Forward.Dot(_Up)) > 0.999f)
+    {
+        // _Up 벡터를 조정하여 수직인 벡터로 설정
+        _Up = Vec3(0, 1.f, 0);
+        if (fabs(_Forward.y) > 0.999f)
+        {
+            _Up = Vec3(1.f, 0, 0);
+        }
+    }
+
     _Forward.Normalize();
     _Up.Normalize();
 

@@ -277,8 +277,15 @@ void CLevelFlowMgr::tick()
     {
         m_BGMAcc += DT_ENGINE;
 
-        float Volume = Lerp(m_StartBGMVolume, m_EndBGMVolume, m_BGMAcc / m_BGMDuration);
-        GamePlayStatic::PlayBGM(m_BGM->GetRelativePath(), Volume);
+        if (m_BGMAcc > m_BGMDuration && m_EndBGMVolume <= 0.f)
+        {
+            m_BGM->Stop();
+        }
+        else
+        {
+            float Volume = Lerp(m_StartBGMVolume, m_EndBGMVolume, m_BGMAcc / m_BGMDuration);
+            GamePlayStatic::PlayBGM(m_BGM->GetRelativePath(), Volume);
+        }
     }
 
     // tick마다 넣어줘야 하는 Param setting
