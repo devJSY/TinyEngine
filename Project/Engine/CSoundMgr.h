@@ -27,6 +27,6 @@ private:
 public:
     void tick();
     void FadeSound(const wstring& _SoundPath, float _StartVolume, float _EndVolume, float _Duration, bool _bLoopAfterDuration, bool _bOverlap = true,
-                   bool _b3DSound = false, Vec3 _WorldPos = Vec3(), float _Mindistance = 1.f, float _Maxdistance = 500.f);
+                   bool _b3DSound = false, Vec3 _WorldPos = Vec3(), float _Mindistance = 50.f, float _Maxdistance = 500.f);
     void ClearSoundEvent();
 };
