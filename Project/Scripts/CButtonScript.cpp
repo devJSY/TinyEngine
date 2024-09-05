@@ -356,11 +356,11 @@ void CButtonScript::ButtonSoundUpdate()
     case ButtonState::HIGHLIGHTED:
         break;
     case ButtonState::PRESSED: {
-        GamePlayStatic::Play2DSound(L"sound\\wav\\UiMenu\\0007.wav", 1, 0.3f);
+        GamePlayStatic::Play2DSound(L"sound\\wav\\UiMenu\\0007.wav", 1, 0.15f);
     }
     break;
     case ButtonState::SELECTED: {
-        GamePlayStatic::Play2DSound(L"sound\\wav\\UiMenu\\0006.wav", 1, 0.3f);
+        GamePlayStatic::Play2DSound(L"sound\\wav\\UiMenu\\0006.wav", 1, 0.15f);
     }
     break;
     case ButtonState::DISABLED:
