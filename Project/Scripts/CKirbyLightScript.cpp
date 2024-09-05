@@ -137,7 +137,7 @@ void CKirbyLightScript::TurnOff()
 
 void CKirbyLightScript::ChangeGlassEmission(float _LightRatio)
 {
-    float Power = 64.f / 255.f * _LightRatio;
+    float Power = 500.f / 255.f * _LightRatio;
     Vec4 Emission(Power);
     Emission.w = 0.f;
 
