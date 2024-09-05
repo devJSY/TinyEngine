@@ -784,10 +784,10 @@ void CCameraController::ProcessEffet()
 
 
             float tiltDuration = 0.5f;                      // 초기 회전 시간
-            float oscillationDuration = CurEffet.Duration;  // 흔들림 시간
+            float oscillationDuration = CurEffet.Duration - 1.f; // 흔들림 시간
             float returnDuration = 0.5f;                    // 복귀 시간
 
-            float totalDuration = tiltDuration + oscillationDuration + returnDuration;
+            float totalDuration = CurEffet.Duration;
 
             if (CurEffet.Acc < tiltDuration)
             {

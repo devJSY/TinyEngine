@@ -191,7 +191,7 @@ void CKirbyObject_VendingMachine::LandingEnter()
 
     GamePlayStatic::Play2DSound(L"sound\\wav\\HeroDeformVendingMachine\\VendingMachine_Landing.wav", 1, KIRBY_EFFECTSOUND);
 
-    CAMERACTRL->Shake(0.2f, 10.f, 10.f);
+    CAMERACTRL->Shake(0.5f, 30.f, 30.f);
 }
 
 // ===============

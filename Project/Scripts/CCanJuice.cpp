@@ -100,6 +100,8 @@ void CCanJuice::OnTriggerEnter(CCollider* _OtherCollider)
 
     if (LayerIdx == LAYER_MONSTER_TRIGGER && _OtherCollider->GetOwner()->GetName() == L"Body Collider")
     {
+        GamePlayStatic::Play2DSound(L"sound\\wav\\HeroDeformVendingMachine\\0000.wav", 1, KIRBY_EFFECTSOUND);
+
         Vec3 CanPos = GetOwner()->Transform()->GetWorldPos();
         Vec3 MonsterPos = _OtherCollider->GetOwner()->Transform()->GetWorldPos();
         Vec3 HitDir = MonsterPos - CanPos;

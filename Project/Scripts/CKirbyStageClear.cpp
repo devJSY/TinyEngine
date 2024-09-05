@@ -3,6 +3,8 @@
 #include "CCameraController.h"
 #include "CLevelFlowMgr.h"
 
+#include "CBossLevelFlowMgr.h"
+
 CKirbyStageClear::CKirbyStageClear()
 {
 }
@@ -40,6 +42,8 @@ void CKirbyStageClear::tick()
 
     if (m_Step == 1 && m_Acc > m_Duration)
     {
+
+
         // StageClear Sound
         GamePlayStatic::Play2DSound(L"sound\\stream\\K15_KirbyDanceLong\\K15_KirbyDanceLong.marker.dspadpcm.wav", 1, KIRBY_EFFECTSOUND);
 
@@ -246,10 +250,27 @@ void CKirbyStageClear::tick()
 
 void CKirbyStageClear::Enter()
 {
+    CGameObject* Manager = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager");
+    CBossLevelFlowMgr* FlowMgr = Manager->GetScript<CBossLevelFlowMgr>();
+
+    // BossLevel이 아니라면 몬스터 관련 레이어의 오브젝트를 모두 삭제한다.
+    if (FlowMgr == nullptr)
+    {
+        for (int i = LAYER_MONSTER; i <= LAYER_MONSTERATK_TRIGGER; ++i)
+        {
+            const vector<CGameObject*>& CurLayerObjects = CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(i)->GetParentObjects();
+
+            for (size_t j = 0; j < CurLayerObjects.size(); ++j)
+            {
+                GamePlayStatic::DestroyGameObject(CurLayerObjects[j]);
+            }
+        }
+    }
+
+
+
     // 애니메이션 재생
     PLAYER->Animator()->Play(ANIMPREFIX("ClearDanceLong"), false, false, 2.f);
-
-
 
     CAMERACTRL->TurnOffMonsterLayer();
 
@@ -262,6 +283,7 @@ void CKirbyStageClear::Enter()
 
     // UI 다 끄기
     CGameObject* ManagerObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager");
+    
 
     // Camera 속성을 초기값으로 돌린다.
     CAMERACTRL->LoadInitSetting(true);
@@ -270,6 +292,7 @@ void CKirbyStageClear::Enter()
     FlowMgrScript->TurnOffBossHP();
     FlowMgrScript->TurnOffPlayerHP();
     FlowMgrScript->ActiveOffDropUI();
+    GamePlayStatic::StopAllSound();
 
     m_Step = 0;
     m_Duration = 2.f;

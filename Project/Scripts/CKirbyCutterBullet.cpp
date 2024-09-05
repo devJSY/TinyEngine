@@ -10,13 +10,13 @@ CKirbyCutterBullet::CKirbyCutterBullet()
     : CScript(KIRBYCUTTERBULLET)
     , m_IsBack(false)
     , m_Speed(35.f)
-    , m_BurningSpeed(40.f)
+    , m_BurningSpeed(70.f)
     , m_Frequency(0.7f)
     , m_RotAcc(0.f)
     , m_Angle(45.f)
     , m_bPressedATK(true)
     , m_bBuning(false)
-    , m_BuningStepUpDuration(1.f)
+    , m_BuningStepUpDuration(0.3f)
     , m_CurStep(BuningStep::NONE)
 {
 }
@@ -48,7 +48,7 @@ void CKirbyCutterBullet::begin()
     m_BounceCount = 6;
     m_bPressedATK = true;
     m_bBuning = false;
-    m_BuningStepUpDuration = 1.f;
+    m_BuningStepUpDuration = 0.5f;
     m_CurStep = BuningStep::NONE;
 }
 
@@ -189,7 +189,7 @@ void CKirbyCutterBullet::tick()
             m_MoveDir = DirectX::SimpleMath::Vector3::Lerp(m_MoveDir, NewDir, 0.15f);
 
             // 땅이랑 가까워질 경우 y축 이동속도를 0으로 한다.
-            if (Hit.Distance < 20.f)
+            if (Hit.Distance < GetOwner()->Transform()->GetLocalScale().y)
             {
                 m_MoveDir.y = 0.f;
             }
@@ -223,9 +223,9 @@ void CKirbyCutterBullet::tick()
 
         float phase = (m_Acc / 0.2f) * XM_PI / 2.f;
         phase = clamp(phase, 0.f, XM_PI / 2.f);
-        phase = std::sin(phase);
+        phase = std::sinf(phase);
 
-        m_Velocity = m_MoveDir * m_Speed * phase;
+        m_Velocity = m_MoveDir * m_BurningSpeed * phase;
 
         Rigidbody()->SetVelocity(m_Velocity);
 
@@ -237,8 +237,6 @@ void CKirbyCutterBullet::tick()
     break;
     case BulletState::BURNING_WAIT: {
         m_Acc += DT;
-
-        // @TODO SCALA_PARAM을 이용하여 색이랑 크기가 시간에 따라 변하도록 해야함
 
         if (m_Acc > m_BuningStepUpDuration)
         {
@@ -291,7 +289,7 @@ void CKirbyCutterBullet::SetState(BulletState _State)
     }
     break;
     case BulletState::DRAG: {
-        GamePlayStatic::Play3DSound(L"sound\\wav\\HeroCutterMetal\\AttackCutter.wav", Transform()->GetWorldPos(), 1, KIRBY_EFFECTSOUND, true);
+        GamePlayStatic::Play3DSound(L"sound\\wav\\HeroCutterMetal\\AttackCutter.wav", Transform()->GetWorldPos(), 1, KIRBY_EFFECTSOUND, true, true, 1.f, 2000.f);
         m_Duration = 0.7f;
     }
     break;
@@ -310,21 +308,17 @@ void CKirbyCutterBullet::SetState(BulletState _State)
     }
     break;
     case BulletState::RAGE: {
-        GamePlayStatic::Play3DSound(L"sound\\wav\\HeroCutterMetal\\Cutter_Burning.wav", Transform()->GetWorldPos(), 1, KIRBY_EFFECTSOUND, true);
+        GamePlayStatic::Play3DSound(L"sound\\wav\\HeroCutterMetal\\Cutter_Burning.wav", Transform()->GetWorldPos(), 1, KIRBY_EFFECTSOUND, true, true, 1.f, 2000.f);
         m_Duration = 3.f;
     }
     break;
     case BulletState::BURNING_WAIT: {
-        // @TODO 다이나믹 머터리얼로 머터리얼을 교체한뒤 쉐이더를 전용쉐이더로 바꿔줘야함
-        MeshRender()->GetDynamicMaterial(0);
-
         m_Duration = 4.f;
     }
     break;
     case BulletState::BURNING: {
-        GamePlayStatic::Play3DSound(L"sound\\wav\\HeroCutterMetal\\Cutter_Burning.wav", Transform()->GetWorldPos(), 1, KIRBY_EFFECTSOUND, true);
+        GamePlayStatic::Play3DSound(L"sound\\wav\\HeroCutterMetal\\Cutter_Burning.wav", Transform()->GetWorldPos(), 1, KIRBY_EFFECTSOUND, true, true, 1.f, 2000.f);
         m_Duration = 3.f;
-        m_bBuning = true;
     }
     break;
 
@@ -341,26 +335,22 @@ bool CKirbyCutterBullet::StepUp()
     case BuningStep::NONE: {
         GamePlayStatic::Play2DSound(L"sound\\wav\\HeroCutterBaisc\\Cutter_Rage0.wav", 1, KIRBY_EFFECTSOUND);
 
+        m_bBuning = true;
         m_CurStep = BuningStep::STEP_1;
 
-        Ptr<CMaterial> DynamicMtrl = MeshRender()->GetMaterial(0);
-        DynamicMtrl->SetEmission(Vec4(0.3f, 0.3f, 0.3f, 0.3f));
+        GetOwner()->Transform()->SetLocalScale(Vec3(25.f, 25.f, 25.f));
+
     }
     break;
     case BuningStep::STEP_1: {
         GamePlayStatic::Play2DSound(L"sound\\wav\\HeroCutterBaisc\\Cutter_Rage1.wav", 1, KIRBY_EFFECTSOUND);
         m_CurStep = BuningStep::STEP_2;
 
-        Ptr<CMaterial> DynamicMtrl = MeshRender()->GetMaterial(0);
-        DynamicMtrl->SetEmission(Vec4(0.6f, 0.6f, 0.6f, 0.6f));
+        GetOwner()->Transform()->SetLocalScale(Vec3(30.f, 30.f, 30.f));
     }
     break;
     case BuningStep::STEP_2: {
-        GamePlayStatic::Play2DSound(L"sound\\wav\\HeroCutterBaisc\\Cutter_Rage2.wav", 1, KIRBY_EFFECTSOUND);
-        m_CurStep = BuningStep::STEP_3;
-
-        Ptr<CMaterial> DynamicMtrl = MeshRender()->GetMaterial(0);
-        DynamicMtrl->SetEmission(Vec4(0.9f, 0.9f, 0.9f, 0.9f));
+        return false;
     }
     break;
     case BuningStep::STEP_3: {
@@ -379,7 +369,7 @@ void CKirbyCutterBullet::OnCollisionEnter(CCollider* _OtherCollider)
     // WorldStatic
     if (LayerIdx == LAYER_STATIC)
     {
-        GamePlayStatic::Play3DSound(L"sound\\wav\\HeroCutterMetal\\Cutter_Hit.wav", Transform()->GetWorldPos(), 1, KIRBY_EFFECTSOUND, true);
+        GamePlayStatic::Play3DSound(L"sound\\wav\\HeroCutterMetal\\Cutter_Hit.wav", Transform()->GetWorldPos(), 1, KIRBY_EFFECTSOUND, true,true, 1.f,2000.f);
 
         Vec3 RayDir = m_MoveDir;
         RayDir.y = 0.f;
@@ -413,7 +403,7 @@ void CKirbyCutterBullet::OnTriggerEnter(CCollider* _OtherCollider)
         // 커비한테 돌아가는 상태라면
         if (m_IsBack)
         {
-            GamePlayStatic::Play3DSound(L"sound\\wav\\HeroCutterMetal\\ReturnCutter.wav", Transform()->GetWorldPos(), 1, KIRBY_EFFECTSOUND, true);
+            GamePlayStatic::Play3DSound(L"sound\\wav\\HeroCutterMetal\\ReturnCutter.wav", Transform()->GetWorldPos(), 1, KIRBY_EFFECTSOUND, true, true, 1.f, 2000.f);
             GamePlayStatic::DestroyGameObject(GetOwner());
 
             if (PLAYERFSM->GetCurAbilityIdx() == AbilityCopyType::CUTTER && PLAYERFSM->GetCurObjectIdx() == ObjectCopyType::NONE)
@@ -437,6 +427,11 @@ void CKirbyCutterBullet::OnTriggerEnter(CCollider* _OtherCollider)
             HitDir.Normalize();
             UnitHit HitInfo = {DAMAGE_TYPE::NORMAL, HitDir, 10.f, 0.f, 0.f};
 
+            if (m_bBuning)
+            {
+                HitInfo.Damage = 20.f;
+            }
+
             for (UINT i = 0; i < 2; i++)
             {
                 SpawnSlashEffect(_OtherCollider->Transform()->GetWorldPos());
@@ -444,7 +439,7 @@ void CKirbyCutterBullet::OnTriggerEnter(CCollider* _OtherCollider)
 
             Monster->GetDamage(HitInfo);
 
-            GamePlayStatic::Play3DSound(L"sound\\wav\\HeroCutterMetal\\Cutter_Hit.wav", Transform()->GetWorldPos(), 1, KIRBY_EFFECTSOUND, true);
+            GamePlayStatic::Play3DSound(L"sound\\wav\\HeroCutterMetal\\Cutter_Hit.wav", Transform()->GetWorldPos(), 1, KIRBY_EFFECTSOUND, true, true, 1.f, 2000.f);
 
         }
     }

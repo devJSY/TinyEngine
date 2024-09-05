@@ -58,6 +58,9 @@ void CKirbyDeath::tick()
 
 void CKirbyDeath::Enter()
 {
+    // sound
+    GamePlayStatic::Play2DSound(L"sound\\stream\\K15_Dead1\\K15_Dead1.marker.dspadpcm.wav", 1, KIRBY_EFFECTSOUND);
+    
     // Effect Lock
     CAMERACTRL->SetEffectLock(true);
 
