@@ -1117,7 +1117,18 @@ void CCameraController::SetElfilisGround()
 
     SetTargetOffset(Vec3(0.f, 0.f, 0.f));
     SetOffset(Vec3(0.f, 0.f, 0.f));
-    SetLookDir(Vec3(0.f, -0.707f, 0.707f));
+
+    Vec3 Dir = Vec3(0.f, -0.707f, 0.707f);
+    if (BOSS != nullptr && PLAYER != nullptr)
+    {
+        Dir = BOSS->Transform()->GetWorldPos() - PLAYER->Transform()->GetWorldPos();
+        Dir.y = 0.f;
+        Dir.Normalize();
+
+        Dir.y = -0.707f;
+    }
+
+    SetLookDir(Dir);
     SetLookDist(700.f);
 
     // Setting
