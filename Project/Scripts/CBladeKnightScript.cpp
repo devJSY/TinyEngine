@@ -509,6 +509,7 @@ void CBladeKnightScript::DoubleAttack()
     }
     else if (CHECK_ANIMFRM(GetOwner(), 20) && !m_bStepFlag)
     {
+        GamePlayStatic::Play2DSound(L"sound\\wav\\CharaBladeKnight\\0000.wav", 1, 0.4f);
         Rigidbody()->AddForce(Transform()->GetWorldDir(DIR_TYPE::FRONT) * m_StepPower, ForceMode::Impulse);
         m_bStepFlag = true;
     }
