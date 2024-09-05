@@ -149,7 +149,7 @@ void CElfilisD_Appear::Progress()
             m_BossName = m_BossNamePref->Instantiate();
             CChangeAlphaScript* Script = m_BossName->GetScript<CChangeAlphaScript>();
 
-            m_BossName->Transform()->SetWorldPos(Vec3(0.f, 2450.f, -4020.f));
+            m_BossName->Transform()->SetWorldPos(Vec3(0.f, 3000.f, -4020.f));
             m_BossName->Transform()->SetWorldRotation(Vec3(0.f, 0.f, 0.f));
             m_BossName->Transform()->SetWorldScale(Vec3(427.f));
             Script->FadeIn(0.5f);
