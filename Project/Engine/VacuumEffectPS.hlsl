@@ -28,7 +28,7 @@ float4 main(PS_IN input) : SV_Target
         float alphaFromTexture = AlphaTexture.Sample(g_LinearWrapSampler, float2(input.vUV0.x + g_Time, input.vUV0.y - g_Time * 2.f)).r;
         
         float4 colorAlpha = ColorTexture.Sample(g_LinearWrapSampler, float2(input.vUV0.x + g_Time, input.vUV0.y - g_Time)).r;
-        alpha = lerp(0.2f, 1.0f, colorAlpha);
+        alpha = lerp(0.2f, 1.0f, colorAlpha.r);
         
         alpha *= alphaFromTexture;
     }
