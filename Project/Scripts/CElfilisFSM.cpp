@@ -517,12 +517,17 @@ void CElfilisFSM::tick()
     //    Rigidbody()->SetAngularVelocity(Vec3());
     //    ChangeStateGroup(ElfilisStateGroup::GroundToAir);
     //}
+    //if (KEY_TAP(KEY::_9))
+    //{
+    //    Rigidbody()->SetVelocity(Vec3());
+    //    Rigidbody()->SetAngularVelocity(Vec3());
+    //    ChangeStateGroup(ElfilisStateGroup::AirToGround);
+    //}
     //if (KEY_TAP(KEY::ENTER))
     //{
     //    Rigidbody()->SetVelocity(Vec3());
     //    Rigidbody()->SetAngularVelocity(Vec3());
-    //    ChangeStateGroup(ElfilisStateGroup::GroundMove, L"GROUND_MOVE_TELEPORT");
-    //    //ChangeStateGroup(ElfilisStateGroup::GroundToAir);
+    //    ChangeStateGroup(ElfilisStateGroup::GroundAtkNear);
     //}
 }
 
