@@ -184,7 +184,7 @@ void CBladeKnightScript::EnterState()
     switch (m_State)
     {
     case BLADEKNIGHT_STATE::Attack: {
-        GamePlayStatic::Play2DSound(L"sound\\wav\\CharaBladeKnight\\0000.wav", 1, 0.4f);
+        GamePlayStatic::Play2DSound(L"sound\\wav\\CharaBladeKnight\\0000.wav", 1, 0.15f);
         Rigidbody()->AddForce(Transform()->GetWorldDir(DIR_TYPE::FRONT) * m_StepPower, ForceMode::Impulse);
         Animator()->Play(ANIMPREFIX("Attack"), false, false, 1.5f);
         SetSwordEnable(true);

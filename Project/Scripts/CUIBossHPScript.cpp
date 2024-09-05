@@ -118,8 +118,6 @@ void CUIBossHPScript::EnterState()
             m_pUnitScript = _pTargetObj->GetScript<CUnitScript>();
         }
 
-        m_pNameObj = GetOwner()->GetChildObject(L"UI_PlayerName");
-
         if (!m_pUnitScript)
             return;
 
@@ -220,7 +218,7 @@ void CUIBossHPScript::HPTick()
                 if (fPrevHP >= m_fCurHP)
                 {
                     m_bHpHealed = false;
-                    m_vHealTask.pop_back();
+                    m_vHealTask.clear();
                 }
             }
             else
@@ -284,7 +282,6 @@ void CUIBossHPScript::CaculateHealShading()
     m_pRenderer->GetMaterial(0)->SetScalarParam(FLOAT_1, _fShadingRatio);
     m_bIsHealedScaling = false;
     m_bHpHealed = false;
-    m_vDamageTask.pop_back();
 }
 
 void CUIBossHPScript::HealScaling()
