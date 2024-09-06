@@ -190,7 +190,7 @@ void CMorphoDemo_Death::End()
         // Sound
         wstring Sound = L"sound\\wav\\DemoBossLv7Chimera2After\\0000_Disappear.wav";
         GamePlayStatic::Play2DSound(Sound, 1, SOUND_MORPHO);
-        CAMERACTRL->SetLock(false);
+        CAMERACTRL->SetLock(true);
     }
 
     if (GetOwner()->Animator()->IsFinish())

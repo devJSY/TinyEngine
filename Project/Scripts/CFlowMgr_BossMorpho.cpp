@@ -228,11 +228,11 @@ void CFlowMgr_BossMorpho::FlowClear()
     {
         m_EventIdx++;
 
-        PLAYERFSM->ChangeState(L"STAGE_CLEAR");
-
-        CAMERACTRL->SetLock(true);
+        CAMERACTRL->SetLock(false);
         CAMERACTRL->SetMainTarget(PLAYER);
         CAMERACTRL->SetImmediate(false);
+
+        PLAYERFSM->ChangeState(L"STAGE_CLEAR");
     }
 }
 

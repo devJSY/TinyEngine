@@ -171,6 +171,7 @@ void CBossLevelFlowMgr::EnterDemoPlay()
     PLAYERCTRL->LockInput();
     PLAYERFSM->ChangeState(L"IDLE");
     PLAYERFSM->LockChangeState();
+    PLAYERFSM->SetInvincible(true);
 }
 
 void CBossLevelFlowMgr::EnterDeath()
@@ -205,6 +206,8 @@ void CBossLevelFlowMgr::ExitDemoPlay()
 {
     PLAYERCTRL->UnlockInput();
     PLAYERFSM->UnlockChangeState();
+    PLAYERFSM->SetInvincible(false);
+
     m_DemoType = BossDemoType::NONE;
 }
 
