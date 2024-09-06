@@ -48,6 +48,7 @@ void CFlowMgr_BossElfilis::TriggerEvent(UINT _Idx)
     // Spawn Elfilis Trigger
     if (_Idx == 0)
     {
+        DeleteBubble();
         SpawnElfilis();
     }
 }

@@ -61,6 +61,7 @@ void CFlowMgr_BossMorpho::TriggerEvent(UINT _Idx)
 {
     if (_Idx == 0)
     {
+        DeleteBubble();
         SpawnMorpho();
     }
 }

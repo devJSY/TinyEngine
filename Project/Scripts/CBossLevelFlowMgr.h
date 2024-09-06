@@ -21,6 +21,7 @@ public:
     void SetDemoType(BossDemoType _Type) { m_DemoType = _Type; }
 
     void ChangeBGMSize(float _Size, float _Durtaion);
+    void DeleteBubble();
 
 protected:
     void EnterFlow(BossLevelFlow _State);
