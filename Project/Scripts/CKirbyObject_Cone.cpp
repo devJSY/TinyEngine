@@ -59,11 +59,14 @@ void CKirbyObject_Cone::AttackEnter()
     PLAYER->Animator()->Play(ANIMPREFIX("TurnEnd"), false, false, 2.f);
 
     PLAYERCTRL->LockDirection();
+
+    PLAYERFSM->SetInvincible(true);
 }
 
 void CKirbyObject_Cone::AttackExit()
 {
     PLAYERCTRL->UnlockDirection();
+    PLAYERFSM->SetInvincible(false);
 }
 
 // Start (위로 휘리릭)

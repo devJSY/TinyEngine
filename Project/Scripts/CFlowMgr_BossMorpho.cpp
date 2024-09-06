@@ -7,6 +7,7 @@ CFlowMgr_BossMorpho::CFlowMgr_BossMorpho()
     , m_SpawnButterfly(nullptr)
     , m_Barricade(nullptr)
     , m_AccTime(0.f)
+    , m_EventIdx(0)
 {
     m_DefaultDemoPos = Vec3(0.f, 0.f, 300.f);
 }
@@ -17,6 +18,7 @@ CFlowMgr_BossMorpho::CFlowMgr_BossMorpho(const CFlowMgr_BossMorpho& _Origin)
     , m_Barricade(nullptr)
     , m_BarricadeScale(_Origin.m_BarricadeScale)
     , m_AccTime(0.f)
+    , m_EventIdx(0)
 {
     m_DefaultDemoPos = Vec3(0.f, 0.f, 300.f);
 }
@@ -61,6 +63,7 @@ void CFlowMgr_BossMorpho::TriggerEvent(UINT _Idx)
 {
     if (_Idx == 0)
     {
+        DeleteBubble();
         SpawnMorpho();
     }
 }
@@ -105,8 +108,8 @@ void CFlowMgr_BossMorpho::EnterDemoPlay()
     switch (m_DemoType)
     {
     case BossDemoType::Encounter: {
-        //SetToneMappingParam(true, 1, 0.5f, 0.27f, 1.3f, 1.2f, 1.7f);
-        //SetToneMappingParam(true, 1, 0.5f, 0.27f, 1.3f, 1.26f, 1.973f);
+        // SetToneMappingParam(true, 1, 0.5f, 0.27f, 1.3f, 1.2f, 1.7f);
+        // SetToneMappingParam(true, 1, 0.5f, 0.27f, 1.3f, 1.26f, 1.973f);
     }
     break;
     case BossDemoType::StartPhase2:
@@ -165,7 +168,7 @@ void CFlowMgr_BossMorpho::ExitDemoPlay()
             m_Barricade->Transform()->SetWorldScale(m_BarricadeScale);
         }
 
-        //SetToneMappingParam(true, 1, 0.85f, 0.27f, 1.3f, 1.26f, 1.963f);
+        // SetToneMappingParam(true, 1, 0.85f, 0.27f, 1.3f, 1.26f, 1.963f);
     }
     break;
     case BossDemoType::StartPhase2: {
@@ -204,11 +207,33 @@ void CFlowMgr_BossMorpho::ExitDeath()
 
 void CFlowMgr_BossMorpho::EnterClear()
 {
+    // CBossLevelFlowMgr::EnterClear();
+
+    BOSS->SetActive(false);
     MRPFSM->ChangeStateGroup(MorphoStateGroup::Idle, L"IDLE");
 
     SetPlayerPos(Vec3(), Vec3(0.f, 0.f, 1.f));
+    PLAYERCTRL->LockInput();
 
-    CBossLevelFlowMgr::EnterClear();
+    m_AccTime = 0.f;
+    m_EventIdx = 0;
+}
+
+void CFlowMgr_BossMorpho::FlowClear()
+{
+    CBossLevelFlowMgr::FlowClear();
+    m_AccTime += DT;
+
+    if (m_EventIdx == 0 && m_AccTime > 2.f)
+    {
+        m_EventIdx++;
+
+        CAMERACTRL->SetLock(false);
+        CAMERACTRL->SetMainTarget(PLAYER);
+        CAMERACTRL->SetImmediate(false);
+
+        PLAYERFSM->ChangeState(L"STAGE_CLEAR");
+    }
 }
 
 // ---------------------------

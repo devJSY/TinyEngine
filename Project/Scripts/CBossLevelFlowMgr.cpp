@@ -69,6 +69,19 @@ void CBossLevelFlowMgr::ChangeBGMSize(float _Size, float _Durtaion)
     FadeInBGM(GetBGM()->GetKey(), GetVolume(), _Size, _Durtaion);
 }
 
+void CBossLevelFlowMgr::DeleteBubble()
+{
+    const vector<CGameObject*>& vecObj = CLevelMgr::GetInst()->GetCurrentLevel()->GetLayer(LAYER_DYNAMIC)->GetParentObjects();
+
+    for (CGameObject* iter : vecObj)
+    {
+        if (iter->GetName().find(L"KirbyBubble") != wstring::npos)
+        {
+            GamePlayStatic::DestroyGameObject(iter);
+        }
+    }
+}
+
 void CBossLevelFlowMgr::EnterFlow(BossLevelFlow _State)
 {
     switch (_State)
@@ -158,6 +171,7 @@ void CBossLevelFlowMgr::EnterDemoPlay()
     PLAYERCTRL->LockInput();
     PLAYERFSM->ChangeState(L"IDLE");
     PLAYERFSM->LockChangeState();
+    PLAYERFSM->SetInvincible(true);
 }
 
 void CBossLevelFlowMgr::EnterDeath()
@@ -194,6 +208,8 @@ void CBossLevelFlowMgr::ExitDemoPlay()
 {
     PLAYERCTRL->UnlockInput();
     PLAYERFSM->UnlockChangeState();
+    PLAYERFSM->SetInvincible(false);
+
     m_DemoType = BossDemoType::NONE;
 }
 

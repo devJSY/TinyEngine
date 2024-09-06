@@ -117,6 +117,7 @@ void CElfilisG_Teleport::End()
     Pos = m_AfterEffect->Transform()->GetWorldPos();
     Pos.y = ChangeHeight;
     m_AfterEffect->Transform()->SetWorldPos(Pos);
+    m_AfterPos.y = 0.f;
     ELFFSM->Teleport(1, Pos.y);
 
     if (ChangeHeight <= 0.f)

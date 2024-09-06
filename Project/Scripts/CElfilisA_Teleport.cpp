@@ -78,7 +78,8 @@ void CElfilisA_Teleport::Enter_Step()
             Vec3 Dir = NewPosMapDist.Normalize();
             m_AfterPos = MapFloorOffset + Dir * MapSizeRadius;
         }
-
+        
+        m_AfterPos.y = 0.f;
         ELFFSM->GetUnit()->PlayTeleportEffect(&m_BeforeObj, &m_BeforeEffect, &m_AfterEffect, m_AfterPos);
     }
     break;

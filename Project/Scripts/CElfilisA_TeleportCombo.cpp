@@ -138,6 +138,7 @@ void CElfilisA_TeleportCombo::Enter_Step()
             }
         }
 
+        m_AfterPos.y = 0.f;
         ELFFSM->GetUnit()->PlayTeleportEffect(&m_BeforeObj, &m_BeforeEffect, &m_AfterEffect, m_AfterPos);
     }
     break;

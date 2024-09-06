@@ -7,6 +7,7 @@ private:
     CGameObject* m_SpawnButterfly;
     CGameObject* m_Barricade;
     Vec3 m_BarricadeScale;
+    UINT m_EventIdx;
     float m_AccTime;
 
 public:
@@ -27,6 +28,7 @@ private:
     virtual void EnterDeath() override;
     virtual void ExitDeath() override;
     virtual void EnterClear() override;
+    virtual void FlowClear() override;
 
     // trigger events
     void SpawnMorpho();
