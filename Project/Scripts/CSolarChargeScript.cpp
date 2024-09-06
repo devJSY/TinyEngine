@@ -130,7 +130,7 @@ void CSolarChargeScript::EnterState()
     case SolarChargeState::ChargedWait:
         break;
     case SolarChargeState::Decreases: {
-        GamePlayStatic::Play2DSound(L"sound\\wav\\GimmickSolarPanel\\0002.wav", 1, 0.5f);
+        GamePlayStatic::Play2DSound(L"sound\\wav\\GimmickSolarPanel\\0002.wav", 1, MONSTER_EFFECTSOUND);
         Animator()->Play(ANIMPREFIX("Decreases"), false);
     }
     break;

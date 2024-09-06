@@ -32,8 +32,11 @@ private:
 
     SirKibbleState m_eState;
     float m_fAccTime;
+    float m_fAccTime2;
+    float m_fWatiTime;
     bool m_bJump;
     bool m_bPatrol;
+    bool m_bEnter;
     bool m_bThrow;
 
 public:

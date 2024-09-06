@@ -16,6 +16,9 @@ CSirKibbleScript::CSirKibbleScript()
     , m_fAccTime(0.f)
     , m_bPatrol(false)
     , m_bThrow(false)
+    , m_bEnter(false)
+    , m_fWatiTime(1.5f)
+    , m_fAccTime2(0.f)
 {
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_vDestPos, "Destination");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fAccTime, "AccTime");
@@ -33,6 +36,9 @@ CSirKibbleScript::CSirKibbleScript(const CSirKibbleScript& Origin)
     , m_fAccTime(0.f)
     , m_bPatrol(false)
     , m_bThrow(false)
+    , m_bEnter(false)
+    , m_fWatiTime(1.5f)
+    , m_fAccTime2(0.f)
 {
     AddScriptParam(SCRIPT_PARAM::VEC3, &m_vDestPos, "Destination");
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_fAccTime, "AccTime");
@@ -58,8 +64,9 @@ void CSirKibbleScript::begin()
 
     if (m_bPatrol)
     {
+        m_bEnter = true;
         m_vOriginPos = Transform()->GetWorldPos();
-        ChangeState(SirKibbleState::Patrol);
+        ChangeState(SirKibbleState::Fall);
     }
     else
     {
@@ -682,7 +689,23 @@ void CSirKibbleScript::Eaten()
 #pragma region LAND
 void CSirKibbleScript::Land()
 {
-    Animator()->IsFinish() ? ChangeState(SirKibbleState::FindWait) : void();
+    if (Animator()->IsFinish())
+    {
+        if (m_bEnter)
+        {
+            m_fAccTime2 += DT;
+            if (m_fAccTime2 >= m_fWatiTime)
+            {
+                m_bEnter = false;
+                m_fAccTime2 = 0.f;
+                ChangeState(SirKibbleState::Patrol);
+            }
+        }
+        else
+        {
+            ChangeState(SirKibbleState::FindWait);
+        }
+    }
 }
 #pragma endregion
 

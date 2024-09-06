@@ -54,6 +54,7 @@
 #define SOUND_SWORDKIRBY 0.1f
 #define KIRBY_EFFECTSOUND 0.1f
 #define MONSTER_EFFECTSOUND 0.1f
+#define SOUND_UI 0.1f
 
 #define PLAY_CURSTATE(STATE)                                                                                                                         \
     CKirbyFSM* KirbyFSM = CPlayerMgr::GetPlayerFSM();                                                                                                \

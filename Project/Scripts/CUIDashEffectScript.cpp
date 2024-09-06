@@ -53,8 +53,13 @@ void CUIDashEffectScript::begin()
 {
     ChangeState(DashEffectState::Stop);
     m_fRatioSpeed = 0.3f;
-    MeshRender()->GetMaterial(0)->SetScalarParam(FLOAT_2, 0.5f);
-    MeshRender()->SetCastShadow(false);
+
+    if (MeshRender())
+    {
+        MeshRender()->GetDynamicMaterial(0);
+        MeshRender()->GetMaterial(0)->SetScalarParam(FLOAT_2, 0.5f);
+        MeshRender()->SetCastShadow(false);
+    }
 }
 
 void CUIDashEffectScript::tick()

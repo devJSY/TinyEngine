@@ -163,6 +163,8 @@ void CLevelFlowMgr::begin()
         if (nullptr != m_pAbsorbUI)
             AbsorbUIOff();
     }
+
+    CSoundMgr::GetInst()->SetSoundLock(false);
 }
 
 void CLevelFlowMgr::tick()
@@ -396,8 +398,6 @@ void CLevelFlowMgr::LevelStart()
 
     if (nullptr != m_pDropUI)
         m_pDropUI->SetActive(true);
-
-    CSoundMgr::GetInst()->SetSoundLock(false);
 }
 
 void CLevelFlowMgr::LevelEnd()

@@ -118,7 +118,7 @@ void CUIHPScript::tick()
         if (!m_bSoundFlag)
         {
             m_bSoundFlag = true;
-            GamePlayStatic::Play2DSound(L"sound\\wav\\UiBasic\\0001.wav", 1, 0.3f);
+            GamePlayStatic::Play2DSound(L"sound\\wav\\UiBasic\\0001.wav", 1, SOUND_UI * 2.f);
         }
     }
     else
