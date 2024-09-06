@@ -62,7 +62,7 @@ void CKirbyObject_VendingMachine::AttackStart()
 
 void CKirbyObject_VendingMachine::AttackStartEnter()
 {
-    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroDeformVendingMachine\\VendingMachine_Attack.wav", 1, KIRBY_EFFECTSOUND);
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroDeformVendingMachine\\VendingMachine_Attack.wav", 1, KIRBY_EFFECTSOUND * 1.5f);
 
     PLAYERCTRL->LockJump();
 
@@ -120,7 +120,7 @@ void CKirbyObject_VendingMachine::AttackCharge1()
 
 void CKirbyObject_VendingMachine::AttackCharge1Enter()
 {
-    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroDeformVendingMachine\\VendingMachine_Attack.wav", 1, KIRBY_EFFECTSOUND);
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroDeformVendingMachine\\VendingMachine_Attack.wav", 1, KIRBY_EFFECTSOUND * 2.f, false);
 
     PLAYERCTRL->LockJump();
 

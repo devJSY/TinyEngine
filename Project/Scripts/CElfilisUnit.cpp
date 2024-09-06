@@ -52,9 +52,9 @@ void CElfilisUnit::tick()
         ElfilisStateGroup CurStateGroup = ELFFSM->GetCurStateGroup();
         if ((CurStateGroup >= ElfilisStateGroup::GroundIdle || CurStateGroup <= ElfilisStateGroup::GroundAtkFar))
         {
+            //AddResistHP();
             ELFFSM->ResetFSM();
             ELFFSM->ChangeStateGroup(ElfilisStateGroup::DEMO, L"DEMO_RESIST");
-            AddResistHP();
         }
     }
 
@@ -91,7 +91,7 @@ void CElfilisUnit::tick()
 
 void CElfilisUnit::AddResistHP()
 {
-    m_CurInfo.HP += m_CurInfo.MAXHP * 0.1f;
+    m_CurInfo.HP += m_CurInfo.MAXHP * 0.2f;
 }
 
 void CElfilisUnit::PlayTeleportEffect(CGameObject** _BeforeUnit, CGameObject** _BeforeEffect, CGameObject** _AfterEffect, Vec3 _Pos)

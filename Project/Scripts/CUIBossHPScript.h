@@ -58,12 +58,15 @@ private:
 
     bool m_bSoundFlag;
 
+    bool m_bHpHealStart;
+
 public:
     virtual void begin() override;
     virtual void tick() override;
 
     void ChangeState(HPState _state);
     void BossRevive();
+    void SetStartHPHeal() { m_bHpHealStart = true; }
 
 private:
     void EnterState();

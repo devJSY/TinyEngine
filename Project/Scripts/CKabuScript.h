@@ -28,12 +28,17 @@ private:
     Vec3 m_vDir;
     Vec3 m_vPrevDir;
 
+    float m_fAccTime2;
+    float m_fWaitTime;
+
     bool m_bInverse;
     bool m_bFlag;
     bool m_bCurved;
     bool m_bHalfCurved;
 
     bool m_bHalfFlag;
+
+    bool m_bIsEnter;
 
     float m_fAccTime;
 

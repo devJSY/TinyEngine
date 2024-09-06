@@ -104,8 +104,6 @@ public:
     Ptr<CSound> GetBGM() const { return m_BGM; }
     float GetVolume() const { return m_EndBGMVolume; }
 
-    void FadeOutSound();
-
 public:
     virtual void LevelStart();
     virtual void LevelEnd();

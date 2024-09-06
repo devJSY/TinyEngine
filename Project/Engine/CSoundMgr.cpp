@@ -4,6 +4,7 @@
 
 CSoundMgr::CSoundMgr()
     : m_ListSoundEvent{}
+    , m_bSoundLock(false)
 {
 }
 

@@ -23,6 +23,7 @@ CUIBossHPScript::CUIBossHPScript()
     , m_bMolPho(false)
     , m_bElfilis(false)
     , m_bSoundFlag(false)
+    , m_bHpHealStart(false)
 {
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bMolPho, "Molpho");
     AddScriptParam(SCRIPT_PARAM::BOOL, &m_bElfilis, "Elfilis");
@@ -117,8 +118,6 @@ void CUIBossHPScript::EnterState()
             m_pUnitScript = _pTargetObj->GetScript<CUnitScript>();
         }
 
-        m_pNameObj = GetOwner()->GetChildObject(L"UI_PlayerName");
-
         if (!m_pUnitScript)
             return;
 
@@ -148,6 +147,9 @@ void CUIBossHPScript::EnterState()
             m_pNameObj->SetActive(false);
             m_pNameObj2->SetActive(true);
         }
+
+        m_vDamageTask.resize(30);
+        m_vHealTask.resize(30);
     }
     break;
     case HPState::Tick:
@@ -167,7 +169,7 @@ void CUIBossHPScript::Enter()
 
     if (m_fMaxHP >= 0.1f && !m_bSoundFlag)
     {
-        GamePlayStatic::Play2DSound(L"sound\\wav\\UiBasic\\0000.wav", 0, 0.3f);
+        GamePlayStatic::Play2DSound(L"sound\\wav\\UiBasic\\0000.wav", 0, SOUND_UI * 2.f);
         m_bSoundFlag = true;
     }
 
@@ -186,14 +188,21 @@ void CUIBossHPScript::HPTick()
     if (!m_pUnitScript)
         return;
 
-    if (KEY_TAP(I))
-    {
-        BossRevive();
-    }
-
     // 데미지가 달면 현재 체력과 달라짐
     float fCheckHP = m_fCurHP;
     m_fCurHP = m_pUnitScript->GetCurInfo().HP;
+
+    if (m_fCurHP <= 0.1f && m_bHpHealed)
+    {
+        m_fPrevHP = 0.f;
+        m_vDamageTask.clear();
+        m_pRenderer->GetMaterial(0)->SetScalarParam(FLOAT_0, 0.f);
+        m_pRenderer->GetMaterial(0)->SetScalarParam(FLOAT_1, 0.f);
+        m_vHealTask.push_back({m_fCurHP, fCheckHP});
+        m_bHpHealed = true;
+        m_bDamaged = false;
+        return;
+    }
 
     // 뭐든 현재 체력의 변화가 생김
     if (abs(fCheckHP - m_fCurHP) >= 0.1f)
@@ -209,7 +218,7 @@ void CUIBossHPScript::HPTick()
                 if (fPrevHP >= m_fCurHP)
                 {
                     m_bHpHealed = false;
-                    m_vHealTask.pop_back();
+                    m_vHealTask.clear();
                 }
             }
             else
@@ -221,8 +230,13 @@ void CUIBossHPScript::HPTick()
         // 체력을 회복함
         else if (fCheckHP - m_fCurHP < 0.f)
         {
-            m_vHealTask.push_back({m_fCurHP, fCheckHP});
+            m_fPrevHP = 0.f;
+            m_vDamageTask.clear();
+            m_pRenderer->GetMaterial(0)->SetScalarParam(FLOAT_0, 0.f);
+            m_pRenderer->GetMaterial(0)->SetScalarParam(FLOAT_1, 0.f);
+            m_vHealTask.push_back({m_fCurHP, 0.f});
             m_bHpHealed = true;
+            m_bDamaged = false;
         }
     }
 
@@ -262,12 +276,12 @@ void CUIBossHPScript::CaculateShading()
 
 void CUIBossHPScript::CaculateHealShading()
 {
+    m_bHpHealStart = false;
     float _fShadingRatio = m_fCurHP / m_fMaxHP;
     m_pRenderer->GetMaterial(0)->SetScalarParam(FLOAT_0, _fShadingRatio);
     m_pRenderer->GetMaterial(0)->SetScalarParam(FLOAT_1, _fShadingRatio);
     m_bIsHealedScaling = false;
     m_bHpHealed = false;
-    m_vDamageTask.pop_back();
 }
 
 void CUIBossHPScript::HealScaling()

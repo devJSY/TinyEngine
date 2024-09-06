@@ -123,7 +123,7 @@ void CFireProjectileScript::OnTriggerEnter(CCollider* _OtherCollider)
     // 2. Static Object Hit
     LAYER_STATIC == pObj->GetLayerIdx() ? ChangeState(FIREPROJECTILE_STATE::Destroy) : void();
 
-    GamePlayStatic::Play2DSound(L"sound\\wav\\CharaBasic\\0008.wav", 1, 0.4f);
+    GamePlayStatic::Play2DSound(L"sound\\wav\\CharaBasic\\0008.wav", 1, MONSTER_EFFECTSOUND);
 }
 
 void CFireProjectileScript::OnTriggerExit(CCollider* _OtherCollider)

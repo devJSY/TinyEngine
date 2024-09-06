@@ -116,8 +116,8 @@ void CPlayerHitbox::OnTriggerEnter(CCollider* _OtherCollider)
         return;
     }
 
-    //sound
-    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\0012.wav", 1, KIRBY_EFFECTSOUND);
+    // sound
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\0012.wav", 1, KIRBY_EFFECTSOUND * 1.5f);
 
     m_AccTime = 0.f;
     AddDamage(pMonster);

@@ -22,19 +22,32 @@ void CKirbyStageClear::tick()
     {
         PLAYER->Animator()->SetPlay(false);
 
+        Vec3 Dir = -PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT);
+        Dir.y = 0.f;
+        Dir.Normalize();
+
+        Dir.y = -tanf(5.f * XM_PI / 180.f);
+        Dir.Normalize();
+
         // CameraSetting
         CCameraController* CamCtrl = CAMERACTRL;
         CamCtrl->SetMainTarget(PLAYER);
-        CamCtrl->SetLookDir(-PLAYER->Transform()->GetWorldDir(DIR_TYPE::FRONT));
+        CamCtrl->SetLookDir(Dir);
         CamCtrl->SetOffset(Vec3(0.f, 50.f, 0));
         CamCtrl->SetTargetOffset(Vec3(0.f, 0.f, 0.f));
         CamCtrl->SetLookDist(300.f);
-        CamCtrl->RotationLookDirRightAxis(5.f);
+        // CamCtrl->RotationLookDirRightAxis(5.f);
         CamCtrl->Normal(true);
 
+        Dir.y = 0.f;
+        Dir.Normalize();
+
+        Dir.y = -tanf(15.f * XM_PI / 180.f);
+        Dir.Normalize();
 
         CamCtrl->SetOffset(Vec3(0.f, -5.f, 0));
-        CamCtrl->RotationLookDirRightAxis(10.f);
+        // CamCtrl->RotationLookDirRightAxis(10.f);
+        CamCtrl->SetLookDir(Dir);
         CamCtrl->SetLookDist(200.f);
 
         m_Step = 1;
@@ -43,9 +56,10 @@ void CKirbyStageClear::tick()
     if (m_Step == 1 && m_Acc > m_Duration)
     {
 
-
+        CSoundMgr::GetInst()->SetSoundLock(false);
         // StageClear Sound
-        GamePlayStatic::Play2DSound(L"sound\\stream\\K15_KirbyDanceLong\\K15_KirbyDanceLong.marker.dspadpcm.wav", 1, KIRBY_EFFECTSOUND);
+        GamePlayStatic::Play2DSound(L"sound\\stream\\K15_KirbyDanceLong\\K15_KirbyDanceLong.marker.dspadpcm.wav", 1, KIRBY_EFFECTSOUND * 3.f);
+        CSoundMgr::GetInst()->SetSoundLock(true);
 
         PLAYER->Animator()->SetPlay(true);
         CPlayerMgr::SetPlayerFace(FaceType::Frown);
@@ -198,7 +212,9 @@ void CKirbyStageClear::tick()
 
     if (m_Step == 21 && CHECK_ANIMFRM(GetOwner(), 316))
     {
+        CSoundMgr::GetInst()->SetSoundLock(false);
         GamePlayStatic::Play2DSound(L"sound\\wav\\HeroVoice\\0047.wav", 1, KIRBY_EFFECTSOUND);
+        CSoundMgr::GetInst()->SetSoundLock(true);
 
         CPlayerMgr::SetPlayerFace(FaceType::Normal);
         CPlayerMgr::ClearMouthMtrl();
@@ -267,8 +283,6 @@ void CKirbyStageClear::Enter()
         }
     }
 
-
-
     // 애니메이션 재생
     PLAYER->Animator()->Play(ANIMPREFIX("ClearDanceLong"), false, false, 2.f);
 
@@ -283,16 +297,25 @@ void CKirbyStageClear::Enter()
 
     // UI 다 끄기
     CGameObject* ManagerObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager");
-    
 
     // Camera 속성을 초기값으로 돌린다.
     CAMERACTRL->LoadInitSetting(true);
+
+    CAMERACTRL->SetRotationSpeed(30.f);
+    CAMERACTRL->SetZoomMinSpeed(0.f);
+    CAMERACTRL->SetZoomMaxSpeed(500.f);
+    CAMERACTRL->SetZoomThreshold(300.f);
+    CAMERACTRL->SetMinDegreeX(10.f);
+    CAMERACTRL->SetMaxDegreeX(30.f);
+    CAMERACTRL->SetMinDegreeY(5.f);
+    CAMERACTRL->SetMaxDegreeY(10.f);
 
     CLevelFlowMgr* FlowMgrScript = ManagerObj->GetScript<CLevelFlowMgr>();
     FlowMgrScript->TurnOffBossHP();
     FlowMgrScript->TurnOffPlayerHP();
     FlowMgrScript->ActiveOffDropUI();
     GamePlayStatic::StopAllSound();
+    CSoundMgr::GetInst()->SetSoundLock(true);
 
     m_Step = 0;
     m_Duration = 2.f;

@@ -53,11 +53,11 @@ PS_OUT_FORWARD main(PS_IN input)
     // normal
     if (dot(eyeBase.rgb, float3(1.0, 1.0, 1.0)) / 3.f > 0.99f)
     {
-        normalWorld = float4(g_btex_2 ? NormalMapping(input, Albedo2Tex, input.vUV0, g_LinearClampSampler) : normalize(input.vNormalWorld), 1.f);
+        normalWorld = g_btex_2 ? NormalMapping(input, Albedo2Tex, input.vUV0, g_LinearClampSampler) : normalize(input.vNormalWorld);
     }
     else
     {
-        normalWorld = float4(normalize(input.vNormalWorld), 1.f);
+        normalWorld = normalize(input.vNormalWorld);
     }
 
     float metallic = MtrlMetallic;

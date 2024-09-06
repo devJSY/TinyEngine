@@ -87,6 +87,15 @@ void CStageClear::OnTriggerEnter(CCollider* _OtherCollider)
             m_KirbyDir.y = 0.f;
             m_KirbyDir.Normalize();
 
+            CGameObject* ManagerObj = CLevelMgr::GetInst()->GetCurrentLevel()->FindObjectByName(L"Manager");
+            if (nullptr != ManagerObj)
+            {
+                CLevelFlowMgr* pScript = ManagerObj->GetScript<CLevelFlowMgr>();
+                if (nullptr != pScript)
+                {
+                    pScript->AbsorbUIEndOff();
+                }
+            }
 
             PLAYERCTRL->ForcePos(m_KirbyPos);
             PLAYERCTRL->ForceDir({ForceDirType::STAGEEVENT, m_KirbyDir, true});

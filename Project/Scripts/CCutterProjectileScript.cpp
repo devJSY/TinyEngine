@@ -76,7 +76,7 @@ void CCutterProjectileScript::EnterState(CUTTERPROJECTILE_STATE _state)
     case CUTTERPROJECTILE_STATE::Attack: {
         if (nullptr != Transform())
         {
-            GamePlayStatic::Play2DSound(L"sound\\wav\\CharaBasic\\0019.wav", 1, 0.5f);
+            GamePlayStatic::Play2DSound(L"sound\\wav\\CharaBasic\\0019.wav", 1, MONSTER_EFFECTSOUND);
         }
         Animator()->Play(ANIMPREFIX("SpinBig"));
         m_vOriginPos = Transform()->GetWorldPos();
@@ -205,7 +205,7 @@ void CCutterProjectileScript::OnTriggerEnter(CCollider* _OtherCollider)
     if (LAYER_PLAYER == pObj->GetLayerIdx() && L"Main Player" == pObj->GetName())
     {
         UnitHit hitInfo = {DAMAGE_TYPE::NORMAL, GetOwner()->Transform()->GetWorldDir(DIR_TYPE::FRONT), 6.f, 0.f, 0.f};
-        GamePlayStatic::Play2DSound(L"sound\\wav\\CharaBasic\\0011.wav", 1, 0.4f);
+        GamePlayStatic::Play2DSound(L"sound\\wav\\CharaBasic\\0011.wav", 1, MONSTER_EFFECTSOUND);
         SlashEffect(pObj->Transform()->GetWorldPos());
         pObj->GetScript<CUnitScript>()->GetDamage(hitInfo);
     }

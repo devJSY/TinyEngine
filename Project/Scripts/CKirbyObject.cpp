@@ -267,6 +267,8 @@ void CKirbyObject::ChangeObjectEndEnter()
 
     PLAYER->Animator()->Play(ANIMPREFIX("DemoEndFirst"), false, false, 2.5f);
 
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\Skrr.wav", 1, KIRBY_EFFECTSOUND * 1.5f);
+
     CGameObject* pStarEffect =
         CAssetMgr::GetInst()
             ->Load<CPrefab>(L"prefab\\Effect_KirbyChangeAbilityStarSpawn.pref", L"prefab\\Effect_KirbyChangeAbilityStarSpawn.pref")

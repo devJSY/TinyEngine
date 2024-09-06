@@ -56,8 +56,8 @@ void CKirbyAttackAirGuardCharge::Enter()
     // sound
     wstring Charge = L"sound\\wav\\HeroSwordCharge\\Charge_Repeat.wav";
     wstring Sound = L"sound\\wav\\HeroSwordMorpho\\ShockWave_ChargeFinish.wav";
-    GamePlayStatic::Play2DSound(Charge, 0, SOUND_KIRBY * 0.6f, true, false);
-    GamePlayStatic::Play2DSound(Sound, 1, SOUND_KIRBY);
+    GamePlayStatic::Play2DSound(Charge, 0, SOUND_SWORDKIRBY * 0.6f, true, false);
+    GamePlayStatic::Play2DSound(Sound, 1, SOUND_SWORDKIRBY);
 }
 
 void CKirbyAttackAirGuardCharge::Exit()

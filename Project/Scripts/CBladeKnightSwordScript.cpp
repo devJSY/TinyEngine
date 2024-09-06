@@ -141,7 +141,7 @@ void CBladeKnightSwordScript::SlashEffect(Vec3 _vPos)
         CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Effect_SlashEffect.pref", L"prefab\\Effect_SlashEffect.pref")->Instantiate();
 
     Vec3 vPos = _vPos;
-    vPos.y += 35.f;
+    vPos.y += 15.f;
     pSpawnEffect->Transform()->SetWorldPos(vPos);
     GamePlayStatic::SpawnGameObject(pSpawnEffect, pSpawnEffect->GetLayerIdx());
 }
@@ -156,7 +156,7 @@ void CBladeKnightSwordScript::OnTriggerEnter(CCollider* _OtherCollider)
         HitDir.Normalize();
         UnitHit HitInfo = {DAMAGE_TYPE::NORMAL, HitDir, 10.f, 0.f, 0.f};
 
-        GamePlayStatic::Play2DSound(L"sound\\wav\\CharaBasic\\0012.wav", 1, 0.4f);
+        GamePlayStatic::Play2DSound(L"sound\\wav\\CharaBasic\\0012.wav", 1, MONSTER_EFFECTSOUND);
         SlashEffect(_OtherCollider->GetOwner()->Transform()->GetWorldPos());
 
         PLAYERUNIT->GetDamage(HitInfo);

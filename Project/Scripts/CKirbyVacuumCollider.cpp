@@ -67,7 +67,7 @@ void CKirbyVacuumCollider::tick()
 
 void CKirbyVacuumCollider::OnTriggerEnter(CCollider* _OtherCollider)
 {
-    if (m_bDrawing)
+    if (!SphereCollider()->IsEnabled() || m_bDrawing)
         return;
 
     // 흡수할 수 있는 물체라면

@@ -161,8 +161,6 @@ void CFlowMgr_Lv0::LevelEnd()
 {
     CLevelFlowMgr::LevelEnd();
 
-    FadeOutSound();
-
     SetFadeEffectColor(Vec3(115.f, 156.f, 28.f));
 }
 
