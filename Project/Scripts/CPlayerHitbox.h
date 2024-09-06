@@ -26,6 +26,9 @@ private:
     // Camera Shake
     bool m_bCameraShake;
 
+    float m_SoundAcc;
+    float m_SoundCoolTime;
+
 public:
     virtual void begin() override;
     virtual void tick() override;

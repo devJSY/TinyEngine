@@ -58,7 +58,7 @@ void CKirbyStageClear::tick()
 
         CSoundMgr::GetInst()->SetSoundLock(false);
         // StageClear Sound
-        GamePlayStatic::Play2DSound(L"sound\\stream\\K15_KirbyDanceLong\\K15_KirbyDanceLong.marker.dspadpcm.wav", 1, KIRBY_EFFECTSOUND * 3.f);
+        GamePlayStatic::Play2DSound(L"sound\\stream\\K15_KirbyDanceLong\\K15_KirbyDanceLong.marker.dspadpcm.wav", 1, KIRBY_EFFECTSOUND * 4.f);
         CSoundMgr::GetInst()->SetSoundLock(true);
 
         PLAYER->Animator()->SetPlay(true);

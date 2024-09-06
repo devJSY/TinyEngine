@@ -1201,6 +1201,19 @@ void CCameraController::Tilt(float _Duration, float _Frequency)
     m_TiltFrequency = _Frequency;
 }
 
+void CCameraController::EffectAllStop()
+{
+    m_Effect;
+
+    for (UINT i = 0; i < (UINT)EFFECT_TYPE::END; ++i)
+    {
+        m_Effect[i].Running = false;
+        m_Effect[i].Acc = 0.f;
+        m_Effect[i].Duration = 0.f;
+    }
+
+}
+
 Vec3 CCameraController::CalCamPos(Vec3 _TargetWorldPos, Vec3 _LookDir, float _CamDist)
 {
     _LookDir.Normalize();
