@@ -19,6 +19,8 @@ CPlayerHitbox::CPlayerHitbox()
     , m_bTimeScaling(false)
     , m_bDestroyCollision(false)
     , m_bCameraShake(false)
+    , m_SoundAcc(0.f)
+    , m_SoundCoolTime(0.1f)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Damage, "Damage");
     AddScriptParam(SCRIPT_PARAM::INT, &m_DamageTypeIdx, "Damage Type");
@@ -46,6 +48,8 @@ CPlayerHitbox::CPlayerHitbox(const CPlayerHitbox& _Origin)
     , m_bTimeScaling(_Origin.m_bTimeScaling)
     , m_bDestroyCollision(_Origin.m_bDestroyCollision)
     , m_bCameraShake(_Origin.m_bCameraShake)
+    , m_SoundAcc(0.f)
+    , m_SoundCoolTime(0.1f)
 {
     AddScriptParam(SCRIPT_PARAM::FLOAT, &m_Damage, "Damage");
     AddScriptParam(SCRIPT_PARAM::INT, &m_DamageTypeIdx, "Damage Type");
@@ -75,6 +79,7 @@ void CPlayerHitbox::tick()
         return;
 
     m_AccTime += DT;
+    m_SoundAcc += DT;
 
     // On Repeat flag
     if (m_AccTime > m_RepeatTime)
@@ -117,7 +122,13 @@ void CPlayerHitbox::OnTriggerEnter(CCollider* _OtherCollider)
     }
 
     // sound
-    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\0012.wav", 1, KIRBY_EFFECTSOUND * 1.5f);
+
+    if (m_SoundAcc > m_SoundCoolTime)
+    {
+        GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\0012.wav", 1, KIRBY_EFFECTSOUND * 1.5f, false);
+        m_SoundAcc = 0.f;
+    }
+
 
     m_AccTime = 0.f;
     AddDamage(pMonster);

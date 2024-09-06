@@ -51,9 +51,9 @@
 #define SOUND_ELFILIS 0.3f
 #define SOUND_MORPHO 0.4f
 
-#define SOUND_SWORDKIRBY 0.1f
+#define SOUND_SWORDKIRBY 0.22f
 #define KIRBY_EFFECTSOUND 0.1f
-#define MONSTER_EFFECTSOUND 0.1f
+#define MONSTER_EFFECTSOUND 0.15f
 #define SOUND_UI 0.1f
 
 #define PLAY_CURSTATE(STATE)                                                                                                                         \

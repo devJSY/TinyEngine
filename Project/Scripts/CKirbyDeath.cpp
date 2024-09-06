@@ -34,7 +34,7 @@ void CKirbyDeath::tick()
     {
         // sound
         CSoundMgr::GetInst()->SetSoundLock(false);
-        GamePlayStatic::Play2DSound(L"sound\\stream\\K15_Dead1\\K15_Dead1.marker.dspadpcm.wav", 1, KIRBY_EFFECTSOUND);
+        GamePlayStatic::Play2DSound(L"sound\\stream\\K15_Dead1\\K15_Dead1.marker.dspadpcm.wav", 1, KIRBY_EFFECTSOUND * 4.f);
         CSoundMgr::GetInst()->SetSoundLock(true);
         m_bSoundPlay = true;
     }

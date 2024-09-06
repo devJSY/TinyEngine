@@ -203,7 +203,7 @@ void CKirbyRunStart::SpawnSmoke()
     // 6프레임 -> 오른발, 26프레임 ->왼발
     if (m_LastSmokeIsRight == false && CHECK_ANIMFRM(GetOwner(), 6) && CHECK_ANIMFRM_UNDER(GetOwner(), 25))
     {
-        GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\Run.wav", 1, 1.f);
+        GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\Run.wav", 1, 1.5f);
 
         Ptr<CPrefab> Smoke = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Smoke.pref");
         if (Smoke.Get())
@@ -229,7 +229,7 @@ void CKirbyRunStart::SpawnSmoke()
 
     if (m_LastSmokeIsRight == true && CHECK_ANIMFRM(GetOwner(), 26))
     {
-        GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\Run.wav", 1, 1.f);
+        GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\Run.wav", 1, 1.5f);
 
         Ptr<CPrefab> Smoke = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\Smoke.pref");
         if (Smoke.Get())

@@ -553,6 +553,38 @@ void CKirbyFSM::begin()
 
 void CKirbyFSM::tick()
 {
+    if (KEY_TAP(KEY::_5) && KEY_PRESSED(KEY::LCTRL))
+    {
+        ChangeState(L"IDLE");
+    }
+
+    if (KEY_TAP(KEY::_6) && KEY_PRESSED(KEY::LCTRL))
+    {
+        m_NextAbility = AbilityCopyType::SWORD;
+        ChangeState(L"SWALLOW_START");
+    }
+
+    if (KEY_TAP(KEY::_7) && KEY_PRESSED(KEY::LCTRL))
+    {
+        m_NextAbility = AbilityCopyType::FIRE;
+        ChangeState(L"SWALLOW_START");
+    }
+
+    if (KEY_TAP(KEY::_8) && KEY_PRESSED(KEY::LCTRL))
+    {
+        m_NextAbility = AbilityCopyType::CUTTER;
+        ChangeState(L"SWALLOW_START");
+    }
+
+    if (KEY_TAP(KEY::_9) && KEY_PRESSED(KEY::LCTRL))
+    {
+        UnitInfo CurInfo = PLAYERUNIT->GetCurInfo();
+        CurInfo.HP = 1.f;
+
+        PLAYERUNIT->SetTestInfo(CurInfo);
+    }
+
+
     // Combo
     if (m_ComboLevel != 0)
     {

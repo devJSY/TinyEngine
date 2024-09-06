@@ -40,6 +40,8 @@ void CKirbyStuffedJump::tick()
 
 void CKirbyStuffedJump::Enter()
 {
+    GamePlayStatic::Play2DSound(L"sound\\wav\\HeroBasic\\Jump.wav", 1, KIRBY_EFFECTSOUND);
+
     PLAYER->Animator()->Play(ANIMPREFIX("StuffedJump"), false);
     CPlayerMgr::ClearBodyMtrl();
     CPlayerMgr::ClearMouthMtrl();
