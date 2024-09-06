@@ -267,6 +267,8 @@ public:
     void Shake(float _Duration, float _Frequency, float _Intencity);
     void Tilt(float _Duration, float _Frequency);
 
+    void EffectAllStop();
+
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;

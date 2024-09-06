@@ -173,6 +173,8 @@ void CKirbyBulletScript::OnTriggerEnter(CCollider* _OtherCollider)
     {
         if (_OtherCollider->GetOwner()->GetName() == L"Body Collider")
         {
+            GamePlayStatic::Play2DSound(L"sound\\wav\\CharaBasic\\0003.wav", 1, MONSTER_EFFECTSOUND * 1.5f);
+
             CUnitScript* pMonster = _OtherCollider->GetOwner()->GetParent()->GetScript<CUnitScript>();
             if (!pMonster)
                 return;

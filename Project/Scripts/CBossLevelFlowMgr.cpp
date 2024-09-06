@@ -162,6 +162,8 @@ void CBossLevelFlowMgr::EnterDemoPlay()
 
 void CBossLevelFlowMgr::EnterDeath()
 {
+    CAMERACTRL->EffectAllStop();
+
     TurnOffPlayerHP();
     TurnOffBossHP();
 }

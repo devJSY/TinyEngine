@@ -152,7 +152,7 @@ void CElfilisLaser::SetWait()
     else
         SoundKeyLaser = L"sound\\wav\\CharaBossChimeraSoul\\0016_DimensionLAser_Laser.wav";
 
-    GamePlayStatic::Play2DSound(SoundKeyLaser, 1, SOUND_ELFILIS);
+    GamePlayStatic::Play2DSound(SoundKeyLaser, 1, SOUND_ELFILIS * 0.6f, true, false);
 }
 
 void CElfilisLaser::SetEnd()

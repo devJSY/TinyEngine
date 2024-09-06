@@ -254,5 +254,5 @@ void CElfilisA_DimensionLaser::SpawnDimension(int _Idx)
 
     // sound
     wstring Sound = L"sound\\wav\\CharaBossChimeraSoul\\0013_DimensionLaser_LaserStrat.wav";
-    GamePlayStatic::Play2DSound(Sound, 1, SOUND_ELFILIS);
+    GamePlayStatic::Play2DSound(Sound, 1, SOUND_ELFILIS * 0.6f, true, false);
 }

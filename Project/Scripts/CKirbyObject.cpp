@@ -142,7 +142,17 @@ void CKirbyObject::DropObjectEnter()
 
     if (PLAYERFSM->GetCurWeapon())
     {
-        PLAYERFSM->GetCurWeapon()->SetActive(true);
+        if (PLAYERFSM->GetCurWeapon()->GetName() == L"KirbyMetalCutterWeapon")
+        {
+            PLAYERFSM->GetCurWeapon()->SetActive(false);
+        }
+        else
+        {
+
+            PLAYERFSM->GetCurWeapon()->SetActive(true);
+        }
+
+
         GamePlayStatic::AddChildObject(PLAYER, PLAYERFSM->GetCurWeapon(), L"Weapon");
     }
 
