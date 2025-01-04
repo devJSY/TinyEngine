@@ -303,6 +303,7 @@ void CRenderMgr::render_CameraPreview()
     if (0 == m_mainCam->GetCameraPriority())
         m_mainCam->render_Deferred();
     m_mainCam->render_Forward();
+    m_mainCam->render_Postprocess();
 
     Ptr<CTexture> pRTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
     CONTEXT->CopyResource(m_CameraPreviewTex->GetTex2D().Get(), pRTTex->GetTex2D().Get());
