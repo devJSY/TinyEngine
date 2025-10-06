@@ -27,11 +27,4 @@ public:
 
 private:
     void ChangeLevelAsyncFunc(const wstring& _strPath, LEVEL_STATE _StartState);
-
-public:
-    CLevel* CreateDefaultKirbyLevel();
-
-    CLevel* CreateDefaultStartUILevel();
-    CLevel* CreateDefaultRobbyUILevel();
-    CLevel* CreateDefaultPlayUILevel();
 };

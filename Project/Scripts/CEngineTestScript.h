@@ -12,14 +12,6 @@ public:
     virtual void tick() override;
 
 private:
-    void CharacterControllerTest();
-    void AnimatorTest();
-    void QuaternionExample();
-    void DetachObject();
-    void SetDirection();
-    void SoundTest();
-
-private:
     virtual void OnCollisionEnter(CCollider* _OtherCollider);
     virtual void OnCollisionStay(CCollider* _OtherCollider);
     virtual void OnCollisionExit(CCollider* _OtherCollider);

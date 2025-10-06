@@ -723,14 +723,8 @@
     <ClCompile Include="CModelEditor.cpp">
       <Filter>09. Editor\Model Editor</Filter>
     </ClCompile>
-    <ClCompile Include="CAssetMgr_Kirby.cpp">
-      <Filter>04. Manager\AssetMgr</Filter>
-    </ClCompile>
     <ClCompile Include="SimpleMath.cpp">
       <Filter>Module\SimpleMath</Filter>
-    </ClCompile>
-    <ClCompile Include="CLevelMgr_CreateDefaultKirbyLevel.cpp">
-      <Filter>04. Manager\LevelMgr</Filter>
     </ClCompile>
     <ClCompile Include="CSoundListener.cpp">
       <Filter>08. Component\SoundListener</Filter>
@@ -1082,98 +1076,14 @@
     <Filter Include="08. Component\Collider 2D\BoxCollider2D">
       <UniqueIdentifier>{82f47875-0ff7-426c-9826-d0c4880a1e4e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ShaderCode\Kirby">
-      <UniqueIdentifier>{68bad4c5-5326-4bbc-8628-e988af93b7c8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ShaderCode\Kirby\Characters">
-      <UniqueIdentifier>{c1400185-f673-4f7d-810e-45f34fcda712}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ShaderCode\Kirby\Characters\Kirby">
-      <UniqueIdentifier>{ba3e7ba3-f030-49ee-892f-e6039050922e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ShaderCode\Kirby\Characters\Boss">
-      <UniqueIdentifier>{ba8bd562-b57d-4dd5-b378-f77900ac5e05}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ShaderCode\Kirby\Characters\Monster">
-      <UniqueIdentifier>{4bb31100-7dd9-49a1-acda-b7805560ce2b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Module\SimpleMath">
       <UniqueIdentifier>{5f743d3c-a978-4db5-9aa2-75e1bbf57044}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ShaderCode\Kirby\SkySphere">
-      <UniqueIdentifier>{b293636d-b337-4d38-b074-1775de15c827}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ShaderCode\Kirby\Characters\Monster\Noddy">
-      <UniqueIdentifier>{82de1825-ebd5-48d8-8dd1-cbb92e02b601}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ShaderCode\Kirby\Common">
-      <UniqueIdentifier>{ef6049ec-7326-40b8-966e-7e749defabdd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ShaderCode\Kirby\Map">
-      <UniqueIdentifier>{31e4498a-f58c-45e8-ac2e-f789d062bdf3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ShaderCode\Kirby\UIShader">
-      <UniqueIdentifier>{1c926a9d-cfd7-4188-ba29-125df5963738}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ShaderCode\Kirby\UIShader\UIHPShader">
-      <UniqueIdentifier>{c63c5e1c-8daa-49bf-a891-a4976820dea8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ShaderCode\Kirby\UIShader\UIDefaultUIShader">
-      <UniqueIdentifier>{cde1195e-dd34-41d4-85be-f9d448d8c211}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ShaderCode\Kirby\Postprocess">
-      <UniqueIdentifier>{31eba271-b6d2-4a23-98b1-ed3fdf799bda}</UniqueIdentifier>
     </Filter>
     <Filter Include="ShaderCode\Render\Postprocess\LensFlare">
       <UniqueIdentifier>{a2edad5a-4026-44a0-aaa5-3320c3140b42}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ShaderCode\Kirby\Characters\Monster\HotHead">
-      <UniqueIdentifier>{be943b25-37cf-4771-a5e1-955ebf6963de}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ShaderCode\Kirby\Characters\Monster\DefaultEnemy">
-      <UniqueIdentifier>{b1ce7628-f5b2-4fc2-b2d9-37e6cb80410c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ShaderCode\Kirby\Characters\Monster\SirKibble">
-      <UniqueIdentifier>{52aa8560-1bea-47b8-b19e-b7b5a3e1aa74}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ShaderCode\Kirby\Characters\Monster\GhostGordo">
-      <UniqueIdentifier>{e5682491-197f-4e22-b39a-d878c384b677}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ShaderCode\Kirby\UIShader\UIButtonShader">
-      <UniqueIdentifier>{dd3364ed-67cd-46bd-98b3-b1c81137b47c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ShaderCode\Kirby\UIShader\UIRobbyShader">
-      <UniqueIdentifier>{ff54bde6-3ce4-4fd2-b6e2-b7d313b4aaa6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ShaderCode\Kirby\UIShader\UIRobbyShader\UIRobbyBackGroundShader">
-      <UniqueIdentifier>{cab8ac02-1ade-4ece-965e-1892f664e477}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ShaderCode\Kirby\UIShader\UIAnimShader">
-      <UniqueIdentifier>{31081bb5-a26c-4286-993c-6b11ced3a8a9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ShaderCode\Kirby\Characters\Boss\Elfilis">
-      <UniqueIdentifier>{77c706d5-7561-4ae6-882b-cc2e98d22851}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ShaderCode\Kirby\UIShader\UIFontShader">
-      <UniqueIdentifier>{a5381272-779e-47c5-82bd-a5ae480e1e76}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ShaderCode\Kirby\UIShader\UIClearLineShader">
-      <UniqueIdentifier>{28ba29fb-fb00-432c-b8bf-e47bbd158f01}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ShaderCode\Kirby\Map\Invasion at the House of Horror">
-      <UniqueIdentifier>{421a40da-c45f-4cff-87f9-0051de4dd71d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ShaderCode\Kirby\UIShader\EffectMaskingShader">
-      <UniqueIdentifier>{64fd1e64-cb64-451b-b37d-5c33e8301cbd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ShaderCode\Kirby\UIShader\UIDefaultBluredShader">
-      <UniqueIdentifier>{eec2f318-5245-4bff-9659-04c660fd91f4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="08. Component\SoundListener">
       <UniqueIdentifier>{f3013da9-2792-4a5f-a8e7-d6624a8fed34}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ShaderCode\Kirby\UIShader\DashEffectMaskingShader">
-      <UniqueIdentifier>{70507765-f9da-4c56-b8bd-04eb4e384943}</UniqueIdentifier>
     </Filter>
     <Filter Include="04. Manager\SoundMgr">
       <UniqueIdentifier>{113b04b3-c9d0-4b5e-b950-9c1f97936e2b}</UniqueIdentifier>
@@ -1425,56 +1335,8 @@
     <FxCompile Include="copybone.fx">
       <Filter>ShaderCode\Compute\CopyBone</Filter>
     </FxCompile>
-    <FxCompile Include="KirbyBodyPS.hlsl">
-      <Filter>ShaderCode\Kirby\Characters\Kirby</Filter>
-    </FxCompile>
-    <FxCompile Include="KirbySkySpherePS.hlsl">
-      <Filter>ShaderCode\Kirby\SkySphere</Filter>
-    </FxCompile>
-    <FxCompile Include="NormalEnemyPS.hlsl">
-      <Filter>ShaderCode\Kirby\Characters\Monster\DefaultEnemy</Filter>
-    </FxCompile>
-    <FxCompile Include="KirbyButterflyPS.hlsl">
-      <Filter>ShaderCode\Kirby\Characters\Kirby</Filter>
-    </FxCompile>
-    <FxCompile Include="KirbySwordMagmaPS.hlsl">
-      <Filter>ShaderCode\Kirby\Characters\Kirby</Filter>
-    </FxCompile>
-    <FxCompile Include="NoddyPS.hlsl">
-      <Filter>ShaderCode\Kirby\Characters\Monster\Noddy</Filter>
-    </FxCompile>
-    <FxCompile Include="GlassPS.hlsl">
-      <Filter>ShaderCode\Kirby\Common</Filter>
-    </FxCompile>
-    <FxCompile Include="KirbyLightbulbBodyPS.hlsl">
-      <Filter>ShaderCode\Kirby\Characters\Kirby</Filter>
-    </FxCompile>
-    <FxCompile Include="KirbyMapPS.hlsl">
-      <Filter>ShaderCode\Kirby\Map</Filter>
-    </FxCompile>
-    <FxCompile Include="TransparentPS.hlsl">
-      <Filter>ShaderCode\Kirby\Common</Filter>
-    </FxCompile>
-    <FxCompile Include="FunHouseMapPS.hlsl">
-      <Filter>ShaderCode\Kirby\Map\Invasion at the House of Horror</Filter>
-    </FxCompile>
-    <FxCompile Include="UIHPShaderVS.hlsl">
-      <Filter>ShaderCode\Kirby\UIShader\UIHPShader</Filter>
-    </FxCompile>
-    <FxCompile Include="UIHPShaderPS.hlsl">
-      <Filter>ShaderCode\Kirby\UIShader\UIHPShader</Filter>
-    </FxCompile>
-    <FxCompile Include="UIDefaultPS.hlsl">
-      <Filter>ShaderCode\Kirby\UIShader\UIDefaultUIShader</Filter>
-    </FxCompile>
-    <FxCompile Include="UIDefaultVS.hlsl">
-      <Filter>ShaderCode\Kirby\UIShader\UIDefaultUIShader</Filter>
-    </FxCompile>
     <FxCompile Include="DepthMaskingPS.hlsl">
       <Filter>ShaderCode\Render\PostEffect</Filter>
-    </FxCompile>
-    <FxCompile Include="KirbyFadeEffectPS.hlsl">
-      <Filter>ShaderCode\Kirby\Postprocess</Filter>
     </FxCompile>
     <FxCompile Include="LensFlareVS.hlsl">
       <Filter>ShaderCode\Render\Postprocess\LensFlare</Filter>
@@ -1488,107 +1350,14 @@
     <FxCompile Include="DepthofFieldPS.hlsl">
       <Filter>ShaderCode\Render\Postprocess</Filter>
     </FxCompile>
-    <FxCompile Include="KirbyDimensionalFadePS.hlsl">
-      <Filter>ShaderCode\Kirby\Postprocess</Filter>
-    </FxCompile>
-    <FxCompile Include="HotHeadPS.hlsl">
-      <Filter>ShaderCode\Kirby\Characters\Monster\HotHead</Filter>
-    </FxCompile>
-    <FxCompile Include="SirKibblePS.hlsl">
-      <Filter>ShaderCode\Kirby\Characters\Monster\SirKibble</Filter>
-    </FxCompile>
-    <FxCompile Include="GhostGordoPS.hlsl">
-      <Filter>ShaderCode\Kirby\Characters\Monster\GhostGordo</Filter>
-    </FxCompile>
     <FxCompile Include="MotionBlurPS.hlsl">
       <Filter>ShaderCode\Render\Postprocess</Filter>
-    </FxCompile>
-    <FxCompile Include="FirePS.hlsl">
-      <Filter>ShaderCode\Kirby\Common</Filter>
     </FxCompile>
     <FxCompile Include="CircleDistortionPS.hlsl">
       <Filter>ShaderCode\Render\Postprocess</Filter>
     </FxCompile>
-    <FxCompile Include="UIStartSceneButtonPS.hlsl">
-      <Filter>ShaderCode\Kirby\UIShader\UIButtonShader</Filter>
-    </FxCompile>
-    <FxCompile Include="UIRobbyBackGroundPS.hlsl">
-      <Filter>ShaderCode\Kirby\UIShader\UIRobbyShader\UIRobbyBackGroundShader</Filter>
-    </FxCompile>
-    <FxCompile Include="UIHPOutLinePS.hlsl">
-      <Filter>ShaderCode\Kirby\UIShader\UIHPShader</Filter>
-    </FxCompile>
-    <FxCompile Include="UIMaskingAnimPS.hlsl">
-      <Filter>ShaderCode\Kirby\UIShader\UIAnimShader</Filter>
-    </FxCompile>
-    <FxCompile Include="TransparentElfilisPS.hlsl">
-      <Filter>ShaderCode\Kirby\Characters\Boss\Elfilis</Filter>
-    </FxCompile>
-    <FxCompile Include="ElfilisLaserOuterPS.hlsl">
-      <Filter>ShaderCode\Kirby\Characters\Boss\Elfilis</Filter>
-    </FxCompile>
-    <FxCompile Include="ElfilisLaserInnerPS.hlsl">
-      <Filter>ShaderCode\Kirby\Characters\Boss\Elfilis</Filter>
-    </FxCompile>
     <FxCompile Include="RadialBlurPS.hlsl">
       <Filter>ShaderCode\Render\Postprocess</Filter>
-    </FxCompile>
-    <FxCompile Include="VacuumEffectPS.hlsl">
-      <Filter>ShaderCode\Kirby\Common</Filter>
-    </FxCompile>
-    <FxCompile Include="UIKirbyFontPS.hlsl">
-      <Filter>ShaderCode\Kirby\UIShader\UIFontShader</Filter>
-    </FxCompile>
-    <FxCompile Include="UIKirbyClearLineShader.hlsl">
-      <Filter>ShaderCode\Kirby\UIShader\UIClearLineShader</Filter>
-    </FxCompile>
-    <FxCompile Include="EffectPS.hlsl">
-      <Filter>ShaderCode\Kirby\Common</Filter>
-    </FxCompile>
-    <FxCompile Include="UIDefaultShaderNoTestPS.hlsl">
-      <Filter>ShaderCode\Kirby\UIShader\UIDefaultUIShader</Filter>
-    </FxCompile>
-    <FxCompile Include="RimOnlyPS.hlsl">
-      <Filter>ShaderCode\Kirby\Common</Filter>
-    </FxCompile>
-    <FxCompile Include="BarricadePS.hlsl">
-      <Filter>ShaderCode\Kirby\Common</Filter>
-    </FxCompile>
-    <FxCompile Include="KirbyDragonWingPS.hlsl">
-      <Filter>ShaderCode\Kirby\Characters\Kirby</Filter>
-    </FxCompile>
-    <FxCompile Include="EffectMaskingPS.hlsl">
-      <Filter>ShaderCode\Kirby\UIShader\EffectMaskingShader</Filter>
-    </FxCompile>
-    <FxCompile Include="KirbyUIDefaultBluredPS.hlsl">
-      <Filter>ShaderCode\Kirby\UIShader\UIDefaultBluredShader</Filter>
-    </FxCompile>
-    <FxCompile Include="DashEffectMaskingPS.hlsl">
-      <Filter>ShaderCode\Kirby\UIShader\DashEffectMaskingShader</Filter>
-    </FxCompile>
-    <FxCompile Include="EffectQuadPS.hlsl">
-      <Filter>ShaderCode\Kirby\Common</Filter>
-    </FxCompile>
-    <FxCompile Include="MaskingPS.hlsl">
-      <Filter>ShaderCode\Kirby\Common</Filter>
-    </FxCompile>
-    <FxCompile Include="MeshDistortionPS.hlsl">
-      <Filter>ShaderCode\Kirby\Postprocess</Filter>
-    </FxCompile>
-    <FxCompile Include="TextureDistortionPS.hlsl">
-      <Filter>ShaderCode\Kirby\Common</Filter>
-    </FxCompile>
-    <FxCompile Include="KirbyVignettePS.hlsl">
-      <Filter>ShaderCode\Kirby\Postprocess</Filter>
-    </FxCompile>
-    <FxCompile Include="ElfilisBodyPS.hlsl">
-      <Filter>ShaderCode\Kirby\Characters\Boss\Elfilis</Filter>
-    </FxCompile>
-    <FxCompile Include="DimensionGatePS.hlsl">
-      <Filter>ShaderCode\Kirby\Characters\Boss\Elfilis</Filter>
-    </FxCompile>
-    <FxCompile Include="ElfilisSkyPS.hlsl">
-      <Filter>ShaderCode\Kirby\Characters\Boss\Elfilis</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>
