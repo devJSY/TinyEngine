@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "CRigidBody.h"
-#include "physx\\PxPhysicsAPI.h"
+#include "physx/PxPhysicsAPI.h"
 
 #include "CPhysicsMgr.h"
 

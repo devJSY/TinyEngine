@@ -46,7 +46,7 @@ void CBlueprintEditor::init()
     ed::Config config;
 
     static string Path = ToString(CPathMgr::GetContentPath());
-    Path += "Blueprints\\Blueprints.json";
+    Path += "Blueprints/Blueprints.json";
     config.SettingsFile = Path.c_str();
 
     config.UserPointer = this;
@@ -153,9 +153,9 @@ void CBlueprintEditor::init()
     m_Links.push_back(Link(GetNextLinkId(), m_Nodes[14].Outputs[0].ID, m_Nodes[15].Inputs[0].ID));
 
     m_HeaderBackground =
-        CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\Blueprint\\BlueprintBackground.png", L"Icons\\Blueprint\\BlueprintBackground.png");
-    m_SaveIcon = CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\Blueprint\\ic_restore_white_24dp.png", L"Icons\\Blueprint\\ic_restore_white_24dp.png");
-    m_RestoreIcon = CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\Blueprint\\ic_save_white_24dp.png", L"Icons\\Blueprint\\ic_save_white_24dp.png");
+        CAssetMgr::GetInst()->Load<CTexture>(L"Icons/Blueprint/BlueprintBackground.png", L"Icons/Blueprint/BlueprintBackground.png");
+    m_SaveIcon = CAssetMgr::GetInst()->Load<CTexture>(L"Icons/Blueprint/ic_restore_white_24dp.png", L"Icons/Blueprint/ic_restore_white_24dp.png");
+    m_RestoreIcon = CAssetMgr::GetInst()->Load<CTexture>(L"Icons/Blueprint/ic_save_white_24dp.png", L"Icons/Blueprint/ic_save_white_24dp.png");
 }
 
 void CBlueprintEditor::render(bool* open)

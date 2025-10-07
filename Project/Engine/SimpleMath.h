@@ -39,13 +39,13 @@ struct ImVec2;
 struct ImVec4;
 
 // Box2D
-#include "box2d\\b2_math.h"
+#include "box2d/b2_math.h"
 
 struct b2Vec2;
 
 // PhysX
-#include "physx\\foundation\\PxVec3.h"
-#include "physx\\foundation\\Px.h"
+#include "physx/foundation/PxVec3.h"
+#include "physx/foundation/Px.h"
 
 namespace DirectX
 {

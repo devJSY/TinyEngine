@@ -3,7 +3,7 @@
 
 #include "CPhysics2DMgr.h"
 #include "CPhysicsMgr.h"
-#include <Scripts\\CScriptMgr.h>
+#include <Scripts/CScriptMgr.h>
 
 #include "CLevel.h"
 #include "CLayer.h"
@@ -27,7 +27,7 @@ void CLevelSaveLoad::SaveLevel(CLevel* _Level, const wstring& _LevelFileName)
 
     // Save 시 지정된 확장자로 저장하도록 설정
     wstring strLevelPath = CPathMgr::GetContentPath();
-    strLevelPath += L"Levels\\";
+    strLevelPath += L"Levels/";
     strLevelPath += _LevelFileName;
 
     std::filesystem::path filePath = strLevelPath;
@@ -190,7 +190,7 @@ CLevel* CLevelSaveLoad::LoadLevel(const wstring& _LevelFileName)
 {
     // Level 을 불러올 경로 설정
     wstring strLevelPath = CPathMgr::GetContentPath();
-    strLevelPath += L"Levels\\";
+    strLevelPath += L"Levels/";
     strLevelPath += _LevelFileName;
 
     std::filesystem::path filePath = strLevelPath;

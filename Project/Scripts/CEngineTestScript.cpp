@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "CEngineTestScript.h"
-#include <Engine\\CTransform.h>
-#include <Engine\\CTimeMgr.h>
-#include <Engine\\CRenderMgr.h>
-#include <Engine\\CSoundMgr.h>
+#include <Engine/CTransform.h>
+#include <Engine/CTimeMgr.h>
+#include <Engine/CRenderMgr.h>
+#include <Engine/CSoundMgr.h>
 
 CEngineTestScript::CEngineTestScript()
     : CScript(ENGINETESTSCRIPT)

@@ -13,7 +13,7 @@ CRaycastShader::CRaycastShader()
     , m_Ray{}
     , m_pOutput(nullptr)
 {
-    Create(L"shader\\raycast.fx", "CS_Raycast");
+    Create(L"shader/raycast.fx", "CS_Raycast");
 }
 
 CRaycastShader::~CRaycastShader()

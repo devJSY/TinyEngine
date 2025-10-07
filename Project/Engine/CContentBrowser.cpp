@@ -17,8 +17,8 @@ CContentBrowser::~CContentBrowser()
 void CContentBrowser::init()
 {
     m_CurrentDirectory = CPathMgr::GetContentPath();
-    m_DirectoryIcon = CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\ContentBrowser\\DirectoryIcon.png", L"Icons\\ContentBrowser\\DirectoryIcon.png");
-    m_FileIcon = CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\ContentBrowser\\FileIcon.png", L"Icons\\ContentBrowser\\FileIcon.png");
+    m_DirectoryIcon = CAssetMgr::GetInst()->Load<CTexture>(L"Icons/ContentBrowser/DirectoryIcon.png", L"Icons/ContentBrowser/DirectoryIcon.png");
+    m_FileIcon = CAssetMgr::GetInst()->Load<CTexture>(L"Icons/ContentBrowser/FileIcon.png", L"Icons/ContentBrowser/FileIcon.png");
 }
 
 void CContentBrowser::render()
@@ -31,12 +31,12 @@ void CContentBrowser::render()
     {
         if (ImGui::Button("Go Back"))
         {
-            // 예외처리 - L"\\" 가 붙어있는 경로라면 L"\\" 를 제거
+            // 예외처리 - L"/" 가 붙어있는 경로라면 L"/" 를 제거
             if (!m_CurrentDirectory.has_stem())
                 m_CurrentDirectory = m_CurrentDirectory.parent_path();
 
             m_CurrentDirectory = m_CurrentDirectory.parent_path();
-            m_CurrentDirectory += L"\\";
+            m_CurrentDirectory += L"/";
         }
 
         ImGui::Separator();

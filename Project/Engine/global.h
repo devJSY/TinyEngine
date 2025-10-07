@@ -47,21 +47,21 @@ using namespace DirectX;
 #pragma comment(lib, "d3dcompiler")
 
 // DirectxTex
-#include <DirectXTex\\DirectXTex.h>
+#include <DirectXTex/DirectXTex.h>
 
 #ifdef _DEBUG
-    #pragma comment(lib, "DirectXTex\\DirectXTex_debug")
+    #pragma comment(lib, "DirectXTex/DirectXTex_debug")
 #else
-    #pragma comment(lib, "DirectXTex\\DirectXTex")
+    #pragma comment(lib, "DirectXTex/DirectXTex")
 #endif
 
 // Directx Mesh
-#include <DirectXMesh\\DirectXMesh.h>
+#include <DirectXMesh/DirectXMesh.h>
 
 #ifdef _DEBUG
-    #pragma comment(lib, "DirectXMesh\\DirectXMesh_debug")
+    #pragma comment(lib, "DirectXMesh/DirectXMesh_debug")
 #else
-    #pragma comment(lib, "DirectXMesh\\DirectXMesh")
+    #pragma comment(lib, "DirectXMesh/DirectXMesh")
 #endif
 
 // SimpleMath
@@ -83,45 +83,45 @@ typedef Quaternion Quat;
 #include <imgui_impl_dx11.h>
 
 // ImGuizmo
-#include <ImGuizmo\\ImGuizmo.h>
+#include <ImGuizmo/ImGuizmo.h>
 
 // ImGui Node Editor
-#include <imgui_node_editor\\imgui_node_editor.h>
+#include <imgui_node_editor/imgui_node_editor.h>
 
 // Box2D
 #ifdef _DEBUG
-    #pragma comment(lib, "box2d\\box2d_debug")
+    #pragma comment(lib, "box2d/box2d_debug")
 #else
-    #pragma comment(lib, "box2d\\box2d")
+    #pragma comment(lib, "box2d/box2d")
 #endif
 
 // PhysX
 #ifdef _DEBUG
-    #pragma comment(lib, "PhysX\\PhysX_64_debug")
-    #pragma comment(lib, "PhysX\\PhysXCommon_64_debug")
-    #pragma comment(lib, "PhysX\\PhysXCooking_64_debug")
-    #pragma comment(lib, "PhysX\\PhysXExtensions_static_64_debug")
-    #pragma comment(lib, "PhysX\\PhysXFoundation_64_debug")
-    #pragma comment(lib, "PhysX\\PhysXPvdSDK_static_64_debug")
-    #pragma comment(lib, "PhysX\\PhysXVehicle_static_64_debug")
-    #pragma comment(lib, "PhysX\\PhysXCharacterKinematic_static_64_debug")
+    #pragma comment(lib, "PhysX/PhysX_64_debug")
+    #pragma comment(lib, "PhysX/PhysXCommon_64_debug")
+    #pragma comment(lib, "PhysX/PhysXCooking_64_debug")
+    #pragma comment(lib, "PhysX/PhysXExtensions_static_64_debug")
+    #pragma comment(lib, "PhysX/PhysXFoundation_64_debug")
+    #pragma comment(lib, "PhysX/PhysXPvdSDK_static_64_debug")
+    #pragma comment(lib, "PhysX/PhysXVehicle_static_64_debug")
+    #pragma comment(lib, "PhysX/PhysXCharacterKinematic_static_64_debug")
 #else
-    #pragma comment(lib, "PhysX\\PhysX_64")
-    #pragma comment(lib, "PhysX\\PhysXCommon_64")
-    #pragma comment(lib, "PhysX\\PhysXCooking_64")
-    #pragma comment(lib, "PhysX\\PhysXExtensions_static_64")
-    #pragma comment(lib, "PhysX\\PhysXFoundation_64")
-    #pragma comment(lib, "PhysX\\PhysXPvdSDK_static_64")
-    #pragma comment(lib, "PhysX\\PhysXVehicle_static_64")
-    #pragma comment(lib, "PhysX\\PhysXCharacterKinematic_static_64")
+    #pragma comment(lib, "PhysX/PhysX_64")
+    #pragma comment(lib, "PhysX/PhysXCommon_64")
+    #pragma comment(lib, "PhysX/PhysXCooking_64")
+    #pragma comment(lib, "PhysX/PhysXExtensions_static_64")
+    #pragma comment(lib, "PhysX/PhysXFoundation_64")
+    #pragma comment(lib, "PhysX/PhysXPvdSDK_static_64")
+    #pragma comment(lib, "PhysX/PhysXVehicle_static_64")
+    #pragma comment(lib, "PhysX/PhysXCharacterKinematic_static_64")
 #endif
 
 // Fbx Loader
-#include <FBXLoader\\fbxsdk.h>
+#include <FBXLoader/fbxsdk.h>
 #ifdef _DEBUG
-    #pragma comment(lib, "FBXLoader\\libfbxsdk-md_debug")
+    #pragma comment(lib, "FBXLoader/libfbxsdk-md_debug")
 #else
-    #pragma comment(lib, "FBXLoader\\libfbxsdk-md")
+    #pragma comment(lib, "FBXLoader/libfbxsdk-md")
 #endif
 
 // 엔진 헤더 참조

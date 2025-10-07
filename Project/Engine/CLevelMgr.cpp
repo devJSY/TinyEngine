@@ -109,16 +109,16 @@ CLevel* CLevelMgr::CreateDefaultLevel()
     pSkyBoxObj->Transform()->SetLocalPos(Vec3(5000.f, 0.f, 0.f));
 
     pSkyBoxObj->SkyBox()->SetEnvTex(
-        CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\skybox\\moonless\\moonlessEnvHDR.dds", L"Texture\\skybox\\moonless\\moonlessEnvHDR.dds"));
+        CAssetMgr::GetInst()->Load<CTexture>(L"Texture/skybox/moonless/moonlessEnvHDR.dds", L"Texture/skybox/moonless/moonlessEnvHDR.dds"));
 
     pSkyBoxObj->SkyBox()->SetBrdfTex(
-        CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\skybox\\moonless\\moonlessBrdf.dds", L"Texture\\skybox\\moonless\\moonlessBrdf.dds"));
+        CAssetMgr::GetInst()->Load<CTexture>(L"Texture/skybox/moonless/moonlessBrdf.dds", L"Texture/skybox/moonless/moonlessBrdf.dds"));
 
-    pSkyBoxObj->SkyBox()->SetDiffuseTex(CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\skybox\\moonless\\moonlessDiffuseHDR.dds",
-                                                                             L"Texture\\skybox\\moonless\\moonlessDiffuseHDR.dds"));
+    pSkyBoxObj->SkyBox()->SetDiffuseTex(CAssetMgr::GetInst()->Load<CTexture>(L"Texture/skybox/moonless/moonlessDiffuseHDR.dds",
+                                                                             L"Texture/skybox/moonless/moonlessDiffuseHDR.dds"));
 
-    pSkyBoxObj->SkyBox()->SetSpecularTex(CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\skybox\\moonless\\moonlessSpecularHDR.dds",
-                                                                              L"Texture\\skybox\\moonless\\moonlessSpecularHDR.dds"));
+    pSkyBoxObj->SkyBox()->SetSpecularTex(CAssetMgr::GetInst()->Load<CTexture>(L"Texture/skybox/moonless/moonlessSpecularHDR.dds",
+                                                                              L"Texture/skybox/moonless/moonlessSpecularHDR.dds"));
 
     NewLevel->AddObject(pSkyBoxObj, 15);
 

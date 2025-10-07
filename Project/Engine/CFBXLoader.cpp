@@ -487,7 +487,7 @@ void CFBXLoader::LoadTexture(const wstring& _RelativePath)
 
                 // .fbx 파일이 존재하는 경로의 Texture 파일 Load
                 wstring TexturePath = path(_RelativePath).parent_path();
-                TexturePath += L"\\";
+                TexturePath += L"/";
                 TexturePath += vecPath[k].filename();
                 CAssetMgr::GetInst()->Load<CTexture>(TexturePath, TexturePath);
 
@@ -535,7 +535,7 @@ void CFBXLoader::CreateMaterial(const wstring& _RelativePath)
             if (strMtrlFileName.empty())
                 strMtrlName += path(m_vecContainer[i].vecMtrl[j].strAlbedo).stem();
 
-            strPath = L"material\\";
+            strPath = L"material/";
             strPath += strMtrlName + L".mtrl";
 
             // 재질 이름
@@ -588,7 +588,7 @@ void CFBXLoader::CreateMaterial(const wstring& _RelativePath)
             // Texture Parse
             wstring TexturePath = CPathMgr::GetContentPath();
             TexturePath += path(_RelativePath).parent_path();
-            TexturePath += L"\\";
+            TexturePath += L"/";
             ParseTexture(TexturePath, strMtrlFileName, pMaterial);
 
             CAssetMgr::GetInst()->AddAsset<CMaterial>(pMaterial->GetKey(), pMaterial.Get());
@@ -619,7 +619,7 @@ void CFBXLoader::ParseTexture(std::filesystem::path _EntryPath, const wstring& _
 
             wstring TexturePath = FilePath;
             FilePath = FilePath.parent_path();
-            FilePath += L"\\";
+            FilePath += L"/";
 
             // Albedo
             if (nullptr == _Mtrl->GetTexParam(TEX_0) && string::npos != TexturePath.find(wstring(FilePath) + _MtrlName + L"_BaseColor"))

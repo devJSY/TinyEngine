@@ -3,7 +3,7 @@
 
 #include "CPhysics2DMgr.h"
 
-#include <box2d\\b2_fixture.h>
+#include <box2d/b2_fixture.h>
 #include "CScript.h"
 
 CCollider2D::CCollider2D(COMPONENT_TYPE _Type)

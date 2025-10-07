@@ -2,7 +2,7 @@
 #include "CEditorMgr.h"
 #include "CEditor.h"
 #include "CRenderMgr.h"
-#include <Scripts\\CScriptMgr.h>
+#include <Scripts/CScriptMgr.h>
 #include "CAssetMgr.h"
 #include "CLevelMgr.h"
 
@@ -71,8 +71,8 @@ void CEditorMgr::init()
     wstring wBold = CPathMgr::GetContentPath();
     wstring wRegular = CPathMgr::GetContentPath();
 
-    wBold += L"fonts\\opensans\\OpenSans-Bold.ttf";
-    wRegular += L"fonts\\opensans\\OpenSans-Regular.ttf";
+    wBold += L"fonts/opensans/OpenSans-Bold.ttf";
+    wRegular += L"fonts/opensans/OpenSans-Regular.ttf";
 
     io.Fonts->AddFontFromFileTTF(ToString(wBold).c_str(), fFontSize);
     io.FontDefault = io.Fonts->AddFontFromFileTTF(ToString(wRegular).c_str(), fFontSize);

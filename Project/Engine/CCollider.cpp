@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "CCollider.h"
 #include "CScript.h"
-#include "physx\\PxPhysicsAPI.h"
+#include "physx/PxPhysicsAPI.h"
 
 #include "CPhysicsMgr.h"
 

@@ -2,7 +2,7 @@
 #include "CPolygonCollider2D.h"
 
 #include "components.h"
-#include <box2d\\b2_fixture.h>
+#include <box2d/b2_fixture.h>
 
 CPolygonCollider2D::CPolygonCollider2D()
     : CCollider2D(COMPONENT_TYPE::POLYGONCOLLIDER2D)

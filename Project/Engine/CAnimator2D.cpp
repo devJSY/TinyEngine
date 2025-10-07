@@ -197,7 +197,7 @@ void CAnimator2D::SaveAnimations(const wstring& _strRelativePath)
 
     for (const auto& pair : m_mapAnim)
     {
-        wstring strFilePath = strFolderPath + L"\\" + pair.first + L".anim";
+        wstring strFilePath = strFolderPath + L"/" + pair.first + L".anim";
         if (!pair.second->SaveAnim(strFilePath))
         {
             LOG(Warning, "Animation Save Failed!");

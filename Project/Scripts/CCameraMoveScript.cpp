@@ -1,10 +1,10 @@
 #include "pch.h"
 #include "CCameraMoveScript.h"
 
-#include <Engine\\CEditorMgr.h>
-#include <Engine\\CLevelEditor.h>
-#include <Engine\\CDevice.h>
-#include <Engine\\CLevelMgr.h>
+#include <Engine/CEditorMgr.h>
+#include <Engine/CLevelEditor.h>
+#include <Engine/CDevice.h>
+#include <Engine/CLevelMgr.h>
 
 CCameraMoveScript::CCameraMoveScript()
     : CScript(CAMERAMOVESCRIPT)

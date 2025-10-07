@@ -21359,7 +21359,7 @@ void ImGui::ShowIDStackToolWindow(bool* p_open)
             for (int n = 0; level_desc[n] && p + 2 < p_end; n++)
             {
                 if (level_desc[n] == '/')
-                    *p++ = '\\';
+                    *p++ = '/';
                 *p++ = level_desc[n];
             }
         }

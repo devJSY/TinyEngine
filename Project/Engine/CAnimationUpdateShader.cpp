@@ -9,7 +9,7 @@ CAnimationUpdateShader::CAnimationUpdateShader()
     , m_pFinalMatBuffer(nullptr)
     , m_pPrevFinalMatBuffer(nullptr)
 {
-    Create(L"shader\\animation_update.fx", "AnimationUpdateCS");
+    Create(L"shader/animation_update.fx", "AnimationUpdateCS");
 }
 
 CAnimationUpdateShader::~CAnimationUpdateShader()

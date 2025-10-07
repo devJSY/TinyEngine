@@ -6,7 +6,7 @@
 #include "CRenderMgr.h"
 #include "CEditorMgr.h"
 #include "CPhysics2DMgr.h"
-#include <Scripts\\CScriptMgr.h>
+#include <Scripts/CScriptMgr.h>
 
 #include "CEngine.h"
 #include "CLevel.h"
@@ -500,7 +500,7 @@ void COutliner::DrawNode(CGameObject* obj)
     {
         if (ImGui::MenuItem("Create Prefab"))
         {
-            wstring path = L"prefab\\" + obj->GetName() + L".pref";
+            wstring path = L"prefab/" + obj->GetName() + L".pref";
             if (nullptr != CAssetMgr::GetInst()->FindAsset<CPrefab>(path))
             {
                 int value = MessageBox(nullptr, L"동일한 이름의 프리팹이 이미 존재합니다.\n교체하시겠습니까?", L"Prefab Replacement Warning",
@@ -1235,7 +1235,7 @@ void COutliner::DrawLight(CGameObject* obj)
         if (nullptr != pDepthMapTex)
             TextureID = pDepthMapTex->GetSRV().Get();
         else
-            TextureID = CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\missing_texture.png", L"Texture\\missing_texture.png")->GetSRV().Get();
+            TextureID = CAssetMgr::GetInst()->Load<CTexture>(L"Texture/missing_texture.png", L"Texture/missing_texture.png")->GetSRV().Get();
 
         ImGui::Text("ShadowMap Texture");
         ImGui::Image(TextureID, ImVec2(256.f, 256.f));
@@ -2738,7 +2738,7 @@ void COutliner::DrawParticlesystem(CGameObject* obj)
             if (nullptr != pParticleSystem->m_ParticleTex)
                 TextureID = pParticleSystem->m_ParticleTex->GetSRV().Get();
             else
-                TextureID = CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\missing_texture.png", L"Texture\\missing_texture.png")->GetSRV().Get();
+                TextureID = CAssetMgr::GetInst()->Load<CTexture>(L"Texture/missing_texture.png", L"Texture/missing_texture.png")->GetSRV().Get();
 
             ImGui::Image(TextureID, ImVec2(256.f, 256.f));
 
@@ -2883,7 +2883,7 @@ void COutliner::DrawDecal(CGameObject* obj)
                     AlbedoTextureName = ToString(pDecalAlbedoTex->GetName());
                 }
                 else
-                    pSRV = CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\missing_texture.png", L"Texture\\missing_texture.png")->GetSRV().Get();
+                    pSRV = CAssetMgr::GetInst()->Load<CTexture>(L"Texture/missing_texture.png", L"Texture/missing_texture.png")->GetSRV().Get();
 
                 ImGui::Columns(2);
                 ImGui::SetColumnWidth(0, 250);
@@ -2934,7 +2934,7 @@ void COutliner::DrawDecal(CGameObject* obj)
                     MRATextureName = ToString(pDecalMRATex->GetName());
                 }
                 else
-                    pSRV = CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\missing_texture.png", L"Texture\\missing_texture.png")->GetSRV().Get();
+                    pSRV = CAssetMgr::GetInst()->Load<CTexture>(L"Texture/missing_texture.png", L"Texture/missing_texture.png")->GetSRV().Get();
 
                 ImGui::Columns(2);
                 ImGui::SetColumnWidth(0, 250);
@@ -2985,7 +2985,7 @@ void COutliner::DrawDecal(CGameObject* obj)
                     NormalTextureName = ToString(pDecalNormalTex->GetName());
                 }
                 else
-                    pSRV = CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\missing_texture.png", L"Texture\\missing_texture.png")->GetSRV().Get();
+                    pSRV = CAssetMgr::GetInst()->Load<CTexture>(L"Texture/missing_texture.png", L"Texture/missing_texture.png")->GetSRV().Get();
 
                 ImGui::Columns(2);
                 ImGui::SetColumnWidth(0, 250);
@@ -3036,7 +3036,7 @@ void COutliner::DrawDecal(CGameObject* obj)
                     EmissiveTextureName = ToString(pDecalEmissiveTex->GetName());
                 }
                 else
-                    pSRV = CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\missing_texture.png", L"Texture\\missing_texture.png")->GetSRV().Get();
+                    pSRV = CAssetMgr::GetInst()->Load<CTexture>(L"Texture/missing_texture.png", L"Texture/missing_texture.png")->GetSRV().Get();
 
                 ImGui::Columns(2);
                 ImGui::SetColumnWidth(0, 250);
@@ -3123,7 +3123,7 @@ void COutliner::DrawLandscape(CGameObject* obj)
             if (nullptr != pBrushTex)
                 TextureID = pBrushTex->GetSRV().Get();
             else
-                TextureID = CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\missing_texture.png", L"Texture\\missing_texture.png")->GetSRV().Get();
+                TextureID = CAssetMgr::GetInst()->Load<CTexture>(L"Texture/missing_texture.png", L"Texture/missing_texture.png")->GetSRV().Get();
 
             ImGui::Image(TextureID, ImVec2(256.f, 256.f));
 

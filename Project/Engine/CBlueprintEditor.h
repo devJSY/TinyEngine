@@ -2,10 +2,10 @@
 
 #include "CEditor.h"
 
-#include <imgui_node_editor\\utilities\\builders.h>
-#include <imgui_node_editor\\utilities\\widgets.h>
-#include <imgui_node_editor\\imgui_node_editor.h>
-#include <imgui_node_editor\\imgui_node_editor_internal.h>
+#include <imgui_node_editor/utilities/builders.h>
+#include <imgui_node_editor/utilities/widgets.h>
+#include <imgui_node_editor/imgui_node_editor.h>
+#include <imgui_node_editor/imgui_node_editor_internal.h>
 
 #include "CTexture.h"
 

@@ -2210,7 +2210,7 @@ ImFont* ImFontAtlas::AddFont(const ImFontConfig* font_cfg)
 static unsigned int stb_decompress_length(const unsigned char* input);
 static unsigned int stb_decompress(unsigned char* output, const unsigned char* input, unsigned int length);
 static const char*  GetDefaultCompressedFontDataTTFBase85();
-static unsigned int Decode85Byte(char c)                                    { return c >= '\\' ? c-36 : c-35; }
+static unsigned int Decode85Byte(char c)                                    { return c >= '/' ? c-36 : c-35; }
 static void         Decode85(const unsigned char* src, unsigned char* dst)
 {
     while (*src)
@@ -2259,7 +2259,7 @@ ImFont* ImFontAtlas::AddFontFromFileTTF(const char* filename, float size_pixels,
     {
         // Store a short copy of filename into into the font name for convenience
         const char* p;
-        for (p = filename + strlen(filename); p > filename && p[-1] != '/' && p[-1] != '\\'; p--) {}
+        for (p = filename + strlen(filename); p > filename && p[-1] != '/' && p[-1] != '/'; p--) {}
         ImFormatString(font_cfg.Name, IM_ARRAYSIZE(font_cfg.Name), "%s, %.0fpx", p, size_pixels);
     }
     return AddFontFromMemoryTTF(data, (int)data_size, size_pixels, &font_cfg, glyph_ranges);

@@ -91,7 +91,7 @@ int CMeshData::Save(const wstring& _strRelativePath)
 
     UINT i = 0;
     wstring strMtrlPath = CPathMgr::GetContentPath();
-    strMtrlPath += L"material\\";
+    strMtrlPath += L"material/";
 
     for (; i < iMtrlCount; ++i)
     {
@@ -167,7 +167,7 @@ CMeshData* CMeshData::LoadFromFBX(const wstring& _RelativePath)
     // AssetMgr 에 메쉬 등록
     if (nullptr != pMesh)
     {
-        wstring strMeshKey = L"mesh\\";
+        wstring strMeshKey = L"mesh/";
         strMeshKey += std::filesystem::path(_RelativePath).stem();
         strMeshKey += L".mesh";
         CAssetMgr::GetInst()->AddAsset<CMesh>(strMeshKey, pMesh);

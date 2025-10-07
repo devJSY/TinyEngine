@@ -10,7 +10,7 @@ CWeightMapShader::CWeightMapShader()
     , m_Width(0)
     , m_Height(0)
 {
-    Create(L"shader\\weightmap.fx", "CS_WeightMap");
+    Create(L"shader/weightmap.fx", "CS_WeightMap");
 }
 
 CWeightMapShader::~CWeightMapShader()

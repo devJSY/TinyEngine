@@ -4,7 +4,7 @@
 #include "CLevelMgr.h"
 #include "CPhysics2DMgr.h"
 #include "CTaskMgr.h"
-#include <Scripts\\CScriptMgr.h>
+#include <Scripts/CScriptMgr.h>
 
 #include "CComponent.h"
 #include "CRenderComponent.h"

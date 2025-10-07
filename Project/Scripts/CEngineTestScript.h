@@ -1,5 +1,5 @@
 #pragma once
-#include <Engine\\CScript.h>
+#include <Engine/CScript.h>
 
 class CEngineTestScript : public CScript
 {

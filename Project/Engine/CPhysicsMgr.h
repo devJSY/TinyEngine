@@ -1,7 +1,7 @@
 #pragma once
 
-#include <physx\\PxPhysicsAPI.h>
-#include <physx\\PxSimulationEventCallback.h>
+#include <physx/PxPhysicsAPI.h>
+#include <physx/PxSimulationEventCallback.h>
 
 class CGameObject;
 class CCollider;

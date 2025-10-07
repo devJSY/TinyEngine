@@ -298,19 +298,19 @@ void value::dump(dump_context_t& context, int level) const
         case type_t::string:
             context.out << '\"';
 
-            if (string_ptr(m_Storage)->find_first_of("\"\\/\b\f\n\r") != string::npos || string_ptr(m_Storage)->find('\0') != string::npos)
+            if (string_ptr(m_Storage)->find_first_of("\"//\b\f\n\r") != string::npos || string_ptr(m_Storage)->find('\0') != string::npos)
             {
                 for (auto c : *string_ptr(m_Storage))
                 {
-                         if (c == '\"')  context.out << "\\\"";
-                    else if (c == '\\')  context.out << "\\\\";
-                    else if (c == '/')   context.out << "\\/";
-                    else if (c == '\b')  context.out << "\\b";
-                    else if (c == '\f')  context.out << "\\f";
-                    else if (c == '\n')  context.out << "\\n";
-                    else if (c == '\r')  context.out << "\\r";
-                    else if (c == '\t')  context.out << "\\t";
-                    else if (c == 0)     context.out << "\\u0000";
+                         if (c == '\"')  context.out << "/\"";
+                    else if (c == '/')  context.out << "//";
+                    else if (c == '/')   context.out << "//";
+                    else if (c == '\b')  context.out << "/b";
+                    else if (c == '\f')  context.out << "/f";
+                    else if (c == '\n')  context.out << "/n";
+                    else if (c == '\r')  context.out << "/r";
+                    else if (c == '\t')  context.out << "/t";
+                    else if (c == 0)     context.out << "/u0000";
                     else                 context.out << c;
                 }
             }
@@ -528,7 +528,7 @@ private:
     {
         auto s = state();
 
-        if (accept('\\'))
+        if (accept('/'))
         {
             return accept_escape(c);
         }
@@ -542,7 +542,7 @@ private:
     bool accept_escape(int& c)
     {
         if (accept('\"')) { c = '\"'; return true; }
-        if (accept('\\')) { c = '\\'; return true; }
+        if (accept('/')) { c = '/'; return true; }
         if (accept('/'))  { c = '/';  return true; }
         if (accept('b'))  { c = '\b'; return true; }
         if (accept('f'))  { c = '\f'; return true; }

@@ -22,9 +22,9 @@ void CLandScape::Init()
     m_CrossBuffer->Create(sizeof(tRaycastOut), 1, SB_TYPE::READ_WRITE, true);
 
     // 타일 텍스쳐(Color, Normal 혼합, 총 6장)
-    // m_TileArrTex = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\tile\\TILE_ARRR.dds", L"texture\\tile\\TILE_ARRR.dds");
-    // m_TileArrTex = CAssetMgr::GetInst()->LoadTexture(L"texture\\tile\\TILE_ARRR.dds", L"texture\\tile\\TILE_ARRR.dds", 8);
-    m_TileArrTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"Texture\\tile\\TILE_ARRR.dds");
+    // m_TileArrTex = CAssetMgr::GetInst()->Load<CTexture>(L"texture/tile/TILE_ARRR.dds", L"texture/tile/TILE_ARRR.dds");
+    // m_TileArrTex = CAssetMgr::GetInst()->LoadTexture(L"texture/tile/TILE_ARRR.dds", L"texture/tile/TILE_ARRR.dds", 8);
+    m_TileArrTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"Texture/tile/TILE_ARRR.dds");
     if (nullptr != m_TileArrTex)
     {
         m_TileArrTex->GenerateMip(8);
@@ -111,7 +111,7 @@ void CLandScape::CreateTexture()
     // CLandScape에서만 높이맵 텍스춰를 관리하도록 에셋매니저에서 삭제
     GamePlayStatic::DeleteAsset(ASSET_TYPE::TEXTURE, m_HeightMapTex.Get());
 
-    m_BrushTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"Texture\\brush\\Brush_02.png");
+    m_BrushTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"Texture/brush/Brush_02.png");
 
     // 가중치 버퍼
     m_WeightWidth = 1024;

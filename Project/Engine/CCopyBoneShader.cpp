@@ -6,7 +6,7 @@ CCopyBoneShader::CCopyBoneShader()
     , m_SrcBuffer(nullptr)
     , m_DestBuffer(nullptr)
 {
-    Create(L"shader\\copybone.fx", "CS_CopyBoneMatrix");
+    Create(L"shader/copybone.fx", "CS_CopyBoneMatrix");
 }
 
 CCopyBoneShader::~CCopyBoneShader()

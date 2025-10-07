@@ -2,30 +2,30 @@
 #include "Client.h"
 #include "framework.h"
 
-#include <Engine\\CEngine.h>
-#include <Engine\\CKeyMgr.h>
-#include <Engine\\CLevelMgr.h>
-#include <Engine\\CLevel.h>
-#include <Engine\\CTaskMgr.h>
+#include <Engine/CEngine.h>
+#include <Engine/CKeyMgr.h>
+#include <Engine/CLevelMgr.h>
+#include <Engine/CLevel.h>
+#include <Engine/CTaskMgr.h>
 
 // Engine
 #ifdef _DEBUG
-    #pragma comment(lib, "Engine\\Engine_d.lib")
+    #pragma comment(lib, "Engine/Engine_d.lib")
 #else
-    #pragma comment(lib, "Engine\\Engine.lib")
+    #pragma comment(lib, "Engine/Engine.lib")
 #endif
 
 // Scripts
 #ifdef _DEBUG
-    #pragma comment(lib, "Scripts\\Scripts_d.lib")
+    #pragma comment(lib, "Scripts/Scripts_d.lib")
 #else
-    #pragma comment(lib, "Scripts\\Scripts.lib")
+    #pragma comment(lib, "Scripts/Scripts.lib")
 #endif
 
 #include "CCreateTestLevel.h"
 #include "CCreatePBRLevel.h"
 
-#include <Engine\\CLevelSaveLoad.h>
+#include <Engine/CLevelSaveLoad.h>
 
 // 메모리 누수 체크
 #define _CRTDBG_MAP_ALLOC
@@ -68,7 +68,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
     // CCreateTestLevel::CreateTestLevel();
     // CCreatePBRLevel::CreatePBRLevel();
 
-#ifdef DISTRIBUTE // Engine\\global.h
+#ifdef DISTRIBUTE // Engine/global.h
     GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(L"Start Level.tLevel"), LEVEL_STATE::PLAY);
 #else
     GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(L"Default Level.tLevel"), LEVEL_STATE::STOP);

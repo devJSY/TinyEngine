@@ -8,7 +8,7 @@ CParticleUpdate::CParticleUpdate()
     , m_RWBuffer(nullptr)
 
 {
-    Create(L"shader\\particle_update.fx", "CS_ParticleUpdate");
+    Create(L"shader/particle_update.fx", "CS_ParticleUpdate");
 }
 
 CParticleUpdate::~CParticleUpdate()

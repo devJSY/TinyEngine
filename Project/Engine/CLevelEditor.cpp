@@ -13,7 +13,7 @@
 #include "CTimeMgr.h"
 #include "CRenderMgr.h"
 #include "CAssetMgr.h"
-#include <Scripts\\CScriptMgr.h>
+#include <Scripts/CScriptMgr.h>
 #include "CPhysics2DMgr.h"
 #include "CPhysicsMgr.h"
 
@@ -72,16 +72,16 @@ void CLevelEditor::init()
     m_Outliner.init();
     m_ContentBrowser.init();
 
-    m_PlayButtonTex = CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\PlayButton.png", L"Icons\\PlayButton.png");
-    m_SimulateButtonTex = CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\SimulateButton.png", L"Icons\\SimulateButton.png");
-    m_StepButtonTex = CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\StepButton.png", L"Icons\\StepButton.png");
-    m_PauseButtonTex = CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\PauseButton.png", L"Icons\\PauseButton.png");
-    m_StopButtonTex = CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\StopButton.png", L"Icons\\StopButton.png");
-    m_TranslateButtonTex = CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\translate.png", L"Icons\\translate.png");
-    m_RotateButtonTex = CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\rotate.png", L"Icons\\rotate.png");
-    m_ScaleButtonTex = CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\scale.png", L"Icons\\scale.png");
-    m_LocalButtonTex = CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\local.png", L"Icons\\local.png");
-    m_WorldButtonTex = CAssetMgr::GetInst()->Load<CTexture>(L"Icons\\global.png", L"Icons\\global.png");
+    m_PlayButtonTex = CAssetMgr::GetInst()->Load<CTexture>(L"Icons/PlayButton.png", L"Icons/PlayButton.png");
+    m_SimulateButtonTex = CAssetMgr::GetInst()->Load<CTexture>(L"Icons/SimulateButton.png", L"Icons/SimulateButton.png");
+    m_StepButtonTex = CAssetMgr::GetInst()->Load<CTexture>(L"Icons/StepButton.png", L"Icons/StepButton.png");
+    m_PauseButtonTex = CAssetMgr::GetInst()->Load<CTexture>(L"Icons/PauseButton.png", L"Icons/PauseButton.png");
+    m_StopButtonTex = CAssetMgr::GetInst()->Load<CTexture>(L"Icons/StopButton.png", L"Icons/StopButton.png");
+    m_TranslateButtonTex = CAssetMgr::GetInst()->Load<CTexture>(L"Icons/translate.png", L"Icons/translate.png");
+    m_RotateButtonTex = CAssetMgr::GetInst()->Load<CTexture>(L"Icons/rotate.png", L"Icons/rotate.png");
+    m_ScaleButtonTex = CAssetMgr::GetInst()->Load<CTexture>(L"Icons/scale.png", L"Icons/scale.png");
+    m_LocalButtonTex = CAssetMgr::GetInst()->Load<CTexture>(L"Icons/local.png", L"Icons/local.png");
+    m_WorldButtonTex = CAssetMgr::GetInst()->Load<CTexture>(L"Icons/global.png", L"Icons/global.png");
 
     COutputLog::GetInst()->init();
 }
@@ -266,7 +266,7 @@ void CLevelEditor::render_MenuBar()
 
             if (ImGui::MenuItem("Save Level"))
             {
-                std::filesystem::path filePath = SaveFileDialog(L"Levels\\", TEXT("레벨 파일\0*.tLevel\0모든 파일(*.*)\0*.*\0"));
+                std::filesystem::path filePath = SaveFileDialog(L"Levels/", TEXT("레벨 파일\0*.tLevel\0모든 파일(*.*)\0*.*\0"));
 
                 wstring FileName = filePath.filename();
                 if (!FileName.empty())
@@ -278,7 +278,7 @@ void CLevelEditor::render_MenuBar()
 
             if (ImGui::MenuItem("Load Level"))
             {
-                std::filesystem::path filePath = OpenFileDialog(L"Levels\\", TEXT("레벨 파일\0*.tLevel\0모든 파일(*.*)\0*.*\0"));
+                std::filesystem::path filePath = OpenFileDialog(L"Levels/", TEXT("레벨 파일\0*.tLevel\0모든 파일(*.*)\0*.*\0"));
 
                 wstring FileName = filePath.filename();
                 if (!FileName.empty())
@@ -754,7 +754,7 @@ void CLevelEditor::CreateAssetModal()
             {
             case ASSET_TYPE::MATERIAL: {
                 Ptr<CMaterial> pMtrl = new CMaterial(false);
-                wstring name = L"material\\" + ToWstring(buffer) + L".mtrl";
+                wstring name = L"material/" + ToWstring(buffer) + L".mtrl";
                 pMtrl->SetName(name);
                 CAssetMgr::GetInst()->AddAsset(name, pMtrl);
                 pMtrl->Save(name);
@@ -762,7 +762,7 @@ void CLevelEditor::CreateAssetModal()
             break;
             case ASSET_TYPE::PHYSICS2D_MATERIAL: {
                 Ptr<CPhysics2DMaterial> pMtrl = new CPhysics2DMaterial(false);
-                wstring name = L"physics2Dmaterial\\" + ToWstring(buffer) + L".physic2Dmtrl";
+                wstring name = L"physics2Dmaterial/" + ToWstring(buffer) + L".physic2Dmtrl";
                 pMtrl->SetName(name);
                 CAssetMgr::GetInst()->AddAsset(name, pMtrl);
                 pMtrl->Save(name);
@@ -770,7 +770,7 @@ void CLevelEditor::CreateAssetModal()
             break;
             case ASSET_TYPE::PHYSIC_MATERIAL: {
                 Ptr<CPhysicMaterial> pMtrl = new CPhysicMaterial(false);
-                wstring name = L"physicMaterial\\" + ToWstring(buffer) + L".physicMaterial";
+                wstring name = L"physicMaterial/" + ToWstring(buffer) + L".physicMaterial";
                 pMtrl->SetName(name);
                 CAssetMgr::GetInst()->AddAsset(name, pMtrl);
                 pMtrl->Save(name);

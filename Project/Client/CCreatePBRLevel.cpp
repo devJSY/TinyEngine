@@ -1,12 +1,12 @@
 #include "pch.h"
 #include "CCreatePBRLevel.h"
 
-#include <Engine\\func.h>
-#include <Engine\\CLevel.h>
-#include <Engine\\CLayer.h>
-#include <Engine\\CGameObject.h>
-#include <Engine\\components.h>
-#include <Engine\\CLevelMgr.h>
+#include <Engine/func.h>
+#include <Engine/CLevel.h>
+#include <Engine/CLayer.h>
+#include <Engine/CGameObject.h>
+#include <Engine/components.h>
+#include <Engine/CLevelMgr.h>
 
 CLevel* CCreatePBRLevel::CreatePBRLevel()
 {
@@ -119,7 +119,7 @@ void CCreatePBRLevel::AddSample(CLevel* _CurLevel)
     // meshes[0].HeightTextureFilename = "worn-painted-metal_height.png";
     // meshes[0].MetallicTextureFilename = "worn-painted-metal_metallic.png";
     // meshes[0].RoughnessTextureFilename = "worn-painted-metal_roughness.png";
-    // meshes[0].RelativeTextureFilePath = "Developers\\Textures\\PBR\\worn-painted-metal-ue\\";
+    // meshes[0].RelativeTextureFilePath = "Developers/Textures/PBR/worn-painted-metal-ue/";
 
     // CGameObject* pObj = CAssetMgr::GetInst()->LoadModel(L"worn-painted", meshes);
     // pObj->Transform()->SetLocalPos(Vec3(0.f, 0.f, 0.f));
@@ -141,7 +141,7 @@ void CCreatePBRLevel::AddSample(CLevel* _CurLevel)
     // meshes[0].HeightTextureFilename = "brick-wall_height.png";
     // meshes[0].MetallicTextureFilename = "brick-wall_metallic.png";
     // meshes[0].RoughnessTextureFilename = "brick-wall_roughness.png";
-    // meshes[0].RelativeTextureFilePath = "Developers\\Textures\\PBR\\brick-wall-ue\\";
+    // meshes[0].RelativeTextureFilePath = "Developers/Textures/PBR/brick-wall-ue/";
 
     // pObj = CAssetMgr::GetInst()->LoadModel(L"brick-wall", meshes);
     // pObj->Transform()->SetLocalPos(Vec3(250.f, 0.f, 0.f));
@@ -164,7 +164,7 @@ void CCreatePBRLevel::AddSample(CLevel* _CurLevel)
     // meshes[0].MetallicTextureFilename = "columned-lava-rock_metallic.png";
     // meshes[0].RoughnessTextureFilename = "columned-lava-rock_roughness.png";
     // meshes[0].EmissiveTextureFilename = "columned-lava-rock_emissive.png";
-    // meshes[0].RelativeTextureFilePath = "Developers\\Textures\\PBR\\columned-lava-rock-ue\\";
+    // meshes[0].RelativeTextureFilePath = "Developers/Textures/PBR/columned-lava-rock-ue/";
 
     // pObj = CAssetMgr::GetInst()->LoadModel(L"columned-lava-rock", meshes);
     // pObj->Transform()->SetLocalPos(Vec3(500.f, 0.f, 0.f));
@@ -186,7 +186,7 @@ void CCreatePBRLevel::AddSample(CLevel* _CurLevel)
     // meshes[0].HeightTextureFilename = "wrinkled-paper-height.png";
     // meshes[0].MetallicTextureFilename = "wrinkled-paper-metalness.png";
     // meshes[0].RoughnessTextureFilename = "wrinkled-paper-roughness.png";
-    // meshes[0].RelativeTextureFilePath = "Developers\\Textures\\PBR\\wrinkled-paper-ue\\";
+    // meshes[0].RelativeTextureFilePath = "Developers/Textures/PBR/wrinkled-paper-ue/";
 
     // pObj = CAssetMgr::GetInst()->LoadModel(L"wrinkled-paper", meshes);
     // pObj->Transform()->SetLocalPos(Vec3(750.f, 0.f, 0.f));
@@ -201,7 +201,7 @@ void CCreatePBRLevel::AddSample(CLevel* _CurLevel)
 void CCreatePBRLevel::AddModels(CLevel* _CurLevel)
 {
     //// Zelda Model
-    // CGameObject* pZelda = CAssetMgr::GetInst()->LoadModel(L"Zelda", "Developers\\Models\\zeldaPosed001\\", "zeldaPosed001.fbx");
+    // CGameObject* pZelda = CAssetMgr::GetInst()->LoadModel(L"Zelda", "Developers/Models/zeldaPosed001/", "zeldaPosed001.fbx");
     // if (nullptr != pZelda)
     //{
     //     pZelda->Transform()->SetLocalPos(Vec3(-500.f, 0.f, -250.f));
@@ -211,7 +211,7 @@ void CCreatePBRLevel::AddModels(CLevel* _CurLevel)
     //}
 
     //// Damaged Helmet
-    // CGameObject* pDamagedHelmet = CAssetMgr::GetInst()->LoadModel(L"Damaged Helmet", "Developers\\Models\\damaged-helmet\\", "DamagedHelmet.gltf");
+    // CGameObject* pDamagedHelmet = CAssetMgr::GetInst()->LoadModel(L"Damaged Helmet", "Developers/Models/damaged-helmet/", "DamagedHelmet.gltf");
     // if (nullptr != pDamagedHelmet)
     //{
     //     pDamagedHelmet->Transform()->SetLocalPos(Vec3(-250.f, 0.f, -250.f));
@@ -221,7 +221,7 @@ void CCreatePBRLevel::AddModels(CLevel* _CurLevel)
     //}
 
     //// torii gate
-    // CGameObject* ptoriigate = CAssetMgr::GetInst()->LoadModel(L"torii gate", "Developers\\Models\\torii_gate\\", "scene.gltf", true);
+    // CGameObject* ptoriigate = CAssetMgr::GetInst()->LoadModel(L"torii gate", "Developers/Models/torii_gate/", "scene.gltf", true);
     // if (nullptr != ptoriigate)
     //{
     //     ptoriigate->Transform()->SetLocalPos(Vec3(0.f, 0.f, -250.f));
@@ -231,7 +231,7 @@ void CCreatePBRLevel::AddModels(CLevel* _CurLevel)
     //}
 
     //// dragon warrior
-    // CGameObject* pDragonWarrior = CAssetMgr::GetInst()->LoadModel(L"Dragon Warrior", "Developers\\Models\\dragon_warrior\\", "scene.gltf", true);
+    // CGameObject* pDragonWarrior = CAssetMgr::GetInst()->LoadModel(L"Dragon Warrior", "Developers/Models/dragon_warrior/", "scene.gltf", true);
     // if (nullptr != pDragonWarrior)
     //{
     //     pDragonWarrior->Transform()->SetLocalPos(Vec3(250.f, 0.f, -250.f));
@@ -249,10 +249,10 @@ void CCreatePBRLevel::AddModels(CLevel* _CurLevel)
     // meshData.MetallicTextureFilename = "angel_armor_metalness.jpg";
     // meshData.RoughnessTextureFilename = "angel_armor_roughness.jpg";
     // meshData.EmissiveTextureFilename = "angel_armor_e.jpg";
-    // meshData.RelativeTextureFilePath = "Developers\\Models\\armored-female-future-soldier\\";
+    // meshData.RelativeTextureFilePath = "Developers/Models/armored-female-future-soldier/";
 
     // CGameObject* pArmoredFemale =
-    //     CAssetMgr::GetInst()->LoadModel(L"angel_armor", "Developers\\Models\\armored-female-future-soldier\\", "angel_armor.fbx", false, meshData);
+    //     CAssetMgr::GetInst()->LoadModel(L"angel_armor", "Developers/Models/armored-female-future-soldier/", "angel_armor.fbx", false, meshData);
     // if (nullptr != pArmoredFemale)
     //{
     //     pArmoredFemale->Transform()->SetLocalPos(Vec3(500.f, 0.f, -250.f));

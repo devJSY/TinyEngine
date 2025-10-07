@@ -14,7 +14,7 @@ CHeightMapShader::CHeightMapShader()
     , m_iBrushIdx(0)
     , m_pInput(nullptr)
 {
-    Create(L"shader\\heightmap.fx", "CS_HeightMap");
+    Create(L"shader/heightmap.fx", "CS_HeightMap");
 }
 
 CHeightMapShader::~CHeightMapShader()

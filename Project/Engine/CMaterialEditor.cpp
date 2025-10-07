@@ -298,7 +298,7 @@ void CMaterialEditor::DrawDetails()
                         CurTextureName = ToString(pTex->GetName());
                     }
                     else
-                        pSRV = CAssetMgr::GetInst()->Load<CTexture>(L"Texture\\missing_texture.png", L"Texture\\missing_texture.png")->GetSRV().Get();
+                        pSRV = CAssetMgr::GetInst()->Load<CTexture>(L"Texture/missing_texture.png", L"Texture/missing_texture.png")->GetSRV().Get();
 
                     ImGui::Columns(2);
                     ImGui::SetColumnWidth(0, 250);

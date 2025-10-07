@@ -1,15 +1,15 @@
 #include "pch.h"
 #include "CCreateTestLevel.h"
 
-#include <Engine\\func.h>
-#include <Engine\\CLevel.h>
-#include <Engine\\CLayer.h>
-#include <Engine\\CGameObject.h>
-#include <Engine\\components.h>
-#include <Engine\\CScript.h>
+#include <Engine/func.h>
+#include <Engine/CLevel.h>
+#include <Engine/CLayer.h>
+#include <Engine/CGameObject.h>
+#include <Engine/components.h>
+#include <Engine/CScript.h>
 
-#include <Engine\\CLevelMgr.h>
-#include <Scripts\\CScriptMgr.h>
+#include <Engine/CLevelMgr.h>
+#include <Scripts/CScriptMgr.h>
 
 CLevel* CCreateTestLevel::CreateTestLevel()
 {
