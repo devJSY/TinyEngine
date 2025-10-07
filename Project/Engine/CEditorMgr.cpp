@@ -265,7 +265,7 @@ void CEditorMgr::SetContentAutoLoad()
     // 컨텐츠 폴더에 존재하는 모든 에셋 로딩
     if (m_bContentAutoLoad)
     {
-        CAssetMgr::GetInst()->AsyncReloadContent();
+        CAssetMgr::GetInst()->ReloadContent();
     }
 }
 
@@ -338,7 +338,7 @@ void CEditorMgr::ObserveContent()
     {
         FindNextChangeNotification(m_hObserver);
 
-        CAssetMgr::GetInst()->AsyncReloadContent();
+        CAssetMgr::GetInst()->ReloadContent();
         LOG(Log, "Assets Reloaded!!");
     }
 }

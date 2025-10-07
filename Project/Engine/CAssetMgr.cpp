@@ -15,9 +15,6 @@
 
 CAssetMgr::CAssetMgr()
     : m_mapAsset{}
-    , m_listLoadThread{}
-    , m_Mutex()
-    , m_CompletedThread(0)
     , m_vecLayoutInfo{}
     , m_iLayoutOffset_0(0)
     , m_iLayoutOffset_1(0)
@@ -65,65 +62,6 @@ void CAssetMgr::initSound()
     // 32개 채널 생성
     CSound::g_pFMOD->init(32, FMOD_DEFAULT, nullptr);
     CSound::g_pFMOD->set3DSettings(1.f, 1.f, 1.f); // Default
-}
-
-void CAssetMgr::tick()
-{
-    // 모델 로딩이 종료된 후 쓰레드 해제
-    if (!IsAssetLoading())
-    {
-        ThreadRelease();
-    }
-}
-
-void CAssetMgr::AsyncReloadContent()
-{
-    m_listLoadThread.push_back(std::thread(&CAssetMgr::AsyncReloadContentFunc, this));
-}
-
-void CAssetMgr::AsyncReloadContentFunc()
-{
-    std::scoped_lock lock(m_Mutex); // 상호배제
-
-    LoadAssetsFromFile(CPathMgr::GetContentPath());
-
-    // 원본 파일이 삭제된 에셋은 메모리에서 제거
-    for (UINT i = 0; i < (UINT)ASSET_TYPE::END; i++)
-    {
-        for (const auto& pair : m_mapAsset[i])
-        {
-            if (pair.second->IsEngineAsset())
-                continue;
-
-            wstring strFilePath = CPathMgr::GetContentPath() + pair.first;
-            if (!std::filesystem::exists(strFilePath))
-            {
-                LOG(Warning, "%s Source File Deleted!", ToString(strFilePath).c_str());
-
-                GamePlayStatic::DeleteAsset((ASSET_TYPE)i, pair.second);
-            }
-        }
-    }
-
-    ++m_CompletedThread;
-}
-
-void CAssetMgr::ThreadRelease()
-{
-    if (m_listLoadThread.empty())
-        return;
-
-    // 각 Thread가 종료될때 까지 대기
-    for (std::thread& Thread : m_listLoadThread)
-    {
-        if (Thread.joinable())
-        {
-            Thread.join();
-        }
-    }
-
-    m_listLoadThread.clear();
-    m_CompletedThread = 0;
 }
 
 void CAssetMgr::SaveAssetsToFile()
@@ -176,6 +114,29 @@ void CAssetMgr::LoadAssetsFromFile(std::filesystem::path _EntryPath)
                 Load<CPhysics2DMaterial>(FileRelativePath, FileRelativePath);
             if (FileExtension == L".physicMaterial")
                 Load<CPhysicMaterial>(FileRelativePath, FileRelativePath);
+        }
+    }
+}
+
+void CAssetMgr::ReloadContent()
+{
+    LoadAssetsFromFile(CPathMgr::GetContentPath());
+
+    // 원본 파일이 삭제된 에셋은 메모리에서 제거
+    for (UINT i = 0; i < (UINT)ASSET_TYPE::END; i++)
+    {
+        for (const auto& pair : m_mapAsset[i])
+        {
+            if (pair.second->IsEngineAsset())
+                continue;
+
+            wstring strFilePath = CPathMgr::GetContentPath() + pair.first;
+            if (!std::filesystem::exists(strFilePath))
+            {
+                LOG(Warning, "%s Source File Deleted!", ToString(strFilePath).c_str());
+
+                GamePlayStatic::DeleteAsset((ASSET_TYPE)i, pair.second);
+            }
         }
     }
 }

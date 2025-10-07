@@ -93,9 +93,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
         }
     }
 
-    CLevelMgr::GetInst()->ThreadRelease();
-    CAssetMgr::GetInst()->ThreadRelease();
-
     CTaskMgr::GetInst()->tick(); // 등록된 Task 처리 후 종료
 
     return (int)msg.wParam;

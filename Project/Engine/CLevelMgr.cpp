@@ -15,8 +15,6 @@
 
 CLevelMgr::CLevelMgr()
     : m_CurLevel(nullptr)
-    , m_listLoadThread{}
-    , m_Mutex()
 {
 }
 
@@ -143,32 +141,4 @@ void CLevelMgr::ChangeLevel(CLevel* _NextLevel, LEVEL_STATE _StartState)
 
     if (nullptr != m_CurLevel)
         m_CurLevel->ChangeState(_StartState);
-}
-
-void CLevelMgr::ChangeLevelAsync(const wstring& _strPath, LEVEL_STATE _StartState)
-{
-    m_listLoadThread.push_back(std::thread(&CLevelMgr::ChangeLevelAsyncFunc, this, _strPath, _StartState));
-}
-
-void CLevelMgr::ChangeLevelAsyncFunc(const wstring& _strPath, LEVEL_STATE _StartState)
-{
-    std::scoped_lock lock(m_Mutex); // 상호배제
-    GamePlayStatic::ChangeLevel(CLevelSaveLoad::LoadLevel(_strPath), _StartState);
-}
-
-void CLevelMgr::ThreadRelease()
-{
-    if (m_listLoadThread.empty())
-        return;
-
-    // 각 Thread가 종료될때 까지 대기
-    for (std::thread& Thread : m_listLoadThread)
-    {
-        if (Thread.joinable())
-        {
-            Thread.join();
-        }
-    }
-
-    m_listLoadThread.clear();
 }

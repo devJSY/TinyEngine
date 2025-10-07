@@ -221,18 +221,18 @@ void CLevelEditor::render()
     // static bool b = true;
     // ImGui::ShowDemoWindow(&b);
 
-    if (CAssetMgr::GetInst()->IsAssetLoading())
-    {
-        ImGui::Begin("Asset Loading", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoDocking);
+    //if (CAssetMgr::GetInst()->IsAssetLoading())
+    //{
+    //    ImGui::Begin("Asset Loading", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoDocking);
 
-        const ImU32 col = ImGui::GetColorU32(ImVec4{0.2f, 0.45f, 0.811f, 1.0f});
-        const ImU32 bg = ImGui::GetColorU32(ImVec4{0.258f, 0.258f, 0.258f, 1.0f});
+    //    const ImU32 col = ImGui::GetColorU32(ImVec4{0.2f, 0.45f, 0.811f, 1.0f});
+    //    const ImU32 bg = ImGui::GetColorU32(ImVec4{0.258f, 0.258f, 0.258f, 1.0f});
 
-        ImGui_Spinner("##spinner", 15, 6, col);
-        ImGui_BufferingBar("##buffer_bar", CAssetMgr::GetInst()->GetModelLoadingProgress(), ImVec2(400, 6), bg, col);
+    //    ImGui_Spinner("##spinner", 15, 6, col);
+    //    ImGui_BufferingBar("##buffer_bar", CAssetMgr::GetInst()->GetModelLoadingProgress(), ImVec2(400, 6), bg, col);
 
-        ImGui::End();
-    }
+    //    ImGui::End();
+    //}
 
     ImGui::End(); // dockspace End
 
@@ -283,7 +283,8 @@ void CLevelEditor::render_MenuBar()
                 wstring FileName = filePath.filename();
                 if (!FileName.empty())
                 {
-                    GamePlayStatic::ChangeLevelAsync(FileName, LEVEL_STATE::STOP);
+                    CLevel* pLoadedLevel = CLevelSaveLoad::LoadLevel(FileName);
+                    GamePlayStatic::ChangeLevel(pLoadedLevel, LEVEL_STATE::STOP);
                 }
             }
 

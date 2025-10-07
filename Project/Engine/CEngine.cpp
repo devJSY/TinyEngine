@@ -68,7 +68,6 @@ void CEngine::progress()
         // Manager Update
         CTimeMgr::GetInst()->tick();
         CKeyMgr::GetInst()->tick();
-        CAssetMgr::GetInst()->tick();
 
         // Level Update
         CEditorMgr::GetInst()->tick();

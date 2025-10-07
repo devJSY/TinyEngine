@@ -2103,58 +2103,8 @@ Ptr<CMeshData> CAssetMgr::LoadFBX(const wstring& _strPath)
     return pMeshData;
 }
 
-void CAssetMgr::AsyncLoadFBX(const wstring& _strPath)
+void CAssetMgr::LoadAnimationFBX(Ptr<CMesh> _pOriginMesh, const wstring& _strPath)
 {
-    m_listLoadThread.push_back(std::thread(&CAssetMgr::AsyncLoadFBXFunc, this, _strPath));
-}
-
-void CAssetMgr::AsyncLoadAnimationFBX(Ptr<CMesh> _pOriginMesh, const wstring& _strPath)
-{
-    m_listLoadThread.push_back(std::thread(&CAssetMgr::AsyncLoadAnimationFBXFunc, this, _pOriginMesh, _strPath));
-}
-
-void CAssetMgr::AsyncLoadFBXFunc(const wstring& _strPath)
-{
-    std::scoped_lock lock(m_Mutex); // 상호배제
-
-    wstring strFileName = std::filesystem::path(_strPath).stem();
-
-    wstring strName = L"meshdata\\";
-    strName += strFileName + L".mdat";
-
-    Ptr<CMeshData> pMeshData = FindAsset<CMeshData>(strName);
-
-    if (nullptr != pMeshData)
-    {
-        ++m_CompletedThread;
-        LOG(Warning, "%s is Already Loaded!", ToString(strName).c_str());
-        return;
-    }
-
-    pMeshData = CMeshData::LoadFromFBX(_strPath);
-    pMeshData->SetName(strName);
-    pMeshData->SetKey(strName);
-    pMeshData->SetRelativePath(strName);
-
-    AddAsset<CMeshData>(strName, pMeshData);
-
-    // meshdata 를 파일 저장
-    pMeshData->Save(strName);
-
-    // 모델에디터 모델 재설정
-    tTask task = {};
-    task.Type = TASK_TYPE::SET_MODEL;
-    task.Param_1 = (DWORD_PTR)pMeshData.Get();
-    CTaskMgr::GetInst()->AddTask(task);
-
-    ++m_CompletedThread;
-    LOG(Log, "%s has been Successfully Loaded!", ToString(strName).c_str());
-}
-
-void CAssetMgr::AsyncLoadAnimationFBXFunc(Ptr<CMesh> _pOriginMesh, const wstring& _strPath)
-{
-    std::scoped_lock lock(m_Mutex); // 상호배제
-
     CFBXLoader loader;
     loader.init();
     loader.LoadFbx(_strPath);
@@ -2168,8 +2118,6 @@ void CAssetMgr::AsyncLoadAnimationFBXFunc(Ptr<CMesh> _pOriginMesh, const wstring
     task.Param_1 = (DWORD_PTR)_pOriginMesh.Get();
     task.Param_2 = (DWORD_PTR)pAinmMesh;
     CTaskMgr::GetInst()->AddTask(task);
-
-    ++m_CompletedThread;
 }
 
 tMeshData CAssetMgr::MakePoint()

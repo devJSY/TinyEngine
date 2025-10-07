@@ -20,9 +20,6 @@ class CAssetMgr : public CSingleton<CAssetMgr>
 
 private:
     map<wstring, Ptr<CAsset>> m_mapAsset[(UINT)ASSET_TYPE::END];
-    std::list<std::thread> m_listLoadThread;
-    std::mutex m_Mutex;
-    UINT m_CompletedThread;
 
     vector<D3D11_INPUT_ELEMENT_DESC> m_vecLayoutInfo;
     UINT m_iLayoutOffset_0;
@@ -35,15 +32,13 @@ public:
 public:
     void init();
     void initSound();
-    void tick();
-
-    void ThreadRelease();
-    float GetModelLoadingProgress() { return m_CompletedThread / (float)m_listLoadThread.size(); }
-    bool IsAssetLoading() const { return m_listLoadThread.size() != m_CompletedThread; }
 
 private:
     void SaveAssetsToFile();
     void LoadAssetsFromFile(std::filesystem::path _EntryPath);
+
+public:
+    void ReloadContent();
 
 private:
     // 에셋 생성
@@ -58,15 +53,8 @@ private:
 
 public:
     Ptr<CMeshData> LoadFBX(const wstring& _strPath);
-    void AsyncLoadFBX(const wstring& _strPath);
-    void AsyncLoadAnimationFBX(Ptr<CMesh> _pOriginMesh, const wstring& _strPath);
-    void AsyncReloadContent();
-
-private:
-    void AsyncLoadFBXFunc(const wstring& _strPath);
-    void AsyncLoadAnimationFBXFunc(Ptr<CMesh> _pOriginMesh, const wstring& _strPath);
-    void AsyncReloadContentFunc();
-
+    void LoadAnimationFBX(Ptr<CMesh> _pOriginMesh, const wstring& _strPath);
+   
 public:
     // Geometry Function
     tMeshData MakePoint();

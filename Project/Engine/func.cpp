@@ -695,11 +695,6 @@ void GamePlayStatic::ChangeLevel(CLevel* _NextLevel, LEVEL_STATE _NextState)
     CTaskMgr::GetInst()->AddTask(task);
 }
 
-void GamePlayStatic::ChangeLevelAsync(const wstring& _LevelPath, LEVEL_STATE _NextState)
-{
-    CLevelMgr::GetInst()->ChangeLevelAsync(_LevelPath, _NextState);
-}
-
 void GamePlayStatic::ChangeLevelState(CLevel* _NextLevel, LEVEL_STATE _NextState)
 {
     tTask task = {};
