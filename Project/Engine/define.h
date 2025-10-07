@@ -9,13 +9,6 @@ private:                                                                        
 #define DEVICE CDevice::GetInst()->GetDevice()
 #define CONTEXT CDevice::GetInst()->GetContext()
 
-#define CLONE(type)                                                                                                                                  \
-public:                                                                                                                                              \
-    virtual type* Clone()                                                                                                                            \
-    {                                                                                                                                                \
-        return new type(*this);                                                                                                                      \
-    }
-
 #define KEY_CHECK(Key, State) (CKeyMgr::GetInst()->GetKeyState(Key) == State)
 #define DT CTimeMgr::GetInst()->GetDeltaTime()
 #define DT_ENGINE CTimeMgr::GetInst()->GetEngineDeltaTime()
