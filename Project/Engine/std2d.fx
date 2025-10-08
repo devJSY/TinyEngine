@@ -57,10 +57,6 @@ float4 PS_Std2D(PS_IN _in) : SV_Target
         {
             vColor = g_tex_0.Sample(g_LinearWrapSampler, _in.vUV0);
         }
-        else
-        {
-            discard;
-        }
     }
 
   
@@ -108,10 +104,6 @@ float4 PS_Std2D_Light(PS_IN _in) : SV_Target
         if (g_btex_0)
         {
             vColor = g_tex_0.Sample(g_LinearWrapSampler, _in.vUV0);
-        }
-        else
-        {
-            discard;
         }
     }
     
@@ -185,10 +177,6 @@ PS_Std2D_Glow_Output PS_Std2D_Effect(PS_IN _in) : SV_Target
         {
             vColor = g_tex_0.Sample(g_LinearWrapSampler, _in.vUV0);
         }
-        else
-        {
-            discard;
-        }
     }
     
     // Relative Luminance : 픽셀의 색이 밝은지 어두운지의 기준값
@@ -254,10 +242,6 @@ PS_Std2D_Glow_Output PS_Std2D_Glow(PS_IN _in)
         if (g_btex_0)
         {
             vColor = g_tex_0.Sample(g_LinearWrapSampler, _in.vUV0);
-        }
-        else
-        {
-            discard;
         }
     }
         
