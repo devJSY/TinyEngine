@@ -111,6 +111,7 @@ private:
     friend class CRenderMgr;
     friend class COutliner;
     friend class CModelEditor;
+    friend class CEditorMgr;
 };
 
 template <typename T>

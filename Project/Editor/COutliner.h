@@ -1,9 +1,5 @@
 #pragma once
-#pragma once
-#pragma once
-#pragma once
-#pragma once
-#include "CEntity.h"
+#include <Engine/CEntity.h>
 
 class CGameObject;
 class CComponent;

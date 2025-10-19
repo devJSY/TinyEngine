@@ -7,7 +7,6 @@
 #include "CKeyMgr.h"
 #include "CAssetMgr.h"
 #include "CLevelMgr.h"
-#include "CEditorMgr.h"
 #include "CTaskMgr.h"
 #include "CGrabageCollector.h"
 #include "CRenderMgr.h"
@@ -45,65 +44,47 @@ int CEngine::init(HWND _hWnd, Vec2 _vResolution)
         return E_FAIL;
     }
 
-    // Manager 초기화
     CLevelMgr::GetInst()->init();
     CPathMgr::init();
     CTimeMgr::GetInst()->init();
     CKeyMgr::GetInst()->init();
     CAssetMgr::GetInst()->init();
     CRenderMgr::GetInst()->init();
-    CEditorMgr::GetInst()->init();
     CFontMgr::GetInst()->init();
     CInstancingBuffer::GetInst()->init();
 
     return S_OK;
 }
 
-void CEngine::progress()
+void CEngine::tick()
 {
-    // ===========================
-    // tick
-    // ===========================
-    {
-        // Manager Update
-        CTimeMgr::GetInst()->tick();
-        CKeyMgr::GetInst()->tick();
+    CTimeMgr::GetInst()->tick();
+    CKeyMgr::GetInst()->tick();
 
-        // Level Update
-        CEditorMgr::GetInst()->tick();
-        CLevelMgr::GetInst()->tick();
+    CLevelMgr::GetInst()->tick();
 
-        // Physics Update
-        CPhysics2DMgr::GetInst()->tick();
-        CPhysicsMgr::GetInst()->tick();
+    CPhysics2DMgr::GetInst()->tick();
+    CPhysicsMgr::GetInst()->tick();
 
-        // FMOD Update
-        CSoundMgr::GetInst()->tick();
-        CSound::g_pFMOD->update();
-    }
+    CSoundMgr::GetInst()->tick();
+    CSound::g_pFMOD->update();
+}
 
-    // ===========================
-    // Rendering
-    // ===========================
-    {
-        // Level Render
-        CRenderMgr::GetInst()->render();
-        CEditorMgr::GetInst()->render(); // Level 렌더링 이후 호출
+void CEngine::render()
+{ 
+    CRenderMgr::GetInst()->render();
+}
 
-        // Present
-        CDevice::GetInst()->Present();
-    }
+void CEngine::present()
+{
+    CDevice::GetInst()->Present();
+}
 
-    // ===========================
-    // Clear
-    // ===========================
-    {
-        // Grabage Collector
-        CGrabageCollector::GetInst()->tick();
+void CEngine::clear()
+{
+    CGrabageCollector::GetInst()->tick();
 
-        // Task Execute
-        CTaskMgr::GetInst()->tick();
+    CTaskMgr::GetInst()->tick();
 
-        CKeyMgr::GetInst()->clear();
-    }
+    CKeyMgr::GetInst()->clear();
 }

@@ -73,21 +73,6 @@ typedef Vector3 Vec3;
 typedef Vector4 Vec4;
 typedef Quaternion Quat;
 
-// ImGui
-#ifndef IMGUI_DEFINE_MATH_OPERATORS
-    #define IMGUI_DEFINE_MATH_OPERATORS
-#endif
-#include <imgui.h>
-#include <imgui_internal.h>
-#include <imgui_impl_win32.h>
-#include <imgui_impl_dx11.h>
-
-// ImGuizmo
-#include <ImGuizmo/ImGuizmo.h>
-
-// ImGui Node Editor
-#include <imgui_node_editor/imgui_node_editor.h>
-
 // Box2D
 #ifdef _DEBUG
     #pragma comment(lib, "box2d/box2d_debug")
@@ -130,4 +115,5 @@ typedef Quaternion Quat;
 #include "struct.h"
 #include "func.h"
 
-#include "COutputLog.h"
+// 2025/10/19(정승연): Editor 종속성 관계로 임시 주석 처리 추후 Editor쪽으로 이동 필요
+// #include "COutputLog.h" 

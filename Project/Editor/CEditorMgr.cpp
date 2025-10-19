@@ -1,21 +1,22 @@
 #include "pch.h"
 #include "CEditorMgr.h"
-#include "CEditor.h"
-#include "CRenderMgr.h"
-#include <Scripts/CScriptMgr.h>
-#include "CAssetMgr.h"
-#include "CLevelMgr.h"
-
-#include "CLevel.h"
-
 #include "CLevelEditor.h"
+#include "CEditor.h"
 
-#include "CEngine.h"
-#include "CDevice.h"
-#include "CGameObjectEx.h"
-#include "components.h"
-#include "CScript.h"
-#include "CMRT.h"
+#include <Engine/CRenderMgr.h>
+#include <Engine/CAssetMgr.h>
+#include <Engine/CLevelMgr.h>
+
+#include <Engine/CLevel.h>
+
+#include <Engine/CEngine.h>
+#include <Engine/CDevice.h>
+#include <Engine/CGameObjectEx.h>
+#include <Engine/components.h>
+#include <Engine/CScript.h>
+#include <Engine/CMRT.h>
+
+#include <Scripts/CScriptMgr.h>
 
 CEditorMgr::CEditorMgr()
     : m_bEnabled(true)
@@ -170,6 +171,45 @@ void CEditorMgr::tick()
 {
     if (!m_bEnabled)
         return;
+  
+    // Mouse Picking
+    if (KEY_TAP(KEY::LBTN))
+    {
+        Vec2 MousePos = CKeyMgr::GetInst()->GetMousePos();
+
+        // Viewport 에서만 마우스 피킹 적용
+        // Viewport 기준 마우스위치로 설정
+        if (CEditorMgr::GetInst()->GetLevelEditor()->IsViewportHovered())
+        {
+            MousePos = CEditorMgr::GetInst()->GetViewportMousePos();
+
+            switch (g_Global.g_MousePickingMode)
+            {
+            case 0:
+                GamePlayStatic::MouseColorPicking(MousePos);
+                break;
+            case 1:
+                GamePlayStatic::MouseCollisionPicking(MousePos);
+                break;
+            case 2:
+                GamePlayStatic::MouseCollision2DPicking(MousePos);
+                break;
+            }
+        }
+    }
+
+    // 스크린샷
+    if (KEY_TAP(KEY::PRINT))
+    {
+        GamePlayStatic::ScreenShot();
+    }
+
+    // 에셋 저장
+    if (KEY_PRESSED(KEY::LCTRL) && KEY_TAP(KEY::S))
+    {
+        CAssetMgr::GetInst()->SaveAssetsToFile();
+        // LOG(Log, "Assets Saved to file Successfully!");
+    }
 
     // ======================
     // Editor Tick
@@ -339,6 +379,6 @@ void CEditorMgr::ObserveContent()
         FindNextChangeNotification(m_hObserver);
 
         CAssetMgr::GetInst()->ReloadContent();
-        LOG(Log, "Assets Reloaded!!");
+        // LOG(Log, "Assets Reloaded!!");
     }
 }

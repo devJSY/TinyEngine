@@ -4,8 +4,6 @@
 #include "CLevelMgr.h"
 #include "CTaskMgr.h"
 #include "CDevice.h"
-#include "CEditorMgr.h"
-#include "CEditor.h"
 #include "CLayer.h"
 #include "CRenderMgr.h"
 #include "CTaskMgr.h"

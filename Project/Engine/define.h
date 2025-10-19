@@ -233,21 +233,6 @@ enum TEX_PARAM
     TEX_END,
 };
 
-enum class EDITOR_TYPE
-{
-    LEVEL,
-    MATERIAL,
-    BLUEPRINT,
-    SPRITE,
-    MODEL,
-    TILEMAP,
-    PHYSICS2D_MATERIAL,
-    PHYSIC_MATERIAL,
-    SOUND,
-
-    END,
-};
-
 enum class DEBUG_SHAPE
 {
     // 2D

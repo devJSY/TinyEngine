@@ -1,9 +1,9 @@
 ﻿#include "pch.h"
 #include "CSpriteEditor.h"
-#include "CAssetMgr.h"
+#include <Engine/CAssetMgr.h>
 
-#include "CKeyMgr.h"
-#include "CTimeMgr.h"
+#include <Engine/CKeyMgr.h>
+#include <Engine/CTimeMgr.h>
 
 CSpriteEditor::CSpriteEditor()
     : CEditor(EDITOR_TYPE::SPRITE)

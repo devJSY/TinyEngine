@@ -182,7 +182,8 @@ void CPhysicsMgr::tick()
 
             // 시뮬레이션 Matrix SRT 분해
             Vec3 Translation, Rotation, Scale;
-            ImGuizmo::DecomposeMatrixToComponents(*SimulatedMat.m, Translation, Rotation, Scale);
+            // 2025/10/19(정승연): TODO
+            // ImGuizmo::DecomposeMatrixToComponents(*SimulatedMat.m, Translation, Rotation, Scale);
 
             // PPM 적용
             Translation *= m_PPM;
@@ -762,7 +763,7 @@ void CPhysicsMgr::RemovePhysicsObject(CGameObject* _GameObject)
     if (nullptr == m_Scene || nullptr == _GameObject)
         return;
 
-    // LOG(Log, "RemovePhysicsObject : %s", ToString(_GameObject->GetName()).c_str());
+    // // LOG(Log, "RemovePhysicsObject : %s", ToString(_GameObject->GetName()).c_str());
 
     CCharacterController* pCharacterController = _GameObject->CharacterController();
     if (nullptr != pCharacterController && nullptr != pCharacterController->m_RuntimeShape)

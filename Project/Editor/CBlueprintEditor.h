@@ -7,7 +7,7 @@
 #include <imgui_node_editor/imgui_node_editor.h>
 #include <imgui_node_editor/imgui_node_editor_internal.h>
 
-#include "CTexture.h"
+#include <Engine/CTexture.h>
 
 namespace ed = ax::NodeEditor;
 namespace util = ax::NodeEditor::Utilities;

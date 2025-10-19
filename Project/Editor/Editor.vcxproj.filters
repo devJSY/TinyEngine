@@ -1,0 +1,304 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="func.cpp">
+      <Filter>Default</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>Default</Filter>
+    </ClCompile>
+    <ClCompile Include="CEditor.cpp" />
+    <ClCompile Include="CModelEditor.cpp">
+      <Filter>Model Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="CEditorMgr.cpp">
+      <Filter>EditorMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CPhysicMaterialEditor.cpp">
+      <Filter>PhysicMaterial Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="CPhysics2DMaterialEditor.cpp">
+      <Filter>Physics2DMaterial Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="CSoundEditor.cpp">
+      <Filter>Sound Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="CTileMapEditor.cpp">
+      <Filter>Tilemap Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="CSpriteEditor.cpp">
+      <Filter>Sprite Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="CMaterialEditor.cpp">
+      <Filter>Material Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\ImGuizmo\ImSequencer.cpp">
+      <Filter>ImGui\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\ImGuizmo\ImGuizmo.cpp">
+      <Filter>ImGui\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\ImGuizmo\ImGradient.cpp">
+      <Filter>ImGui\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\ImGuizmo\ImCurveEdit.cpp">
+      <Filter>ImGui\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\ImGuizmo\GraphEditor.cpp">
+      <Filter>ImGui\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_node_editor\imgui_node_editor_api.cpp">
+      <Filter>ImGui\imgui_node_editor</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_node_editor\imgui_node_editor.cpp">
+      <Filter>ImGui\imgui_node_editor</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_node_editor\imgui_canvas.cpp">
+      <Filter>ImGui\imgui_node_editor</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_node_editor\crude_json.cpp">
+      <Filter>ImGui\imgui_node_editor</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_node_editor\utilities\builders.cpp">
+      <Filter>ImGui\imgui_node_editor</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_node_editor\utilities\drawing.cpp">
+      <Filter>ImGui\imgui_node_editor</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_node_editor\utilities\widgets.cpp">
+      <Filter>ImGui\imgui_node_editor</Filter>
+    </ClCompile>
+    <ClCompile Include="CBlueprintEditor.cpp">
+      <Filter>Blueprint Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_demo.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_draw.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_impl_dx11.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_impl_win32.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_stacklayout.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_tables.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_widgets.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="CLevelEditor.cpp">
+      <Filter>Level Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="CContentBrowser.cpp">
+      <Filter>Level Editor\Content Browser</Filter>
+    </ClCompile>
+    <ClCompile Include="COutliner.cpp">
+      <Filter>Level Editor\Outliner</Filter>
+    </ClCompile>
+    <ClCompile Include="COutputLog.cpp">
+      <Filter>Level Editor\OutputLog</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="func.h">
+      <Filter>Default</Filter>
+    </ClInclude>
+    <ClInclude Include="define.h">
+      <Filter>Default</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Default</Filter>
+    </ClInclude>
+    <ClInclude Include="CEditor.h" />
+    <ClInclude Include="CEditorMgr.h">
+      <Filter>EditorMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CPhysicMaterialEditor.h">
+      <Filter>PhysicMaterial Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="CPhysics2DMaterialEditor.h">
+      <Filter>Physics2DMaterial Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="CSoundEditor.h">
+      <Filter>Sound Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="CTileMapEditor.h">
+      <Filter>Tilemap Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="CSpriteEditor.h">
+      <Filter>Sprite Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="CModelEditor.h">
+      <Filter>Model Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="CMaterialEditor.h">
+      <Filter>Material Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\ImGuizmo\ImZoomSlider.h">
+      <Filter>ImGui\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\ImGuizmo\ImSequencer.h">
+      <Filter>ImGui\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\ImGuizmo\ImGuizmo.h">
+      <Filter>ImGui\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\ImGuizmo\ImGradient.h">
+      <Filter>ImGui\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\ImGuizmo\ImCurveEdit.h">
+      <Filter>ImGui\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\ImGuizmo\GraphEditor.h">
+      <Filter>ImGui\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_node_editor\imgui_node_editor_internal.h">
+      <Filter>ImGui\imgui_node_editor</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_node_editor\imgui_node_editor.h">
+      <Filter>ImGui\imgui_node_editor</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_node_editor\imgui_extra_math.h">
+      <Filter>ImGui\imgui_node_editor</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_node_editor\imgui_canvas.h">
+      <Filter>ImGui\imgui_node_editor</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_node_editor\imgui_bezier_math.h">
+      <Filter>ImGui\imgui_node_editor</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_node_editor\crude_json.h">
+      <Filter>ImGui\imgui_node_editor</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_node_editor\utilities\builders.h">
+      <Filter>ImGui\imgui_node_editor</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_node_editor\utilities\drawing.h">
+      <Filter>ImGui\imgui_node_editor</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_node_editor\utilities\widgets.h">
+      <Filter>ImGui\imgui_node_editor</Filter>
+    </ClInclude>
+    <ClInclude Include="CBlueprintEditor.h">
+      <Filter>Blueprint Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imconfig.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_impl_dx11.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_impl_win32.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_internal.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_stacklayout.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_stacklayout_internal.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imstb_rectpack.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imstb_textedit.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imstb_truetype.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="CLevelEditor.h">
+      <Filter>Level Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="CContentBrowser.h">
+      <Filter>Level Editor\Content Browser</Filter>
+    </ClInclude>
+    <ClInclude Include="COutliner.h">
+      <Filter>Level Editor\Outliner</Filter>
+    </ClInclude>
+    <ClInclude Include="COutputLog.h">
+      <Filter>Level Editor\OutputLog</Filter>
+    </ClInclude>
+    <ClInclude Include="global.h">
+      <Filter>Default</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Blueprint Editor">
+      <UniqueIdentifier>{7a4542c6-37ed-49ab-a52b-5a3fe7f9224b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Level Editor">
+      <UniqueIdentifier>{38360734-004a-4f2f-8f99-fadab91adc4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EditorMgr">
+      <UniqueIdentifier>{fda54292-00ee-4ac4-8a89-0cc403f6f110}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Level Editor\Outliner">
+      <UniqueIdentifier>{30bcebef-5cd7-4ed9-9642-83541d97ce13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Level Editor\Content Browser">
+      <UniqueIdentifier>{b3f7e684-6d3d-4fa2-83f6-8d7e948035fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Level Editor\OutputLog">
+      <UniqueIdentifier>{24d6e398-8f9e-40f1-980d-d7a360ad57a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics2DMaterial Editor">
+      <UniqueIdentifier>{dbe5b7d1-34b9-46ba-99d8-23c521db8073}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PhysicMaterial Editor">
+      <UniqueIdentifier>{072917de-96c2-49f3-a455-2219ce20af0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sound Editor">
+      <UniqueIdentifier>{fc4453f9-b5fd-4759-be88-9f365668378a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sprite Editor">
+      <UniqueIdentifier>{d50ff2ca-c179-42c8-8418-76a124a7a45c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Model Editor">
+      <UniqueIdentifier>{5b295c13-0ee2-40ea-9f11-b67da084d91e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tilemap Editor">
+      <UniqueIdentifier>{5375a2fd-5ecc-494f-aae3-d6a2f24b6fcf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Material Editor">
+      <UniqueIdentifier>{ad3660ab-5b59-4757-9086-d4c9f3ff4d84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Default">
+      <UniqueIdentifier>{5c80d346-f1cd-4863-9643-005e516d16a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ImGui">
+      <UniqueIdentifier>{d3c80522-54bb-445a-8c55-bcd908912a22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ImGui\ImGuizmo">
+      <UniqueIdentifier>{76d40ddd-c1ce-4fbb-810d-e113e3c97b5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ImGui\imgui_node_editor">
+      <UniqueIdentifier>{275b05a3-7ded-430a-a41d-9afc2186cfce}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ImGui\imgui_node_editor\imgui_node_editor_internal.inl">
+      <Filter>ImGui\imgui_node_editor</Filter>
+    </None>
+    <None Include="ImGui\imgui_node_editor\imgui_extra_math.inl">
+      <Filter>ImGui\imgui_node_editor</Filter>
+    </None>
+    <None Include="ImGui\imgui_node_editor\imgui_bezier_math.inl">
+      <Filter>ImGui\imgui_node_editor</Filter>
+    </None>
+  </ItemGroup>
+</Project>

@@ -8,18 +8,24 @@
 #include <Engine/CLevel.h>
 #include <Engine/CTaskMgr.h>
 
-// Engine
+#include <Editor/CEditorMgr.h>
+
 #ifdef _DEBUG
     #pragma comment(lib, "Engine/Engine_d.lib")
 #else
     #pragma comment(lib, "Engine/Engine.lib")
 #endif
 
-// Scripts
 #ifdef _DEBUG
     #pragma comment(lib, "Scripts/Scripts_d.lib")
 #else
     #pragma comment(lib, "Scripts/Scripts.lib")
+#endif
+
+#ifdef _DEBUG
+    #pragma comment(lib, "Editor/Editor_d.lib")
+#else
+    #pragma comment(lib, "Editor/Editor.lib")
 #endif
 
 #include "CCreateTestLevel.h"
@@ -65,6 +71,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
         return 0;
     }
 
+    CEditorMgr::GetInst()->init();
+
     // CCreateTestLevel::CreateTestLevel();
     // CCreatePBRLevel::CreatePBRLevel();
 
@@ -89,7 +97,15 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
         }
         else
         {
-            CEngine::GetInst()->progress();
+            CEngine::GetInst()->tick();
+            CEditorMgr::GetInst()->tick();
+            
+            CEngine::GetInst()->render();
+            CEditorMgr::GetInst()->render();
+            
+            CEngine::GetInst()->present();
+            
+            CEngine::GetInst()->clear();
         }
     }
 

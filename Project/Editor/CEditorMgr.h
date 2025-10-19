@@ -9,6 +9,9 @@
 #include "CPhysicMaterialEditor.h"
 #include "CSoundEditor.h"
 
+// 2025/10/19(а╓╫б©╛): юс╫ц
+#include "define.h"
+
 class CEditor;
 class CGameObject;
 class CGameObjectEx;

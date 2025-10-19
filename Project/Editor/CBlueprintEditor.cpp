@@ -1,9 +1,9 @@
 #include "pch.h"
-#include "CBlueprintEditor.h"
-#include <imgui_impl_dx11.h>
 
-#include "CPathMgr.h"
-#include "CAssetMgr.h"
+#include "CBlueprintEditor.h"
+
+#include <Engine/CPathMgr.h>
+#include <Engine/CAssetMgr.h>
 
 extern "C"
 {

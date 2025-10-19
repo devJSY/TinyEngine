@@ -62,7 +62,7 @@ static b2BodyType Rigidbody2DTypeTob2BodyType(BODY_TYPE bodyType)
         return b2_staticBody;
     }
 
-    LOG(Error, "Unknown body type");
+    // LOG(Error, "Unknown body type");
     return b2_dynamicBody;
 }
 

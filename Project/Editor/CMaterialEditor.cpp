@@ -1,16 +1,17 @@
 #include "pch.h"
-#include "CMaterialEditor.h"
 #include "CEditorMgr.h"
-#include "CLevelMgr.h"
-#include "CKeyMgr.h"
-#include "CRenderMgr.h"
+#include "CMaterialEditor.h"
 
-#include "CLevel.h"
-#include "components.h"
-#include "CGameObjectEx.h"
-#include "CDevice.h"
-#include "CConstBuffer.h"
-#include "CMRT.h"
+#include <Engine/CKeyMgr.h>
+#include <Engine/CRenderMgr.h>
+#include <Engine/CLevelMgr.h>
+
+#include <Engine/CLevel.h>
+#include <Engine/components.h>
+#include <Engine/CGameObjectEx.h>
+#include <Engine/CDevice.h>
+#include <Engine/CConstBuffer.h>
+#include <Engine/CMRT.h>
 
 CMaterialEditor::CMaterialEditor()
     : CEditor(EDITOR_TYPE::MATERIAL)

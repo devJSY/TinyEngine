@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "CModelEditorCameraMoveScript.h"
 
-#include <Engine/CEditorMgr.h>
-#include <Engine/CLevelEditor.h>
+//#include <Engine/CEditorMgr.h>
+//#include <Engine/CLevelEditor.h>
 #include <Engine/CDevice.h>
 #include <Engine/CLevelMgr.h>
 
@@ -36,11 +36,11 @@ void CModelEditorCameraMoveScript::tick()
         Transform()->SetLocalRotation(Vec3(DirectX::XMConvertToRadians(15.f), 0.f, 0.f));
     }
 
-    // Move
-    if (CEditorMgr::GetInst()->GetModelEditor()->IsViewportHovered())
-    {
-        MovePerspective();
-    }
+    //// Move
+    //if (CEditorMgr::GetInst()->GetModelEditor()->IsViewportHovered())
+    //{
+    //    MovePerspective();
+    //}
 
     // 카메라 속도 제한
     if (m_CamSpeed < 0.f)

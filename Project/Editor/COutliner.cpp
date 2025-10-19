@@ -1,26 +1,27 @@
 #include "pch.h"
 #include "COutliner.h"
 
-#include "CLevelMgr.h"
-#include "CAssetMgr.h"
-#include "CRenderMgr.h"
 #include "CEditorMgr.h"
-#include "CPhysics2DMgr.h"
+
+#include <Engine/CKeyMgr.h>
+#include <Engine/CLevelMgr.h>
+#include <Engine/CAssetMgr.h>
+#include <Engine/CRenderMgr.h>
+#include <Engine/CPhysics2DMgr.h>
+
+#include <Engine/CEngine.h>
+#include <Engine/CLevel.h>
+#include <Engine/CLayer.h>
+
+#include <Engine/CGameObject.h>
+#include <Engine/components.h>
+#include <Engine/CScript.h>
+
+#include <Engine/CTexture.h>
+#include <Engine/CAnim2D.h>
+#include <Engine/CMaterial.h>
+
 #include <Scripts/CScriptMgr.h>
-
-#include "CEngine.h"
-#include "CLevel.h"
-#include "CLayer.h"
-
-#include "CGameObject.h"
-#include "components.h"
-#include "CScript.h"
-
-#include "CTexture.h"
-#include "CAnim2D.h"
-#include "CMaterial.h"
-
-#include "CKeyMgr.h"
 
 COutliner::COutliner()
     : m_DefaultTreeNodeFlag(ImGuiTreeNodeFlags_None)
@@ -516,7 +517,7 @@ void COutliner::DrawNode(CGameObject* obj)
             {
                 Ptr<CPrefab> pPrefab = new CPrefab(obj->Clone());
                 CAssetMgr::GetInst()->AddAsset<CPrefab>(path, pPrefab.Get());
-                LOG(Log, "Prefab Creation Was Successful!")
+                // LOG(Log, "Prefab Creation Was Successful!")
                 pPrefab->Save(path);
             }
         }

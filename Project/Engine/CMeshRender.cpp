@@ -4,7 +4,6 @@
 #include "CAssetMgr.h"
 #include "CTimeMgr.h"
 #include "CRenderMgr.h"
-#include "CEditorMgr.h"
 
 #include "CMesh.h"
 #include "CGraphicsShader.h"

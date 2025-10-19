@@ -2,7 +2,6 @@
 #include "CCamera.h"
 
 #include "CAssetMgr.h"
-#include "CEditorMgr.h"
 #include "CKeyMgr.h"
 #include "CInstancingBuffer.h"
 
@@ -742,30 +741,31 @@ void CCamera::render(vector<CGameObject*>& _vecObj)
 
 void CCamera::render_OutLine()
 {
-    CGameObject* pSelectedObj = CEditorMgr::GetInst()->GetSelectedObject();
-    if (nullptr == pSelectedObj || !pSelectedObj->IsActive())
-        return;
+    // 2025/10/19(정승연): SelectedObject 관리 방식 고민 필요 Engine으로 이동 고려
+    //CGameObject* pSelectedObj = CEditorMgr::GetInst()->GetSelectedObject();
+    //if (nullptr == pSelectedObj || !pSelectedObj->IsActive())
+    //    return;
 
-    CRenderComponent* pRenderCom = pSelectedObj->GetRenderComponent();
+    //CRenderComponent* pRenderCom = pSelectedObj->GetRenderComponent();
 
-    // 렌더링 기능이 없는 오브젝트는 제외
-    if (nullptr == pRenderCom || nullptr == pRenderCom->GetMesh() || g_Global.g_DrawAsWireFrame)
-        return;
+    //// 렌더링 기능이 없는 오브젝트는 제외
+    //if (nullptr == pRenderCom || nullptr == pRenderCom->GetMesh() || g_Global.g_DrawAsWireFrame)
+    //    return;
 
-    // OutLine Pass
-    static Ptr<CMaterial> OutLineMtrl2D = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"2D_OutLineMtrl");
-    static Ptr<CMaterial> OutLineMtrl3D = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"3D_OutLineMtrl");
-    if (g_Global.g_RenderOutline)
-    {
-        pSelectedObj->render(PROJ_TYPE::ORTHOGRAPHIC == m_ProjType ? OutLineMtrl2D : OutLineMtrl3D);
-    }
+    //// OutLine Pass
+    //static Ptr<CMaterial> OutLineMtrl2D = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"2D_OutLineMtrl");
+    //static Ptr<CMaterial> OutLineMtrl3D = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"3D_OutLineMtrl");
+    //if (g_Global.g_RenderOutline)
+    //{
+    //    pSelectedObj->render(PROJ_TYPE::ORTHOGRAPHIC == m_ProjType ? OutLineMtrl2D : OutLineMtrl3D);
+    //}
 
-    // NormalLine Pass
-    static Ptr<CMaterial> NormalLineMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"NormalLineMtrl");
-    if (NormalLineMtrl->GetMtrlConst().arrInt[0])
-    {
-        pSelectedObj->render(NormalLineMtrl);
-    }
+    //// NormalLine Pass
+    //static Ptr<CMaterial> NormalLineMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(L"NormalLineMtrl");
+    //if (NormalLineMtrl->GetMtrlConst().arrInt[0])
+    //{
+    //    pSelectedObj->render(NormalLineMtrl);
+    //}
 }
 
 void CCamera::render_DepthOnly(vector<CGameObject*>& _vecObj)
@@ -867,22 +867,23 @@ tRay CCamera::GetRay()
 
     float NdcMouseX = 0.0f;
     float NdcMouseY = 0.0f;
-
+    
+    // 2025/10/19(정승연): Editor Define 으로 처리 필요
     // Mouse Pos → NDC
-    if (CEditorMgr::GetInst()->IsEnabled())
-    {
-        vMousePos = CEditorMgr::GetInst()->GetViewportMousePos();
-        Vec2 ViewportSize = CEditorMgr::GetInst()->GetViewportSize();
-
-        NdcMouseX = vMousePos.x * 2.0f / ViewportSize.x - 1.0f;
-        NdcMouseY = -vMousePos.y * 2.0f / ViewportSize.y + 1.0f;
-    }
-    else
-    {
-        Vec2 WindowSize = CDevice::GetInst()->GetRenderResolution();
-        NdcMouseX = vMousePos.x * 2.0f / WindowSize.x - 1.0f;
-        NdcMouseY = -vMousePos.y * 2.0f / WindowSize.y + 1.0f;
-    }
+    // if (CEditorMgr::GetInst()->IsEnabled())
+    // {
+    //     vMousePos = CEditorMgr::GetInst()->GetViewportMousePos();
+    //     Vec2 ViewportSize = CEditorMgr::GetInst()->GetViewportSize();
+    // 
+    //     NdcMouseX = vMousePos.x * 2.0f / ViewportSize.x - 1.0f;
+    //     NdcMouseY = -vMousePos.y * 2.0f / ViewportSize.y + 1.0f;
+    // }
+    // else
+    // {
+           Vec2 WindowSize = CDevice::GetInst()->GetRenderResolution();
+           NdcMouseX = vMousePos.x * 2.0f / WindowSize.x - 1.0f;
+           NdcMouseY = -vMousePos.y * 2.0f / WindowSize.y + 1.0f;
+    // }
 
     // NDC → World
     Vector3 cursorNdcNear = Vector3(NdcMouseX, NdcMouseY, 0);
