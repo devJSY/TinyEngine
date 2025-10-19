@@ -4,21 +4,16 @@
 class CEngineTestScript : public CScript
 {
 private:
-    float TestParam1;
-    float TestParam2;
+    float TestParam1 = 1.0f;
+    int TestParam2 = 1;
+    float TestParam3 = 1.0f;
 
 public:
     virtual void begin() override;
     virtual void tick() override;
 
 private:
-    virtual void OnCollisionEnter(CCollider* _OtherCollider);
-    virtual void OnCollisionStay(CCollider* _OtherCollider);
-    virtual void OnCollisionExit(CCollider* _OtherCollider);
-
-    virtual void OnTriggerEnter(CCollider* _OtherCollider);
-    virtual void OnTriggerStay(CCollider* _OtherCollider);
-    virtual void OnTriggerExit(CCollider* _OtherCollider);
+    void makeHeart();
 
 public:
     virtual UINT SaveToLevelFile(FILE* _File) override;
@@ -29,5 +24,5 @@ public:
 public:
     CEngineTestScript();
     CEngineTestScript(const CEngineTestScript& origin);
-    virtual ~CEngineTestScript();
+    virtual ~CEngineTestScript() {}
 };
