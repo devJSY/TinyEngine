@@ -33,7 +33,7 @@
 #ifndef IMGUI_DEFINE_MATH_OPERATORS
     #define IMGUI_DEFINE_MATH_OPERATORS
 #endif
-#include <Editor\ImGui\imgui_internal.h>
+#include "imgui_internal.h"
 
 struct ImVec2;
 struct ImVec4;

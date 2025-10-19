@@ -2,6 +2,7 @@
 #include "CRenderComponent.h"
 
 #include "CLevelMgr.h"
+#include "CEditorMgr.h"
 
 #include "CLevel.h"
 #include "CTransform.h"
@@ -203,11 +204,10 @@ ULONG64 CRenderComponent::GetInstID(UINT _iMtrlIdx)
 
 void CRenderComponent::finaltick()
 {
-    // 2025/10/19(정승연): SelectedObject 관리 방식 변경 필요
-    //if (m_bFrustumCheck && GetOwner() == CEditorMgr::GetInst()->GetSelectedObject())
-    //{
-    //    GamePlayStatic::DrawDebugSphere(Transform()->GetWorldPos(), Transform()->GetWorldRatio() * m_BoundingRadius, Vec3(1.f, 1.f, 0.f), true);
-    //}
+    if (m_bFrustumCheck && GetOwner() == CEditorMgr::GetInst()->GetSelectedObject())
+    {
+        GamePlayStatic::DrawDebugSphere(Transform()->GetWorldPos(), Transform()->GetWorldRatio() * m_BoundingRadius, Vec3(1.f, 1.f, 0.f), true);
+    }
 }
 
 UINT CRenderComponent::SaveToLevelFile(FILE* _File)

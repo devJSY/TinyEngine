@@ -1,8 +1,5 @@
 #pragma once
-#include <Engine/CEntity.h>
-
-// 2025/10/19(а╓╫б©╛): юс╫ц
-#include "define.h"
+#include "CEntity.h"
 
 class CEditor : public CEntity
 {

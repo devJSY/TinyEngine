@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CAssetMgr.h"
+#include "CEditorMgr.h"
 #include "CTaskMgr.h"
 
 #include "CMesh.h"
@@ -2085,7 +2086,7 @@ Ptr<CMeshData> CAssetMgr::LoadFBX(const wstring& _strPath)
 
     if (nullptr != pMeshData)
     {
-        // LOG(Warning, "%s is Already Loaded!", ToString(strName).c_str());
+        LOG(Warning, "%s is Already Loaded!", ToString(strName).c_str());
         return pMeshData;
     }
 
@@ -2098,7 +2099,7 @@ Ptr<CMeshData> CAssetMgr::LoadFBX(const wstring& _strPath)
 
     // meshdata 를 파일 저장
     pMeshData->Save(strName);
-    // LOG(Log, "%s has been Successfully Loaded!", ToString(strName).c_str());
+    LOG(Log, "%s has been Successfully Loaded!", ToString(strName).c_str());
     return pMeshData;
 }
 

@@ -3,6 +3,7 @@
 #include "CEngine.h"
 #include "CDevice.h"
 #include "CTaskMgr.h"
+#include "CEditorMgr.h"
 
 int g_KeySync[KEY::KEY_END] = {
     '0',        '1',        '2',        '3',         '4',        '5',        '6',        '7',        '8',        '9',
@@ -117,16 +118,15 @@ void CKeyMgr::tick()
         // 마우스 이동 방향
         m_vMouseDrag = m_vMousePos - m_vMousePrevPos;
 
-        // 2025/10/19(정승연): Editor Define 으로 처리 필요
-        //// 에디터 모드인 경우 Wheel 상태를 ImGui로 부터 입력받음
-        //if (CEditorMgr::GetInst()->IsEnabled())
-        //{
-        //    float wheel = ImGui::GetIO().MouseWheel;
-        //    if (wheel > 0)
-        //        m_MouseWheel = 120;
-        //    else if (wheel < 0)
-        //        m_MouseWheel = -120;
-        //}
+        // 에디터 모드인 경우 Wheel 상태를 ImGui로 부터 입력받음
+        if (CEditorMgr::GetInst()->IsEnabled())
+        {
+            float wheel = ImGui::GetIO().MouseWheel;
+            if (wheel > 0)
+                m_MouseWheel = 120;
+            else if (wheel < 0)
+                m_MouseWheel = -120;
+        }
     }
 }
 

@@ -1,13 +1,10 @@
 #pragma once
+#pragma once
 #include "CEditor.h"
 #include "COutliner.h"
 #include "CContentBrowser.h"
-#include <Engine/Ptr.h>
-#include <Engine/CTexture.h>
-
-// 2025/10/19(а╓╫б©╛): юс╫ц
-#include "define.h"
-#include <ImGuizmo/ImGuizmo.h>
+#include "Ptr.h"
+#include "CTexture.h"
 
 class CLevelEditor : public CEditor
 {

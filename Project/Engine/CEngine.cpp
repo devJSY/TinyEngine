@@ -7,6 +7,7 @@
 #include "CKeyMgr.h"
 #include "CAssetMgr.h"
 #include "CLevelMgr.h"
+#include "CEditorMgr.h"
 #include "CTaskMgr.h"
 #include "CGrabageCollector.h"
 #include "CRenderMgr.h"
@@ -44,47 +45,65 @@ int CEngine::init(HWND _hWnd, Vec2 _vResolution)
         return E_FAIL;
     }
 
+    // Manager 초기화
     CLevelMgr::GetInst()->init();
     CPathMgr::init();
     CTimeMgr::GetInst()->init();
     CKeyMgr::GetInst()->init();
     CAssetMgr::GetInst()->init();
     CRenderMgr::GetInst()->init();
+    CEditorMgr::GetInst()->init();
     CFontMgr::GetInst()->init();
     CInstancingBuffer::GetInst()->init();
 
     return S_OK;
 }
 
-void CEngine::tick()
+void CEngine::progress()
 {
-    CTimeMgr::GetInst()->tick();
-    CKeyMgr::GetInst()->tick();
+    // ===========================
+    // tick
+    // ===========================
+    {
+        // Manager Update
+        CTimeMgr::GetInst()->tick();
+        CKeyMgr::GetInst()->tick();
 
-    CLevelMgr::GetInst()->tick();
+        // Level Update
+        CEditorMgr::GetInst()->tick();
+        CLevelMgr::GetInst()->tick();
 
-    CPhysics2DMgr::GetInst()->tick();
-    CPhysicsMgr::GetInst()->tick();
+        // Physics Update
+        CPhysics2DMgr::GetInst()->tick();
+        CPhysicsMgr::GetInst()->tick();
 
-    CSoundMgr::GetInst()->tick();
-    CSound::g_pFMOD->update();
-}
+        // FMOD Update
+        CSoundMgr::GetInst()->tick();
+        CSound::g_pFMOD->update();
+    }
 
-void CEngine::render()
-{ 
-    CRenderMgr::GetInst()->render();
-}
+    // ===========================
+    // Rendering
+    // ===========================
+    {
+        // Level Render
+        CRenderMgr::GetInst()->render();
+        CEditorMgr::GetInst()->render(); // Level 렌더링 이후 호출
 
-void CEngine::present()
-{
-    CDevice::GetInst()->Present();
-}
+        // Present
+        CDevice::GetInst()->Present();
+    }
 
-void CEngine::clear()
-{
-    CGrabageCollector::GetInst()->tick();
+    // ===========================
+    // Clear
+    // ===========================
+    {
+        // Grabage Collector
+        CGrabageCollector::GetInst()->tick();
 
-    CTaskMgr::GetInst()->tick();
+        // Task Execute
+        CTaskMgr::GetInst()->tick();
 
-    CKeyMgr::GetInst()->clear();
+        CKeyMgr::GetInst()->clear();
+    }
 }

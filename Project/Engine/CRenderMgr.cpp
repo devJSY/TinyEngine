@@ -6,6 +6,7 @@
 #include "CTimeMgr.h"
 #include "CAssetMgr.h"
 #include "CLevelMgr.h"
+#include "CEditorMgr.h"
 
 #include "CDevice.h"
 #include "components.h"
@@ -278,40 +279,38 @@ void CRenderMgr::render_editor()
 
 void CRenderMgr::render_CameraPreview()
 {
-    // 2025/10/19(정승연): Editor Define으로 조earlyreturn 조건 변경 필요
-    // 2025/10/19(정승연): SelectedObject 관리 방식 고민 필요
-    //if (!CEditorMgr::GetInst()->IsEnabled() || CLevelMgr::GetInst()->GetCurrentLevel()->GetState() == LEVEL_STATE::PLAY)
-    //    return;
+    if (!CEditorMgr::GetInst()->IsEnabled() || CLevelMgr::GetInst()->GetCurrentLevel()->GetState() == LEVEL_STATE::PLAY)
+        return;
 
-    //CGameObject* SelectedObj = CEditorMgr::GetInst()->GetSelectedObject();
-    //if (nullptr == SelectedObj || nullptr == SelectedObj->Camera())
-    //    return;
+    CGameObject* SelectedObj = CEditorMgr::GetInst()->GetSelectedObject();
+    if (nullptr == SelectedObj || nullptr == SelectedObj->Camera())
+        return;
 
-    //render_Clear(Vec4(0.f, 0.f, 0.f, 1.f));
+    render_Clear(Vec4(0.f, 0.f, 0.f, 1.f));
 
-    //CCamera* originMainCam = m_mainCam;
-    //m_mainCam = SelectedObj->Camera();
-    //UpdateData();
+    CCamera* originMainCam = m_mainCam;
+    m_mainCam = SelectedObj->Camera();
+    UpdateData();
 
-    //// Depth Only Pass
-    //m_mainCam->SortShadowMapObject(MOBILITY_TYPE::STATIC | MOBILITY_TYPE::MOVABLE);
-    //m_mainCam->render_DepthOnly(m_DepthOnlyTex);
+    // Depth Only Pass
+    m_mainCam->SortShadowMapObject(MOBILITY_TYPE::STATIC | MOBILITY_TYPE::MOVABLE);
+    m_mainCam->render_DepthOnly(m_DepthOnlyTex);
 
-    //// Dynamic Shadow Depth Map
-    //render_DynamicShadowDepth();
+    // Dynamic Shadow Depth Map
+    render_DynamicShadowDepth();
 
-    //m_mainCam->SortObject();
-    //if (0 == m_mainCam->GetCameraPriority())
-    //    m_mainCam->render_Deferred();
-    //m_mainCam->render_Forward();
-    //m_mainCam->render_Postprocess();
+    m_mainCam->SortObject();
+    if (0 == m_mainCam->GetCameraPriority())
+        m_mainCam->render_Deferred();
+    m_mainCam->render_Forward();
+    m_mainCam->render_Postprocess();
 
-    //Ptr<CTexture> pRTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
-    //CONTEXT->CopyResource(m_CameraPreviewTex->GetTex2D().Get(), pRTTex->GetTex2D().Get());
-    //m_mainCam = originMainCam;
+    Ptr<CTexture> pRTTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"RenderTargetTex");
+    CONTEXT->CopyResource(m_CameraPreviewTex->GetTex2D().Get(), pRTTex->GetTex2D().Get());
+    m_mainCam = originMainCam;
 
-    //// Light DepthMap Clear
-    //CTexture::Clear(23);
+    // Light DepthMap Clear
+    CTexture::Clear(23);
 }
 
 void CRenderMgr::render_debug()

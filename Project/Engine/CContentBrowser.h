@@ -1,6 +1,6 @@
 #pragma once
-#include <Engine/CEntity.h>
-#include <Engine/CTexture.h>
+#include "CEntity.h"
+#include "CTexture.h"
 
 class CContentBrowser : public CEntity
 {

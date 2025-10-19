@@ -104,8 +104,7 @@ void CTransform::finaltick()
         if (m_bAbsolute)
         {
             Vec3 Translation, Rotation, Scale;
-            // 2025/10/19(Á¤½Â¿¬): TODO
-            // ImGuizmo::DecomposeMatrixToComponents(*m_matTransformation.m, Translation, Rotation, Scale);
+            ImGuizmo::DecomposeMatrixToComponents(*m_matTransformation.m, Translation, Rotation, Scale);
             Matrix matParentScaleInv = XMMatrixScaling(1.f / Scale.x, 1.f / Scale.y, 1.f / Scale.z);
 
             // ºÎ¸ðÀÇ Å©±â Çà·Ä »ó¼â
@@ -126,8 +125,7 @@ void CTransform::finaltick()
     m_matWorldInv = m_matWorld.Invert();
 
     // World SRT
-    // 2025/10/19(Á¤½Â¿¬): TODO
-    // ImGuizmo::DecomposeMatrixToComponents(*m_matWorld.m, m_WorldPos, m_WorldRotation, m_WorldScale);
+    ImGuizmo::DecomposeMatrixToComponents(*m_matWorld.m, m_WorldPos, m_WorldRotation, m_WorldScale);
     m_WorldRotation.ToRadian();
 
     m_WorldQuaternion = Quat::CreateFromRotationMatrix(Matrix::CreateFromAxisAngle(Vec3(1.f, 0.f, 0.f), m_WorldRotation.x) *

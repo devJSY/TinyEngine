@@ -119,7 +119,7 @@ bool CAnim2D::SaveAnim(const wstring& _FilePath)
 
     if (nullptr == pFile)
     {
-        // LOG(Warning, "File Open Failed!");
+        LOG(Warning, "File Open Failed!");
         return false;
     }
 
@@ -191,13 +191,13 @@ bool CAnim2D::LoadAnim(const wstring& _FilePath)
 
     if (nullptr == pFile)
     {
-        // LOG(Warning, "File Open Failed!");
+        LOG(Warning, "File Open Failed!");
         return false;
     }
 
     if (L".anim" != filePath.extension())
     {
-        // LOG(Warning, "File Open Failed!");
+        LOG(Warning, "File Open Failed!");
         fclose(pFile);
         return false;
     }

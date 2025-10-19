@@ -1,6 +1,6 @@
 #pragma once
 #include "CEditor.h"
-#include <Engine/CAnim2D.h>
+#include "CAnim2D.h"
 
 struct tSprite
 {

@@ -200,7 +200,7 @@ void CAnimator2D::SaveAnimations(const wstring& _strRelativePath)
         wstring strFilePath = strFolderPath + L"/" + pair.first + L".anim";
         if (!pair.second->SaveAnim(strFilePath))
         {
-            // LOG(Warning, "Animation Save Failed!");
+            LOG(Warning, "Animation Save Failed!");
         }
     }
 }
@@ -214,7 +214,7 @@ void CAnimator2D::LoadAnimation(const wstring& _strRelativePath)
 
     if (!pNewAnim->LoadAnim(strFilePath))
     {
-        // LOG(Warning, "Animation Load Failed!");
+        LOG(Warning, "Animation Load Failed!");
         delete pNewAnim;
         return;
     }
@@ -222,7 +222,7 @@ void CAnimator2D::LoadAnimation(const wstring& _strRelativePath)
     // 이미 로드된 애니메이션이 있는지 체크
     if (FindAnim(pNewAnim->GetName()))
     {
-        // LOG(Warning, "Animation Already Exists Animation Reloaded!");
+        LOG(Warning, "Animation Already Exists Animation Reloaded!");
         DeleteAnim(pNewAnim->GetName()); // 기존 애니메이션 삭제
     }
 

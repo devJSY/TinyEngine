@@ -15,8 +15,5 @@ public:
 
 public:
     int init(HWND _hWnd, Vec2 _vResolution);
-    void tick();
-    void render();
-    void present();
-    void clear();
+    void progress();
 };

@@ -133,7 +133,7 @@ void CAssetMgr::ReloadContent()
             wstring strFilePath = CPathMgr::GetContentPath() + pair.first;
             if (!std::filesystem::exists(strFilePath))
             {
-                // LOG(Warning, "%s Source File Deleted!", ToString(strFilePath).c_str());
+                LOG(Warning, "%s Source File Deleted!", ToString(strFilePath).c_str());
 
                 GamePlayStatic::DeleteAsset((ASSET_TYPE)i, pair.second);
             }
@@ -195,7 +195,7 @@ void CAssetMgr::ReplacePrefab(Ptr<CPrefab> _Prefab, const wstring& _strKey)
 {
     CAssetMgr::GetInst()->DeleteAsset(ASSET_TYPE::PREFAB, _strKey);
     CAssetMgr::GetInst()->AddAsset<CPrefab>(_strKey, _Prefab);
-    // LOG(Log, "Prefab is Replaced!");
+    LOG(Log, "Prefab is Replaced!");
 }
 
 void CAssetMgr::DeleteAsset(ASSET_TYPE _type, const wstring& _strKey)

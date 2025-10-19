@@ -1,30 +1,28 @@
 #include "pch.h"
-#include "CEditorMgr.h"
 #include "CLevelEditor.h"
-#include "COutputLog.h"
+#include "CEngine.h"
 
-#include <Engine/CEngine.h>
+#include "CTaskMgr.h"
+#include "CCamera.h"
+#include "CTransform.h"
 
-#include <Engine/CTaskMgr.h>
-#include <Engine/CCamera.h>
-#include <Engine/CTransform.h>
-
-#include <Engine/CLevelMgr.h>
-#include <Engine/CKeyMgr.h>
-#include <Engine/CPathMgr.h>
-#include <Engine/CTimeMgr.h>
-#include <Engine/CRenderMgr.h>
-#include <Engine/CAssetMgr.h>
+#include "CLevelMgr.h"
+#include "CKeyMgr.h"
+#include "CEditorMgr.h"
+#include "CPathMgr.h"
+#include "CTimeMgr.h"
+#include "CRenderMgr.h"
+#include "CAssetMgr.h"
 #include <Scripts/CScriptMgr.h>
-#include <Engine/CPhysics2DMgr.h>
-#include <Engine/CPhysicsMgr.h>
+#include "CPhysics2DMgr.h"
+#include "CPhysicsMgr.h"
 
-#include <Engine/CLevel.h>
-#include <Engine/CLayer.h>
-#include <Engine/CScript.h>
-#include <Engine/CMRT.h>
+#include "CLevel.h"
+#include "CLayer.h"
+#include "CScript.h"
+#include "CMRT.h"
 
-#include <Engine/CLevelSaveLoad.h>
+#include "CLevelSaveLoad.h"
 #include "CMaterialEditor.h"
 #include "CTileMapEditor.h"
 

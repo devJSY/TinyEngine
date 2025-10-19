@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "CContentBrowser.h"
-#include <Engine/CPathMgr.h>
-#include <Engine/CAssetMgr.h>
+#include "CPathMgr.h"
+#include "CAssetMgr.h"
 
 CContentBrowser::CContentBrowser()
     : m_CurrentDirectory()

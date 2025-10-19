@@ -48,12 +48,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)External\Library\Engine\</OutDir>
     <TargetName>$(ProjectName)_d</TargetName>
-    <ExternalIncludePath>$(Solutiondir)External\Include\;$(Solutiondir)External\Include\PhysX\;$(SolutionDir)External\Include\FBXLoader\;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(Solutiondir)External\Include\Engine\ImGui\;$(Solutiondir)External\Include\;$(Solutiondir)External\Include\PhysX\;$(SolutionDir)External\Include\FBXLoader\;$(ExternalIncludePath)</ExternalIncludePath>
     <LibraryPath>$(Solutiondir)External\Library\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)External\Library\Engine\</OutDir>
-    <ExternalIncludePath>$(Solutiondir)External\Include\;$(Solutiondir)External\Include\PhysX\;$(SolutionDir)External\Include\FBXLoader\;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(Solutiondir)External\Include\Engine\ImGui\;$(Solutiondir)External\Include\;$(Solutiondir)External\Include\PhysX\;$(SolutionDir)External\Include\FBXLoader\;$(ExternalIncludePath)</ExternalIncludePath>
     <LibraryPath>$(Solutiondir)External\Library\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Label="Vcpkg">
@@ -63,7 +63,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions);IMGUI_DEFINE_MATH_OPERATORS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
@@ -92,7 +92,7 @@ call EngineCopy.bat</Command>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions);IMGUI_DEFINE_MATH_OPERATORS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
@@ -124,6 +124,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CAnimator.h" />
     <ClInclude Include="CAsset.h" />
     <ClInclude Include="CAssetMgr.h" />
+    <ClInclude Include="CBlueprintEditor.h" />
     <ClInclude Include="CBoxCollider.h" />
     <ClInclude Include="CBoxCollider2D.h" />
     <ClInclude Include="CCamera.h" />
@@ -135,10 +136,13 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CComponent.h" />
     <ClInclude Include="CComputeShader.h" />
     <ClInclude Include="CConstBuffer.h" />
+    <ClInclude Include="CContentBrowser.h" />
     <ClInclude Include="CCopyBoneShader.h" />
     <ClInclude Include="CDecal.h" />
     <ClInclude Include="CDevice.h" />
     <ClInclude Include="CEdgeCollider2D.h" />
+    <ClInclude Include="CEditor.h" />
+    <ClInclude Include="CEditorMgr.h" />
     <ClInclude Include="CEngine.h" />
     <ClInclude Include="CEntity.h" />
     <ClInclude Include="CFBXLoader.h" />
@@ -154,20 +158,27 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CLandScape.h" />
     <ClInclude Include="CLayer.h" />
     <ClInclude Include="CLevel.h" />
+    <ClInclude Include="CLevelEditor.h" />
     <ClInclude Include="CLevelSaveLoad.h" />
     <ClInclude Include="CLight2D.h" />
     <ClInclude Include="CLight.h" />
     <ClInclude Include="CMaterial.h" />
+    <ClInclude Include="CMaterialEditor.h" />
     <ClInclude Include="CMesh.h" />
     <ClInclude Include="CMeshCollider.h" />
     <ClInclude Include="CMeshData.h" />
     <ClInclude Include="CMeshRender.h" />
+    <ClInclude Include="CModelEditor.h" />
     <ClInclude Include="CMRT.h" />
     <ClInclude Include="components.h" />
+    <ClInclude Include="COutliner.h" />
+    <ClInclude Include="COutputLog.h" />
     <ClInclude Include="CParticleSystem.h" />
     <ClInclude Include="CParticleUpdate.h" />
     <ClInclude Include="CPathMgr.h" />
     <ClInclude Include="CPhysicMaterial.h" />
+    <ClInclude Include="CPhysicMaterialEditor.h" />
+    <ClInclude Include="CPhysics2DMaterialEditor.h" />
     <ClInclude Include="CPhysics2DMgr.h" />
     <ClInclude Include="CPhysicsMgr.h" />
     <ClInclude Include="CPolygonCollider2D.h" />
@@ -182,14 +193,17 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CShader.h" />
     <ClInclude Include="CSkyBox.h" />
     <ClInclude Include="CSound.h" />
+    <ClInclude Include="CSoundEditor.h" />
     <ClInclude Include="CSoundListener.h" />
     <ClInclude Include="CSoundMgr.h" />
     <ClInclude Include="CSphereCollider.h" />
+    <ClInclude Include="CSpriteEditor.h" />
     <ClInclude Include="CStructuredBuffer.h" />
     <ClInclude Include="CTaskMgr.h" />
     <ClInclude Include="CTextRender.h" />
     <ClInclude Include="CTexture.h" />
     <ClInclude Include="CTileMap.h" />
+    <ClInclude Include="CTileMapEditor.h" />
     <ClInclude Include="CTimeMgr.h" />
     <ClInclude Include="CTransform.h" />
     <ClInclude Include="CWeightMapShader.h" />
@@ -198,6 +212,31 @@ call EngineCopy.bat</Command>
     <ClInclude Include="func.h" />
     <ClInclude Include="global.h" />
     <ClInclude Include="CLevelMgr.h" />
+    <ClInclude Include="ImGui\imconfig.h" />
+    <ClInclude Include="ImGui\imgui.h" />
+    <ClInclude Include="ImGui\ImGuizmo\GraphEditor.h" />
+    <ClInclude Include="ImGui\ImGuizmo\ImCurveEdit.h" />
+    <ClInclude Include="ImGui\ImGuizmo\ImGradient.h" />
+    <ClInclude Include="ImGui\ImGuizmo\ImGuizmo.h" />
+    <ClInclude Include="ImGui\ImGuizmo\ImSequencer.h" />
+    <ClInclude Include="ImGui\ImGuizmo\ImZoomSlider.h" />
+    <ClInclude Include="ImGui\imgui_impl_dx11.h" />
+    <ClInclude Include="ImGui\imgui_impl_win32.h" />
+    <ClInclude Include="ImGui\imgui_internal.h" />
+    <ClInclude Include="ImGui\imgui_node_editor\crude_json.h" />
+    <ClInclude Include="ImGui\imgui_node_editor\imgui_bezier_math.h" />
+    <ClInclude Include="ImGui\imgui_node_editor\imgui_canvas.h" />
+    <ClInclude Include="ImGui\imgui_node_editor\imgui_extra_math.h" />
+    <ClInclude Include="ImGui\imgui_node_editor\imgui_node_editor.h" />
+    <ClInclude Include="ImGui\imgui_node_editor\imgui_node_editor_internal.h" />
+    <ClInclude Include="ImGui\imgui_node_editor\utilities\builders.h" />
+    <ClInclude Include="ImGui\imgui_node_editor\utilities\drawing.h" />
+    <ClInclude Include="ImGui\imgui_node_editor\utilities\widgets.h" />
+    <ClInclude Include="ImGui\imgui_stacklayout.h" />
+    <ClInclude Include="ImGui\imgui_stacklayout_internal.h" />
+    <ClInclude Include="ImGui\imstb_rectpack.h" />
+    <ClInclude Include="ImGui\imstb_textedit.h" />
+    <ClInclude Include="ImGui\imstb_truetype.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="CPhysics2DMaterial.h" />
     <ClInclude Include="Ptr.h" />
@@ -213,6 +252,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CAsset.cpp" />
     <ClCompile Include="CAssetMgr.cpp" />
     <ClCompile Include="CAssetMgr_init.cpp" />
+    <ClCompile Include="CBlueprintEditor.cpp" />
     <ClCompile Include="CBoxCollider.cpp" />
     <ClCompile Include="CBoxCollider2D.cpp" />
     <ClCompile Include="CCamera.cpp" />
@@ -224,10 +264,13 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CComponent.cpp" />
     <ClCompile Include="CComputeShader.cpp" />
     <ClCompile Include="CConstBuffer.cpp" />
+    <ClCompile Include="CContentBrowser.cpp" />
     <ClCompile Include="CCopyBoneShader.cpp" />
     <ClCompile Include="CDecal.cpp" />
     <ClCompile Include="CDevice.cpp" />
     <ClCompile Include="CEdgeCollider2D.cpp" />
+    <ClCompile Include="CEditor.cpp" />
+    <ClCompile Include="CEditorMgr.cpp" />
     <ClCompile Include="CEngine.cpp" />
     <ClCompile Include="CEntity.cpp" />
     <ClCompile Include="CFBXLoader.cpp" />
@@ -244,19 +287,26 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CLandScape_init.cpp" />
     <ClCompile Include="CLayer.cpp" />
     <ClCompile Include="CLevel.cpp" />
+    <ClCompile Include="CLevelEditor.cpp" />
     <ClCompile Include="CLevelSaveLoad.cpp" />
     <ClCompile Include="CLight2D.cpp" />
     <ClCompile Include="CLight.cpp" />
     <ClCompile Include="CMaterial.cpp" />
+    <ClCompile Include="CMaterialEditor.cpp" />
     <ClCompile Include="CMesh.cpp" />
     <ClCompile Include="CMeshCollider.cpp" />
     <ClCompile Include="CMeshData.cpp" />
     <ClCompile Include="CMeshRender.cpp" />
+    <ClCompile Include="CModelEditor.cpp" />
     <ClCompile Include="CMRT.cpp" />
+    <ClCompile Include="COutliner.cpp" />
+    <ClCompile Include="COutputLog.cpp" />
     <ClCompile Include="CParticleSystem.cpp" />
     <ClCompile Include="CParticleUpdate.cpp" />
     <ClCompile Include="CPathMgr.cpp" />
     <ClCompile Include="CPhysicMaterial.cpp" />
+    <ClCompile Include="CPhysicMaterialEditor.cpp" />
+    <ClCompile Include="CPhysics2DMaterialEditor.cpp" />
     <ClCompile Include="CPhysics2DMgr.cpp" />
     <ClCompile Include="CPhysicsMgr.cpp" />
     <ClCompile Include="CPolygonCollider2D.cpp" />
@@ -271,14 +321,17 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CShader.cpp" />
     <ClCompile Include="CSkyBox.cpp" />
     <ClCompile Include="CSound.cpp" />
+    <ClCompile Include="CSoundEditor.cpp" />
     <ClCompile Include="CSoundListener.cpp" />
     <ClCompile Include="CSoundMgr.cpp" />
     <ClCompile Include="CSphereCollider.cpp" />
+    <ClCompile Include="CSpriteEditor.cpp" />
     <ClCompile Include="CStructuredBuffer.cpp" />
     <ClCompile Include="CTaskMgr.cpp" />
     <ClCompile Include="CTextRender.cpp" />
     <ClCompile Include="CTexture.cpp" />
     <ClCompile Include="CTileMap.cpp" />
+    <ClCompile Include="CTileMapEditor.cpp" />
     <ClCompile Include="CTimeMgr.cpp" />
     <ClCompile Include="CTransform.cpp" />
     <ClCompile Include="CWeightMapShader.cpp" />
@@ -286,6 +339,86 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CLevelMgr.cpp" />
     <ClCompile Include="extern.cpp" />
     <ClCompile Include="func.cpp" />
+    <ClCompile Include="ImGui\imgui.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="ImGui\ImGuizmo\GraphEditor.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="ImGui\ImGuizmo\ImCurveEdit.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="ImGui\ImGuizmo\ImGradient.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="ImGui\ImGuizmo\ImGuizmo.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="ImGui\ImGuizmo\ImSequencer.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_demo.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_draw.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_impl_dx11.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_impl_win32.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_node_editor\crude_json.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_node_editor\imgui_canvas.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_node_editor\imgui_node_editor.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_node_editor\imgui_node_editor_api.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_node_editor\utilities\builders.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_node_editor\utilities\drawing.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_node_editor\utilities\widgets.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_stacklayout.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_tables.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_widgets.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <FxCompile Include="CircleDistortionPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
@@ -323,6 +456,9 @@ call EngineCopy.bat</Command>
   <ItemGroup>
     <None Include="disksample.hlsli" />
     <None Include="func.hlsli" />
+    <None Include="ImGui\imgui_node_editor\imgui_bezier_math.inl" />
+    <None Include="ImGui\imgui_node_editor\imgui_extra_math.inl" />
+    <None Include="ImGui\imgui_node_editor\imgui_node_editor_internal.inl" />
     <None Include="Light.hlsli" />
     <None Include="global.hlsli" />
     <None Include="SimpleMath.inl" />

@@ -47,7 +47,7 @@ CGameObject::CGameObject(const CGameObject& origin)
         CComponent* pComp = origin.m_arrCom[i]->Clone();
         if (nullptr == pComp)
         {
-            // LOG(Error, "%s Clone Failed!!", COMPONENT_TYPE_STRING[i]);
+            LOG(Error, "%s Clone Failed!!", COMPONENT_TYPE_STRING[i]);
         }
         else
         {
@@ -60,7 +60,7 @@ CGameObject::CGameObject(const CGameObject& origin)
         CScript* pScript = origin.m_vecScript[i]->Clone();
         if (nullptr == pScript)
         {
-            // LOG(Error, "%s Clone Failed!!", ToString(CScriptMgr::GetScriptName(origin.m_vecScript[i])).c_str());
+            LOG(Error, "%s Clone Failed!!", ToString(CScriptMgr::GetScriptName(origin.m_vecScript[i])).c_str());
         }
         else
         {
